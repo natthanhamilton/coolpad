@@ -1,0 +1,65 @@
+@import '../variables';
+
+.btn {
+  border-radius: 20px !important;
+  .font-family-book;
+  color: #ffffff !important;
+  outline: 0 !important;
+  line-height: normal !important;
+  &:hover, &:focus {
+    outline: 0;
+    color: #fff;
+  }
+
+  font-size: 24px;
+  @media only screen and (max-width: @break-sm) {
+    font-size: 18px;
+  }
+  @media only screen and (max-width: @break-middle) {
+    font-size: 14px;
+  }
+}
+
+.btn-lg {
+  padding: 14px 20px;
+  font-size: 24px;
+  line-height: 1.25;
+  border-radius: 0;
+  border-width: 2px;
+  min-width: 180px;
+  width: auto;
+}
+
+.btn-purple {
+  @color: #3b3fb6;
+  border: solid 2px @color !important;
+  background-color: transparent !important;
+  color: #5b5b5b !important;
+  &:hover {
+    background-color: @color !important;
+    border: solid 2px @color !important;
+    color: #fff !important;
+    .hover-transition;
+  }
+}
+
+.btn-green {
+  @color: #c4d600;
+  border: solid 2px @color !important;
+  background-color: transparent !important;
+  &:hover {
+    background-color: @color !important;
+    border: solid 2px @color !important;
+    .hover-transition;
+  }
+}
+
+.btn-pill {
+  padding-left: 45px !important;
+  padding-right: 45px !important;
+}
+
+.btn-pill-sm {
+  padding-left: 35px !important;
+  padding-right: 35px !important;
+}

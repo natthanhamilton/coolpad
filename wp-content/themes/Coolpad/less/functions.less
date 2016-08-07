@@ -1,0 +1,175 @@
+/*
+
+Vertically center everything
+
+*/
+.vertical-center(@horizontal: center, @vertical: center) {
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-pack: @horizontal;
+  -ms-flex-align: @vertical;
+
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-pack: @horizontal;
+  -moz-box-align: @vertical;
+
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-pack: @horizontal;
+  -webkit-box-align: @vertical;
+
+  /* W3C */
+  display: box;
+  box-pack: @horizontal;
+  box-align: @vertical;
+}
+
+.vertical(@alignment: center) {
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-align: @alignment;
+
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-align: @alignment;
+
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-align: @alignment;
+
+  /* W3C */
+  display: box;
+  box-align: @alignment;
+}
+
+.horizonal(@alignment: center) {
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-pack: @alignment;
+
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-pack: @alignment;
+
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-pack: @alignment;
+
+  /* W3C */
+  display: box;
+  box-pack: @alignment;
+}
+
+.flex-vertical-center {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+
+  align-items: center;
+}
+
+/*
+
+Multi line truncate
+
+*/
+.multi-line-truncate(@line-height: 1.3em; @num_lines: 3) {
+  /* hide text if it more than N lines  */
+  overflow: hidden;
+  /* for set '...' in absolute position */
+  position: relative;
+  /* use this value to count block height */
+  line-height: @line-height;
+  /* max-height = line-height (1.2) * lines max number (3) */
+  max-height: @num_lines * @line-height;
+  /* place for '...' */
+  margin-right: -1em;
+  padding-right: 1em;
+}
+
+// create the ...
+.multi-line-truncate:before {
+  /* points in the end */
+  content: '...';
+  /* absolute position */
+  position: absolute;
+  /* set position to right bottom corner of block */
+  right: 0;
+  bottom: 0;
+}
+
+// hide ... if we have text, which is less than or equal to max lines
+.multi-line-truncate:after {
+  /* points in the end */
+  content: '...';
+  /* absolute position */
+  position: absolute;
+  /* set position to right bottom corner of text */
+  right: 0;
+  /* set width and height */
+  width: 1em;
+  height: 1em;
+  margin-top: 0.2em;
+}
+
+/*
+
+Hover transition
+
+*/
+.hover-transition {
+  -webkit-transition: all ease 0.5s;
+  -moz-transition: all ease 0.5s;
+  -o-transition: all ease 0.5s;
+  transition: all ease 0.5s;
+}
+
+/*
+
+TRANSLATE (Move an object)
+
+*/
+.translate(@distance) {
+  -moz-transform: translate(0, @distance);
+  -ms-transform: translate(0, @distance);
+  -o-transform: translate(0, @distance);
+  -webkit-transform: translate(0, @distance);
+  transform: translate(0, @distance);
+}
+
+/*
+
+Flex Box Arranging divs
+
+*/
+.flexbox {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  /* optional */
+  -webkit-box-align: start;
+  -moz-box-align: start;
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+}
+
+.flexbox-div (@number: 1) {
+  -webkit-box-ordinal-group: @number;
+  -moz-box-ordinal-group: @number;
+  -ms-flex-order: @number;
+  -webkit-order: @number;
+  order: @number;
+}

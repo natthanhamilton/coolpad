@@ -1,0 +1,45 @@
+@import "../variables";
+@height: 260px;
+
+#tiles {
+  .section;
+  @media only screen and (max-width: @break-sm) {
+    margin: 0 !important;
+  }
+  .vc_col-sm-3 {
+    float: left;
+    .vc_column-inner {
+      height: @height;
+    }
+    @media only screen and (min-width: @break-sm) {
+      padding: 10px;
+    }
+    @media only screen and (max-width: @break-md) {
+      width: 50% !important;
+    }
+    @media only screen and (max-width: @break-middle) {
+      width: 100% !important;
+    }
+  }
+  a {
+    .tile-title {
+      width: 100%;
+      height: @height;
+      background-position: 50% 50% !important;
+      background-size: cover !important;
+
+      .font-family-light;
+      font-weight: 400;
+      line-height: 20px;
+      color: #ffffff;
+      padding: 30px 20px;
+      overflow: hidden;
+
+      .vertical(end);
+    }
+  }
+  img {
+    height: @height;
+    width: 100%;
+  }
+}

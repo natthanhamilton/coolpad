@@ -1,0 +1,121 @@
+@import '../../variables';
+
+#in-page-nav {
+  background-color: @color-daybreak-blue;
+  width: 100%;
+  z-index: 1000;
+  min-height: 80px;
+  @media only screen and (max-width: @break-sm) {
+    z-index: 1 !important;
+    .vertical-center !important;
+    .vc_col-sm-6 {
+      width: 100%;
+    }
+  }
+  .information {
+    height: 80px;
+
+    // Responsive elements
+    padding: 20px 0 0 129px;
+    @media only screen and (min-width: @break-md) and (max-width: @break-lg) {
+      padding: 20px 0 0 60px;
+    }
+    @media only screen and (min-width: @break-sm)  and (max-width: @break-md) {
+      padding: 20px 0 0 20px;
+    }
+    @media only screen and (max-width: @break-sm) {
+      height: initial;
+      padding: 0;
+      text-align: center;
+    }
+
+    p {
+      .font-family-light;
+      color: #fff;
+      font-size: 28px;
+      @media only screen and (max-width: @break-middle) {
+        font-size: 24px;
+      }
+      @media only screen and (max-width: @break-xs) {
+        font-size: 20px;
+      }
+    }
+    .phone,
+    .price {
+      display: inline-block;
+    }
+    .price {
+      padding-left: 10px;
+    }
+  }
+  .nav-links {
+    @media only screen and (max-width: @break-sm) {
+      display: none;
+    }
+    .wpb_wrapper {
+      margin-right: 21px;
+      float: right;
+    }
+    #product-navigation {
+      height: 80px;
+      background-color: transparent;
+      border: none;
+      .reset;
+      ul {
+        float: left;
+        display: inline-block;
+      }
+      a {
+        .font-family-book;
+        color: #fff;
+        height: 80px;
+
+        //Responsive elements
+        font-size: 18px;
+        padding: 25px 10px 0 10px;
+        @media only screen and (min-width: @break-sm) and (max-width: @break-md) {
+          font-size: 16px;
+          padding: 25px 6px 0 6px;
+        }
+        &:hover,
+        &:focus {
+          color: @color-daybreak-blue;
+          background-color: #fff;
+          .hover-transition !important;
+        }
+      }
+      .active {
+        a {
+          color: @color-daybreak-blue;
+          background-color: #fff;
+        }
+      }
+      .buy {
+        float: left;
+        display: inline-block;
+        border-radius: 20px;
+        background-color: #ffffff;
+        padding: 8px 17px;
+        position: relative;
+        top: 15px;
+        height: initial !important;
+        color: @color-charcoal-grey;
+        cursor: pointer;
+
+        //Responsive elements
+        margin-left: 10px;
+        @media only screen and (min-width: @break-sm) and (max-width: @break-md) {
+          margin-left: 6px;
+        }
+        &:hover {
+          background: @color-sprout-green !important;
+        }
+      }
+    }
+  }
+}
+
+#in-page-nav {
+  transition: top 1s ease;
+  -webkit-transition: top 1s ease; /* Safari */
+}

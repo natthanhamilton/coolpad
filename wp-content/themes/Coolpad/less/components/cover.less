@@ -1,0 +1,56 @@
+@import '../variables';
+@import 'buttons';
+
+.default-cover {
+  .section-margin-bottom;
+  background-position: 50% 50%;
+  background-size: cover;
+  .vc_column-inner {
+    height: 80vh;
+    padding: 0;
+    background-size: cover;
+    background-position: 50% 50%;
+  }
+  .wpb_wrapper {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    background-image: linear-gradient(to bottom, rgba(238, 238, 238, 0), rgba(0, 0, 0, 0.51));
+    .vc_btn3-container {
+      margin-bottom: 0;
+    }
+    .wpb_content_element {
+      margin-bottom: 0;
+    }
+    .title {
+      padding-top: 30%;
+      position: relative;
+      .wpb_wrapper {
+        background-image: none;
+      }
+      p {
+        .font-family-light;
+        line-height: 1.1;
+        text-align: center;
+        color: #ffffff;
+
+        // Responsive elements
+        font-size: 80px;
+        padding-bottom: 22px;
+        @media only screen and (max-width: @break-md) {
+          font-size: 60px;
+          padding-bottom: 8px;
+        }
+        @media only screen and (max-width: @break-xs) {
+          font-size: 36px;
+          padding-bottom: 14px;
+        }
+      }
+    }
+    .button {
+      .btn;
+      .btn-green;
+      .btn-pill;
+    }
+  }
+}

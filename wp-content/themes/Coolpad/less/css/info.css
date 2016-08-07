@@ -1,0 +1,15 @@
+#info-page {
+    margin: auto !important;
+}
+
+@media screen and (min-width: 560px) {
+    #info-page {
+        width: 66% !important;
+    }
+}
+
+@media screen and (max-width: 560px) {
+    #info-page {
+        padding: 5% !important;
+    }
+}

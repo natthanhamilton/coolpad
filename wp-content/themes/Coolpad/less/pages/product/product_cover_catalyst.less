@@ -1,0 +1,63 @@
+@import '../../variables';
+
+.cover-catalyst {
+  .content {
+    position: absolute;
+    bottom: 0;
+    .center;
+
+    width: 450px;
+    margin: 0 0 100px 230px;
+    @media only screen and (max-width: @break-md) {
+      width: 400px;
+      margin: 0 0 48px 120px;
+    }
+    @media only screen and (max-width: @break-sm) {
+      width: 320px;
+      margin: 0 0 48px 26px;
+    }
+    .mobile-content-padding;
+    @media only screen and (max-width: @break-xs) {
+      width: 100%;
+      padding-bottom: 32px;
+    }
+    .uvc-main-heading h2 {
+      .text-title;
+      margin-bottom: 12px;
+      @media only screen and (max-width: @break-sm) {
+        margin-bottom: 15px;
+      }
+      @media only screen and (max-width: @break-xs) {
+        margin-bottom: 21px;
+      }
+    }
+    .uvc-sub-heading {
+      .text-description;
+    }
+  }
+  img {
+    position: absolute;
+    bottom: -90px;
+    right: 5%;
+    @media only screen and (max-width: 1150px) {
+      width: 250px;
+    }
+    @media only screen and (max-width: 900px) {
+      width: 200px;
+    }
+    @media only screen and (max-width: @break-sm) {
+      bottom: 90px;
+      right: -100px;
+    }
+    @media only screen and (max-width: @break-middle) {
+      bottom: 150px;
+      right: -80px;
+      width: 150px;
+    }
+    @media only screen and (max-width: @break-xs) {
+      bottom: 180px;
+      right: -40px;
+      width: 80px;
+    }
+  }
+}

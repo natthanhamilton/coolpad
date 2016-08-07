@@ -1,0 +1,140 @@
+/*
+
+Vertically center everything
+
+*/
+.flex-vertical-center {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+/*
+
+Multi line truncate
+
+*/
+.multi-line-truncate:before {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of block */
+    right: 0;
+    bottom: 0;
+}
+
+.multi-line-truncate:after {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of text */
+    right: 0;
+    /* set width and height */
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+}
+
+/*
+
+Hover transition
+
+*/
+.hover-transition {
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+}
+
+/*
+
+TRANSLATE (Move an object)
+
+*/
+/*
+
+Flex Box Arranging divs
+
+*/
+.flexbox {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    /* optional */
+    -webkit-box-align: start;
+    -moz-box-align: start;
+    -ms-flex-align: start;
+    -webkit-align-items: flex-start;
+    align-items: flex-start;
+}
+
+.tabbed-content ul.tabs li a {
+    text-transform: capitalize !important;
+    font-weight: initial !important;
+    font-size: 100% !important;
+}
+
+.product-breadcrumb {
+    background-color: transparent;
+}
+
+.product-small p.category {
+    padding-top: 15px;
+}
+
+retailer {
+    display: inline-block;
+}
+
+retailer:hover {
+    background: transparent !important;
+}
+
+retailer a {
+    background: none !important;
+}
+
+retailer a:hover {
+    background: #f6f6f6 !important;
+    box-shadow: none !important;
+}
+
+.entry-content .small-12 {
+    margin-bottom: 30px;
+}
+
+.entry-content h3 {
+    font-size: 18px;
+    margin: 0 auto 15px;
+    border-bottom: none;
+}
+
+.product-info .entry-title {
+    background-color: #3b3fb6;
+    color: #fff;
+    padding: 10px;
+    margin-bottom: 20px;
+    font-weight: 900;
+}
+
+.product-info .tx-div {
+    display: none;
+}
+
+.single_ad_to_cart_button img {
+    height: 25px;
+}

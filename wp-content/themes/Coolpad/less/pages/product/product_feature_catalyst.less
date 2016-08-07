@@ -1,0 +1,29 @@
+@import '../../variables';
+
+.feature-catalyst {
+  .section-height;
+  @media only screen and (max-width: @break-sm) {
+    height: initial;
+    padding-bottom: 100px;
+  }
+  .uvc-main-heading h2 {
+    .text-title;
+    color: #5b6770;
+    padding-top: 100px;
+  }
+  .uvc-sub-heading {
+    .text-description;
+    color: #5b6770;
+    padding: 20px 0 20px 0;
+  }
+  .phone-scroll {
+    width: 100%;
+    .vertical-center;
+    img {
+      width: 100%;
+      @media only screen and (min-width: @break-sm) {
+        position: relative;
+      }
+    }
+  }
+}

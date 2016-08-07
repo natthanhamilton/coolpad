@@ -1,0 +1,86 @@
+@import "../variables";
+
+post-cover,
+post {
+  .section-margin-bottom;
+  .block;
+
+  padding: 0 200px;
+  @media only screen and (max-width: @break-md) {
+    padding: 0 100px;
+  }
+  @media only screen and (max-width: @break-sm) {
+    padding: 0 60px;
+  }
+  @media only screen and (max-width: @break-middle) {
+    padding: 0 20px;
+  }
+}
+
+post-cover {
+  height: 300px;
+  width: 100%;
+  background-size: cover;
+  background-position: 50% 50%;
+  .vertical(end);
+  .wrapper {
+    title {
+      .block;
+      margin-bottom: 30px;
+      margin-top: 10px;
+
+      font-size: 32px;
+      @media only screen and (max-width: @break-middle) {
+        font-size: 24px;
+      }
+    }
+    description {
+      .inline-block;
+
+      font-size: 24px;
+      @media only screen and (max-width: @break-middle) {
+        font-size: 18px;
+      }
+    }
+    title,
+    description {
+      .left;
+      font-weight: 300;
+      color: #fff;
+    }
+    .addtoany_shortcode {
+      .inline-block;
+    }
+  }
+}
+
+post {
+  article {
+    word-wrap: break-word;
+  }
+}
+
+/*
+pagination {
+  margin-top: 30px;
+  font-size: 28px;
+  .block;
+
+  page-left {
+    float: left;
+    .inline-block;
+  }
+  page-right {
+    float: right;
+    .inline-block;
+  }
+}
+
+breadcrumb {
+  .block;
+  margin-bottom: 60px;
+  font-weight: 300;
+  a {
+    color: @color-charcoal-grey;
+  }
+}*/

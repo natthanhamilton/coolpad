@@ -1,0 +1,64 @@
+@import '../../../Coolpad/less/variables';
+
+#product-cover {
+  background-size: cover;
+  background-position: 50% 50%;
+  width: 100%;
+  .vc_column-inner {
+    height: 300px;
+    padding: 0;
+  }
+  .vc_column_container {
+    background: linear-gradient(to bottom, rgba(238, 238, 238, 0), rgba(0, 0, 0, 0.51)), url('http://res.cloudinary.com/coolpad/image/upload/v1468479706/support/page_cover.jpg');
+    background-size: cover;
+    background-position: 50% 50%;
+    .wpb_wrapper {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      .vc_btn3-container {
+        margin-bottom: 0;
+      }
+      .wpb_content_element {
+        margin-bottom: 0;
+      }
+      .title {
+        .section;
+        padding-top: 30%;
+        position: relative;
+        p {
+          .font-family-light;
+          line-height: 1.1;
+          text-align: left;
+          color: #ffffff;
+
+          // Responsive elements
+          font-size: 80px;
+          padding-bottom: 22px;
+          @media only screen and (max-width: @break-md) {
+            font-size: 60px;
+            padding-bottom: 8px;
+          }
+          @media only screen and (max-width: @break-xs) {
+            font-size: 36px;
+            padding-bottom: 14px;
+          }
+        }
+      }
+      img {
+        position: absolute;
+        right: 20px;
+        top: -260px;
+        height: 550px;
+        @media only screen and (max-width: @break-md) {
+          height: 500px;
+          right: 0;
+          top: -210px;
+        }
+        @media only screen and (max-width: @break-sm) {
+          display: none;
+        }
+      }
+    }
+  }
+}

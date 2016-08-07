@@ -1,0 +1,43 @@
+.post-with-title-bottom-center {
+  font-family: Gotham-Light;
+  font-size: 36px;
+  line-height: 1.2;
+  color: #ffffff;
+}
+
+.post-top-half-image-bottom-half-title-description-image img {
+    width: 100%;
+    height: 100%;
+}
+.post-top-half-image-bottom-half-title-description-title {
+  font-family: Gotham-Light;
+  font-size: 36px;
+  line-height: 1.2;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.post-top-half-image-bottom-half-title-description-content {
+  font-family: Gotham-Regular;
+  font-size: 18px;
+  line-height: 1.3;
+  color: #ffffff;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.post-with-title-description-center-center-no-bg-title {
+  font-family: Gotham-Light;
+  font-size: 36px;
+  line-height: 1.2;
+  color: #ffffff;
+  margin-bottom: 8px;
+}
+.post-with-title-description-center-center-no-bg-content {
+  font-family: Gotham-Regular;
+  font-size: 18px;
+  line-height: 1.3;
+  color: #ffffff;
+}

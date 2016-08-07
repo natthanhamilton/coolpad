@@ -1,0 +1,76 @@
+@import '../../../Coolpad/less/variables';
+@import '../../../Coolpad/less/components/buttons';
+@import '../../../Coolpad/less/components/grid';
+
+#product-manuals {
+  .section;
+  margin-top: 40px !important;
+  margin-bottom: 40px !important;
+  .make-lg-column(9);
+  .make-md-column(8);
+  .make-sm-column(12);
+  padding: 0;
+  .manuals-title p {
+    .font-family-light;
+    font-size: 24px;
+    font-weight: 300;
+    color: #000000;
+    margin-bottom: 30px;
+  }
+  .item {
+    border: solid 1px #d7d7d7;
+    margin-top: -1px;
+    padding: 20px 30px;
+    @media only screen and (max-width: @break-sm) {
+      padding: 20px;
+    }
+    @media only screen and (max-width: @break-middle) {
+      padding: 15px;
+    }
+    @media only screen and (min-width: @break-md) {
+      .vc_col-sm-8 {
+        .make-xs-column(8);
+      }
+
+      .vc_col-sm-4 {
+        .make-xs-column(4);
+      }
+    }
+    @media only screen and (min-width: @break-middle) and (max-width: @break-md) {
+      .vc_col-sm-8 {
+        .make-xs-column(7);
+      }
+
+      .vc_col-sm-4 {
+        .make-xs-column(5);
+      }
+    }
+    .title {
+      .font-family-light;
+      font-size: 16px;
+      font-weight: 300;
+      color: #000000;
+      @media only screen and (max-width: @break-middle) {
+        padding-bottom: 10px;
+      }
+    }
+    .download {
+      height: 100%;
+      .vertical;
+      .wpb_wrapper {
+        @media only screen and (min-width: @break-middle) {
+          width: 100%;
+          text-align: right;
+        }
+      }
+      a {
+        .btn;
+        .btn-purple;
+        padding-left: 25px;
+        padding-right: 25px;
+        padding-top: 5px;
+        padding-bottom: 5px;
+      }
+    }
+  }
+}
