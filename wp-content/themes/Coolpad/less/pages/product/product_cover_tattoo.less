@@ -1,0 +1,53 @@
+@import '../../variables';
+
+.cover-tattoo {
+  .section-height;
+
+  @media only screen and (min-width: @break-middle) {
+    .vertical-center;
+  }
+  .wrapper {
+    @media only screen and (min-width: @break-middle) {
+      position: absolute;
+      bottom: 72px;
+      text-align: center;
+      width: 100%;
+    }
+    .title {
+      .text-title;
+      .block;
+      .center;
+      width: 100%;
+
+      @media only screen and (max-width: @break-middle) {
+        position: absolute;
+        top: 24px;
+      }
+    }
+    .bottom-on-mobile {
+
+      @media only screen and (max-width: @break-middle) {
+        position: absolute;
+        bottom: 40px;
+      }
+      .description {
+        .text-description;
+        .block;
+        .center;
+        padding-bottom: 30px;
+      }
+      .image {
+        .center;
+        .block;
+        img {
+          display: initial;
+          left: -20px;
+          position: relative;
+          width: 110% !important;
+          max-width: 1026px;
+          max-height: 192px;
+        }
+      }
+    }
+  }
+}

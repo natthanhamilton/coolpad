@@ -1,0 +1,49 @@
+@import '../../variables';
+
+.feature-rogue {
+  .section-height;
+  .vertical(end);
+  height: 100%;
+
+  left: 280px;
+  bottom: 60px;
+  @media only screen and (max-width: 1200px) {
+    left: 200px;
+  }
+  @media only screen and (max-width: @break-md) {
+    left: 120px;
+  }
+  @media only screen and (max-width: 850px) {
+    left: 80px;
+  }
+  @media only screen and (max-width: @break-sm) {
+    left: 40px;
+  }
+  @media only screen and (max-width: @break-middle) {
+    left: 20px;
+    bottom: 35px;
+  }
+  @media only screen and (max-width: @break-xs) {
+    left: 0px;
+  }
+
+  .title {
+    .font-family-book;
+    .left;
+    font-size: 64px;
+    line-height: 1.1;
+    color: @color-charcoal-grey;
+    padding-bottom: 20px;
+    @media only screen and (max-width: @break-middle) {
+      font-size: 36px;
+    }
+    .purple {
+      color: @color-daybreak-blue;
+    }
+  }
+  .description {
+    .text-description;
+    color: @color-charcoal-grey;
+    .left;
+  }
+}

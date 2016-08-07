@@ -1,0 +1,39 @@
+@import "../variables";
+@import "buttons";
+
+.wpcf7-form {
+  .center;
+  .wpcf7-form-control-wrap {
+    input, textarea {
+      height: 50px;
+      padding: 18px 0 13px 20px;
+      font-size: 16px;
+      letter-spacing: 1.1px;
+      color: #000;
+      border-radius: 2px;
+      background-color: #dbe2e9;
+      border: 0;
+      -webkit-box-shadow: none;
+      box-shadow: none;
+      max-width: none;
+      outline: 0;
+      margin-bottom: 15px !important;
+    }
+    textarea {
+      height: 129px;
+    }
+  }
+  input[type="submit"] {
+    .btn;
+    .btn-lg;
+    .btn-purple;
+    padding: 2px 15px !important;
+    min-width: 0 !important;
+    border-width: 1px !important;
+    font-size: 18px !important;
+  }
+}
+
+.wpcf7-form-control.wpcf7-text.wpcf7-validates-as-required, .wpcf7-form-control.wpcf7-text, .wpcf7-form-control.wpcf7-textarea.wpcf7-validates-as-required {
+  width: 100% !important;
+}

@@ -1,0 +1,30 @@
+@import '../../variables';
+
+.feature-tattoo {
+  .uvc-main-heading h2 {
+    .text-title;
+    color: #5b6770;
+    padding-top: 100px;
+  }
+  .uvc-sub-heading {
+    .text-description;
+    color: #5b6770;
+    margin: 16px 0 63px 0;
+    @media only screen and (min-width: @break-md) {
+      margin: 21px 0 55px 0;
+    }
+    @media only screen and (min-width: @break-sm) {
+      margin: 31px 0 45px 0;
+    }
+    @media only screen and (min-width: @break-middle) {
+      margin: 41px 0 35px 0;
+    }
+  }
+  .image {
+    width: 100%;
+    .center;
+    img {
+      display: initial;
+    }
+  }
+}

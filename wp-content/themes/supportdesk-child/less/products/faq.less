@@ -1,0 +1,83 @@
+@import '../../../Coolpad/less/variables';
+@import '../../../Coolpad/less/components/buttons';
+@import '../../../Coolpad/less/components/grid';
+
+#product-faq {
+  display: none !important;
+  .section;
+  margin-bottom: 40px;
+  .faq-title p {
+    .font-family-light;
+    font-size: 24px;
+    font-weight: 300;
+    color: #000000;
+    margin-bottom: 30px;
+  }
+  .accordion {
+    .vc_active i:before {
+      content: "-";
+      font-style: normal;
+    }
+    .section {
+      margin: 0;
+      .vc_tta-panel-heading {
+        border-color: transparent;
+        background-color: transparent;
+        a {
+          padding-left: 0;
+        }
+      }
+      .vc_tta-title-text {
+        margin: 0 0 13px;
+        letter-spacing: -0.6px;
+        .font-family-bold;
+        color: #363d40 !important;
+        line-height: 32px;
+        outline: none;
+        text-decoration: none;
+      }
+      .vc_tta-panel-body {
+        background-color: transparent;
+        border-color: transparent;
+      }
+      .faq {
+        margin-left: 50px;
+        h4 {
+          font-size: 22px;
+          font-weight: 600;
+          letter-spacing: -0.6px;
+        }
+        i {
+          margin: 0 20px 0 0;
+          top: 12px;
+        }
+      }
+    }
+    i {
+      background: #4D4D4D;
+      float: left;
+      font-size: 13px;
+      height: 25px;
+      line-height: 24px;
+      position: relative;
+      text-align: center;
+      top: 17px;
+      width: 25px;
+      border-radius: 3px;
+      margin: 0 25px 0 0;
+    }
+    i:before,
+    i:after {
+      border-color: transparent;
+      color: #fff;
+      font-style: normal;
+    }
+    i:after {
+      content: "+";
+    }
+    .vc_active i:after,
+    .vc_toggle_active i:after {
+      content: "";
+    }
+  }
+}

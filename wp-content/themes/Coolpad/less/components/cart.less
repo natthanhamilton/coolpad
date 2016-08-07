@@ -1,0 +1,51 @@
+@import '../typography/colors';
+
+#cart-icon {
+  a:hover {
+    strong {
+      background-color: @color-daybreak-blue;
+      color: #ffffff;
+    }
+    .handle {
+      top: -8px;
+    }
+  }
+  .cart {
+    display: inline-block;
+    position: relative;
+    margin-bottom: -.2em;
+    strong {
+      display: inline-block;
+      color: @color-daybreak-blue;
+      border: 2px solid @color-daybreak-blue;
+      position: relative;
+      padding: 2px 3px;
+      text-align: center;
+      min-width: 30px;
+      margin-left: 15px;
+      z-index: 10;
+    }
+    .handle {
+      border: 2px solid @color-daybreak-blue;
+      border-bottom: 0;
+      right: 50%;
+      margin-right: -15px;
+      top: -6px;
+      height: 8px;
+      width: 15px;
+      position: absolute;
+      -webkit-border-top-left-radius: 99px;
+      -webkit-border-top-right-radius: 99px;
+      -moz-border-radius-topleft: 99px;
+      -moz-border-radius-topright: 99px;
+      border-top-left-radius: 99px;
+      border-top-right-radius: 99px;
+    }
+    strong,
+    .handle {
+
+      -webkit-transition: all 200ms ease-out;
+      transition: all 200ms ease-out;
+    }
+  }
+}

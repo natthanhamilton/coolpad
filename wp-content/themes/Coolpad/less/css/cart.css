@@ -1,0 +1,44 @@
+#cart-icon a:hover strong {
+  background-color: #3b3fb6;
+  color: #ffffff;
+}
+#cart-icon a:hover .handle {
+  top: -8px;
+}
+#cart-icon .cart {
+  display: inline-block;
+  position: relative;
+  margin-bottom: -0.2em;
+}
+#cart-icon .cart strong {
+  display: inline-block;
+  color: #3b3fb6;
+  border: 2px solid #3b3fb6;
+  position: relative;
+  padding: 2px 3px;
+  text-align: center;
+  min-width: 30px;
+  margin-left: 15px;
+  z-index: 10;
+}
+#cart-icon .cart .handle {
+  border: 2px solid #3b3fb6;
+  border-bottom: 0;
+  right: 50%;
+  margin-right: -15px;
+  top: -6px;
+  height: 8px;
+  width: 15px;
+  position: absolute;
+  -webkit-border-top-left-radius: 99px;
+  -webkit-border-top-right-radius: 99px;
+  -moz-border-radius-topleft: 99px;
+  -moz-border-radius-topright: 99px;
+  border-top-left-radius: 99px;
+  border-top-right-radius: 99px;
+}
+#cart-icon .cart strong,
+#cart-icon .cart .handle {
+  -webkit-transition: all 200ms ease-out;
+  transition: all 200ms ease-out;
+}

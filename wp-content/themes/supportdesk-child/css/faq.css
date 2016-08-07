@@ -1,0 +1,73 @@
+.page-id-29 #primary {
+    padding-top: 20px;
+    background-color: #efefef;
+}
+
+.page-id-29 #primary article .entry-title,
+.page-id-29 #primary article .section-title {
+    display: block;
+    padding: 10px 2% 10px 0;
+    background: #fff;
+    position: relative;
+    margin: 0;
+    color: #666;
+    font-weight: 300;
+    letter-spacing: 0.02em;
+}
+
+.page-id-29 #primary article .section-title {
+    font-size: 28px;
+    padding-left: 2%;
+}
+
+.page-id-29 #primary article .entry-title {
+    padding-left: 4.2%;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.page-id-29 #primary article .entry-title a {
+    padding-right: 30px;
+    position: relative;
+    display: block;
+}
+
+.page-id-29 #primary article .entry-title .action {
+    float: right;
+    background: transparent !important;
+}
+
+.page-id-29 #primary article .entry-title .action span {
+    color: #c2c2c2;
+    font-size: 22px;
+}
+
+.page-id-29 #primary article .entry-content {
+    background: #f6f6f6;
+    padding: 3% 6%;
+}
+
+.page-id-29 #primary article .entry-content p {
+    padding: 0;
+    font-weight: 300;
+    color: #666;
+    letter-spacing: 0.02em;
+}
+
+@media only screen and (max-width: 768px) {
+    .page-id-29 .faq-tabs {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+    .page-id-29 .desktop-titles {
+        display: none;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .page-id-29 .tab-pane {
+        display: block !important;
+    }
+}

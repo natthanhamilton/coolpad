@@ -1,0 +1,63 @@
+@import '../../variables';
+
+.lifestyle-tattoo {
+  .image {
+    top: 40px;
+    position: absolute;
+    width: 465px;
+    background-size: 465px;
+    background-repeat: no-repeat;
+
+    right: 332px;
+    @media only screen and (max-width: 1200px) {
+      right: 170px;
+    }
+    @media only screen and (max-width: @break-md) {
+      right: 140px;
+    }
+    @media only screen and (max-width: 900px) {
+      right: 70px;
+    }
+    @media only screen and (max-width: 900px) {
+      right: 40px;
+    }
+    @media only screen and (max-width: @break-sm) {
+      right: 5%;
+    }
+    @media only screen and (max-width: @break-middle) {
+      right: -150px;
+      background-repeat: no-repeat;
+      background-size: 258px;
+      height: 475px;
+    }
+    @media only screen and (max-width: 400px) {
+      right: -175px;
+    }
+    @media only screen and (max-width: 350px) {
+      right: -190px;
+    }
+    .overlay {
+      background-color: rgba(255, 255, 255, 0.2);
+      .vertical-center;
+      width: 409px;
+      height: 692px;
+      margin-left: 29px;
+      margin-top: 90px;
+      @media only screen and (max-width: @break-middle) {
+        width: 226px;
+        margin-left: 17px;
+        margin-top: 50px;
+        height: 400px;
+      }
+      .content {
+        padding: 0 20px;
+        .title {
+          .text-title;
+        }
+        .description {
+          .text-description;
+        }
+      }
+    }
+  }
+}

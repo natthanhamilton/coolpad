@@ -1,0 +1,8 @@
+separator {
+    height: 6px;
+    border-top: solid 2px #c3c3c3;
+    border-bottom: solid 2px #5c6872;
+    width: 100%;
+    display: block;
+    margin: 40px 0 20px 0;
+}

@@ -1,0 +1,457 @@
+@font-face {
+    font-family: 'Gotham-Light';
+    src: url(../fonts/Gotham-Light.ttf) format('truetype');
+    src: url(../fonts/Gotham-Light.otf) format('opentype');
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Gotham-Medium';
+    src: url(../fonts/Gotham-Medium.ttf) format('truetype');
+    src: url(../fonts/Gotham-Medium.otf);
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Gotham-Book';
+    src: url(../fonts/Gotham-Book.ttf) format('truetype');
+    src: url(../fonts/Gotham-Book.otf);
+    font-weight: normal;
+}
+
+@font-face {
+    font-family: 'Gotham-Bold';
+    src: url(../fonts/Gotham-Bold.ttf) format('truetype');
+    src: url(../fonts/Gotham-Bold.otf);
+    font-weight: normal;
+}
+
+.font-family-light {
+    font-family: Gotham-Light, serif;
+}
+
+.font-family-medium {
+    font-family: Gotham-Medium, serif;
+}
+
+.font-family-book {
+    font-family: Gotham-Book, serif;
+}
+
+.font-family-bold {
+    font-family: Gotham-Bold, serif;
+}
+
+/*
+
+BREAKPOINTS
+
+*/
+body {
+    font-family: Gotham-Light, serif;
+    position: relative;
+}
+
+/*	Typography presets
+	------------------	*/
+h1 {
+    font-size: 68px;
+    line-height: 72px;
+    letter-spacing: -1px;
+}
+
+h2,
+#content h1 {
+    font-size: 42px;
+    line-height: 48px;
+}
+
+h3,
+#content h2 {
+    font-size: 26px;
+    line-height: 36px;
+}
+
+.normal,
+body,
+#content h3 {
+    font: 16px Gotham-Light, Gotham-Medium, Gotham-Book, Gotham-Bold;
+}
+
+/*
+
+Section break point set ups
+
+*/
+.section {
+    display: block;
+    padding: 0;
+}
+
+@media only screen and (min-width: 1440px) {
+    .section {
+        margin: 0 119px;
+    }
+}
+
+@media only screen and (max-width: 1440px) {
+    .section {
+        margin: 0 60px;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .section {
+        margin: 0 30px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .section {
+        margin: 0 20px;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .section {
+        margin: 0 10px;
+    }
+}
+
+.section-tablet {
+    display: block;
+    padding: 0;
+}
+
+@media only screen and (min-width: 1440px) {
+    .section-tablet {
+        margin: 0 119px;
+    }
+}
+
+@media only screen and (max-width: 1440px) {
+    .section-tablet {
+        margin: 0 60px;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .section-tablet {
+        margin: 0 30px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .section-tablet {
+        margin: 0 0;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .section-tablet {
+        margin: 0 0;
+    }
+}
+
+@media only screen and (min-width: 1440px) {
+    .inner-section {
+        padding: 0 100px;
+    }
+}
+
+@media only screen and (max-width: 1440px) {
+    .inner-section {
+        padding: 0 50px;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .inner-section {
+        padding: 0 25px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .inner-section {
+        padding: 0 15px;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .inner-section {
+        padding: 0 10px;
+    }
+}
+
+@media only screen and (min-width: 1440px) {
+    .section-margin-bottom {
+        margin-bottom: 70px !important;
+    }
+}
+
+@media only screen and (max-width: 1440px) {
+    .section-margin-bottom {
+        margin-bottom: 70px !important;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .section-margin-bottom {
+        margin-bottom: 50px !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .section-margin-bottom {
+        margin-bottom: 50px !important;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .section-margin-bottom {
+        margin-bottom: 27px !important;
+    }
+}
+
+/*
+
+show/hides
+
+*/
+@media only screen and (min-width: 1024px) {
+    .hide-lg {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .hide-md {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 320px) and (max-width: 768px) {
+    .hide-sm {
+        display: none;
+    }
+}
+
+@media only screen and (min-width: 0px) and (max-width: 320px) {
+    .hide-xs {
+        display: none;
+    }
+}
+
+/*
+
+margins
+
+*/
+.no-margin-bottom {
+    margin-bottom: 0 !important;
+}
+
+.margin-bottom-5 {
+    margin-bottom: 5px !important;
+}
+
+.margin-bottom-20 {
+    margin-bottom: 20px !important;
+}
+
+.margin-bottom-30 {
+    margin-bottom: 30px !important;
+}
+
+.margin-bottom-70 {
+    margin-bottom: 70px !important;
+}
+
+.margin-bottom-80 {
+    margin-bottom: 80px !important;
+}
+
+.margin-top-auto {
+    margin-top: auto;
+}
+
+/*
+
+Paddings
+
+*/
+.padding-25 {
+    padding: 25px !important;
+}
+
+/*
+
+heights
+
+*/
+.height-fifty-percent {
+    height: 50%;
+}
+
+.height-70vh {
+    height: 70vh;
+}
+
+.height-hundred-percent {
+    height: 100%;
+}
+
+.height-165 {
+    height: 165px;
+}
+
+.width-100 {
+    width: 100% !important;
+}
+
+/*
+
+Resets
+
+*/
+.reset-spacings .wpb_content_element {
+    margin: 0;
+}
+
+.reset-spacings .ultb3-box.ult-adjust-bottom-margin {
+    margin: 0;
+}
+
+.reset-spacings .vc_gitem-zone-mini .vc_gitem_row .vc_gitem-col {
+    padding: 0;
+}
+
+.reset-spacings .vc_gitem-zone-mini .vc_gitem_row .vc_gitem-post-data {
+    margin-bottom: 0;
+}
+
+.reset-spacings .vc_gitem-zone-mini .vc_gitem_row .vc_icon_element {
+    margin-bottom: 0;
+}
+
+.reset-spacings .vc_column_container .vc_column-inner {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.reset-spacings .vc_col-has-fill > .vc_column-inner {
+    padding-top: 0;
+}
+
+/*
+
+Vertically center everything
+
+*/
+.vertical-center {
+    /* Internet Explorer 10 */
+    display: -ms-flexbox;
+    -ms-flex-pack: center;
+    -ms-flex-align: center;
+    /* Firefox */
+    display: -moz-box;
+    -moz-box-pack: center;
+    -moz-box-align: center;
+    /* Safari, Opera, and Chrome */
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    /* W3C */
+    display: box;
+    box-pack: center;
+    box-align: center;
+}
+
+.center {
+    text-align: center;
+}
+
+/*
+
+Gradients
+
+*/
+.post-gradient-bottom .vc-zone-link {
+    background: linear-gradient(to top, rgba(0, 0, 0, 0.4), rgba(216, 216, 216, 0));
+}
+
+.gradient-bottom {
+    background-image: linear-gradient(to top, rgba(0, 0, 0, 0.4), rgba(216, 216, 216, 0));
+}
+
+.gradient-top {
+    background-image: linear-gradient(to bottom, rgba(0, 0, 0, 0.4), rgba(216, 216, 216, 0));
+}
+
+/*
+
+Multi line truncate
+
+*/
+/* create the ... */
+.multi-line-truncate:before {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of block */
+    right: 0;
+    bottom: 0;
+}
+
+/* hide ... if we have text, which is less than or equal to max lines */
+.multi-line-truncate:after {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of text */
+    right: 0;
+    /* set width and height */
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+}
+
+/*
+
+RESET
+
+*/
+.reset {
+    padding: 0;
+    margin: 0;
+}
+
+/*
+
+Hover transition
+
+*/
+.hover-transition {
+    -webkit-transition: all ease 300ms;
+    -moz-transition: all ease 300ms;
+    -ms-transition: all ease 300ms;
+    -o-transition: all ease 300ms;
+    transition: all ease 300ms;
+    -webkit-transform: translate3d(0, 0, 0);
+    -moz-transform: translate3d(0, 0, 0);
+    -ms-transform: translate3d(0, 0, 0);
+    -o-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+.navbar {
+    padding: 0;
+    margin: 0;
+}
+
+.navbar-collapse {
+    padding: 0;
+    margin: 0;
+}

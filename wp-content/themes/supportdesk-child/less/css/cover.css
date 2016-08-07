@@ -1,0 +1,620 @@
+/*
+
+DO NOT CHANGE URL PATHINGS
+Even though they're underlined red, they are correct
+
+*/
+@font-face {
+    font-family: 'Gotham-Light';
+    src: url('../../assets/fonts/Gotham-Light.ttf') format('truetype'), url('../../assets/fonts/Gotham-Light.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Gotham-Medium';
+    src: url('../../assets/fonts/Gotham-Medium.ttf') format('truetype'), url('../../assets/fonts/Gotham-Medium.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Gotham-Bold';
+    src: url('../../assets/fonts/Gotham-Bold.ttf') format('truetype'), url('../../assets/fonts/Gotham-Bold.otf') format('opentype');
+}
+
+@font-face {
+    font-family: 'Gotham-Book';
+    src: url('../../assets/fonts/Gotham-Book.ttf') format('truetype'), url('../../assets/fonts/Gotham-Book.otf') format('opentype');
+}
+
+.font-family-light {
+    font-family: 'Gotham-Light', serif;
+}
+
+.font-family-medium {
+    font-family: 'Gotham-Medium', serif;
+}
+
+.font-family-book {
+    font-family: 'Gotham-Book', serif;
+}
+
+.font-family-bold {
+    font-family: 'Gotham-Bold', serif;
+}
+
+/*
+
+Automatic Resets
+
+*/
+.wpb_content_element {
+    margin: 0;
+}
+
+.ultb3-box.ult-adjust-bottom-margin {
+    margin: 0;
+}
+
+.vc_gitem-zone-mini .vc_gitem_row .vc_gitem-col {
+    padding: 0;
+}
+
+.vc_gitem-zone-mini .vc_gitem_row .vc_gitem-post-data {
+    margin-bottom: 0;
+}
+
+.vc_gitem-zone-mini .vc_gitem_row .vc_icon_element {
+    margin-bottom: 0;
+}
+
+.vc_column_container .vc_column-inner {
+    padding-left: 0;
+    padding-right: 0;
+}
+
+.vc_col-has-fill > .vc_column-inner {
+    padding-top: 0;
+}
+
+.vc_row {
+    margin-left: 0 !important;
+    margin-right: 0 !important;
+}
+
+.vc_column-inner {
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+}
+
+.ult-adjust-bottom-margin,
+.wpb_content_element {
+    margin-bottom: 0 !important;
+}
+
+/*
+
+Vertically center everything
+
+*/
+.flex-vertical-center {
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -ms-flex-align: center;
+    -webkit-align-items: center;
+    -webkit-box-align: center;
+    align-items: center;
+}
+
+/*
+
+Multi line truncate
+
+*/
+.multi-line-truncate:before {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of block */
+    right: 0;
+    bottom: 0;
+}
+
+.multi-line-truncate:after {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of text */
+    right: 0;
+    /* set width and height */
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+}
+
+/*
+
+Hover transition
+
+*/
+.hover-transition {
+    -webkit-transition: all ease 0.5s;
+    -moz-transition: all ease 0.5s;
+    -o-transition: all ease 0.5s;
+    transition: all ease 0.5s;
+}
+
+/*
+
+TRANSLATE (Move an object)
+
+*/
+/*
+
+Flex Box Arranging divs
+
+*/
+.flexbox {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    /* optional */
+    -webkit-box-align: start;
+    -moz-box-align: start;
+    -ms-flex-align: start;
+    -webkit-align-items: flex-start;
+    align-items: flex-start;
+}
+
+body {
+    font-family: 'Gotham-Light', serif;
+    position: relative;
+    overflow-x: hidden;
+    color: #5b6770;
+}
+
+/*
+
+Text formats
+
+*/
+.text-title {
+    font-family: 'Gotham-Book', serif;
+    color: #ffffff;
+    font-size: 64px;
+    line-height: 1.1;
+    text-align: center;
+}
+
+@media only screen and (max-width: 1024px) {
+    .text-title {
+        font-size: 48px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .text-title {
+        font-size: 36px;
+    }
+}
+
+@media only screen and (max-width: 480px) {
+    .text-title {
+        font-size: 32px;
+    }
+}
+
+.text-description {
+    font-family: 'Gotham-Light', serif;
+    color: #ffffff;
+    font-size: 24px;
+    line-height: 1.3;
+    text-align: center;
+}
+
+@media only screen and (max-width: 480px) {
+    .text-description {
+        font-size: 18px;
+    }
+}
+
+/*
+
+Short hands
+
+*/
+.block {
+    display: block;
+}
+
+.inline-block {
+    display: inline-block;
+}
+
+.left {
+    text-align: left;
+}
+
+.center {
+    text-align: center;
+}
+
+.right {
+    text-align: right;
+}
+
+/*
+
+Mobile content section padding
+
+*/
+@media only screen and (max-width: 480px) {
+    .mobile-content-padding {
+        margin: 0;
+        padding: 0 20px 0 20px;
+    }
+}
+
+/*
+
+Modifiers
+
+*/
+@media only screen and (max-width: 768px) {
+    .box {
+        display: block !important;
+    }
+}
+
+.affix {
+    top: 0;
+}
+
+.affix-top {
+    position: fixed;
+}
+
+/*
+
+BREAKPOINTS
+
+*/
+/*
+
+Heights
+
+*/
+.section-height {
+    max-height: 700px;
+}
+
+@media only screen and (min-width: 1024px) {
+    .section-height {
+        height: 700px;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .section-height {
+        height: 700px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .section-height {
+        height: 700px;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .section-height {
+        height: 568px;
+    }
+}
+
+/*
+
+Section break point set ups
+
+*/
+.section {
+    display: block;
+    padding: 0;
+}
+
+@media only screen and (min-width: 1440px) {
+    .section {
+        margin: 0 119px !important;
+    }
+}
+
+@media only screen and (max-width: 1440px) {
+    .section {
+        margin: 0 60px !important;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .section {
+        margin: 0 30px !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .section {
+        margin: 0 20px !important;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .section {
+        margin: 0 10px !important;
+    }
+}
+
+.section-padding {
+    display: block;
+}
+
+@media only screen and (min-width: 1440px) {
+    .section-padding {
+        padding: 0 119px;
+    }
+}
+
+@media only screen and (max-width: 1440px) {
+    .section-padding {
+        padding: 0 60px;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .section-padding {
+        padding: 0 30px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .section-padding {
+        padding: 0 20px;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .section-padding {
+        padding: 0 10px;
+    }
+}
+
+.section-tablet {
+    display: block;
+    padding: 0;
+}
+
+@media only screen and (min-width: 1440px) {
+    .section-tablet {
+        margin: 0 119px !important;
+    }
+}
+
+@media only screen and (max-width: 1440px) {
+    .section-tablet {
+        margin: 0 60px !important;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .section-tablet {
+        margin: 0 30px !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .section-tablet {
+        margin: 0 0;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .section-tablet {
+        margin: 0 0;
+    }
+}
+
+@media only screen and (min-width: 1440px) {
+    .section-margin-bottom {
+        margin-bottom: 70px !important;
+    }
+}
+
+@media only screen and (max-width: 1440px) {
+    .section-margin-bottom {
+        margin-bottom: 70px !important;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .section-margin-bottom {
+        margin-bottom: 50px !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .section-margin-bottom {
+        margin-bottom: 50px !important;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .section-margin-bottom {
+        margin-bottom: 27px !important;
+    }
+}
+
+@media only screen and (min-width: 1440px) {
+    .section-margin-top {
+        padding-top: 80px !important;
+    }
+}
+
+@media only screen and (max-width: 1440px) {
+    .section-margin-top {
+        padding-top: 70px !important;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    .section-margin-top {
+        padding-top: 50px !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .section-margin-top {
+        padding-top: 50px !important;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    .section-margin-top {
+        padding-top: 27px !important;
+    }
+}
+
+/*
+
+RESET
+
+*/
+.reset {
+    padding: 0;
+    margin: 0;
+}
+
+/*
+
+Fix img-responsive issue
+
+*/
+.img-responsive {
+    display: initial !important;
+}
+
+#product-cover {
+    background-size: cover;
+    background-position: 50% 50%;
+    width: 100%;
+}
+
+#product-cover .vc_column-inner {
+    height: 300px;
+    padding: 0;
+}
+
+#product-cover .vc_column_container {
+    background: linear-gradient(to bottom, rgba(238, 238, 238, 0), rgba(0, 0, 0, 0.51)), url('http://res.cloudinary.com/coolpad/image/upload/v1468479706/support/page_cover.jpg');
+    background-size: cover;
+    background-position: 50% 50%;
+}
+
+#product-cover .vc_column_container .wpb_wrapper {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+}
+
+#product-cover .vc_column_container .wpb_wrapper .vc_btn3-container {
+    margin-bottom: 0;
+}
+
+#product-cover .vc_column_container .wpb_wrapper .wpb_content_element {
+    margin-bottom: 0;
+}
+
+#product-cover .vc_column_container .wpb_wrapper .title {
+    display: block;
+    padding: 0;
+    padding-top: 30%;
+    position: relative;
+}
+
+@media only screen and (min-width: 1440px) {
+    #product-cover .vc_column_container .wpb_wrapper .title {
+        margin: 0 119px !important;
+    }
+}
+
+@media only screen and (max-width: 1440px) {
+    #product-cover .vc_column_container .wpb_wrapper .title {
+        margin: 0 60px !important;
+    }
+}
+
+@media only screen and (max-width: 1024px) {
+    #product-cover .vc_column_container .wpb_wrapper .title {
+        margin: 0 30px !important;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    #product-cover .vc_column_container .wpb_wrapper .title {
+        margin: 0 20px !important;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    #product-cover .vc_column_container .wpb_wrapper .title {
+        margin: 0 10px !important;
+    }
+}
+
+#product-cover .vc_column_container .wpb_wrapper .title p {
+    font-family: 'Gotham-Light', serif;
+    line-height: 1.1;
+    text-align: left;
+    color: #ffffff;
+    font-size: 80px;
+    padding-bottom: 22px;
+}
+
+@media only screen and (max-width: 1024px) {
+    #product-cover .vc_column_container .wpb_wrapper .title p {
+        font-size: 60px;
+        padding-bottom: 8px;
+    }
+}
+
+@media only screen and (max-width: 320px) {
+    #product-cover .vc_column_container .wpb_wrapper .title p {
+        font-size: 36px;
+        padding-bottom: 14px;
+    }
+}
+
+#product-cover .vc_column_container .wpb_wrapper img {
+    position: absolute;
+    right: 20px;
+    top: -260px;
+    height: 550px;
+}
+
+@media only screen and (max-width: 1024px) {
+    #product-cover .vc_column_container .wpb_wrapper img {
+        height: 500px;
+        right: 0;
+        top: -210px;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    #product-cover .vc_column_container .wpb_wrapper img {
+        display: none;
+    }
+}

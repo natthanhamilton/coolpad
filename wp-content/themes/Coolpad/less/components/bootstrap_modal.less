@@ -1,0 +1,44 @@
+@import '../variables';
+
+.modal {
+  padding: 0 !important;
+  .close-box {
+    display: block;
+    position: absolute;
+
+    right: 30px;
+    top: 20px;
+    @media only screen and (max-width: @break-middle) {
+      right: 20px;
+      top: 10px;
+    }
+    .close {
+      color: @color-daybreak-blue;
+
+      font-size: 80px;
+      @media only screen and (max-width: @break-middle) {
+        font-size: 40px;
+      }
+    }
+  }
+
+}
+
+.modal-backdrop {
+  background-color: #fff;
+  opacity: 0.9 !important;
+}
+
+.modal-open #main {
+  -webkit-filter: blur(30px);
+  -moz-filter: blur(30px);
+  -o-filter: blur(30px);
+  -ms-filter: blur(30px);
+  filter: blur(30px);
+  z-index: -1;
+  backdrop-filter: blur(30px);
+}
+
+.carousel-control {
+  font-size: 40px;
+}
