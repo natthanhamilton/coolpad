@@ -1,33 +1,25 @@
 <?php
-
-if (! defined('ABSPATH'))
-{
+if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
 class TitanFrameworkOptionSelect extends TitanFrameworkOption {
-
-    public $defaultSecondarySettings = array(
-        'options' => array(),
-    );
+    public $defaultSecondarySettings
+        = [
+            'options' => [],
+        ];
 
     /*
      * Display for options and meta
      */
-    public function display()
-    {
-
+    public function display() {
         $this->echoOptionHeader();
-
         $multiple = isset($this->settings['multiple']) && TRUE == $this->settings['multiple'] ? 'multiple' : '';
-        $name = $this->getID();
-        $val = (array)$this->getValue();
-
-        if (! empty($multiple))
-        {
+        $name     = $this->getID();
+        $val      = (array)$this->getValue();
+        if (!empty($multiple)) {
             $name = "{$name}[]";
         }
-
         ?><select name="<?php echo $name; ?>" <?php echo $multiple; ?>><?php
         tf_parse_select_options($this->settings['options'], $val);
         ?></select><?php
@@ -37,19 +29,14 @@ class TitanFrameworkOptionSelect extends TitanFrameworkOption {
     /*
      * Display for theme customizer
      */
-    public function registerCustomizerControl($wp_customize, $section, $priority = 1)
-    {
+    public function registerCustomizerControl($wp_customize, $section, $priority = 1) {
         $isAssociativeArray = FALSE;
-
-        if (count($this->settings['options']))
-        {
-            foreach ($this->settings['options'] as $value => $label)
-            {
+        if (count($this->settings['options'])) {
+            foreach ($this->settings['options'] as $value => $label) {
                 $isAssociativeArray = is_array($label);
                 break;
             }
         }
-
         // Not associative array, do normal control
         // if ( ! $isAssociativeArray ) {
         // $class = "TitanFrameworkCustomizeControl";
@@ -58,7 +45,7 @@ class TitanFrameworkOptionSelect extends TitanFrameworkOption {
         // } else {
         $class = 'TitanFrameworkOptionSelectControl';
         // }
-        $wp_customize->add_control(new $class($wp_customize, $this->getID(), array(
+        $wp_customize->add_control(new $class($wp_customize, $this->getID(), [
             'label'       => $this->settings['name'],
             'section'     => $section->settings['id'],
             'type'        => 'select',
@@ -66,22 +53,19 @@ class TitanFrameworkOptionSelect extends TitanFrameworkOption {
             'settings'    => $this->getID(),
             'description' => $this->settings['desc'],
             'priority'    => $priority,
-        )));
+        ]));
     }
 }
-
 
 /*
  * We create a new control for the theme customizer (for the grouped options only)
  */
 add_action('customize_register', 'registerTitanFrameworkOptionSelectControl', 1);
-function registerTitanFrameworkOptionSelectControl()
-{
+function registerTitanFrameworkOptionSelectControl() {
     class TitanFrameworkOptionSelectControl extends WP_Customize_Control {
         public $description;
 
-        public function render_content()
-        {
+        public function render_content() {
             ?>
             <label>
                 <span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
@@ -90,7 +74,6 @@ function registerTitanFrameworkOptionSelectControl()
                 </select>
             </label>
             <?php
-
             echo "<p class='description'>{$this->description}</p>";
         }
     }
@@ -105,55 +88,41 @@ function registerTitanFrameworkOptionSelectControl()
  * @since 1.9
  *
  * @param array $options List of options
- * @param array $val Current value
+ * @param array $val     Current value
  *
  * @return void
  */
-function tf_parse_select_options($options, $val = array())
-{
-
+function tf_parse_select_options($options, $val = []) {
     /* No options? Duh... */
-    if (empty($options))
-    {
+    if (empty($options)) {
         return;
     }
-
     /* Make sure the current value is an array (for multiple select) */
-    if (! is_array($val))
-    {
+    if (!is_array($val)) {
         $val = (array)$val;
     }
-
-    foreach ($options as $value => $label)
-    {
-
+    foreach ($options as $value => $label) {
         // this is if we have option groupings
-        if (is_array($label))
-        {
-
+        if (is_array($label)) {
             ?>
             <optgroup label="<?php echo $value ?>"><?php
-            foreach ($label as $subValue => $subLabel)
-            {
-
+            foreach ($label as $subValue => $subLabel) {
                 printf('<option value="%s" %s %s>%s</option>',
-                    $subValue,
-                    in_array($subValue, $val) ? 'selected="selected"' : '',
-                    disabled(stripos($subValue, '!'), 0, FALSE),
-                    $subLabel
+                       $subValue,
+                       in_array($subValue, $val) ? 'selected="selected"' : '',
+                       disabled(stripos($subValue, '!'), 0, FALSE),
+                       $subLabel
                 );
             }
             ?></optgroup><?php
         } // this is for normal list of options
-        else
-        {
+        else {
             printf('<option value="%s" %s %s>%s</option>',
-                $value,
-                in_array($value, $val) ? 'selected="selected"' : '',
-                disabled(stripos($value, '!'), 0, FALSE),
-                $label
+                   $value,
+                   in_array($value, $val) ? 'selected="selected"' : '',
+                   disabled(stripos($value, '!'), 0, FALSE),
+                   $label
             );
         }
     }
-
 }

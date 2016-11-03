@@ -1,19 +1,17 @@
 <?php
-
 // uncomment this line for testing
 //set_site_transient( 'update_plugins', null );
-
 /**
  * Allows plugins to use their own update API.
  *
- * @author Pippin Williamson
+ * @author  Pippin Williamson
  * @version 1.6
  */
 class TITAN_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
-    private $api_url = '';
-    private $api_data = array();
-    private $name = '';
-    private $slug = '';
+    private $api_url  = '';
+    private $api_data = [];
+    private $name     = '';
+    private $slug     = '';
 
     /**
      * Class constructor.
@@ -21,22 +19,21 @@ class TITAN_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
      * @uses plugin_basename()
      * @uses hook()
      *
-     * @param string $_api_url The URL pointing to the custom API endpoint.
+     * @param string $_api_url     The URL pointing to the custom API endpoint.
      * @param string $_plugin_file Path to the plugin file.
-     * @param array $_api_data Optional data to send with API calls.
+     * @param array  $_api_data    Optional data to send with API calls.
+     *
      * @return void
      */
-    function __construct($_api_url, $_plugin_file, $_api_data = NULL)
-    {
-        $this->api_url = trailingslashit($_api_url);
+    function __construct($_api_url, $_plugin_file, $_api_data = NULL) {
+        $this->api_url  = trailingslashit($_api_url);
         $this->api_data = $_api_data;
-        $this->name = plugin_basename($_plugin_file);
-        $this->slug = basename($_plugin_file, '.php');
-        $this->version = $_api_data['version'];
-
+        $this->name     = plugin_basename($_plugin_file);
+        $this->slug     = basename($_plugin_file, '.php');
+        $this->version  = $_api_data['version'];
         // Set up hooks.
         $this->init();
-        add_action('admin_init', array($this, 'show_changelog'));
+        add_action('admin_init', [$this, 'show_changelog']);
     }
 
     /**
@@ -46,13 +43,10 @@ class TITAN_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
      *
      * @return void
      */
-    public function init()
-    {
-
-        add_filter('pre_set_site_transient_update_plugins', array($this, 'check_update'));
-        add_filter('plugins_api', array($this, 'plugins_api_filter'), 10, 3);
-
-        add_action('after_plugin_row_' . $this->name, array($this, 'show_update_notification'), 10, 2);
+    public function init() {
+        add_filter('pre_set_site_transient_update_plugins', [$this, 'check_update']);
+        add_filter('plugins_api', [$this, 'plugins_api_filter'], 10, 3);
+        add_action('after_plugin_row_' . $this->name, [$this, 'show_update_notification'], 10, 2);
     }
 
     /**
@@ -66,45 +60,27 @@ class TITAN_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
      * @uses api_request()
      *
      * @param array $_transient_data Update array build by WordPress.
+     *
      * @return array Modified update array with custom plugin data.
      */
-    function check_update($_transient_data)
-    {
-
+    function check_update($_transient_data) {
         global $pagenow;
-
-        if (! is_object($_transient_data))
-        {
+        if (!is_object($_transient_data)) {
             $_transient_data = new stdClass;
         }
-
-        if ('plugins.php' == $pagenow && is_multisite())
-        {
+        if ('plugins.php' == $pagenow && is_multisite()) {
             return $_transient_data;
         }
-
-        if (empty($_transient_data->response) || empty($_transient_data->response[$this->name]))
-        {
-
-            $version_info = $this->api_request('plugin_latest_version', array('slug' => $this->slug));
-
-            if (FALSE != $version_info && is_object($version_info) && isset($version_info->new_version))
-            {
-
+        if (empty($_transient_data->response) || empty($_transient_data->response[ $this->name ])) {
+            $version_info = $this->api_request('plugin_latest_version', ['slug' => $this->slug]);
+            if (FALSE != $version_info && is_object($version_info) && isset($version_info->new_version)) {
                 $this->did_check = TRUE;
-
-                if (version_compare($this->version, $version_info->new_version, '<'))
-                {
-
-                    $_transient_data->response[$this->name] = $version_info;
-
+                if (version_compare($this->version, $version_info->new_version, '<')) {
+                    $_transient_data->response[ $this->name ] = $version_info;
                 }
-
-                $_transient_data->last_checked = time();
-                $_transient_data->checked[$this->name] = $this->version;
-
+                $_transient_data->last_checked           = time();
+                $_transient_data->checked[ $this->name ] = $this->version;
             }
-
         }
 
         return $_transient_data;
@@ -113,33 +89,28 @@ class TITAN_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
     /**
      * Calls the API and, if successfull, returns the object delivered by the API.
      *
-     * @uses get_bloginfo()
-     * @uses wp_remote_post()
-     * @uses is_wp_error()
+     * @uses         get_bloginfo()
+     * @uses         wp_remote_post()
+     * @uses         is_wp_error()
      *
      * @param string $_action The requested action.
-     * @param array $_data Parameters for the API action.
+     * @param array  $_data   Parameters for the API action.
+     *
      * @return false||object
      */
-    private function api_request($_action, $_data)
-    {
-
+    private function api_request($_action, $_data) {
         global $wp_version;
-
         $data = array_merge($this->api_data, $_data);
-
-        if ($data['slug'] != $this->slug)
+        if ($data['slug'] != $this->slug) {
             return;
-
-        if (empty($data['license']))
+        }
+        if (empty($data['license'])) {
             return;
-
-        if ($this->api_url == home_url())
-        {
+        }
+        if ($this->api_url == home_url()) {
             return FALSE; // Don't allow a plugin to ping itself
         }
-
-        $api_params = array(
+        $api_params = [
             'edd_action' => 'get_version',
             'license'    => $data['license'],
             'item_name'  => isset($data['item_name']) ? $data['item_name'] : FALSE,
@@ -147,21 +118,14 @@ class TITAN_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
             'slug'       => $data['slug'],
             'author'     => $data['author'],
             'url'        => home_url()
-        );
-
-        $request = wp_remote_post($this->api_url, array('timeout' => 15, 'sslverify' => FALSE, 'body' => $api_params));
-
-        if (! is_wp_error($request))
-        {
+        ];
+        $request = wp_remote_post($this->api_url, ['timeout' => 15, 'sslverify' => FALSE, 'body' => $api_params]);
+        if (!is_wp_error($request)) {
             $request = json_decode(wp_remote_retrieve_body($request));
         }
-
-        if ($request && isset($request->sections))
-        {
+        if ($request && isset($request->sections)) {
             $request->sections = maybe_unserialize($request->sections);
-        }
-        else
-        {
+        } else {
             $request = FALSE;
         }
 
@@ -172,103 +136,69 @@ class TITAN_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
      * show update nofication row -- needed for multisite subsites, because WP won't tell you otherwise!
      *
      * @param string $file
-     * @param array $plugin
+     * @param array  $plugin
      */
-    public function show_update_notification($file, $plugin)
-    {
-
-        if (! current_user_can('update_plugins'))
-        {
+    public function show_update_notification($file, $plugin) {
+        if (!current_user_can('update_plugins')) {
             return;
         }
-
-        if (! is_multisite())
-        {
+        if (!is_multisite()) {
             return;
         }
-
-        if ($this->name != $file)
-        {
+        if ($this->name != $file) {
             return;
         }
-
         // Remove our filter on the site transient
-        remove_filter('pre_set_site_transient_update_plugins', array($this, 'check_update'), 10);
-
+        remove_filter('pre_set_site_transient_update_plugins', [$this, 'check_update'], 10);
         $update_cache = get_site_transient('update_plugins');
-
-        if (! is_object($update_cache) || empty($update_cache->response) || empty($update_cache->response[$this->name]))
-        {
-
-            $cache_key = md5('edd_plugin_' . sanitize_key($this->name) . '_version_info');
+        if (!is_object($update_cache) || empty($update_cache->response) || empty($update_cache->response[ $this->name ])) {
+            $cache_key    = md5('edd_plugin_' . sanitize_key($this->name) . '_version_info');
             $version_info = get_transient($cache_key);
-
-            if (FALSE == $version_info)
-            {
-
-                $version_info = $this->api_request('plugin_latest_version', array('slug' => $this->slug));
-
+            if (FALSE == $version_info) {
+                $version_info = $this->api_request('plugin_latest_version', ['slug' => $this->slug]);
                 set_transient($cache_key, $version_info, 3600);
             }
-
-
-            if (! is_object($version_info))
-            {
+            if (!is_object($version_info)) {
                 return;
             }
-
-            if (version_compare($this->version, $version_info->new_version, '<'))
-            {
-
-                $update_cache->response[$this->name] = $version_info;
-
+            if (version_compare($this->version, $version_info->new_version, '<')) {
+                $update_cache->response[ $this->name ] = $version_info;
             }
-
-            $update_cache->last_checked = time();
-            $update_cache->checked[$this->name] = $this->version;
-
+            $update_cache->last_checked           = time();
+            $update_cache->checked[ $this->name ] = $this->version;
             set_site_transient('update_plugins', $update_cache);
-
+        } else {
+            $version_info = $update_cache->response[ $this->name ];
         }
-        else
-        {
-
-            $version_info = $update_cache->response[$this->name];
-
-        }
-
         // Restore our filter
-        add_filter('pre_set_site_transient_update_plugins', array($this, 'check_update'));
-
-        if (! empty($update_cache->response[$this->name]) && version_compare($this->version, $version_info->new_version, '<'))
-        {
-
+        add_filter('pre_set_site_transient_update_plugins', [$this, 'check_update']);
+        if (!empty($update_cache->response[ $this->name ]) && version_compare($this->version,
+                                                                              $version_info->new_version, '<')
+        ) {
             // build a plugin list row, with update notification
             $wp_list_table = _get_list_table('WP_Plugins_List_Table');
             echo '<tr class="plugin-update-tr"><td colspan="' . $wp_list_table->get_column_count() . '" class="plugin-update colspanchange"><div class="update-message">';
-
-            $changelog_link = self_admin_url('index.php?edd_sl_action=view_plugin_changelog&plugin=' . $this->name . '&slug=' . $this->slug . '&TB_iframe=true&width=772&height=911');
-
-            if (empty($version_info->download_link))
-            {
+            $changelog_link
+                = self_admin_url('index.php?edd_sl_action=view_plugin_changelog&plugin=' . $this->name . '&slug=' . $this->slug . '&TB_iframe=true&width=772&height=911');
+            if (empty($version_info->download_link)) {
                 printf(
-                    __('There is a new version of %1$s available. <a target="_blank" class="thickbox" href="%2$s">View version %3$s details</a>.', 'edd'),
+                    __('There is a new version of %1$s available. <a target="_blank" class="thickbox" href="%2$s">View version %3$s details</a>.',
+                       'edd'),
                     esc_html($version_info->name),
                     esc_url($changelog_link),
                     esc_html($version_info->new_version)
                 );
-            }
-            else
-            {
+            } else {
                 printf(
-                    __('There is a new version of %1$s available. <a target="_blank" class="thickbox" href="%2$s">View version %3$s details</a> or <a href="%4$s">update now</a>.', 'edd'),
+                    __('There is a new version of %1$s available. <a target="_blank" class="thickbox" href="%2$s">View version %3$s details</a> or <a href="%4$s">update now</a>.',
+                       'edd'),
                     esc_html($version_info->name),
                     esc_url($changelog_link),
                     esc_html($version_info->new_version),
-                    esc_url(wp_nonce_url(self_admin_url('update.php?action=upgrade-plugin&plugin=') . $this->name, 'upgrade-plugin_' . $this->name))
+                    esc_url(wp_nonce_url(self_admin_url('update.php?action=upgrade-plugin&plugin=') . $this->name,
+                                         'upgrade-plugin_' . $this->name))
                 );
             }
-
             echo '</div></td></tr>';
         }
     }
@@ -278,42 +208,29 @@ class TITAN_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
      *
      * @uses api_request()
      *
-     * @param mixed $_data
+     * @param mixed  $_data
      * @param string $_action
      * @param object $_args
+     *
      * @return object $_data
      */
-    function plugins_api_filter($_data, $_action = '', $_args = NULL)
-    {
-
-
-        if ($_action != 'plugin_information')
-        {
-
+    function plugins_api_filter($_data, $_action = '', $_args = NULL) {
+        if ($_action != 'plugin_information') {
             return $_data;
-
         }
-
-        if (! isset($_args->slug) || ($_args->slug != $this->slug))
-        {
-
+        if (!isset($_args->slug) || ($_args->slug != $this->slug)) {
             return $_data;
-
         }
-
-        $to_send = array(
+        $to_send = [
             'slug'   => $this->slug,
             'is_ssl' => is_ssl(),
-            'fields' => array(
+            'fields' => [
                 'banners' => FALSE, // These will be supported soon hopefully
                 'reviews' => FALSE
-            )
-        );
-
+            ]
+        ];
         $api_response = $this->api_request('plugin_information', $to_send);
-
-        if (FALSE != $api_response)
-        {
+        if (FALSE != $api_response) {
             $_data = $api_response;
         }
 
@@ -323,53 +240,38 @@ class TITAN_EDD_SL_Plugin_Updater { // Namespaced to PBS for error protection
     /**
      * Disable SSL verification in order to prevent download update failures
      *
-     * @param array $args
+     * @param array  $args
      * @param string $url
+     *
      * @return object $array
      */
-    function http_request_args($args, $url)
-    {
+    function http_request_args($args, $url) {
         // If it is an https request and we are performing a package download, disable ssl verification
-        if (strpos($url, 'https://') != FALSE && strpos($url, 'edd_action=package_download'))
-        {
+        if (strpos($url, 'https://') != FALSE && strpos($url, 'edd_action=package_download')) {
             $args['sslverify'] = FALSE;
         }
+
         return $args;
     }
 
-    public function show_changelog()
-    {
-
-
-        if (empty($_REQUEST['edd_sl_action']) || 'view_plugin_changelog' != $_REQUEST['edd_sl_action'])
-        {
+    public function show_changelog() {
+        if (empty($_REQUEST['edd_sl_action']) || 'view_plugin_changelog' != $_REQUEST['edd_sl_action']) {
             return;
         }
-
-        if (empty($_REQUEST['plugin']))
-        {
+        if (empty($_REQUEST['plugin'])) {
             return;
         }
-
-        if (empty($_REQUEST['slug']))
-        {
+        if (empty($_REQUEST['slug'])) {
             return;
         }
-
-        if (! current_user_can('update_plugins'))
-        {
-            wp_die(__('You do not have permission to install plugin updates', 'edd'), __('Error', 'edd'), array('response' => 403));
+        if (!current_user_can('update_plugins')) {
+            wp_die(__('You do not have permission to install plugin updates', 'edd'), __('Error', 'edd'),
+                   ['response' => 403]);
         }
-
-        $response = $this->api_request('plugin_latest_version', array('slug' => $_REQUEST['slug']));
-
-        if ($response && isset($response->sections['changelog']))
-        {
+        $response = $this->api_request('plugin_latest_version', ['slug' => $_REQUEST['slug']]);
+        if ($response && isset($response->sections['changelog'])) {
             echo '<div style="background:#fff;padding:10px;">' . $response->sections['changelog'] . '</div>';
         }
-
-
         exit;
     }
-
 }

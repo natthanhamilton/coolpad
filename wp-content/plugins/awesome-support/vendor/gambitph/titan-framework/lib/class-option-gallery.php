@@ -1,19 +1,15 @@
 <?php
-
-if (! defined('ABSPATH'))
-{
+if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
 class TitanFrameworkOptionGallery extends TitanFrameworkOption {
-
     private static $firstLoad = TRUE;
-
-    public $defaultSecondarySettings = array(
-        'size'        => 'full', // The size of the image to use in the generated CSS
-        'placeholder' => '', // show this when blank
-    );
-
+    public $defaultSecondarySettings
+        = [
+            'size' => 'full', // The size of the image to use in the generated CSS
+            'placeholder' => '', // show this when blank
+        ];
 
     /**
      * Constructor
@@ -21,76 +17,57 @@ class TitanFrameworkOptionGallery extends TitanFrameworkOption {
      * @return    void
      * @since    1.5
      */
-    function __construct($settings, $owner)
-    {
+    function __construct($settings, $owner) {
         parent::__construct($settings, $owner);
     }
-
 
     /*
      * Display for options and meta
      */
-    public function display()
-    {
+    public function display() {
         self::createUploaderScript();
-
         $this->echoOptionHeader();
-
         // display the preview image
         $value = $this->getValue();
-        if (is_numeric($value))
-        {
+        if (is_numeric($value)) {
             // gives us an array with the first element as the src or false on fail
-            $value = wp_get_attachment_image_src($value, array(150, 150));
+            $value = wp_get_attachment_image_src($value, [150, 150]);
         }
-        if (! is_array($value))
-        {
+        if (!is_array($value)) {
             $value = $this->getValue();
-        }
-        else
-        {
+        } else {
             $value = $value[0];
         }
-
         // $value = '101,96';
         $value_arr = explode(',', $value);
-
-        foreach ($value_arr as $k => $v)
-        {
+        foreach ($value_arr as $k => $v) {
             $previewImage = '';
-            if (! empty($v))
-            {
-                $size = ! empty($option->settings['size']) ? $option->settings['size'] : 'thumbnail';
-
-                if (is_numeric($v))
-                {
+            if (!empty($v)) {
+                $size = !empty($option->settings['size']) ? $option->settings['size'] : 'thumbnail';
+                if (is_numeric($v)) {
                     $attachment = wp_get_attachment_image_src($v, $size);
-                    $v = $attachment[0];
+                    $v          = $attachment[0];
                 }
-
-                $previewImage = "<i class='dashicons dashicons-no-alt remove'></i><img style='max-width: 150px; max-height: 150px; margin-top: 0px; margin-left: 0px;' src='" . esc_url($v) . "' style='display: none'/>";
+                $previewImage
+                    = "<i class='dashicons dashicons-no-alt remove'></i><img style='max-width: 150px; max-height: 150px; margin-top: 0px; margin-left: 0px;' src='" . esc_url($v) . "' style='display: none'/>";
                 echo "<div class='thumbnail used-thumbnail tf-image-preview'>" . $previewImage . '</div>';
             }
         }
         echo "<div class='thumbnail tf-image-preview'></div>";
-
         printf('<input name="%s" placeholder="%s" id="%s" type="hidden" value="%s" />',
-            $this->getID(),
-            $this->settings['placeholder'],
-            $this->getID(),
-            esc_attr($this->getValue())
+               $this->getID(),
+               $this->settings['placeholder'],
+               $this->getID(),
+               esc_attr($this->getValue())
         );
         $this->echoOptionFooter();
     }
 
-    public static function createUploaderScript()
-    {
-        if (! self::$firstLoad)
-        {
+    public static function createUploaderScript() {
+        if (!self::$firstLoad) {
             return;
         }
         self::$firstLoad = FALSE;
-
         ?>
         <script>
             jQuery(document).ready(function ($) {

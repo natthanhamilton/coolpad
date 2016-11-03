@@ -1,7 +1,6 @@
 <?php
-if (! defined('ABSPATH'))
-{
-    die('-1');
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
 }
 
 /**
@@ -18,10 +17,9 @@ if (! defined('ABSPATH'))
  * @return mixed|void rendered template for params in edit form
  *
  */
-function vc_custom_markup_form_field($settings, $value, $tag)
-{
+function vc_custom_markup_form_field( $settings, $value, $tag ) {
 
-    return apply_filters('vc_custom_markup_render_filter', $value, $settings, $tag);
+	return apply_filters( 'vc_custom_markup_render_filter', $value, $settings, $tag );
 }
 
 // Example

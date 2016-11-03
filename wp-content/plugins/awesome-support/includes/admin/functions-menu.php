@@ -6,13 +6,11 @@
  * @link      http://themeavenue.net
  * @copyright 2015 ThemeAvenue
  */
-
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+if (!defined('WPINC')) {
 	die;
 }
-
-add_action( 'admin_menu', 'wpas_register_submenu_items' );
+add_action('admin_menu', 'wpas_register_submenu_items');
 /**
  * Register all submenu items.
  *
@@ -20,13 +18,17 @@ add_action( 'admin_menu', 'wpas_register_submenu_items' );
  * @return void
  */
 function wpas_register_submenu_items() {
-	add_submenu_page( 'edit.php?post_type=ticket', __( 'Debugging Tools', 'awesome-support' ), __( 'Tools', 'awesome-support' ), 'administrator', 'wpas-status', 'wpas_display_status_page' );
-	add_submenu_page( 'edit.php?post_type=ticket', __( 'Awesome Support Addons', 'awesome-support' ), '<span style="color:#f39c12;">' . __( 'Addons', 'awesome-support' ) . '</span>', 'edit_posts', 'wpas-addons', 'wpas_display_addons_page' );
-	add_submenu_page( 'edit.php?post_type=ticket', __( 'About Awesome Support', 'awesome-support' ), __( 'About', 'awesome-support' ), 'edit_posts', 'wpas-about', 'wpas_display_about_page' );
-	remove_submenu_page( 'edit.php?post_type=ticket', 'wpas-about' );
+	add_submenu_page('edit.php?post_type=ticket', __('Debugging Tools', 'awesome-support'),
+	                 __('Tools', 'awesome-support'), 'administrator', 'wpas-status', 'wpas_display_status_page');
+	add_submenu_page('edit.php?post_type=ticket', __('Awesome Support Addons', 'awesome-support'),
+	                 '<span style="color:#f39c12;">' . __('Addons', 'awesome-support') . '</span>', 'edit_posts',
+	                 'wpas-addons', 'wpas_display_addons_page');
+	add_submenu_page('edit.php?post_type=ticket', __('About Awesome Support', 'awesome-support'),
+	                 __('About', 'awesome-support'), 'edit_posts', 'wpas-about', 'wpas_display_about_page');
+	remove_submenu_page('edit.php?post_type=ticket', 'wpas-about');
 }
 
-add_action( 'admin_menu', 'wpas_tickets_count' );
+add_action('admin_menu', 'wpas_tickets_count');
 /**
  * Add ticket count in admin menu item.
  *
@@ -34,38 +36,31 @@ add_action( 'admin_menu', 'wpas_tickets_count' );
  * @since  1.0.0
  */
 function wpas_tickets_count() {
-
-	if ( false === (bool) wpas_get_option( 'show_count' ) ) {
-		return false;
+	if (FALSE === (bool)wpas_get_option('show_count')) {
+		return FALSE;
 	}
-
 	global $menu, $current_user;
-
-	if ( current_user_can( 'administrator' )
-		 && false === boolval( wpas_get_option( 'admin_see_all' ) )
-		 || ! current_user_can( 'administrator' )
-			&& current_user_can( 'edit_ticket' )
-			&& false === boolval( wpas_get_option( 'agent_see_all' ) )
+	if (current_user_can('administrator')
+	    && FALSE === boolval(wpas_get_option('admin_see_all'))
+	    || !current_user_can('administrator')
+	       && current_user_can('edit_ticket')
+	       && FALSE === boolval(wpas_get_option('agent_see_all'))
 	) {
-
-		$agent = new WPAS_Member_Agent( $current_user->ID );
+		$agent = new WPAS_Member_Agent($current_user->ID);
 		$count = $agent->open_tickets();
-
 	} else {
-		$count = count( wpas_get_tickets( 'open' ) );
+		$count = count(wpas_get_tickets('open'));
 	}
-
-	if ( 0 === $count ) {
-		return false;
+	if (0 === $count) {
+		return FALSE;
 	}
-
-	foreach ( $menu as $key => $value ) {
-		if ( $menu[ $key ][2] == 'edit.php?post_type=ticket' ) {
+	foreach ($menu as $key => $value) {
+		if ($menu[ $key ][2] == 'edit.php?post_type=ticket') {
 			$menu[ $key ][0] .= ' <span class="awaiting-mod count-' . $count . '"><span class="pending-count">' . $count . '</span></span>';
 		}
 	}
 
-	return true;
+	return TRUE;
 }
 
 /**
@@ -74,7 +69,7 @@ function wpas_tickets_count() {
  * @since    3.0.0
  */
 function wpas_display_about_page() {
-	include_once( WPAS_PATH . 'includes/admin/views/about.php' );
+	include_once(WPAS_PATH . 'includes/admin/views/about.php');
 }
 
 /**
@@ -83,7 +78,7 @@ function wpas_display_about_page() {
  * @since    3.0.0
  */
 function wpas_display_addons_page() {
-	include_once( WPAS_PATH . 'includes/admin/views/addons.php' );
+	include_once(WPAS_PATH . 'includes/admin/views/addons.php');
 }
 
 /**
@@ -92,5 +87,5 @@ function wpas_display_addons_page() {
  * @since    3.0.0
  */
 function wpas_display_status_page() {
-	include_once( WPAS_PATH . 'includes/admin/views/status.php' );
+	include_once(WPAS_PATH . 'includes/admin/views/status.php');
 }

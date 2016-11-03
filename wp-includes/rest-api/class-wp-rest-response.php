@@ -44,6 +44,38 @@ class WP_REST_Response extends WP_HTTP_Response {
 	protected $matched_handler = null;
 
 	/**
+	 * Adds a link to the response.
+	 *
+	 * @internal The $rel parameter is first, as this looks nicer when sending multiple.
+	 *
+	 * @since 4.4.0
+	 * @access public
+	 *
+	 * @link https://tools.ietf.org/html/rfc5988
+	 * @link https://www.iana.org/assignments/link-relations/link-relations.xml
+	 *
+	 * @param string $rel        Link relation. Either an IANA registered type,
+	 *                           or an absolute URL.
+	 * @param string $href       Target URI for the link.
+	 * @param array  $attributes Optional. Link parameters to send along with the URL. Default empty array.
+	 */
+	public function add_link( $rel, $href, $attributes = array() ) {
+		if ( empty( $this->links[ $rel ] ) ) {
+			$this->links[ $rel ] = array();
+		}
+
+		if ( isset( $attributes['href'] ) ) {
+			// Remove the href attribute, as it's used for the main URL.
+			unset( $attributes['href'] );
+		}
+
+		$this->links[ $rel ][] = array(
+			'href'       => $href,
+			'attributes' => $attributes,
+		);
+	}
+
+	/**
 	 * Removes a link from the response.
 	 *
 	 * @since 4.4.0
@@ -96,38 +128,6 @@ class WP_REST_Response extends WP_HTTP_Response {
 	}
 
 	/**
-	 * Adds a link to the response.
-	 *
-	 * @internal The $rel parameter is first, as this looks nicer when sending multiple.
-	 *
-	 * @since 4.4.0
-	 * @access public
-	 *
-	 * @link http://tools.ietf.org/html/rfc5988
-	 * @link http://www.iana.org/assignments/link-relations/link-relations.xml
-	 *
-	 * @param string $rel        Link relation. Either an IANA registered type,
-	 *                           or an absolute URL.
-	 * @param string $href       Target URI for the link.
-	 * @param array  $attributes Optional. Link parameters to send along with the URL. Default empty array.
-	 */
-	public function add_link( $rel, $href, $attributes = array() ) {
-		if ( empty( $this->links[ $rel ] ) ) {
-			$this->links[ $rel ] = array();
-		}
-
-		if ( isset( $attributes['href'] ) ) {
-			// Remove the href attribute, as it's used for the main URL.
-			unset( $attributes['href'] );
-		}
-
-		$this->links[ $rel ][] = array(
-			'href'       => $href,
-			'attributes' => $attributes,
-		);
-	}
-
-	/**
 	 * Retrieves links for the response.
 	 *
 	 * @since 4.4.0
@@ -147,8 +147,8 @@ class WP_REST_Response extends WP_HTTP_Response {
 	 * @since 4.4.0
 	 * @access public
 	 *
-	 * @link http://tools.ietf.org/html/rfc5988
-	 * @link http://www.iana.org/assignments/link-relations/link-relations.xml
+	 * @link https://tools.ietf.org/html/rfc5988
+	 * @link https://www.iana.org/assignments/link-relations/link-relations.xml
 	 *
 	 * @param string $rel   Link relation. Either an IANA registered type, or an absolute URL.
 	 * @param string $link  Target IRI for the link.
@@ -216,6 +216,18 @@ class WP_REST_Response extends WP_HTTP_Response {
 	}
 
 	/**
+	 * Checks if the response is an error, i.e. >= 400 response code.
+	 *
+	 * @since 4.4.0
+	 * @access public
+	 *
+	 * @return bool Whether the response is an error.
+	 */
+	public function is_error() {
+		return $this->get_status() >= 400;
+	}
+
+	/**
 	 * Retrieves a WP_Error object from the response.
 	 *
 	 * @since 4.4.0
@@ -246,18 +258,6 @@ class WP_REST_Response extends WP_HTTP_Response {
 	}
 
 	/**
-	 * Checks if the response is an error, i.e. >= 400 response code.
-	 *
-	 * @since 4.4.0
-	 * @access public
-	 *
-	 * @return bool Whether the response is an error.
-	 */
-	public function is_error() {
-		return $this->get_status() >= 400;
-	}
-
-	/**
 	 * Retrieves the CURIEs (compact URIs) used for relations.
 	 *
 	 * @since 4.5.0
@@ -275,7 +275,7 @@ class WP_REST_Response extends WP_HTTP_Response {
 		);
 
 		/**
-		 * Filter extra CURIEs available on API responses.
+		 * Filters extra CURIEs available on API responses.
 		 *
 		 * CURIEs allow a shortened version of URI relations. This allows a more
 		 * usable form for custom relations than using the full URI. These work
@@ -293,7 +293,7 @@ class WP_REST_Response extends WP_HTTP_Response {
 		 *
 		 * Well-behaved clients should expand and normalise these back to their
 		 * full URI relation, however some naive clients may not resolve these
-		 * correctly, so adding new CURIEs may break backwards compatibility.
+		 * correctly, so adding new CURIEs may break backward compatibility.
 		 *
 		 * @since 4.5.0
 		 *

@@ -8,10 +8,8 @@
  * @link      http://themeavenue.net
  * @copyright 2014 ThemeAvenue
  */
-
 // If this file is called directly, abort.
-if (! defined('WPINC'))
-{
+if (!defined('WPINC')) {
     die;
 }
 
@@ -21,7 +19,6 @@ if (! defined('WPINC'))
  * @since 3.3
  */
 class WPAS_Member {
-
     /**
      * User ID
      *
@@ -29,7 +26,6 @@ class WPAS_Member {
      * @var int
      */
     public $user_id;
-
     /**
      * User profile data
      *
@@ -37,7 +33,6 @@ class WPAS_Member {
      * @var array
      */
     public $data;
-
     /**
      * User roles
      *
@@ -45,7 +40,6 @@ class WPAS_Member {
      * @var array
      */
     public $roles;
-
     /**
      * User capabilities
      *
@@ -53,7 +47,6 @@ class WPAS_Member {
      * @var array
      */
     public $caps;
-
     /**
      * Whether or not the user requested is a member of Awesome Support
      *
@@ -66,21 +59,16 @@ class WPAS_Member {
      * WPAS_Member constructor.
      *
      * @param int|stdClass $user The user ID or stdClass
+     *
      * @throws Exception
      */
-    public function __construct($user)
-    {
-
-        if (is_numeric($user))
-        {
+    public function __construct($user) {
+        if (is_numeric($user)) {
             $user = $this->get_user_data((int)$user);
         }
-
-        if (is_object($user) && $user instanceof stdClass)
-        {
+        if (is_object($user) && $user instanceof stdClass) {
             $this->init($user);
         }
-
     }
 
     /**
@@ -92,20 +80,14 @@ class WPAS_Member {
      *
      * @return array
      */
-    protected function get_user_data($user_id)
-    {
-
+    protected function get_user_data($user_id) {
         global $wpdb;
-
         $user = $wpdb->get_results($wpdb->prepare("SELECT * FROM $wpdb->users WHERE ID = '%d'", $user_id));
-
-        if (empty($user))
-        {
-            return array();
+        if (empty($user)) {
+            return [];
         }
 
         return $user[0];
-
     }
 
     /**
@@ -117,30 +99,20 @@ class WPAS_Member {
      *
      * @return void
      */
-    protected function init($data)
-    {
-
+    protected function init($data) {
         $defaults = $this->data_defaults();
-
-        foreach ($defaults as $field => $value)
-        {
-
-            if (isset ($data->{$field}))
-            {
-                $defaults[$field] = $data->{$field};
+        foreach ($defaults as $field => $value) {
+            if (isset ($data->{$field})) {
+                $defaults[ $field ] = $data->{$field};
             }
-
         }
-
         // Set the user profile data
         $this->user_id = $data->ID;
-        $this->data = $defaults;
-
+        $this->data    = $defaults;
         // Setup user metadata
         $this->setup_roles();
         $this->setup_caps();
         $this->is_member();
-
     }
 
     /**
@@ -151,10 +123,8 @@ class WPAS_Member {
      * @since 3.3
      * @return array
      */
-    protected function data_defaults()
-    {
-
-        return apply_filters('wpas_member_data_defaults', array(
+    protected function data_defaults() {
+        return apply_filters('wpas_member_data_defaults', [
             'ID'              => '',
             'user_login'      => '',
             'user_nicename'   => '',
@@ -162,8 +132,7 @@ class WPAS_Member {
             'user_url'        => '',
             'user_registered' => '',
             'display_name'    => '',
-        ));
-
+        ]);
     }
 
     /**
@@ -172,21 +141,14 @@ class WPAS_Member {
      * @since 3.3
      * @return void
      */
-    protected function setup_roles()
-    {
-
+    protected function setup_roles() {
         global $wpdb;
-
         $cap_key = $wpdb->get_blog_prefix() . 'capabilities';
-        $roles = get_user_meta($this->user_id, $cap_key, TRUE);
-
-        if (! is_array($roles))
-        {
-            $this->roles = array();
+        $roles   = get_user_meta($this->user_id, $cap_key, TRUE);
+        if (!is_array($roles)) {
+            $this->roles = [];
         }
-
         $this->roles = array_keys($roles);
-
     }
 
     /**
@@ -197,20 +159,14 @@ class WPAS_Member {
      * @since 3.3
      * @return void
      */
-    protected function setup_caps()
-    {
-
+    protected function setup_caps() {
         $wp_roles = wp_roles();
-
         // Build $allcaps from role caps, overlay user's $caps
-        $this->caps = array();
-
-        foreach ((array)$this->roles as $role)
-        {
-            $the_role = $wp_roles->get_role($role);
+        $this->caps = [];
+        foreach ((array)$this->roles as $role) {
+            $the_role   = $wp_roles->get_role($role);
             $this->caps = array_merge((array)$this->caps, (array)$the_role->capabilities);
         }
-
     }
 
     /**
@@ -219,25 +175,19 @@ class WPAS_Member {
      * @since 3.3
      * @return bool
      */
-    public function is_member()
-    {
-
+    public function is_member() {
         // We assume that a user with the capability view_ticket is a member because this is one cap that all AS users have
         $cap = 'view_ticket';
-
-        if (is_null($this->is_member))
-        {
-            $this->is_member = apply_filters('wpas_member_is_member', array_key_exists($cap, $this->caps), $this->user_id, $cap, $this->roles, $this->caps);
+        if (is_null($this->is_member)) {
+            $this->is_member = apply_filters('wpas_member_is_member', array_key_exists($cap, $this->caps),
+                                             $this->user_id, $cap, $this->roles, $this->caps);
         }
-
         // If the user is not a member we reset its profile data
-        if (FALSE === $this->is_member)
-        {
+        if (FALSE === $this->is_member) {
             $this->data = $this->data_defaults();
         }
 
         return $this->is_member;
-
     }
 
     /**
@@ -249,9 +199,7 @@ class WPAS_Member {
      *
      * @return bool
      */
-    public function has_cap($cap)
-    {
+    public function has_cap($cap) {
         return array_key_exists($cap, $this->caps);
     }
-
 }

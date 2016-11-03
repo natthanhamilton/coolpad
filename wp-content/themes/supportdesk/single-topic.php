@@ -1,63 +1,61 @@
 <?php
-
 /**
  * Single Topic
  *
- * @package bbPress
+ * @package    bbPress
  * @subpackage Theme
  */
-
 get_header(); ?>
 
-<?php 
+<?php
 // Get position of sidebar
 $st_forum_sidebar_position = of_get_option('st_forum_sidebar');
 ?>
 
-<?php get_template_part( 'page-header', 'forums' ); 	?>
+<?php get_template_part('page-header', 'forums'); ?>
 
-<!-- #primary -->
-<div id="primary" class="sidebar-<?php echo $st_forum_sidebar_position; ?> clearfix"> 
-<div class="ht-container">
-  <!-- #content -->
-  <section id="content" role="main">
+	<!-- #primary -->
+	<div id="primary" class="sidebar-<?php echo $st_forum_sidebar_position; ?> clearfix">
+		<div class="ht-container">
+			<!-- #content -->
+			<section id="content" role="main">
 
-	<?php do_action( 'bbp_before_main_content' ); ?>
+				<?php do_action('bbp_before_main_content'); ?>
 
-	<?php do_action( 'bbp_template_notices' ); ?>
+				<?php do_action('bbp_template_notices'); ?>
 
-	<?php if ( bbp_user_can_view_forum( array( 'forum_id' => bbp_get_topic_forum_id() ) ) ) : ?>
+				<?php if (bbp_user_can_view_forum(['forum_id' => bbp_get_topic_forum_id()])) : ?>
 
-		<?php while ( have_posts() ) : the_post(); ?>
+					<?php while (have_posts()) : the_post(); ?>
 
-			<div id="bbp-topic-wrapper-<?php bbp_topic_id(); ?>" class="bbp-topic-wrapper">
-				
-				<div class="entry-content">
+						<div id="bbp-topic-wrapper-<?php bbp_topic_id(); ?>" class="bbp-topic-wrapper">
 
-					<?php bbp_get_template_part( 'content', 'single-topic' ); ?>
+							<div class="entry-content">
 
-				</div>
-			</div><!-- #bbp-topic-wrapper-<?php bbp_topic_id(); ?> -->
+								<?php bbp_get_template_part('content', 'single-topic'); ?>
 
-		<?php endwhile; ?>
+							</div>
+						</div><!-- #bbp-topic-wrapper-<?php bbp_topic_id(); ?> -->
 
-	<?php elseif ( bbp_is_forum_private( bbp_get_topic_forum_id(), false ) ) : ?>
+					<?php endwhile; ?>
 
-		<?php bbp_get_template_part( 'feedback', 'no-access' ); ?>
+				<?php elseif (bbp_is_forum_private(bbp_get_topic_forum_id(), FALSE)) : ?>
 
-	<?php endif; ?>
+					<?php bbp_get_template_part('feedback', 'no-access'); ?>
 
-	<?php do_action( 'bbp_after_main_content' ); ?>
+				<?php endif; ?>
 
-</section>
-<!-- /#content -->
+				<?php do_action('bbp_after_main_content'); ?>
 
-<?php if ($st_forum_sidebar_position != 'off') {
-  get_sidebar('bbpress');
-  } ?>
+			</section>
+			<!-- /#content -->
 
-</div>
-</div>
-<!-- /#primary -->
+			<?php if ($st_forum_sidebar_position != 'off') {
+				get_sidebar('bbpress');
+			} ?>
+
+		</div>
+	</div>
+	<!-- /#primary -->
 
 <?php get_footer(); ?>

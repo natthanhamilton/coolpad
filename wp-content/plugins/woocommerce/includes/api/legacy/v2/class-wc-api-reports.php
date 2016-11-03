@@ -84,7 +84,7 @@ class WC_API_Reports extends WC_API_Resource {
 				'role'   => 'customer',
 			]
 		);
-		$customers = $users_query->get_results();
+		$customers   = $users_query->get_results();
 		foreach ($customers as $key => $customer) {
 			if (strtotime($customer->user_registered) < $this->report->start_date || strtotime($customer->user_registered) > $this->report->end_date) {
 				unset($customers[ $key ]);
@@ -254,28 +254,28 @@ class WC_API_Reports extends WC_API_Resource {
 		}
 		// set date filtering
 		$this->setup_report($filter);
-		$top_sellers = $this->report->get_order_report_data([
-			                                                    'data'         => [
-				                                                    '_product_id' => [
-					                                                    'type'            => 'order_item_meta',
-					                                                    'order_item_type' => 'line_item',
-					                                                    'function'        => '',
-					                                                    'name'            => 'product_id'
-				                                                    ],
-				                                                    '_qty'        => [
-					                                                    'type'            => 'order_item_meta',
-					                                                    'order_item_type' => 'line_item',
-					                                                    'function'        => 'SUM',
-					                                                    'name'            => 'order_item_qty'
-				                                                    ]
-			                                                    ],
-			                                                    'order_by'     => 'order_item_qty DESC',
-			                                                    'group_by'     => 'product_id',
-			                                                    'limit'        => isset($filter['limit'])
-				                                                    ? absint($filter['limit']) : 12,
-			                                                    'query_type'   => 'get_results',
-			                                                    'filter_range' => TRUE,
-		                                                    ]);
+		$top_sellers      = $this->report->get_order_report_data([
+			                                                         'data'         => [
+				                                                         '_product_id' => [
+					                                                         'type'            => 'order_item_meta',
+					                                                         'order_item_type' => 'line_item',
+					                                                         'function'        => '',
+					                                                         'name'            => 'product_id'
+				                                                         ],
+				                                                         '_qty'        => [
+					                                                         'type'            => 'order_item_meta',
+					                                                         'order_item_type' => 'line_item',
+					                                                         'function'        => 'SUM',
+					                                                         'name'            => 'order_item_qty'
+				                                                         ]
+			                                                         ],
+			                                                         'order_by'     => 'order_item_qty DESC',
+			                                                         'group_by'     => 'product_id',
+			                                                         'limit'        => isset($filter['limit'])
+				                                                         ? absint($filter['limit']) : 12,
+			                                                         'query_type'   => 'get_results',
+			                                                         'filter_range' => TRUE,
+		                                                         ]);
 		$top_sellers_data = [];
 		foreach ($top_sellers as $top_seller) {
 			$product = wc_get_product($top_seller->product_id);

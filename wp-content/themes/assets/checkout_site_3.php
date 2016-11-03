@@ -1,5 +1,4 @@
 <?php
-/*
 global $woo_options, $woocommerce;
 $cart     = get_user_meta(get_current_user_id(), '_woocommerce_persistent_cart', TRUE);
 $quantity = '';
@@ -28,4 +27,3 @@ if (empty($quantity)) $quantity = '0';
 		</div>
 	</a>
 </li>
-<?php */ ?>

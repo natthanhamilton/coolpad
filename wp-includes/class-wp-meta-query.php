@@ -12,7 +12,8 @@
  *
  * Used for generating SQL clauses that filter a primary query according to metadata keys and values.
  *
- * `WP_Meta_Query` is a helper that allows primary query classes, such as {@see WP_Query} and {@see WP_User_Query},
+ * WP_Meta_Query is a helper that allows primary query classes, such as WP_Query and WP_User_Query,
+ *
  * to filter their results by object metadata, by generating `JOIN` and `WHERE` subclauses to be attached
  * to the primary SQL query string.
  *
@@ -24,7 +25,7 @@ class WP_Meta_Query {
 	/**
 	 * Array of metadata queries.
 	 *
-	 * See {@see WP_Meta_Query::__construct()} for information on meta query arguments.
+	 * See WP_Meta_Query::__construct() for information on meta query arguments.
 	 *
 	 * @since 3.2.0
 	 * @access public
@@ -105,54 +106,6 @@ class WP_Meta_Query {
 	protected $has_or_relation = false;
 
 	/**
-	 * Constructs a meta query based on 'meta_*' query vars
-	 *
-	 * @since 3.2.0
-	 * @access public
-	 *
-	 * @param array $qv The query variables
-	 */
-	public function parse_query_vars( $qv ) {
-		$meta_query = array();
-
-		/*
-		 * For orderby=meta_value to work correctly, simple query needs to be
-		 * first (so that its table join is against an unaliased meta table) and
-		 * needs to be its own clause (so it doesn't interfere with the logic of
-		 * the rest of the meta_query).
-		 */
-		$primary_meta_query = array();
-		foreach ( array( 'key', 'compare', 'type' ) as $key ) {
-			if ( ! empty( $qv[ "meta_$key" ] ) ) {
-				$primary_meta_query[ $key ] = $qv[ "meta_$key" ];
-			}
-		}
-
-		// WP_Query sets 'meta_value' = '' by default.
-		if ( isset( $qv['meta_value'] ) && '' !== $qv['meta_value'] && ( ! is_array( $qv['meta_value'] ) || $qv['meta_value'] ) ) {
-			$primary_meta_query['value'] = $qv['meta_value'];
-		}
-
-		$existing_meta_query = isset( $qv['meta_query'] ) && is_array( $qv['meta_query'] ) ? $qv['meta_query'] : array();
-
-		if ( ! empty( $primary_meta_query ) && ! empty( $existing_meta_query ) ) {
-			$meta_query = array(
-				'relation' => 'AND',
-				$primary_meta_query,
-				$existing_meta_query,
-			);
-		} elseif ( ! empty( $primary_meta_query ) ) {
-			$meta_query = array(
-				$primary_meta_query,
-			);
-		} elseif ( ! empty( $existing_meta_query ) ) {
-			$meta_query = $existing_meta_query;
-		}
-
-		$this->__construct( $meta_query );
-	}
-
-	/**
 	 * Constructor.
 	 *
 	 * @since 3.2.0
@@ -161,8 +114,8 @@ class WP_Meta_Query {
 	 * @access public
 	 *
 	 * @param array $meta_query {
-	 *     Array of meta query clauses. When first-order clauses use strings as their array keys, they may be
-	 *     referenced in the 'orderby' parameter of the parent query.
+	 *     Array of meta query clauses. When first-order clauses or sub-clauses use strings as
+	 *     their array keys, they may be referenced in the 'orderby' parameter of the parent query.
 	 *
 	 *     @type string $relation Optional. The MySQL keyword used to join
 	 *                            the clauses of the query. Accepts 'AND', or 'OR'. Default 'AND'.
@@ -281,6 +234,78 @@ class WP_Meta_Query {
 	}
 
 	/**
+	 * Constructs a meta query based on 'meta_*' query vars
+	 *
+	 * @since 3.2.0
+	 * @access public
+	 *
+	 * @param array $qv The query variables
+	 */
+	public function parse_query_vars( $qv ) {
+		$meta_query = array();
+
+		/*
+		 * For orderby=meta_value to work correctly, simple query needs to be
+		 * first (so that its table join is against an unaliased meta table) and
+		 * needs to be its own clause (so it doesn't interfere with the logic of
+		 * the rest of the meta_query).
+		 */
+		$primary_meta_query = array();
+		foreach ( array( 'key', 'compare', 'type' ) as $key ) {
+			if ( ! empty( $qv[ "meta_$key" ] ) ) {
+				$primary_meta_query[ $key ] = $qv[ "meta_$key" ];
+			}
+		}
+
+		// WP_Query sets 'meta_value' = '' by default.
+		if ( isset( $qv['meta_value'] ) && '' !== $qv['meta_value'] && ( ! is_array( $qv['meta_value'] ) || $qv['meta_value'] ) ) {
+			$primary_meta_query['value'] = $qv['meta_value'];
+		}
+
+		$existing_meta_query = isset( $qv['meta_query'] ) && is_array( $qv['meta_query'] ) ? $qv['meta_query'] : array();
+
+		if ( ! empty( $primary_meta_query ) && ! empty( $existing_meta_query ) ) {
+			$meta_query = array(
+				'relation' => 'AND',
+				$primary_meta_query,
+				$existing_meta_query,
+			);
+		} elseif ( ! empty( $primary_meta_query ) ) {
+			$meta_query = array(
+				$primary_meta_query,
+			);
+		} elseif ( ! empty( $existing_meta_query ) ) {
+			$meta_query = $existing_meta_query;
+		}
+
+		$this->__construct( $meta_query );
+	}
+
+	/**
+	 * Return the appropriate alias for the given meta type if applicable.
+	 *
+	 * @since 3.7.0
+	 * @access public
+	 *
+	 * @param string $type MySQL type to cast meta_value.
+	 * @return string MySQL type.
+	 */
+	public function get_cast_for_type( $type = '' ) {
+		if ( empty( $type ) )
+			return 'CHAR';
+
+		$meta_type = strtoupper( $type );
+
+		if ( ! preg_match( '/^(?:BINARY|CHAR|DATE|DATETIME|SIGNED|UNSIGNED|TIME|NUMERIC(?:\(\d+(?:,\s?\d+)?\))?|DECIMAL(?:\(\d+(?:,\s?\d+)?\))?)$/', $meta_type ) )
+			return 'CHAR';
+
+		if ( 'NUMERIC' == $meta_type )
+			$meta_type = 'SIGNED';
+
+		return $meta_type;
+	}
+
+	/**
 	 * Generates SQL clauses to be appended to a main query.
 	 *
 	 * @since 3.2.0
@@ -302,6 +327,8 @@ class WP_Meta_Query {
 			return false;
 		}
 
+		$this->table_aliases = array();
+
 		$this->meta_table     = $meta_table;
 		$this->meta_id_column = sanitize_key( $type . '_id' );
 
@@ -319,7 +346,7 @@ class WP_Meta_Query {
 		}
 
 		/**
-		 * Filter the meta query's generated SQL.
+		 * Filters the meta query's generated SQL.
 		 *
 		 * @since 3.1.0
 		 *
@@ -336,8 +363,8 @@ class WP_Meta_Query {
 	/**
 	 * Generate SQL clauses to be appended to a main query.
 	 *
-	 * Called by the public {@see WP_Meta_Query::get_sql()}, this method
-	 * is abstracted out to maintain parity with the other Query classes.
+	 * Called by the public WP_Meta_Query::get_sql(), this method is abstracted
+	 * out to maintain parity with the other Query classes.
 	 *
 	 * @since 4.1.0
 	 * @access protected
@@ -607,7 +634,11 @@ class WP_Meta_Query {
 			}
 
 			if ( $where ) {
-				$sql_chunks['where'][] = "CAST($alias.meta_value AS {$meta_type}) {$meta_compare} {$where}";
+				if ( 'CHAR' === $meta_type ) {
+					$sql_chunks['where'][] = "$alias.meta_value {$meta_compare} {$where}";
+				} else {
+					$sql_chunks['where'][] = "CAST($alias.meta_value AS {$meta_type}) {$meta_compare} {$where}";
+				}
 			}
 		}
 
@@ -623,6 +654,21 @@ class WP_Meta_Query {
 	}
 
 	/**
+	 * Get a flattened list of sanitized meta clauses.
+	 *
+	 * This array should be used for clause lookup, as when the table alias and CAST type must be determined for
+	 * a value of 'orderby' corresponding to a meta clause.
+	 *
+	 * @since 4.2.0
+	 * @access public
+	 *
+	 * @return array Meta clauses.
+	 */
+	public function get_clauses() {
+		return $this->clauses;
+	}
+
+	/**
 	 * Identify an existing table alias that is compatible with the current
 	 * query clause.
 	 *
@@ -633,8 +679,8 @@ class WP_Meta_Query {
 	 * An existing alias is compatible if (a) it is a sibling of `$clause`
 	 * (ie, it's under the scope of the same relation), and (b) the combination
 	 * of operator and relation between the clauses allows for a shared table join.
-	 * In the case of {@see WP_Meta_Query}, this only applies to 'IN' clauses that
-	 * are connected by the relation 'OR'.
+	 * In the case of WP_Meta_Query, this only applies to 'IN' clauses that are
+	 * connected by the relation 'OR'.
 	 *
 	 * @since 4.1.0
 	 * @access protected
@@ -677,7 +723,7 @@ class WP_Meta_Query {
 		}
 
 		/**
-		 * Filter the table alias identified as compatible with the current clause.
+		 * Filters the table alias identified as compatible with the current clause.
 		 *
 		 * @since 4.1.0
 		 *
@@ -687,45 +733,6 @@ class WP_Meta_Query {
 		 * @param object      $this         WP_Meta_Query object.
 		 */
 		return apply_filters( 'meta_query_find_compatible_table_alias', $alias, $clause, $parent_query, $this ) ;
-	}
-
-	/**
-	 * Return the appropriate alias for the given meta type if applicable.
-	 *
-	 * @since 3.7.0
-	 * @access public
-	 *
-	 * @param string $type MySQL type to cast meta_value.
-	 * @return string MySQL type.
-	 */
-	public function get_cast_for_type( $type = '' ) {
-		if ( empty( $type ) )
-			return 'CHAR';
-
-		$meta_type = strtoupper( $type );
-
-		if ( ! preg_match( '/^(?:BINARY|CHAR|DATE|DATETIME|SIGNED|UNSIGNED|TIME|NUMERIC(?:\(\d+(?:,\s?\d+)?\))?|DECIMAL(?:\(\d+(?:,\s?\d+)?\))?)$/', $meta_type ) )
-			return 'CHAR';
-
-		if ( 'NUMERIC' == $meta_type )
-			$meta_type = 'SIGNED';
-
-		return $meta_type;
-	}
-
-	/**
-	 * Get a flattened list of sanitized meta clauses.
-	 *
-	 * This array should be used for clause lookup, as when the table alias and CAST type must be determined for
-	 * a value of 'orderby' corresponding to a meta clause.
-	 *
-	 * @since 4.2.0
-	 * @access public
-	 *
-	 * @return array Meta clauses.
-	 */
-	public function get_clauses() {
-		return $this->clauses;
 	}
 
 	/**

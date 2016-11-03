@@ -16,7 +16,7 @@
 /**
  * Deprecated. Use SimplePie (class-simplepie.php) instead.
  */
-_deprecated_file( basename( __FILE__ ), '3.0', WPINC . '/class-simplepie.php' );
+_deprecated_file( basename( __FILE__ ), '3.0.0', WPINC . '/class-simplepie.php' );
 
 /**
  * Fires before MagpieRSS is loaded, to optionally replace it.
@@ -56,13 +56,6 @@ class MagpieRSS {
 	var $_CONTENT_CONSTRUCTS = array('content', 'summary', 'info', 'title', 'tagline', 'copyright');
 
 	/**
-	 * PHP4 constructor.
-	 */
-	public function MagpieRSS( $source ) {
-		self::__construct( $source );
-	}
-
-	/**
 	 * PHP5 constructor.
 	 */
 	function __construct( $source ) {
@@ -70,12 +63,12 @@ class MagpieRSS {
 		# if PHP xml isn't compiled in, die
 		#
 		if ( !function_exists('xml_parser_create') )
-			trigger_error( "Failed to load PHP's XML Extension. http://www.php.net/manual/en/ref.xml.php" );
+			trigger_error( "Failed to load PHP's XML Extension. https://secure.php.net/manual/en/ref.xml.php" );
 
 		$parser = @xml_parser_create();
 
 		if ( !is_resource($parser) )
-			trigger_error( "Failed to create an instance of PHP's XML parser. http://www.php.net/manual/en/ref.xml.php");
+			trigger_error( "Failed to create an instance of PHP's XML parser. https://secure.php.net/manual/en/ref.xml.php");
 
 		$this->parser = $parser;
 
@@ -107,62 +100,11 @@ class MagpieRSS {
 		$this->normalize();
 	}
 
-	function error( $errormsg, $lvl = E_USER_WARNING ) {
-		// append PHP's error message if track_errors enabled
-		if ( isset($php_errormsg) ) {
-			$errormsg .= " ($php_errormsg)";
-		}
-		if ( MAGPIE_DEBUG ) {
-			trigger_error( $errormsg, $lvl);
-		} else {
-			error_log( $errormsg, 0);
-		}
-	}
-
-	function normalize () {
-		// if atom populate rss fields
-		if ( $this->is_atom() ) {
-			$this->channel['descripton'] = $this->channel['tagline'];
-			for ( $i = 0; $i < count($this->items); $i++) {
-				$item = $this->items[$i];
-				if ( isset($item['summary']) )
-					$item['description'] = $item['summary'];
-				if ( isset($item['atom_content']))
-					$item['content']['encoded'] = $item['atom_content'];
-
-				$this->items[$i] = $item;
-			}
-		}
-		elseif ( $this->is_rss() ) {
-			$this->channel['tagline'] = $this->channel['description'];
-			for ( $i = 0; $i < count($this->items); $i++) {
-				$item = $this->items[$i];
-				if ( isset($item['description']))
-					$item['summary'] = $item['description'];
-				if ( isset($item['content']['encoded'] ) )
-					$item['atom_content'] = $item['content']['encoded'];
-
-				$this->items[$i] = $item;
-			}
-		}
-	}
-
-	function is_atom() {
-		if ( $this->feed_type == ATOM ) {
-			return $this->feed_version;
-		}
-		else {
-			return false;
-		}
-	}
-
-	function is_rss () {
-		if ( $this->feed_type == RSS ) {
-			return $this->feed_version;
-		}
-		else {
-			return false;
-		}
+	/**
+	 * PHP4 constructor.
+	 */
+	public function MagpieRSS( $source ) {
+		self::__construct( $source );
 	}
 
 	function feed_start_element($p, $element, &$attrs) {
@@ -172,7 +114,7 @@ class MagpieRSS {
 		// check for a namespace, and split if found
 		$ns	= false;
 		if ( strpos( $element, ':' ) ) {
-			list($ns, $el) = split( ':', $element, 2);
+			list($ns, $el) = explode( ':', $element, 2);
 		}
 		if ( $ns and $ns != 'rdf' ) {
 			$this->current_namespace = $ns;
@@ -276,68 +218,6 @@ class MagpieRSS {
 		}
 	}
 
-	// smart append - field and namespace aware
-
-	function append_content($text) {
-		if ( $this->initem ) {
-			$this->concat( $this->current_item[ $this->incontent ], $text );
-		}
-		elseif ( $this->inchannel ) {
-			$this->concat( $this->channel[ $this->incontent ], $text );
-		}
-	}
-
-	function concat (&$str1, $str2="") {
-		if (!isset($str1) ) {
-			$str1="";
-		}
-		$str1 .= $str2;
-	}
-
-	function append($el, $text) {
-		if (!$el) {
-			return;
-		}
-		if ( $this->current_namespace )
-		{
-			if ( $this->initem ) {
-				$this->concat(
-					$this->current_item[ $this->current_namespace ][ $el ], $text);
-			}
-			elseif ($this->inchannel) {
-				$this->concat(
-					$this->channel[ $this->current_namespace][ $el ], $text );
-			}
-			elseif ($this->intextinput) {
-				$this->concat(
-					$this->textinput[ $this->current_namespace][ $el ], $text );
-			}
-			elseif ($this->inimage) {
-				$this->concat(
-					$this->image[ $this->current_namespace ][ $el ], $text );
-			}
-		}
-		else {
-			if ( $this->initem ) {
-				$this->concat(
-					$this->current_item[ $el ], $text);
-			}
-			elseif ($this->intextinput) {
-				$this->concat(
-					$this->textinput[ $el ], $text );
-			}
-			elseif ($this->inimage) {
-				$this->concat(
-					$this->image[ $el ], $text );
-			}
-			elseif ($this->inchannel) {
-				$this->concat(
-					$this->channel[ $el ], $text );
-			}
-
-		}
-	}
-
 	function feed_cdata ($p, $text) {
 
 		if ($this->feed_type == ATOM and $this->incontent)
@@ -395,8 +275,127 @@ class MagpieRSS {
 		$this->current_namespace = false;
 	}
 
+	function concat (&$str1, $str2="") {
+		if (!isset($str1) ) {
+			$str1="";
+		}
+		$str1 .= $str2;
+	}
+
+	function append_content($text) {
+		if ( $this->initem ) {
+			$this->concat( $this->current_item[ $this->incontent ], $text );
+		}
+		elseif ( $this->inchannel ) {
+			$this->concat( $this->channel[ $this->incontent ], $text );
+		}
+	}
+
+	// smart append - field and namespace aware
+	function append($el, $text) {
+		if (!$el) {
+			return;
+		}
+		if ( $this->current_namespace )
+		{
+			if ( $this->initem ) {
+				$this->concat(
+					$this->current_item[ $this->current_namespace ][ $el ], $text);
+			}
+			elseif ($this->inchannel) {
+				$this->concat(
+					$this->channel[ $this->current_namespace][ $el ], $text );
+			}
+			elseif ($this->intextinput) {
+				$this->concat(
+					$this->textinput[ $this->current_namespace][ $el ], $text );
+			}
+			elseif ($this->inimage) {
+				$this->concat(
+					$this->image[ $this->current_namespace ][ $el ], $text );
+			}
+		}
+		else {
+			if ( $this->initem ) {
+				$this->concat(
+					$this->current_item[ $el ], $text);
+			}
+			elseif ($this->intextinput) {
+				$this->concat(
+					$this->textinput[ $el ], $text );
+			}
+			elseif ($this->inimage) {
+				$this->concat(
+					$this->image[ $el ], $text );
+			}
+			elseif ($this->inchannel) {
+				$this->concat(
+					$this->channel[ $el ], $text );
+			}
+
+		}
+	}
+
+	function normalize () {
+		// if atom populate rss fields
+		if ( $this->is_atom() ) {
+			$this->channel['descripton'] = $this->channel['tagline'];
+			for ( $i = 0; $i < count($this->items); $i++) {
+				$item = $this->items[$i];
+				if ( isset($item['summary']) )
+					$item['description'] = $item['summary'];
+				if ( isset($item['atom_content']))
+					$item['content']['encoded'] = $item['atom_content'];
+
+				$this->items[$i] = $item;
+			}
+		}
+		elseif ( $this->is_rss() ) {
+			$this->channel['tagline'] = $this->channel['description'];
+			for ( $i = 0; $i < count($this->items); $i++) {
+				$item = $this->items[$i];
+				if ( isset($item['description']))
+					$item['summary'] = $item['description'];
+				if ( isset($item['content']['encoded'] ) )
+					$item['atom_content'] = $item['content']['encoded'];
+
+				$this->items[$i] = $item;
+			}
+		}
+	}
+
+	function is_rss () {
+		if ( $this->feed_type == RSS ) {
+			return $this->feed_version;
+		}
+		else {
+			return false;
+		}
+	}
+
+	function is_atom() {
+		if ( $this->feed_type == ATOM ) {
+			return $this->feed_version;
+		}
+		else {
+			return false;
+		}
+	}
+
 	function map_attrs($k, $v) {
 		return "$k=\"$v\"";
+	}
+
+	function error( $errormsg, $lvl = E_USER_WARNING ) {
+		// append PHP's error message if track_errors enabled
+		if ( isset($php_errormsg) ) {
+			$errormsg .= " ($php_errormsg)";
+		}
+		if ( MAGPIE_DEBUG ) {
+			trigger_error( $errormsg, $lvl);
+		} else {
+			error_log( $errormsg, 0);
+		}
 	}
 
 }
@@ -721,13 +720,6 @@ class RSSCache {
 	var $ERROR 		= '';			// accumulate error messages
 
 	/**
-	 * PHP4 constructor.
-	 */
-	public function RSSCache( $base = '', $age = '' ) {
-		self::__construct( $base, $age );
-	}
-
-	/**
 	 * PHP5 constructor.
 	 */
 	function __construct( $base = '', $age = '' ) {
@@ -741,13 +733,19 @@ class RSSCache {
 
 	}
 
+	/**
+	 * PHP4 constructor.
+	 */
+	public function RSSCache( $base = '', $age = '' ) {
+		self::__construct( $base, $age );
+	}
+
 /*=======================================================================*\
 	Function:	set
 	Purpose:	add an item to the cache, keyed on url
 	Input:		url from wich the rss file was fetched
 	Output:		true on success
 \*=======================================================================*/
-
 	function set ($url, $rss) {
 		$cache_option = 'rss_' . $this->file_name( $url );
 
@@ -762,19 +760,6 @@ class RSSCache {
 	Input:		url from wich the rss file was fetched
 	Output:		cached object on HIT, false on MISS
 \*=======================================================================*/
-
-	function file_name ($url) {
-		return md5( $url );
-	}
-
-/*=======================================================================*\
-	Function:	check_cache
-	Purpose:	check a url for membership in the cache
-				and whether the object is older then MAX_AGE (ie. STALE)
-	Input:		url from wich the rss file was fetched
-	Output:		cached object on HIT, false on MISS
-\*=======================================================================*/
-
 	function get ($url) {
 		$this->ERROR = "";
 		$cache_option = 'rss_' . $this->file_name( $url );
@@ -790,40 +775,12 @@ class RSSCache {
 	}
 
 /*=======================================================================*\
-	Function:	serialize
-\*=======================================================================*/
-
-			function debug ($debugmsg, $lvl=E_USER_NOTICE) {
-		if ( MAGPIE_DEBUG ) {
-			$this->error("MagpieRSS [debug] $debugmsg", $lvl);
-		}
-	}
-
-/*=======================================================================*\
-	Function:	unserialize
-\*=======================================================================*/
-
-	function error ($errormsg, $lvl=E_USER_WARNING) {
-		// append PHP's error message if track_errors enabled
-		if ( isset($php_errormsg) ) {
-			$errormsg .= " ($php_errormsg)";
-		}
-		$this->ERROR = $errormsg;
-		if ( MAGPIE_DEBUG ) {
-			trigger_error( $errormsg, $lvl);
-		}
-		else {
-			error_log( $errormsg, 0);
-		}
-	}
-
-/*=======================================================================*\
-	Function:	file_name
-	Purpose:	map url to location in cache
+	Function:	check_cache
+	Purpose:	check a url for membership in the cache
+				and whether the object is older then MAX_AGE (ie. STALE)
 	Input:		url from wich the rss file was fetched
-	Output:		a file name
+	Output:		cached object on HIT, false on MISS
 \*=======================================================================*/
-
 	function check_cache ( $url ) {
 		$this->ERROR = "";
 		$cache_option = 'rss_' . $this->file_name( $url );
@@ -838,16 +795,50 @@ class RSSCache {
 	}
 
 /*=======================================================================*\
-	Function:	error
-	Purpose:	register error
+	Function:	serialize
 \*=======================================================================*/
-
 	function serialize ( $rss ) {
 		return serialize( $rss );
 	}
 
+/*=======================================================================*\
+	Function:	unserialize
+\*=======================================================================*/
 	function unserialize ( $data ) {
 		return unserialize( $data );
+	}
+
+/*=======================================================================*\
+	Function:	file_name
+	Purpose:	map url to location in cache
+	Input:		url from wich the rss file was fetched
+	Output:		a file name
+\*=======================================================================*/
+	function file_name ($url) {
+		return md5( $url );
+	}
+
+/*=======================================================================*\
+	Function:	error
+	Purpose:	register error
+\*=======================================================================*/
+	function error ($errormsg, $lvl=E_USER_WARNING) {
+		// append PHP's error message if track_errors enabled
+		if ( isset($php_errormsg) ) {
+			$errormsg .= " ($php_errormsg)";
+		}
+		$this->ERROR = $errormsg;
+		if ( MAGPIE_DEBUG ) {
+			trigger_error( $errormsg, $lvl);
+		}
+		else {
+			error_log( $errormsg, 0);
+		}
+	}
+			function debug ($debugmsg, $lvl=E_USER_NOTICE) {
+		if ( MAGPIE_DEBUG ) {
+			$this->error("MagpieRSS [debug] $debugmsg", $lvl);
+		}
 	}
 }
 

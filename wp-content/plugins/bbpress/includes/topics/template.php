@@ -950,7 +950,7 @@ function bbp_get_topic_revision_log($topic_id = 0) {
  * @return string Raw revision log of the topic
  */
 function bbp_get_topic_raw_revision_log($topic_id = 0) {
-	$topic_id = bbp_get_topic_id($topic_id);
+	$topic_id     = bbp_get_topic_id($topic_id);
 	$revision_log = get_post_meta($topic_id, '_bbp_revision_log', TRUE);
 	$revision_log = empty($revision_log) ? [] : $revision_log;
 
@@ -1362,7 +1362,7 @@ function bbp_topic_author_avatar($topic_id = 0, $size = 40) {
  */
 function bbp_get_topic_author_avatar($topic_id = 0, $size = 40) {
 	$author_avatar = '';
-	$topic_id = bbp_get_topic_id($topic_id);
+	$topic_id      = bbp_get_topic_id($topic_id);
 	if (!empty($topic_id)) {
 		if (!bbp_is_topic_anonymous($topic_id)) {
 			$author_avatar = get_avatar(bbp_get_topic_author_id($topic_id), $size);
@@ -1602,7 +1602,7 @@ function bbp_topic_author_role($args = []) {
  */
 function bbp_get_topic_author_role($args = []) {
 	// Parse arguments against default values
-	$r = bbp_parse_args($args, [
+	$r           = bbp_parse_args($args, [
 		'topic_id' => 0,
 		'class'    => 'bbp-author-role',
 		'before'   => '',
@@ -2267,7 +2267,7 @@ function bbp_get_topic_tag_list($topic_id = 0, $args = '') {
 		return;
 	}
 	// Parse arguments against default values
-	$r = bbp_parse_args($args, [
+	$r        = bbp_parse_args($args, [
 		'before' => '<div class="bbp-topic-tags"><p>' . esc_html__('Tagged:', 'bbpress') . '&nbsp;',
 		'sep'    => ', ',
 		'after'  => '</p></div>'
@@ -2453,7 +2453,7 @@ function bbp_topic_edit_link($args = '') {
  */
 function bbp_get_topic_edit_link($args = '') {
 	// Parse arguments against default values
-	$r = bbp_parse_args($args, [
+	$r     = bbp_parse_args($args, [
 		'id'          => 0,
 		'link_before' => '',
 		'link_after'  => '',
@@ -2508,7 +2508,7 @@ function bbp_topic_edit_url($topic_id = 0) {
  */
 function bbp_get_topic_edit_url($topic_id = 0) {
 	global $wp_rewrite;
-	$bbp = bbpress();
+	$bbp   = bbpress();
 	$topic = bbp_get_topic(bbp_get_topic_id($topic_id));
 	if (empty($topic)) {
 		return;
@@ -2571,7 +2571,7 @@ function bbp_topic_trash_link($args = '') {
  */
 function bbp_get_topic_trash_link($args = '') {
 	// Parse arguments against default values
-	$r = bbp_parse_args($args, [
+	$r       = bbp_parse_args($args, [
 		'id'           => 0,
 		'link_before'  => '',
 		'link_after'   => '',
@@ -2644,7 +2644,7 @@ function bbp_topic_close_link($args = '') {
  */
 function bbp_get_topic_close_link($args = '') {
 	// Parse arguments against default values
-	$r = bbp_parse_args($args, [
+	$r     = bbp_parse_args($args, [
 		'id'          => 0,
 		'link_before' => '',
 		'link_after'  => '',
@@ -2705,7 +2705,7 @@ function bbp_topic_stick_link($args = '') {
  */
 function bbp_get_topic_stick_link($args = '') {
 	// Parse arguments against default values
-	$r = bbp_parse_args($args, [
+	$r     = bbp_parse_args($args, [
 		'id'           => 0,
 		'link_before'  => '',
 		'link_after'   => '',
@@ -2717,16 +2717,16 @@ function bbp_get_topic_stick_link($args = '') {
 	if (empty($topic) || !current_user_can('moderate', $topic->ID)) {
 		return;
 	}
-	$is_sticky = bbp_is_topic_sticky($topic->ID);
-	$stick_uri = add_query_arg(['action' => 'bbp_toggle_topic_stick', 'topic_id' => $topic->ID]);
-	$stick_uri = wp_nonce_url($stick_uri, 'stick-topic_' . $topic->ID);
+	$is_sticky     = bbp_is_topic_sticky($topic->ID);
+	$stick_uri     = add_query_arg(['action' => 'bbp_toggle_topic_stick', 'topic_id' => $topic->ID]);
+	$stick_uri     = wp_nonce_url($stick_uri, 'stick-topic_' . $topic->ID);
 	$stick_display = (TRUE === $is_sticky) ? $r['unstick_text'] : $r['stick_text'];
 	$stick_display = '<a href="' . esc_url($stick_uri) . '" class="bbp-topic-sticky-link">' . $stick_display . '</a>';
 	if (empty($is_sticky)) {
 		$super_uri = add_query_arg(['action' => 'bbp_toggle_topic_stick', 'topic_id' => $topic->ID, 'super' => 1]);
 		$super_uri = wp_nonce_url($super_uri, 'stick-topic_' . $topic->ID);
 		$super_display
-			= ' <a href="' . esc_url($super_uri) . '" class="bbp-topic-super-sticky-link">' . $r['super_text'] . '</a>';
+		           = ' <a href="' . esc_url($super_uri) . '" class="bbp-topic-super-sticky-link">' . $r['super_text'] . '</a>';
 	} else {
 		$super_display = '';
 	}
@@ -2771,7 +2771,7 @@ function bbp_topic_merge_link($args = '') {
  */
 function bbp_get_topic_merge_link($args = '') {
 	// Parse arguments against default values
-	$r = bbp_parse_args($args, [
+	$r     = bbp_parse_args($args, [
 		'id'          => 0,
 		'link_before' => '',
 		'link_after'  => '',
@@ -2826,7 +2826,7 @@ function bbp_topic_spam_link($args = '') {
  */
 function bbp_get_topic_spam_link($args = '') {
 	// Parse arguments against default values
-	$r = bbp_parse_args($args, [
+	$r     = bbp_parse_args($args, [
 		'id'          => 0,
 		'link_before' => '',
 		'link_after'  => '',

@@ -1,21 +1,20 @@
 <?php
-
 /**
  * User Registration Form
  *
- * @package bbPress
+ * @package    bbPress
  * @subpackage Theme
  */
-
 ?>
 
-<form method="post" action="<?php bbp_wp_login_action(array('context' => 'login_post')); ?>" class="bbp-login-form">
+<form method="post" action="<?php bbp_wp_login_action(['context' => 'login_post']); ?>" class="bbp-login-form">
     <fieldset class="bbp-form">
         <legend><?php _e('Create an Account', 'bbpress'); ?></legend>
 
         <div class="bbp-template-notice">
             <p><?php _e('Your username must be unique, and cannot be changed later.', 'bbpress') ?></p>
-            <p><?php _e('We use your email address to email you a secure password and verify your account.', 'bbpress') ?></p>
+            <p><?php _e('We use your email address to email you a secure password and verify your account.',
+                        'bbpress') ?></p>
 
         </div>
 

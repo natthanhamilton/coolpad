@@ -136,7 +136,7 @@ class WC_Countries {
 				return apply_filters('woocommerce_countries_allowed_countries', $all_except_countries);
 			}
 		}
-		$countries = [];
+		$countries     = [];
 		$raw_countries = get_option('woocommerce_specific_allowed_countries', []);
 		if ($raw_countries) {
 			foreach ($raw_countries as $country) {
@@ -159,7 +159,7 @@ class WC_Countries {
 		if ('all' === get_option('woocommerce_ship_to_countries')) {
 			return $this->countries;
 		}
-		$countries = [];
+		$countries     = [];
 		$raw_countries = get_option('woocommerce_specific_ship_to_countries');
 		if ($raw_countries) {
 			foreach ($raw_countries as $country) {
@@ -247,7 +247,7 @@ class WC_Countries {
 		if (get_option('woocommerce_ship_to_countries') !== 'specific') {
 			return $this->states;
 		}
-		$states = [];
+		$states        = [];
 		$raw_countries = get_option('woocommerce_specific_ship_to_countries');
 		if ($raw_countries) {
 			foreach ($raw_countries as $country) {
@@ -269,7 +269,7 @@ class WC_Countries {
 		if (get_option('woocommerce_allowed_countries') !== 'specific') {
 			return $this->states;
 		}
-		$states = [];
+		$states        = [];
 		$raw_countries = get_option('woocommerce_specific_allowed_countries');
 		if ($raw_countries) {
 			foreach ($raw_countries as $country) {
@@ -429,7 +429,7 @@ class WC_Countries {
 			'postcode'   => '',
 			'country'    => ''
 		];
-		$args = array_map('trim', wp_parse_args($args, $default_args));
+		$args         = array_map('trim', wp_parse_args($args, $default_args));
 		extract($args);
 		// Get all formats
 		$formats = $this->get_address_formats();
@@ -447,7 +447,7 @@ class WC_Countries {
 		$full_state = ($country && $state && isset($this->states[ $country ][ $state ]))
 			? $this->states[ $country ][ $state ] : $state;
 		// Substitute address parts into the string
-		$replace = array_map('esc_html', apply_filters('woocommerce_formatted_address_replacements', [
+		$replace           = array_map('esc_html', apply_filters('woocommerce_formatted_address_replacements', [
 			'{first_name}'       => $first_name,
 			'{last_name}'        => $last_name,
 			'{name}'             => $first_name . ' ' . $last_name,

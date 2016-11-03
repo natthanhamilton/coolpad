@@ -1,43 +1,43 @@
 <?php
 if (!class_exists('Ultimate_Icon_Manager_Param')) {
-    class Ultimate_Icon_Manager_Param {
-        function __construct() {
-            $GLOBALS['pid'] = 0;
-            $id             = NULL;
-            $pcnt           = NULL;
-            if (defined('WPB_VC_VERSION') && version_compare(WPB_VC_VERSION, 4.8) >= 0) {
-                if (function_exists('vc_add_shortcode_param')) {
-                    vc_add_shortcode_param('icon_manager', [$this, 'icon_manager']);
-                }
-            } else {
-                if (function_exists('add_shortcode_param')) {
-                    add_shortcode_param('icon_manager', [$this, 'icon_manager']);
-                }
-            }
-        }
+	class Ultimate_Icon_Manager_Param {
+		function __construct() {
+			$GLOBALS['pid'] = 0;
+			$id             = NULL;
+			$pcnt           = NULL;
+			if (defined('WPB_VC_VERSION') && version_compare(WPB_VC_VERSION, 4.8) >= 0) {
+				if (function_exists('vc_add_shortcode_param')) {
+					vc_add_shortcode_param('icon_manager', [$this, 'icon_manager']);
+				}
+			} else {
+				if (function_exists('add_shortcode_param')) {
+					add_shortcode_param('icon_manager', [$this, 'icon_manager']);
+				}
+			}
+		}
 
-        function icon_manager($settings, $value) {
-            $GLOBALS['pid'] = $GLOBALS['pid'] + 1;
-            $pcnt           = $GLOBALS['pid'];
-            $AIO_Icon_Manager = new AIO_Icon_Manager;
-            $font_manager     = $AIO_Icon_Manager->get_font_manager($pcnt);
-            $dependency       = '';
-            $params       = parse_url($_SERVER['HTTP_REFERER']);
-            $vc_is_inline = FALSE;
-            if (isset($params['query'])) {
-                parse_str($params['query'], $params);
-                $vc_is_inline = isset($params['vc_action']) ? TRUE : FALSE;
-            }
-            $output = '<div class="my_param_block">'
-                      . '<input name="' . $settings['param_name'] . '"
+		function icon_manager($settings, $value) {
+			$GLOBALS['pid']   = $GLOBALS['pid'] + 1;
+			$pcnt             = $GLOBALS['pid'];
+			$AIO_Icon_Manager = new AIO_Icon_Manager;
+			$font_manager     = $AIO_Icon_Manager->get_font_manager($pcnt);
+			$dependency       = '';
+			$params           = parse_url($_SERVER['HTTP_REFERER']);
+			$vc_is_inline     = FALSE;
+			if (isset($params['query'])) {
+				parse_str($params['query'], $params);
+				$vc_is_inline = isset($params['vc_action']) ? TRUE : FALSE;
+			}
+			$output = '<div class="my_param_block">'
+			          . '<input name="' . $settings['param_name'] . '"
 					  class="wpb_txt_icon_value wpb_vc_param_value wpb-textinput ' . $settings['param_name'] . '
 					  ' . $settings['type'] . '_field" type="hidden"
 
 					  value="' . $value . '" ' . $dependency . ' id="' . $pcnt . '"/>'
-                      . '</div>';
-            if ($vc_is_inline) {
-                $output
-                    .= '<script type="text/javascript">
+			          . '</div>';
+			if ($vc_is_inline) {
+				$output
+					.= '<script type="text/javascript">
 					var val=jQuery("#' . $pcnt . '").val();
 					//alert("yes");
 					var val=jQuery("#' . $pcnt . '").val();
@@ -67,9 +67,9 @@ if (!class_exists('Ultimate_Icon_Manager_Param')) {
                 });
 
 					</script>';
-            } else {
-                $output
-                    .= '<script type="text/javascript">
+			} else {
+				$output
+					.= '<script type="text/javascript">
 
 
 				jQuery(document).ready(function(){
@@ -96,13 +96,13 @@ if (!class_exists('Ultimate_Icon_Manager_Param')) {
                     jQuery(".preview-icon-"+id).html("<i class=\'"+icon+"\'></i>");
                 });
 				</script>';
-            }
-            $output .= '<div class="wpb_txt_icons_block" data-old-icon-value="' . $pcnt . '">' . $font_manager . '</div>';
+			}
+			$output .= '<div class="wpb_txt_icons_block" data-old-icon-value="' . $pcnt . '">' . $font_manager . '</div>';
 
-            return $output;
-        }
-    }
+			return $output;
+		}
+	}
 }
 if (class_exists('Ultimate_Icon_Manager_Param')) {
-    $Ultimate_Icon_Manager_Param = new Ultimate_Icon_Manager_Param();
+	$Ultimate_Icon_Manager_Param = new Ultimate_Icon_Manager_Param();
 }

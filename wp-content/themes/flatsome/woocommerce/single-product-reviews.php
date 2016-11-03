@@ -3,30 +3,28 @@
  * Display single product reviews (comments)
  *
  * @author        WooThemes
- * @package    WooCommerce/Templates
- * @version     2.3.2
+ * @package       WooCommerce/Templates
+ * @version       2.3.2
  */
 global $product;
-
-if (! defined('ABSPATH'))
-{
+if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
-
-if (! comments_open())
-{
+if (!comments_open()) {
     return;
 }
-
 ?>
 <div id="reviews">
     <div class="row">
-        <div id="comments" class="large-7 columns <?php if (! have_comments()) echo 'mfp-hide'; ?>">
+        <div id="comments" class="large-7 columns <?php if (!have_comments()) echo 'mfp-hide'; ?>">
             <h2><?php
-                if (get_option('woocommerce_enable_review_rating') === 'yes' && ($count = $product->get_review_count()))
+                if (get_option('woocommerce_enable_review_rating') === 'yes' && ($count
+                        = $product->get_review_count())
+                ) {
                     printf(_n('%s review for %s', '%s reviews for %s', $count, 'woocommerce'), $count, get_the_title());
-                else
+                } else {
                     _e('Reviews', 'woocommerce');
+                }
                 ?>
             </h2>
             <hr/>
@@ -34,16 +32,17 @@ if (! comments_open())
             <?php if (have_comments()) : ?>
 
                 <ol class="commentlist">
-                    <?php wp_list_comments(apply_filters('woocommerce_product_review_list_args', array('callback' => 'woocommerce_comments'))); ?>
+                    <?php wp_list_comments(apply_filters('woocommerce_product_review_list_args',
+                                                         ['callback' => 'woocommerce_comments'])); ?>
                 </ol>
 
                 <?php if (get_comment_pages_count() > 1 && get_option('page_comments')) :
                     echo '<nav class="woocommerce-pagination"><div class="pagination-centered">';
-                    paginate_comments_links(apply_filters('woocommerce_comment_pagination_args', array(
+                    paginate_comments_links(apply_filters('woocommerce_comment_pagination_args', [
                         'prev_text' => '<span class="icon-angle-left"></span>',
                         'next_text' => '<span class="icon-angle-right"></span>',
                         'type'      => 'list',
-                    )));
+                    ]));
                     echo '</div></nav>';
                 endif; ?>
 
@@ -54,9 +53,10 @@ if (! comments_open())
             <?php endif; ?>
         </div>
 
-        <?php if (get_option('woocommerce_review_rating_verification_required') === 'no' || wc_customer_bought_product('', get_current_user_id(), $product->id)) : ?>
+        <?php if (get_option('woocommerce_review_rating_verification_required') === 'no' || wc_customer_bought_product('',
+                                                                                                                       get_current_user_id(),
+                                                                                                                       $product->id)) : ?>
         <?php
-
         if (have_comments()) :
             echo '<div id="add_review" class="large-5 columns"><div class="inner">';
         else :
@@ -66,26 +66,27 @@ if (! comments_open())
         <div id="review_form_wrapper">
             <?php
             $commenter = wp_get_current_commenter();
-
-            $comment_form = array(
-                'title_reply'          => have_comments() ? __('Add a review', 'woocommerce') : sprintf(__('Be the first to review &ldquo;%s&rdquo;', 'woocommerce'), get_the_title()),
+            $comment_form = [
+                'title_reply'          => have_comments() ? __('Add a review', 'woocommerce')
+                    : sprintf(__('Be the first to review &ldquo;%s&rdquo;', 'woocommerce'), get_the_title()),
                 'title_reply_to'       => __('Leave a Reply to %s', 'woocommerce'),
                 'comment_notes_before' => '',
                 'comment_notes_after'  => '',
-                'fields'               => array(
-                    'author' => '<p class="comment-form-author">' . '<label for="author">' . __('Name', 'woocommerce') . ' <span class="required">*</span></label> ' .
-                        '<input id="author" name="author" type="text" value="' . esc_attr($commenter['comment_author']) . '" size="30" aria-required="true" /></p>',
-                    'email'  => '<p class="comment-form-email"><label for="email">' . __('Email', 'woocommerce') . ' <span class="required">*</span></label> ' .
-                        '<input id="email" name="email" type="text" value="' . esc_attr($commenter['comment_author_email']) . '" size="30" aria-required="true" /></p>',
-                ),
+                'fields'               => [
+                    'author' => '<p class="comment-form-author">' . '<label for="author">' . __('Name',
+                                                                                                'woocommerce') . ' <span class="required">*</span></label> ' .
+                                '<input id="author" name="author" type="text" value="' . esc_attr($commenter['comment_author']) . '" size="30" aria-required="true" /></p>',
+                    'email'  => '<p class="comment-form-email"><label for="email">' . __('Email',
+                                                                                         'woocommerce') . ' <span class="required">*</span></label> ' .
+                                '<input id="email" name="email" type="text" value="' . esc_attr($commenter['comment_author_email']) . '" size="30" aria-required="true" /></p>',
+                ],
                 'label_submit'         => __('Submit', 'woocommerce'),
                 'logged_in_as'         => '',
                 'comment_field'        => ''
-            );
-
-            if (get_option('woocommerce_enable_review_rating') === 'yes')
-            {
-                $comment_form['comment_field'] = '<p class="comment-form-rating"><label for="rating">' . __('Your Rating', 'woocommerce') . '</label><select name="rating" id="rating">
+            ];
+            if (get_option('woocommerce_enable_review_rating') === 'yes') {
+                $comment_form['comment_field']
+                    = '<p class="comment-form-rating"><label for="rating">' . __('Your Rating', 'woocommerce') . '</label><select name="rating" id="rating">
 							<option value="">' . __('Rate&hellip;', 'woocommerce') . '</option>
 							<option value="5">' . __('Perfect', 'woocommerce') . '</option>
 							<option value="4">' . __('Good', 'woocommerce') . '</option>
@@ -94,9 +95,8 @@ if (! comments_open())
 							<option value="1">' . __('Very Poor', 'woocommerce') . '</option>
 						</select></p>';
             }
-
-            $comment_form['comment_field'] .= '<p class="comment-form-comment"><label for="comment">' . __('Your Review', 'woocommerce') . '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>';
-
+            $comment_form['comment_field'] .= '<p class="comment-form-comment"><label for="comment">' . __('Your Review',
+                                                                                                           'woocommerce') . '</label><textarea id="comment" name="comment" cols="45" rows="8" aria-required="true"></textarea></p>';
             comment_form(apply_filters('woocommerce_product_review_comment_form_args', $comment_form));
             ?>
         </div><!-- #review_form_wrapper-->
@@ -105,7 +105,8 @@ if (! comments_open())
 
 <?php else : ?>
 
-    <p class="woocommerce-verification-required"><?php _e('Only logged in customers who have purchased this product may leave a review.', 'woocommerce'); ?></p>
+    <p class="woocommerce-verification-required"><?php _e('Only logged in customers who have purchased this product may leave a review.',
+                                                          'woocommerce'); ?></p>
 
 <?php endif; ?>
 

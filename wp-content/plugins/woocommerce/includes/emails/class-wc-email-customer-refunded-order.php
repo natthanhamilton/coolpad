@@ -57,8 +57,8 @@ if (!class_exists('WC_Email_Customer_Refunded_Order')) :
 			                                           __('Your order has been fully refunded', 'woocommerce'));
 			$this->heading_partial = $this->get_option('heading_partial',
 			                                           __('Your order has been partially refunded', 'woocommerce'));
-			$this->template_html  = 'emails/customer-refunded-order.php';
-			$this->template_plain = 'emails/plain/customer-refunded-order.php';
+			$this->template_html   = 'emails/customer-refunded-order.php';
+			$this->template_plain  = 'emails/plain/customer-refunded-order.php';
 			if ($partial_refund) {
 				$this->id      = 'customer_partially_refunded_order';
 				$this->title   = __('Partially Refunded order', 'woocommerce');
@@ -109,10 +109,10 @@ if (!class_exists('WC_Email_Customer_Refunded_Order')) :
 			$this->partial_refund = $partial_refund;
 			$this->set_email_strings($partial_refund);
 			if ($order_id) {
-				$this->object    = wc_get_order($order_id);
-				$this->recipient = $this->object->billing_email;
-				$this->find['order-date']   = '{order_date}';
-				$this->find['order-number'] = '{order_number}';
+				$this->object                  = wc_get_order($order_id);
+				$this->recipient               = $this->object->billing_email;
+				$this->find['order-date']      = '{order_date}';
+				$this->find['order-number']    = '{order_number}';
 				$this->replace['order-date']   = date_i18n(wc_date_format(), strtotime($this->object->order_date));
 				$this->replace['order-number'] = $this->object->get_order_number();
 			}

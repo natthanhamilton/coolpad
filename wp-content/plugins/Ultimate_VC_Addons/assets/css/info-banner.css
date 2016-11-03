@@ -5,6 +5,7 @@
     background: #f2f2f2;
     overflow: hidden
 }
+
 img.ultb3-img {
     border: 0;
     box-shadow: none;
@@ -19,6 +20,7 @@ img.ultb3-img {
     -moz-transition: all 300ms linear;
     transition: all 300ms linear
 }
+
 .ultb3-box-overlay {
     background: rgba(0, 0, 0, 0.5);
     position: absolute;
@@ -28,17 +30,21 @@ img.ultb3-img {
     height: 100%;
     z-index: 2
 }
+
 .ultb3-info {
     padding: 25px;
     position: relative;
     z-index: 5
 }
+
 .ultb3-info.ib3-info-center {
     text-align: center
 }
+
 .ultb3-info.ib3-info-right {
     text-align: right
 }
+
 img.ultb3-img.ultb3-img-top-center {
     left: 50%;
     -webkit-transform: translateX(-50%);
@@ -47,10 +53,12 @@ img.ultb3-img.ultb3-img-top-center {
     -o-transform: translateX(-50%);
     transform: translateX(-50%)
 }
+
 img.ultb3-img.ultb3-img-top-right {
     left: auto;
     right: 0
 }
+
 img.ultb3-img.ultb3-img-center-left {
     top: 50%;
     -webkit-transform: translateY(-50%);
@@ -59,6 +67,7 @@ img.ultb3-img.ultb3-img-center-left {
     -o-transform: translateY(-50%);
     transform: translateY(-50%)
 }
+
 img.ultb3-img.ultb3-img-center {
     top: 50%;
     left: 50%;
@@ -68,6 +77,7 @@ img.ultb3-img.ultb3-img-center {
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%)
 }
+
 img.ultb3-img.ultb3-img-center-right {
     top: 50%;
     -webkit-transform: translateY(-50%);
@@ -78,31 +88,37 @@ img.ultb3-img.ultb3-img-center-right {
     left: auto;
     right: 0
 }
+
 img.ultb3-img.ultb3-img-bottom-left,
 img.ultb3-img.ultb3-img-bottom-center,
 img.ultb3-img.ultb3-img-bottom-right {
     top: auto;
     bottom: 0
 }
+
 img.ultb3-img.ultb3-img-bottom-center {
     left: 50%;
     transform: translateX(-50%)
 }
+
 img.ultb3-img.ultb3-img-bottom-right {
     right: 0;
     left: auto
 }
+
 .ultb3-title {
     font-size: 40px;
     color: #252525;
     line-height: 1.35em;
     margin-bottom: 5px
 }
+
 .ultb3-desc {
     font-size: 20px;
     line-height: 1.5em;
     margin-bottom: 10px
 }
+
 a.ultb3-btn {
     display: inline-block;
     color: #0483d9;
@@ -116,6 +132,7 @@ a.ultb3-btn {
     -webkit-transition: all .2s;
     transition: all .2s
 }
+
 a.ultb3-btn i {
     position: absolute;
     left: auto;
@@ -133,13 +150,16 @@ a.ultb3-btn i {
     -o-transform: translate(0, -50%);
     transform: translate(0, -50%)
 }
+
 a.ultb3-btn:hover i {
     right: 20px;
     opacity: 1
 }
+
 a.ultb3-btn:hover {
     padding-right: 45px
 }
+
 a.ultb3-btn:hover,
 a.ultb3-btn:focus,
 a.ultb3-btn:active,
@@ -148,16 +168,19 @@ a.ultb3-btn:visited {
     color: inherit;
     outline: 0
 }
+
 .ultb3-hover-1 .ultb3-img.ultb3-img-top-left,
 .ultb3-hover-1 .ultb3-img.ultb3-img-top-center,
 .ultb3-hover-1 .ultb3-img.ultb3-img-top-right {
     top: -50px
 }
+
 .ultb3-hover-1:hover .ultb3-img.ultb3-img-top-left,
 .ultb3-hover-1:hover .ultb3-img.ultb3-img-top-center,
 .ultb3-hover-1:hover .ultb3-img.ultb3-img-top-right {
     top: 0
 }
+
 .ultb3-hover-1 .ultb3-img.ultb3-img-center-left {
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
@@ -165,6 +188,7 @@ a.ultb3-btn:visited {
     -o-transform: translateY(-50%);
     transform: translateY(-50%)
 }
+
 .ultb3-hover-1:hover .ultb3-img.ultb3-img-center-left {
     -webkit-transform: translateY(-25%);
     -moz-transform: translateY(-25%);
@@ -172,6 +196,7 @@ a.ultb3-btn:visited {
     -o-transform: translateY(-25%);
     transform: translateY(-25%)
 }
+
 .ultb3-hover-1 .ultb3-img.ultb3-img-center {
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
@@ -179,6 +204,7 @@ a.ultb3-btn:visited {
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%)
 }
+
 .ultb3-hover-1:hover .ultb3-img.ultb3-img-center {
     -webkit-transform: translate(-50%, -25%);
     -moz-transform: translate(-50%, -25%);
@@ -186,6 +212,7 @@ a.ultb3-btn:visited {
     -o-transform: translate(-50%, -25%);
     transform: translate(-50%, -25%)
 }
+
 .ultb3-hover-1 .ultb3-img.ultb3-img-center-right {
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
@@ -193,6 +220,7 @@ a.ultb3-btn:visited {
     -o-transform: translateY(-50%);
     transform: translateY(-50%)
 }
+
 .ultb3-hover-1:hover .ultb3-img.ultb3-img-center-right {
     -webkit-transform: translateY(-25%);
     -moz-transform: translateY(-25%);
@@ -200,26 +228,31 @@ a.ultb3-btn:visited {
     -o-transform: translateY(-25%);
     transform: translateY(-25%)
 }
+
 .ultb3-hover-1 .ultb3-img.ultb3-img-bottom-left,
 .ultb3-hover-1 .ultb3-img.ultb3-img-bottom-center,
 .ultb3-hover-1 .ultb3-img.ultb3-img-bottom-right {
     bottom: 0
 }
+
 .ultb3-hover-1:hover .ultb3-img.ultb3-img-bottom-left,
 .ultb3-hover-1:hover .ultb3-img.ultb3-img-bottom-center,
 .ultb3-hover-1:hover .ultb3-img.ultb3-img-bottom-right {
     bottom: -50px
 }
+
 .ultb3-hover-2 .ultb3-img.ultb3-img-top-left,
 .ultb3-hover-2 .ultb3-img.ultb3-img-top-center,
 .ultb3-hover-2 .ultb3-img.ultb3-img-top-right {
     top: 0
 }
+
 .ultb3-hover-2:hover .ultb3-img.ultb3-img-top-left,
 .ultb3-hover-2:hover .ultb3-img.ultb3-img-top-center,
 .ultb3-hover-2:hover .ultb3-img.ultb3-img-top-right {
     top: -50px
 }
+
 .ultb3-hover-2 .ultb3-img.ultb3-img-center-left {
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
@@ -227,6 +260,7 @@ a.ultb3-btn:visited {
     -o-transform: translateY(-50%);
     transform: translateY(-50%)
 }
+
 .ultb3-hover-2:hover .ultb3-img.ultb3-img-center-left {
     -webkit-transform: translateY(-75%);
     -moz-transform: translateY(-75%);
@@ -234,6 +268,7 @@ a.ultb3-btn:visited {
     -o-transform: translateY(-75%);
     transform: translateY(-75%)
 }
+
 .ultb3-hover-2 .ultb3-img.ultb3-img-center {
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
@@ -241,6 +276,7 @@ a.ultb3-btn:visited {
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%)
 }
+
 .ultb3-hover-2:hover .ultb3-img.ultb3-img-center {
     -webkit-transform: translate(-50%, -75%);
     -moz-transform: translate(-50%, -75%);
@@ -248,6 +284,7 @@ a.ultb3-btn:visited {
     -o-transform: translate(-50%, -75%);
     transform: translate(-50%, -75%)
 }
+
 .ultb3-hover-2 .ultb3-img.ultb3-img-center-right {
     -webkit-transform: translateY(-50%);
     -moz-transform: translateY(-50%);
@@ -255,6 +292,7 @@ a.ultb3-btn:visited {
     -o-transform: translateY(-50%);
     transform: translateY(-50%)
 }
+
 .ultb3-hover-2:hover .ultb3-img.ultb3-img-center-right {
     -webkit-transform: translateY(-75%);
     -moz-transform: translateY(-75%);
@@ -262,24 +300,29 @@ a.ultb3-btn:visited {
     -o-transform: translateY(-75%);
     transform: translateY(-75%)
 }
+
 .ultb3-hover-2 .ultb3-img.ultb3-img-bottom-left,
 .ultb3-hover-2 .ultb3-img.ultb3-img-bottom-center,
 .ultb3-hover-2 .ultb3-img.ultb3-img-bottom-right {
     bottom: -50px
 }
+
 .ultb3-hover-2:hover .ultb3-img.ultb3-img-bottom-left,
 .ultb3-hover-2:hover .ultb3-img.ultb3-img-bottom-center,
 .ultb3-hover-2:hover .ultb3-img.ultb3-img-bottom-right {
     bottom: 0
 }
+
 .ultb3-hover-3 .ultb3-img.ultb3-img-top-left,
 .ultb3-hover-3 .ultb3-img.ultb3-img-center-left {
     left: 0
 }
+
 .ultb3-hover-3:hover .ultb3-img.ultb3-img-top-left,
 .ultb3-hover-3:hover .ultb3-img.ultb3-img-center-left {
     left: -50px
 }
+
 .ultb3-hover-3 .ultb3-img.ultb3-img-top-center {
     -webkit-transform: translateX(-25%);
     -moz-transform: translateX(-25%);
@@ -287,6 +330,7 @@ a.ultb3-btn:visited {
     -o-transform: translateX(-25%);
     transform: translateX(-25%)
 }
+
 .ultb3-hover-3:hover .ultb3-img.ultb3-img-top-center {
     -webkit-transform: translateX(-50%);
     -moz-transform: translateX(-50%);
@@ -294,14 +338,17 @@ a.ultb3-btn:visited {
     -o-transform: translateX(-50%);
     transform: translateX(-50%)
 }
+
 .ultb3-hover-3 .ultb3-img.ultb3-img-top-right,
 .ultb3-hover-3 .ultb3-img.ultb3-img-bottom-right {
     right: -50px
 }
+
 .ultb3-hover-3:hover .ultb3-img.ultb3-img-top-right,
 .ultb3-hover-3:hover .ultb3-img.ultb3-img-bottom-right {
     right: 0
 }
+
 .ultb3-hover-3 .ultb3-img.ultb3-img-center {
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
@@ -309,6 +356,7 @@ a.ultb3-btn:visited {
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%)
 }
+
 .ultb3-hover-3:hover .ultb3-img.ultb3-img-center {
     -webkit-transform: translate(-75%, -50%);
     -moz-transform: translate(-75%, -50%);
@@ -316,6 +364,7 @@ a.ultb3-btn:visited {
     -o-transform: translate(-75%, -50%);
     transform: translate(-75%, -50%)
 }
+
 .ultb3-hover-3 .ultb3-img.ultb3-img-center-right {
     -webkit-transform: translate(25%, -50%);
     -moz-transform: translate(25%, -50%);
@@ -323,6 +372,7 @@ a.ultb3-btn:visited {
     -o-transform: translate(25%, -50%);
     transform: translate(25%, -50%)
 }
+
 .ultb3-hover-3:hover .ultb3-img.ultb3-img-center-right {
     -webkit-transform: translate(0, -50%);
     -moz-transform: translate(0, -50%);
@@ -330,12 +380,15 @@ a.ultb3-btn:visited {
     -o-transform: translate(0, -50%);
     transform: translate(0, -50%)
 }
+
 .ultb3-hover-3 .ultb3-img.ultb3-img-bottom-left {
     left: 0
 }
+
 .ultb3-hover-3:hover .ultb3-img.ultb3-img-bottom-left {
     left: -50px
 }
+
 .ultb3-hover-3 .ultb3-img.ultb3-img-bottom-center {
     -webkit-transform: translate(-50%);
     -moz-transform: translate(-50%);
@@ -343,6 +396,7 @@ a.ultb3-btn:visited {
     -o-transform: translate(-50%);
     transform: translate(-50%)
 }
+
 .ultb3-hover-3:hover .ultb3-img.ultb3-img-bottom-center {
     -webkit-transform: translate(-75%);
     -moz-transform: translate(-75%);
@@ -350,14 +404,17 @@ a.ultb3-btn:visited {
     -o-transform: translate(-75%);
     transform: translate(-75%)
 }
+
 .ultb3-hover-4 .ultb3-img.ultb3-img-top-left,
 .ultb3-hover-4 .ultb3-img.ultb3-img-center-left {
     left: -50px
 }
+
 .ultb3-hover-4:hover .ultb3-img.ultb3-img-top-left,
 .ultb3-hover-4:hover .ultb3-img.ultb3-img-center-left {
     left: 0
 }
+
 .ultb3-hover-4 .ultb3-img.ultb3-img-top-center {
     -webkit-transform: translateX(-75%);
     -moz-transform: translateX(-75%);
@@ -365,6 +422,7 @@ a.ultb3-btn:visited {
     -o-transform: translateX(-75%);
     transform: translateX(-75%)
 }
+
 .ultb3-hover-4:hover .ultb3-img.ultb3-img-top-center {
     -webkit-transform: translateX(-50%);
     -moz-transform: translateX(-50%);
@@ -372,14 +430,17 @@ a.ultb3-btn:visited {
     -o-transform: translateX(-50%);
     transform: translateX(-50%)
 }
+
 .ultb3-hover-4 .ultb3-img.ultb3-img-top-right,
 .ultb3-hover-4 .ultb3-img.ultb3-img-bottom-right {
     right: 0
 }
+
 .ultb3-hover-4:hover .ultb3-img.ultb3-img-top-right,
 .ultb3-hover-4:hover .ultb3-img.ultb3-img-bottom-right {
     right: -50px
 }
+
 .ultb3-hover-4 .ultb3-img.ultb3-img-center {
     -webkit-transform: translate(-50%, -50%);
     -moz-transform: translate(-50%, -50%);
@@ -387,6 +448,7 @@ a.ultb3-btn:visited {
     -o-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%)
 }
+
 .ultb3-hover-4:hover .ultb3-img.ultb3-img-center {
     -webkit-transform: translate(-25%, -50%);
     -moz-transform: translate(-25%, -50%);
@@ -394,6 +456,7 @@ a.ultb3-btn:visited {
     -o-transform: translate(-25%, -50%);
     transform: translate(-25%, -50%)
 }
+
 .ultb3-hover-4 .ultb3-img.ultb3-img-center-right {
     -webkit-transform: translate(0, -50%);
     -moz-transform: translate(0, -50%);
@@ -401,6 +464,7 @@ a.ultb3-btn:visited {
     -o-transform: translate(0, -50%);
     transform: translate(0, -50%)
 }
+
 .ultb3-hover-4:hover .ultb3-img.ultb3-img-center-right {
     -webkit-transform: translate(25%, -50%);
     -moz-transform: translate(25%, -50%);
@@ -408,12 +472,15 @@ a.ultb3-btn:visited {
     -o-transform: translate(25%, -50%);
     transform: translate(25%, -50%)
 }
+
 .ultb3-hover-4 .ultb3-img.ultb3-img-bottom-left {
     left: -50px
 }
+
 .ultb3-hover-4:hover .ultb3-img.ultb3-img-bottom-left {
     left: 0
 }
+
 .ultb3-hover-4 .ultb3-img.ultb3-img-bottom-center {
     -webkit-transform: translate(-50%);
     -moz-transform: translate(-50%);
@@ -421,6 +488,7 @@ a.ultb3-btn:visited {
     -o-transform: translate(-50%);
     transform: translate(-50%)
 }
+
 .ultb3-hover-4:hover .ultb3-img.ultb3-img-bottom-center {
     transform: translate(-25%);
     -webkit-transform: translate(-25%);
@@ -428,6 +496,7 @@ a.ultb3-btn:visited {
     -ms-transform: translate(-25%);
     -o-transform: translate(-25%)
 }
+
 .ultb3-hover-5 .ultb3-img {
     -webkit-transform: scale(1);
     -moz-transform: scale(1);
@@ -435,6 +504,7 @@ a.ultb3-btn:visited {
     -o-transform: scale(1);
     transform: scale(1)
 }
+
 .ultb3-hover-5:hover .ultb3-img {
     -webkit-transform: scale(1.1);
     -moz-transform: scale(1.1);
@@ -442,6 +512,7 @@ a.ultb3-btn:visited {
     -o-transform: scale(1.1);
     transform: scale(1.1)
 }
+
 .ultb3-hover-6 .ultb3-img {
     -webkit-transform: scale(1);
     -moz-transform: scale(1);
@@ -450,6 +521,7 @@ a.ultb3-btn:visited {
     transform: scale(1);
     opacity: 1
 }
+
 .ultb3-hover-6:hover .ultb3-img {
     -webkit-transform: scale(2.5);
     -moz-transform: scale(2.5);

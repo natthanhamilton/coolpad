@@ -2,8 +2,7 @@
 <div id="page-header">
     <div class="ht-container">
 
-        <h1><?php if (bbp_is_search())
-            {
+        <h1><?php if (bbp_is_search()) {
                 _e("Search: ", "framework");
             } ?><?php echo of_get_option('st_forum_title'); ?></h1>
 
@@ -29,12 +28,12 @@
 <div id="page-subnav" class="clearfix">
     <div class="ht-container">
         <?php
-        $st_bbpress_breadcrumbs_args = array(
+        $st_bbpress_breadcrumbs_args = [
             // Modify default BBPress Breadcrumbs
             'before' => '<nav class="bbp-breadcrumb">',
             'after'  => '</nav>',
             'sep'    => __('&frasl;', 'bbpress'),
-        );
+        ];
         bbp_breadcrumb($st_bbpress_breadcrumbs_args); ?>
     </div>
 </div>

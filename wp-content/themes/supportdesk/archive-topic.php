@@ -1,12 +1,10 @@
 <?php
-
 /**
  * bbPress - Topic Archive
  *
- * @package bbPress
+ * @package    bbPress
  * @subpackage Theme
  */
-
 get_header(); ?>
 
 <?php
@@ -18,34 +16,33 @@ $st_forum_sidebar_position = of_get_option('st_forum_sidebar');
 
 <!-- #primary -->
 <div id="primary" class="sidebar-<?php echo $st_forum_sidebar_position; ?> clearfix">
-    <div class="ht-container">
-        <!-- #content -->
-        <section id="content" role="main">
+	<div class="ht-container">
+		<!-- #content -->
+		<section id="content" role="main">
 
-            <?php do_action('bbp_before_main_content'); ?>
+			<?php do_action('bbp_before_main_content'); ?>
 
-            <?php do_action('bbp_template_notices'); ?>
+			<?php do_action('bbp_template_notices'); ?>
 
-            <div id="topic-front" class="bbp-topics-front">
+			<div id="topic-front" class="bbp-topics-front">
 
-                <div class="entry-content">
+				<div class="entry-content">
 
-                    <?php bbp_get_template_part('content', 'archive-topic'); ?>
+					<?php bbp_get_template_part('content', 'archive-topic'); ?>
 
-                </div>
-            </div><!-- #topics-front -->
+				</div>
+			</div><!-- #topics-front -->
 
-            <?php do_action('bbp_after_main_content'); ?>
+			<?php do_action('bbp_after_main_content'); ?>
 
-        </section>
-        <!-- /#content -->
+		</section>
+		<!-- /#content -->
 
-        <?php if ($st_forum_sidebar_position != 'off')
-        {
-            get_sidebar('bbpress');
-        } ?>
+		<?php if ($st_forum_sidebar_position != 'off') {
+			get_sidebar('bbpress');
+		} ?>
 
-    </div>
+	</div>
 </div>
 <!-- /#primary -->
 

@@ -7,7 +7,6 @@ Author: Robert O'Rourke @ interconnect/it
 Version: 0.9
 Author URI: http://interconnectit.com
 */
-
 /*
 Changelog:
 
@@ -38,51 +37,48 @@ Changelog:
 	changed widget class name
 
 */
-
 // useless without this
-if (! function_exists('wp_nav_menu'))
+if (!function_exists('wp_nav_menu')) {
     return FALSE;
-
-
+}
 /**
  * Tack on the blank option for urls not in the menu
  */
 add_filter('wp_nav_menu_items', 'dropdown_add_blank_item', 10, 2);
-function dropdown_add_blank_item($items, $args)
-{
-    if (isset($args->walker) && is_object($args->walker) && method_exists($args->walker, 'is_dropdown'))
-    {
-        if ((! isset($args->menu) || empty($args->menu)) && isset($args->theme_location))
-        {
+function dropdown_add_blank_item($items, $args) {
+    if (isset($args->walker) && is_object($args->walker) && method_exists($args->walker, 'is_dropdown')) {
+        if ((!isset($args->menu) || empty($args->menu)) && isset($args->theme_location)) {
             $theme_locations = get_nav_menu_locations();
-            $args->menu = wp_get_nav_menu_object($theme_locations[$args->theme_location]);
+            $args->menu      = wp_get_nav_menu_object($theme_locations[ $args->theme_location ]);
         }
-        $title = isset($args->dropdown_title) ? wptexturize($args->dropdown_title) : '&mdash; ' . $args->menu->name . ' &mdash;';
-        if (! empty($title))
-            $items = '<option value="" class="blank">' . apply_filters('dropdown_blank_item_text', $title, $args) . '</option>' . $items;
+        $title = isset($args->dropdown_title) ? wptexturize($args->dropdown_title)
+            : '&mdash; ' . $args->menu->name . ' &mdash;';
+        if (!empty($title)) {
+            $items = '<option value="" class="blank">' . apply_filters('dropdown_blank_item_text', $title,
+                                                                       $args) . '</option>' . $items;
+        }
     }
+
     return $items;
 }
-
 
 /**
  * Remove empty options created in the sub levels output
  */
 add_filter('wp_nav_menu_items', 'dropdown_remove_empty_items', 10, 2);
-function dropdown_remove_empty_items($items, $args)
-{
-    if (isset($args->walker) && is_object($args->walker) && method_exists($args->walker, 'is_dropdown'))
+function dropdown_remove_empty_items($items, $args) {
+    if (isset($args->walker) && is_object($args->walker) && method_exists($args->walker, 'is_dropdown')) {
         $items = str_replace("<option></option>", "", $items);
+    }
+
     return $items;
 }
-
 
 /**
  * Script to make it go (no jquery! (for once))
  */
 add_action('wp_footer', 'dropdown_javascript');
-function dropdown_javascript()
-{
+function dropdown_javascript() {
     if (is_admin()) return; ?>
     <script>
         var getElementsByClassName = function (a, b, c) {
@@ -144,118 +140,106 @@ function dropdown_javascript()
             },
             dropdowns = document.getElementsByTagName('select');
         for (i = 0; i < dropdowns.length; i++)
-            if (dropdowns[i].className.match('<?php echo apply_filters('dropdown_menus_class', 'dropdown-menu'); ?>')) dropdowns[i].onchange = function () {
+            if (dropdowns[i].className.match('<?php echo apply_filters('dropdown_menus_class',
+                                                                       'dropdown-menu'); ?>')) dropdowns[i].onchange = function () {
                 if (this.value != '') window.location.href = this.value;
             }
     </script>
     <?php
 }
 
-
 /**
  * Overrides the walker argument and container argument then calls wp_nav_menu
  */
-function dropdown_menu($args)
-{
+function dropdown_menu($args) {
     // if non array supplied use as theme location
-    if (! is_array($args))
-        $args = array('menu' => $args);
-
+    if (!is_array($args)) {
+        $args = ['menu' => $args];
+    }
     // enforce these arguments so it actually works
-    $args['walker'] = new DropDown_Nav_Menu();
-    $args['items_wrap'] = '<select id="%1$s" class="%2$s ' . apply_filters('dropdown_menus_class', 'dropdown-menu') . '">%3$s</select>';
-
+    $args['walker']     = new DropDown_Nav_Menu();
+    $args['items_wrap'] = '<select id="%1$s" class="%2$s ' . apply_filters('dropdown_menus_class',
+                                                                           'dropdown-menu') . '">%3$s</select>';
     // custom args for controlling indentation of sub menu items
     $args['indent_string'] = isset($args['indent_string']) ? $args['indent_string'] : '&ndash;&nbsp;';
-    $args['indent_after'] = isset($args['indent_after']) ? $args['indent_after'] : '';
+    $args['indent_after']  = isset($args['indent_after']) ? $args['indent_after'] : '';
 
     return wp_nav_menu($args);
 }
 
-
 class DropDown_Nav_Menu extends Walker_Nav_Menu {
-
     // easy way to check it's this walker we're using to mod the output
-    function is_dropdown()
-    {
+    function is_dropdown() {
         return TRUE;
     }
 
     /**
-     * @see Walker::start_lvl()
+     * @see   Walker::start_lvl()
      * @since 3.0.0
      *
      * @param string $output Passed by reference. Used to append additional content.
-     * @param int $depth Depth of page. Used for padding.
+     * @param int    $depth  Depth of page. Used for padding.
      */
-    function start_lvl(&$output, $depth)
-    {
+    function start_lvl(&$output, $depth) {
         $output .= "</option>";
     }
 
     /**
-     * @see Walker::end_lvl()
+     * @see   Walker::end_lvl()
      * @since 3.0.0
      *
      * @param string $output Passed by reference. Used to append additional content.
-     * @param int $depth Depth of page. Used for padding.
+     * @param int    $depth  Depth of page. Used for padding.
      */
-    function end_lvl(&$output, $depth)
-    {
+    function end_lvl(&$output, $depth) {
         $output .= "<option>";
     }
 
     /**
-     * @see Walker::start_el()
+     * @see   Walker::start_el()
      * @since 3.0.0
      *
-     * @param string $output Passed by reference. Used to append additional content.
-     * @param object $item Menu item data object.
-     * @param int $depth Depth of menu item. Used for padding.
-     * @param int $current_page Menu item ID.
+     * @param string $output       Passed by reference. Used to append additional content.
+     * @param object $item         Menu item data object.
+     * @param int    $depth        Depth of menu item. Used for padding.
+     * @param int    $current_page Menu item ID.
      * @param object $args
      */
-    function start_el(&$output, $item, $depth, $args)
-    {
+    function start_el(&$output, $item, $depth, $args) {
         global $wp_query;
         $indent = ($depth) ? str_repeat("\t", $depth) : '';
-
         $class_names = $value = '';
-
-        $classes = empty($item->classes) ? array() : (array)$item->classes;
+        $classes   = empty($item->classes) ? [] : (array)$item->classes;
         $classes[] = 'menu-item-' . $item->ID;
         $classes[] = 'menu-item-depth-' . $depth;
-
-        $class_names = join(' ', apply_filters('nav_menu_css_class', array_unique(array_filter($classes)), $item, $args));
+        $class_names = join(' ',
+                            apply_filters('nav_menu_css_class', array_unique(array_filter($classes)), $item, $args));
         $class_names = ' class="' . esc_attr($class_names) . '"';
-
         // select current item
-        if (apply_filters('dropdown_menus_select_current', TRUE))
+        if (apply_filters('dropdown_menus_select_current', TRUE)) {
             $selected = in_array('current-menu-item', $classes) ? ' selected="selected"' : '';
-
+        }
         $output .= $indent . '<option' . $class_names . ' value="' . $item->url . '"' . $selected . '>';
-
         // push sub-menu items in as we can't nest optgroups
-        $indent_string = str_repeat(apply_filters('dropdown_menus_indent_string', $args->indent_string, $item, $depth, $args), ($depth) ? $depth : 0);
-        $indent_string .= ! empty($indent_string) ? apply_filters('dropdown_menus_indent_after', $args->indent_after, $item, $depth, $args) : '';
-
+        $indent_string = str_repeat(apply_filters('dropdown_menus_indent_string', $args->indent_string, $item, $depth,
+                                                  $args), ($depth) ? $depth : 0);
+        $indent_string .= !empty($indent_string) ? apply_filters('dropdown_menus_indent_after', $args->indent_after,
+                                                                 $item, $depth, $args) : '';
         $item_output = $args->before . $indent_string;
         $item_output .= $args->link_before . apply_filters('the_title', $item->title, $item->ID) . $args->link_after;
         $item_output .= $args->after;
-
         $output .= apply_filters('walker_nav_menu_dropdown_start_el', $item_output, $item, $depth, $args);
     }
 
     /**
-     * @see Walker::end_el()
+     * @see   Walker::end_el()
      * @since 3.0.0
      *
      * @param string $output Passed by reference. Used to append additional content.
-     * @param object $item Page data object. Not used.
-     * @param int $depth Depth of page. Not Used.
+     * @param object $item   Page data object. Not used.
+     * @param int    $depth  Depth of page. Not Used.
      */
-    function end_el(&$output, $item, $depth)
-    {
+    function end_el(&$output, $item, $depth) {
         $output .= apply_filters('walker_nav_menu_dropdown_end_el', "</option>\n", $item, $depth);
     }
 }
@@ -264,52 +248,44 @@ class DropDown_Nav_Menu extends Walker_Nav_Menu {
  * Navigation DropDown Menu widget class
  */
 class DropDown_Menu_Widget extends WP_Widget {
-
-    function __construct()
-    {
-        $widget_ops = array('classname' => 'dropdown-menu-widget', 'description' => __('Use this widget to add one of your custom menus as a dropdown.'));
+    function __construct() {
+        $widget_ops
+            = ['classname' => 'dropdown-menu-widget', 'description' => __('Use this widget to add one of your custom menus as a dropdown.')];
         parent::__construct('dropdown_menu', __('Dropdown Menu'), $widget_ops);
     }
 
-    function widget($args, $instance)
-    {
+    function widget($args, $instance) {
         // Get menu
         $nav_menu = wp_get_nav_menu_object($instance['nav_menu']);
-
-        if (! $nav_menu)
+        if (!$nav_menu) {
             return;
-
+        }
         $instance['title'] = apply_filters('widget_title', $instance['title'], $instance, $this->id_base);
-
         echo $args['before_widget'];
-
-        if (! empty($instance['title']))
+        if (!empty($instance['title'])) {
             echo $args['before_title'] . $instance['title'] . $args['after_title'];
-
-        dropdown_menu(array('fallback_cb' => '', 'menu' => $nav_menu));
-
+        }
+        dropdown_menu(['fallback_cb' => '', 'menu' => $nav_menu]);
         echo $args['after_widget'];
     }
 
-    function update($new_instance, $old_instance)
-    {
-        $instance['title'] = strip_tags(stripslashes($new_instance['title']));
+    function update($new_instance, $old_instance) {
+        $instance['title']    = strip_tags(stripslashes($new_instance['title']));
         $instance['nav_menu'] = (int)$new_instance['nav_menu'];
+
         return $instance;
     }
 
-    function form($instance)
-    {
-        $title = isset($instance['title']) ? $instance['title'] : '';
+    function form($instance) {
+        $title    = isset($instance['title']) ? $instance['title'] : '';
         $nav_menu = isset($instance['nav_menu']) ? $instance['nav_menu'] : '';
-
         // Get menus
-        $menus = get_terms('nav_menu', array('hide_empty' => FALSE));
-
+        $menus = get_terms('nav_menu', ['hide_empty' => FALSE]);
         // If no menus exists, direct the user to go and create some.
-        if (! $menus)
-        {
-            echo '<p>' . sprintf(__('No menus have been created yet. <a href="%s">Create some</a>.'), admin_url('nav-menus.php')) . '</p>';
+        if (!$menus) {
+            echo '<p>' . sprintf(__('No menus have been created yet. <a href="%s">Create some</a>.'),
+                                 admin_url('nav-menus.php')) . '</p>';
+
             return;
         }
         ?>
@@ -323,8 +299,7 @@ class DropDown_Menu_Widget extends WP_Widget {
             <select id="<?php echo $this->get_field_id('nav_menu'); ?>"
                     name="<?php echo $this->get_field_name('nav_menu'); ?>">
                 <?php
-                foreach ($menus as $menu)
-                {
+                foreach ($menus as $menu) {
                     $selected = $nav_menu == $menu->term_id ? ' selected="selected"' : '';
                     echo '<option' . $selected . ' value="' . $menu->term_id . '">' . $menu->name . '</option>';
                 }
@@ -334,13 +309,11 @@ class DropDown_Menu_Widget extends WP_Widget {
         <?php
     }
 
-    function init()
-    {
+    function init() {
         register_widget(__CLASS__);
     }
 }
 
 // add widget
-add_action('widgets_init', array('DropDown_Menu_Widget', 'init'));
-
+add_action('widgets_init', ['DropDown_Menu_Widget', 'init']);
 ?>

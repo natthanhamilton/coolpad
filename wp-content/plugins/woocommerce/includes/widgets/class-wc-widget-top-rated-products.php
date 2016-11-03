@@ -57,9 +57,9 @@ class WC_Widget_Top_Rated_Products extends WC_Widget {
 		$number = !empty($instance['number']) ? absint($instance['number']) : $this->settings['number']['std'];
 		add_filter('posts_clauses', [WC()->query, 'order_by_rating_post_clauses']);
 		$query_args
-			= ['posts_per_page' => $number, 'no_found_rows' => 1, 'post_status' => 'publish', 'post_type' => 'product'];
+			                      = ['posts_per_page' => $number, 'no_found_rows' => 1, 'post_status' => 'publish', 'post_type' => 'product'];
 		$query_args['meta_query'] = WC()->query->get_meta_query();
-		$r = new WP_Query($query_args);
+		$r                        = new WP_Query($query_args);
 		if ($r->have_posts()) {
 			$this->widget_start($args, $instance);
 			echo '<ul class="product_list_widget">';

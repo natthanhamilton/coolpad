@@ -15,14 +15,13 @@ get_header(); ?>
             <ul class="large-block-grid-3">
                 <?php
                 global $flatsome_opt;
-
                 $post_counter = 0;
-                $wp_query = new WP_Query(array(
-                    'post_type'      => 'featured_item',
-                    'posts_per_page' => $flatsome_opt['featured_items_pr_page'],
-                    'orderby'        => 'menu_order',
-                    'paged'          => $paged
-                ));
+                $wp_query     = new WP_Query([
+                                                 'post_type'      => 'featured_item',
+                                                 'posts_per_page' => $flatsome_opt['featured_items_pr_page'],
+                                                 'orderby'        => 'menu_order',
+                                                 'paged'          => $paged
+                                             ]);
                 while ($wp_query->have_posts()) : $wp_query->the_post();
                     $post_counter++;
                     ?>
@@ -35,7 +34,8 @@ get_header(); ?>
                                 <div class="ux-box-text">
                                     <h4 class="uppercase"><?php the_title(); ?></h4>
                                     <p class="small-font uppercase">
-                                        <?php echo strip_tags(get_the_term_list(get_the_ID(), 'featured_item_category', "", ", ")); ?>
+                                        <?php echo strip_tags(get_the_term_list(get_the_ID(), 'featured_item_category',
+                                                                                "", ", ")); ?>
                                     </p>
                                     <div class="tx-div small"></div>
 
@@ -52,7 +52,7 @@ get_header(); ?>
                 <div class="large-12 columns">
                     <div class="pagination-centered">
                         <?php
-                        echo paginate_links(apply_filters('woocommerce_pagination_args', array(
+                        echo paginate_links(apply_filters('woocommerce_pagination_args', [
                             'base'      => str_replace(999999999, '%#%', get_pagenum_link(999999999)),
                             'format'    => '',
                             'current'   => max(1, get_query_var('paged')),
@@ -62,7 +62,7 @@ get_header(); ?>
                             'type'      => 'list',
                             'end_size'  => 3,
                             'mid_size'  => 3
-                        )));
+                        ]));
                         ?>
 
                     </div><!--  end pagination container -->

@@ -19,14 +19,12 @@
  *
  * @link https://core.trac.wordpress.org/ticket/26183
  */
-
 /**
  * Load the WP Editor Ajax class.
  */
-add_action('plugins_loaded', array('WPAS_Editor_Ajax', 'get_instance'), 11, 0);
+add_action('plugins_loaded', ['WPAS_Editor_Ajax', 'get_instance'], 11, 0);
 
 class WPAS_Editor_Ajax {
-
     /**
      * Instance of this class.
      *
@@ -34,7 +32,6 @@ class WPAS_Editor_Ajax {
      * @var    object
      */
     protected static $instance = NULL;
-
     /**
      * TinyMCE Settings.
      *
@@ -42,7 +39,6 @@ class WPAS_Editor_Ajax {
      * @var    string
      */
     private $mce_settings = NULL;
-
     /**
      * QuickTags Settings.
      *
@@ -51,27 +47,22 @@ class WPAS_Editor_Ajax {
      */
     private $qt_settings = NULL;
 
-    public function __construct()
-    {
-
+    public function __construct() {
         /**
          * Get TinyMCE and QuickTags initial settings.
          */
-        add_filter('tiny_mce_before_init', array($this, 'get_tinymce_settings'), 10, 2);
-        add_filter('quicktags_settings', array($this, 'get_quicktags_settings'), 10, 2);
-
+        add_filter('tiny_mce_before_init', [$this, 'get_tinymce_settings'], 10, 2);
+        add_filter('quicktags_settings', [$this, 'get_quicktags_settings'], 10, 2);
         /**
          * Add new settings
          */
         // add_filter( 'wpas_ajax_editor_tinymce_settings', array( $this, 'add_instance_callback' ), 10, 1 );
-
         /**
          * Ajax calls to load the editor.
          */
-        add_action('wp_ajax_wp_editor_ajax', array($this, 'editor_html'), 10, 0);
-        add_action('wp_ajax_nopriv_wp_editor_ajax', array($this, 'editor_html'), 10, 0);
-        add_action('wp_ajax_wp_editor_content_ajax', array($this, 'get_content'), 10, 0);
-
+        add_action('wp_ajax_wp_editor_ajax', [$this, 'editor_html'], 10, 0);
+        add_action('wp_ajax_nopriv_wp_editor_ajax', [$this, 'editor_html'], 10, 0);
+        add_action('wp_ajax_wp_editor_content_ajax', [$this, 'get_content'], 10, 0);
     }
 
     /**
@@ -80,12 +71,9 @@ class WPAS_Editor_Ajax {
      * @since  3.1.5
      * @return object    A single instance of this class.
      */
-    public static function get_instance()
-    {
-
+    public static function get_instance() {
         // If the single instance hasn't been set, set it now.
-        if (NULL == self::$instance)
-        {
+        if (NULL == self::$instance) {
             self::$instance = new self;
         }
 
@@ -100,62 +88,50 @@ class WPAS_Editor_Ajax {
      *
      * @since  3.1.5
      */
-    public function editor_html()
-    {
-
-        $post_id = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
+    public function editor_html() {
+        $post_id   = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
         $editor_id = filter_input(INPUT_POST, 'editor_id', FILTER_SANITIZE_STRING);
-        $name = filter_input(INPUT_POST, 'textarea_name', FILTER_SANITIZE_STRING);
-        $settings = (array)filter_input(INPUT_POST, 'editor_settings', FILTER_UNSAFE_RAW);
-
-        if (empty($editor_id))
-        {
+        $name      = filter_input(INPUT_POST, 'textarea_name', FILTER_SANITIZE_STRING);
+        $settings  = (array)filter_input(INPUT_POST, 'editor_settings', FILTER_UNSAFE_RAW);
+        if (empty($editor_id)) {
             wpas_debug_display(__('An editor ID is mandatory to load a new instance of TinyMCE', 'awesome-support'));
             die;
         }
-
         /**
          * If we got a post id then we gather the rest of the data from here.
          */
-        if (! empty($post_id))
-        {
+        if (!empty($post_id)) {
             $post = get_post($post_id);
         }
-
         /**
          * Get the content and filter it.
          */
-        $content = (isset($post) && ! empty($post)) ? $post->post_content : filter_input(INPUT_POST, 'editor_content', FILTER_SANITIZE_STRING);
+        $content = (isset($post) && !empty($post)) ? $post->post_content
+            : filter_input(INPUT_POST, 'editor_content', FILTER_SANITIZE_STRING);
         $content = apply_filters('the_content', $content);
-
         /**
          * Filter the user settings for the editor
          */
         $settings = $this->get_editor_settings($settings);
-
         /**
          * Force QuickTags to false due to the WordPress bug
          */
         $settings['quicktags'] = FALSE;
-
         /**
          * Make sure we have a textarea name
          */
-        if (! isset($settings['textarea_name']) || empty($settings['textarea_name']))
-        {
-            $settings['textarea_name'] = ! empty($name) ? $name : $editor_id;
+        if (!isset($settings['textarea_name']) || empty($settings['textarea_name'])) {
+            $settings['textarea_name'] = !empty($name) ? $name : $editor_id;
         }
-
         /**
          * Load a new instance of TinyMCE.
          */
         wp_editor($content, $editor_id, $settings);
-
         /**
          * Update the TinyMCE and QuickTags pre-init objects.
          */
         $mce_init = $this->get_mce_init($editor_id);
-        $qt_init = $this->get_qt_init($editor_id); ?>
+        $qt_init  = $this->get_qt_init($editor_id); ?>
 
         <script type="text/javascript">
             tinyMCEPreInit.mceInit = jQuery.extend(tinyMCEPreInit.mceInit, <?php echo $mce_init ?>);
@@ -169,13 +145,13 @@ class WPAS_Editor_Ajax {
      * Filter the editor settings.
      *
      * @since  3.1.5
+     *
      * @param  array $settings Editor user settings
+     *
      * @return array           Filtered settings
      */
-    protected function get_editor_settings($settings)
-    {
-
-        $allowed = array(
+    protected function get_editor_settings($settings) {
+        $allowed = [
             'wpautop',
             'media_buttons',
             'textarea_name',
@@ -187,18 +163,14 @@ class WPAS_Editor_Ajax {
             'dfw',
             'quicktags',
             'drag_drop_upload',
-        );
-
-        foreach ($settings as $setting => $value)
-        {
-            if (! array_key_exists($setting, $allowed))
-            {
-                unset($settings[$setting]);
+        ];
+        foreach ($settings as $setting => $value) {
+            if (!array_key_exists($setting, $allowed)) {
+                unset($settings[ $setting ]);
             }
         }
 
         return $settings;
-
     }
 
     /**
@@ -206,22 +178,16 @@ class WPAS_Editor_Ajax {
      *
      * @since  3.1.5
      */
-    private function get_mce_init($editor_id)
-    {
-
-        if (! empty($this->mce_settings))
-        {
+    private function get_mce_init($editor_id) {
+        if (!empty($this->mce_settings)) {
             $options = $this->_parse_init($this->mce_settings);
             $mceInit = "'$editor_id':{$options},";
             $mceInit = '{' . trim($mceInit, ',') . '}';
-        }
-        else
-        {
+        } else {
             $mceInit = '{}';
         }
 
         return $mceInit;
-
     }
 
     /**
@@ -229,24 +195,21 @@ class WPAS_Editor_Ajax {
      * from the existing array.
      *
      * @since  3.1.5
+     *
      * @param  array $init Existing settings
+     *
      * @return string       Stringified options
      */
-    private function _parse_init($init)
-    {
-
+    private function _parse_init($init) {
         $options = '';
-
-        foreach ($init as $k => $v)
-        {
-            if (is_bool($v))
-            {
+        foreach ($init as $k => $v) {
+            if (is_bool($v)) {
                 $val = $v ? 'true' : 'false';
                 $options .= $k . ':' . $val . ',';
                 continue;
-            }
-            elseif (! empty($v) && is_string($v) && (('{' == $v{0} && '}' == $v{strlen($v) - 1}) || ('[' == $v{0} && ']' == $v{strlen($v) - 1}) || preg_match('/^\(?function ?\(/', $v)))
-            {
+            } elseif (!empty($v) && is_string($v) && (('{' == $v{0} && '}' == $v{strlen($v) - 1}) || ('[' == $v{0} && ']' == $v{strlen($v) - 1}) || preg_match('/^\(?function ?\(/',
+                                                                                                                                                               $v))
+            ) {
                 $options .= $k . ':' . $v . ',';
                 continue;
             }
@@ -254,7 +217,6 @@ class WPAS_Editor_Ajax {
         }
 
         return '{' . trim($options, ' ,') . '}';
-
     }
 
     /**
@@ -262,22 +224,16 @@ class WPAS_Editor_Ajax {
      *
      * @since  3.1.5
      */
-    private function get_qt_init($editor_id)
-    {
-
-        if (! empty($this->qt_settings))
-        {
+    private function get_qt_init($editor_id) {
+        if (!empty($this->qt_settings)) {
             $options = $this->_parse_init($this->qt_settings);
-            $qtInit = "'$editor_id':{$options},";
-            $qtInit = '{' . trim($qtInit, ',') . '}';
-        }
-        else
-        {
+            $qtInit  = "'$editor_id':{$options},";
+            $qtInit  = '{' . trim($qtInit, ',') . '}';
+        } else {
             $qtInit = '{}';
         }
 
         return $qtInit;
-
     }
 
     /**
@@ -286,25 +242,17 @@ class WPAS_Editor_Ajax {
      * @since  3.1.5
      * @return void
      */
-    public function get_content()
-    {
-
+    public function get_content() {
         $post_id = filter_input(INPUT_POST, 'post_id', FILTER_SANITIZE_NUMBER_INT);
-
-        if (empty($post_id))
-        {
+        if (empty($post_id)) {
             echo '';
             die();
         }
-
         $post = get_post($post_id);
-
-        if (empty($post))
-        {
+        if (empty($post)) {
             echo '';
             die();
         }
-
         echo apply_filters('the_content', $post->post_content);
         die();
     }
@@ -316,13 +264,15 @@ class WPAS_Editor_Ajax {
      * the initial settings.
      *
      * @since  3.1.5
-     * @param  string $qtInit Initial QuickTags settings
+     *
+     * @param  string $qtInit    Initial QuickTags settings
      * @param  string $editor_id Editor ID
+     *
      * @return string            Unmodified settings
      */
-    public function get_quicktags_settings($qtInit, $editor_id)
-    {
+    public function get_quicktags_settings($qtInit, $editor_id) {
         $this->qt_settings = apply_filters('wpas_ajax_editor_quicktags_settings', $qtInit);
+
         return apply_filters('wpas_ajax_editor_quicktags_settings', $qtInit);
     }
 
@@ -333,13 +283,15 @@ class WPAS_Editor_Ajax {
      * the initial settings.
      *
      * @since  3.1.5
-     * @param  string $qtInit Initial TinyMCE settings
+     *
+     * @param  string $qtInit    Initial TinyMCE settings
      * @param  string $editor_id Editor ID
+     *
      * @return string            Unmodified settings
      */
-    public function get_tinymce_settings($mceInit, $editor_id)
-    {
+    public function get_tinymce_settings($mceInit, $editor_id) {
         $this->mce_settings = apply_filters('wpas_ajax_editor_tinymce_settings', $mceInit);
+
         return apply_filters('wpas_ajax_editor_tinymce_settings', $mceInit);
     }
 
@@ -348,15 +300,17 @@ class WPAS_Editor_Ajax {
      * http://stackoverflow.com/a/17934723/1414881
      *
      * @since  3.1.5
+     *
      * @param  array $settings Original TinyCME settings
+     *
      * @return array           Settings containing our init callback
      */
-    public function add_instance_callback($settings)
-    {
-        $settings['setup'] = 'function(ed) {
+    public function add_instance_callback($settings) {
+        $settings['setup']
+            = 'function(ed) {
 			ed.on("init", getEditorContent(ed));
 		}';
+
         return $settings;
     }
-
 }

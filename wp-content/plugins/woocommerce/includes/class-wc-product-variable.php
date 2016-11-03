@@ -127,13 +127,13 @@ class WC_Product_Variable extends WC_Product {
 	 * @param  int $product_id
 	 */
 	public static function sync_stock_status($product_id) {
-		$children = get_posts([
-			                      'post_parent'    => $product_id,
-			                      'posts_per_page' => -1,
-			                      'post_type'      => 'product_variation',
-			                      'fields'         => 'ids',
-			                      'post_status'    => 'publish'
-		                      ]);
+		$children     = get_posts([
+			                          'post_parent'    => $product_id,
+			                          'posts_per_page' => -1,
+			                          'post_type'      => 'product_variation',
+			                          'fields'         => 'ids',
+			                          'post_status'    => 'publish'
+		                          ]);
 		$stock_status = 'outofstock';
 		foreach ($children as $child_id) {
 			$child_stock_status = get_post_meta($child_id, '_stock_status', TRUE);
@@ -290,21 +290,6 @@ class WC_Product_Variable extends WC_Product {
 	}
 
 	/**
-	 * Returns whether or not the product is on sale.
-	 *
-	 * @return bool
-	 */
-	public function is_on_sale() {
-		$is_on_sale = FALSE;
-		$prices     = $this->get_variation_prices();
-		if ($prices['regular_price'] !== $prices['sale_price'] && $prices['sale_price'] === $prices['price']) {
-			$is_on_sale = TRUE;
-		}
-
-		return apply_filters('woocommerce_product_is_on_sale', $is_on_sale, $this);
-	}
-
-	/**
 	 * Get child product.
 	 *
 	 * @access public
@@ -328,6 +313,65 @@ class WC_Product_Variable extends WC_Product {
 	 */
 	public function has_child() {
 		return sizeof($this->get_children()) ? TRUE : FALSE;
+	}
+
+	/**
+	 * Returns the price in html format.
+	 *
+	 * @access public
+	 *
+	 * @param string $price (default: '')
+	 *
+	 * @return string
+	 */
+	public function get_price_html($price = '') {
+		$prices = $this->get_variation_prices(TRUE);
+		// No variations, or no active variation prices
+		if ($this->get_price() === '' || empty($prices['price'])) {
+			$price = apply_filters('woocommerce_variable_empty_price_html', '', $this);
+		} else {
+			$min_price = current($prices['price']);
+			$max_price = end($prices['price']);
+			$price     = $min_price !== $max_price ? sprintf(_x('%1$s&ndash;%2$s', 'Price range: from-to',
+			                                                    'woocommerce'), wc_price($min_price),
+			                                                 wc_price($max_price)) : wc_price($min_price);
+			$is_free   = $min_price == 0 && $max_price == 0;
+			if ($this->is_on_sale()) {
+				$min_regular_price = current($prices['regular_price']);
+				$max_regular_price = end($prices['regular_price']);
+				$regular_price     = $min_regular_price !== $max_regular_price ? sprintf(_x('%1$s&ndash;%2$s',
+				                                                                            'Price range: from-to',
+				                                                                            'woocommerce'),
+				                                                                         wc_price($min_regular_price),
+				                                                                         wc_price($max_regular_price))
+					: wc_price($min_regular_price);
+				$price             = apply_filters('woocommerce_variable_sale_price_html',
+				                                   $this->get_price_html_from_to($regular_price,
+				                                                                 $price) . $this->get_price_suffix(),
+				                                   $this);
+			} elseif ($is_free) {
+				$price = apply_filters('woocommerce_variable_free_price_html', __('Free!', 'woocommerce'), $this);
+			} else {
+				$price = apply_filters('woocommerce_variable_price_html', $price . $this->get_price_suffix(), $this);
+			}
+		}
+
+		return apply_filters('woocommerce_get_price_html', $price, $this);
+	}
+
+	/**
+	 * Returns whether or not the product is on sale.
+	 *
+	 * @return bool
+	 */
+	public function is_on_sale() {
+		$is_on_sale = FALSE;
+		$prices     = $this->get_variation_prices();
+		if ($prices['regular_price'] !== $prices['sale_price'] && $prices['sale_price'] === $prices['price']) {
+			$is_on_sale = TRUE;
+		}
+
+		return apply_filters('woocommerce_product_is_on_sale', $is_on_sale, $this);
 	}
 
 	/**
@@ -415,50 +459,6 @@ class WC_Product_Variable extends WC_Product {
 	}
 
 	/**
-	 * Returns the price in html format.
-	 *
-	 * @access public
-	 *
-	 * @param string $price (default: '')
-	 *
-	 * @return string
-	 */
-	public function get_price_html($price = '') {
-		$prices = $this->get_variation_prices(TRUE);
-		// No variations, or no active variation prices
-		if ($this->get_price() === '' || empty($prices['price'])) {
-			$price = apply_filters('woocommerce_variable_empty_price_html', '', $this);
-		} else {
-			$min_price = current($prices['price']);
-			$max_price = end($prices['price']);
-			$price     = $min_price !== $max_price ? sprintf(_x('%1$s&ndash;%2$s', 'Price range: from-to',
-			                                                    'woocommerce'), wc_price($min_price),
-			                                                 wc_price($max_price)) : wc_price($min_price);
-			$is_free   = $min_price == 0 && $max_price == 0;
-			if ($this->is_on_sale()) {
-				$min_regular_price = current($prices['regular_price']);
-				$max_regular_price = end($prices['regular_price']);
-				$regular_price     = $min_regular_price !== $max_regular_price ? sprintf(_x('%1$s&ndash;%2$s',
-				                                                                            'Price range: from-to',
-				                                                                            'woocommerce'),
-				                                                                         wc_price($min_regular_price),
-				                                                                         wc_price($max_regular_price))
-					: wc_price($min_regular_price);
-				$price             = apply_filters('woocommerce_variable_sale_price_html',
-				                                   $this->get_price_html_from_to($regular_price,
-				                                                                 $price) . $this->get_price_suffix(),
-				                                   $this);
-			} elseif ($is_free) {
-				$price = apply_filters('woocommerce_variable_free_price_html', __('Free!', 'woocommerce'), $this);
-			} else {
-				$price = apply_filters('woocommerce_variable_price_html', $price . $this->get_price_suffix(), $this);
-			}
-		}
-
-		return apply_filters('woocommerce_get_price_html', $price, $this);
-	}
-
-	/**
 	 * If set, get the default attributes for a variable product.
 	 *
 	 * @access public
@@ -514,7 +514,7 @@ class WC_Product_Variable extends WC_Product {
 			if (!isset($match_attributes[ $attribute_field_name ])) {
 				return 0;
 			}
-			$value = wc_clean($match_attributes[ $attribute_field_name ]);
+			$value                      = wc_clean($match_attributes[ $attribute_field_name ]);
 			$query_args['meta_query'][] = [
 				'relation' => 'OR',
 				[

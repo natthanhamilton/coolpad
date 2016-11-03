@@ -1,0 +1,169 @@
+@import "../variables";
+@import "../components/grid";
+
+.overview {
+  .wpb_content_element {
+    .reset;
+  }
+  .news {
+    @media only screen and (min-width: @break-sm) {
+      padding-right: 30px;
+    }
+    .title {
+      margin-bottom: 30px;
+      p {
+        font-weight: normal;
+        .font-family-light;
+        font-size: 28px;
+        line-height: 1.5;
+        color: #5b6770;
+        margin: 0;
+        margin-bottom: 30px;
+        @media only screen and (max-width: @break-sm) {
+          text-align: center;
+        }
+      }
+    }
+    .item {
+      display: block;
+      width: 100%;
+      margin-bottom: 10px;
+      @media only screen and (max-width: @break-sm) {
+        .vertical-center;
+      }
+      .date {
+        .make-xs-column(2);
+        padding: 0;
+        .font-family-light;
+        font-size: 18px;
+        line-height: 1.3;
+        color: #5b6770;
+        white-space: nowrap;
+      }
+      .news {
+        .make-xs-column(10);
+        left: 20px;
+        .font-family-book;
+        font-size: 18px;
+        color: #5b6770;
+        .multi-line-truncate(1.3em, 2);
+        @media only screen and (max-width: @break-sm) {
+          .multi-line-truncate(1.3em, 1);
+        }
+      }
+    }
+  }
+  .featured-image {
+    .vc_column-inner {
+      .reset;
+      background: no-repeat center center;
+      -webkit-background-size: cover;
+      -moz-background-size: cover;
+      -o-background-size: cover;
+      background-size: cover;
+      width: 100%;
+      height: 240px;
+
+      //Respnsive elements
+      @media only screen and (max-width: @break-md) {
+        height: 300px;
+      }
+      @media only screen and (max-width: @break-sm) {
+        height: 250px;
+        margin-bottom: 24px;
+        margin-top: 80px;
+      }
+      @media only screen and (max-width: @break-xs) {
+        height: 150px;
+        margin-top: 27px;
+      }
+    }
+  }
+  .company-statement {
+    .title {
+      margin-bottom: 30px;
+      p {
+        font-weight: normal;
+        .font-family-light;
+        font-size: 28px;
+        line-height: 1.5;
+        color: #5b6770;
+        margin: 0;
+        @media only screen and (max-width: @break-sm) {
+          text-align: center;
+        }
+      }
+    }
+    .content {
+      .font-family-light;
+      font-size: 18px;
+      line-height: 1.3;
+      color: #000000;
+      @media only screen and (max-width: @break-sm) {
+        text-align: center;
+      }
+    }
+    @media only screen and (min-width: @break-sm) {
+      padding-left: 30px;
+    }
+  }
+  @media only screen and (max-width: @break-sm) {
+    .vc_col-sm-4 {
+      width: 100%;
+    }
+  }
+}
+
+.info-tiles-title {
+  .vc_column-inner {
+    text-align: center;
+
+    // Responsive elements
+    margin-bottom: 45px;
+    @media only screen and (max-width: @break-md) {
+      margin-bottom: 50px;
+    }
+    @media only screen and (max-width: @break-sm) {
+      margin-bottom: 38px;
+    }
+    @media only screen and (max-width: @break-xs) {
+      margin-bottom: 20px;
+    }
+  }
+  p {
+    .font-family-light;
+    color: #5b6770;
+
+    // Responsive elements
+    font-size: 64px;
+    @media only screen and (max-width: @break-md) {
+      font-size: 48px;
+    }
+    @media only screen and (max-width: @break-xs) {
+      font-size: 24px;
+    }
+  }
+}
+
+.highlights {
+  .vc_column-inner {
+    height: 240px;
+    background-position: center;
+    background-size: cover;
+    @media only screen and (max-width: @break-md) {
+      height: 300px;
+    }
+    @media only screen and (max-width: @break-sm) {
+      height: 250px;
+    }
+  }
+}
+
+.ult_modal-content {
+  border-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.wpb_video_wrapper {
+  padding-top: 0 !important
+}

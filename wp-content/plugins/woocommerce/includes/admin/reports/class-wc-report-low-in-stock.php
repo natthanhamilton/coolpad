@@ -33,9 +33,9 @@ class WC_Report_Low_In_Stock extends WC_Report_Stock {
 		$this->max_items = 0;
 		$this->items     = [];
 		// Get products using a query - this is too advanced for get_posts :(
-		$stock   = absint(max(get_option('woocommerce_notify_low_stock_amount'), 1));
-		$nostock = absint(max(get_option('woocommerce_notify_no_stock_amount'), 0));
-		$query_from = apply_filters('woocommerce_report_low_in_stock_query_from', "FROM {$wpdb->posts} as posts
+		$stock           = absint(max(get_option('woocommerce_notify_low_stock_amount'), 1));
+		$nostock         = absint(max(get_option('woocommerce_notify_no_stock_amount'), 0));
+		$query_from      = apply_filters('woocommerce_report_low_in_stock_query_from', "FROM {$wpdb->posts} as posts
 			INNER JOIN {$wpdb->postmeta} AS postmeta ON posts.ID = postmeta.post_id
 			INNER JOIN {$wpdb->postmeta} AS postmeta2 ON posts.ID = postmeta2.post_id
 			WHERE 1=1
@@ -46,8 +46,8 @@ class WC_Report_Low_In_Stock extends WC_Report_Stock {
 			AND postmeta.meta_key = '_stock' AND CAST(postmeta.meta_value AS SIGNED) > '{$nostock}'
 		");
 		$this->items
-			             = $wpdb->get_results($wpdb->prepare("SELECT posts.ID as id, posts.post_parent as parent {$query_from} GROUP BY posts.ID ORDER BY posts.post_title DESC LIMIT %d, %d;",
-			                                                 ($current_page - 1) * $per_page, $per_page));
+		                 = $wpdb->get_results($wpdb->prepare("SELECT posts.ID as id, posts.post_parent as parent {$query_from} GROUP BY posts.ID ORDER BY posts.post_title DESC LIMIT %d, %d;",
+		                                                     ($current_page - 1) * $per_page, $per_page));
 		$this->max_items = $wpdb->get_var("SELECT COUNT( DISTINCT posts.ID ) {$query_from};");
 	}
 }

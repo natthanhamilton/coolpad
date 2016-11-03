@@ -1451,6 +1451,19 @@ if (!empty($atom_structure['sample_description_table'][$i]['width']) && !empty($
 		return $atom_structure;
 	}
 
+
+	public function quicktime_read_mp4_descr_length($data, &$offset) {
+		// http://libquicktime.sourcearchive.com/documentation/2:1.0.2plus-pdebian-2build1/esds_8c-source.html
+		$num_bytes = 0;
+		$length    = 0;
+		do {
+			$b = ord(substr($data, $offset++, 1));
+			$length = ($length << 7) | ($b & 0x7F);
+		} while (($b & 0x80) && ($num_bytes++ < 4));
+		return $length;
+	}
+
+
 	public function QuicktimeLanguageLookup($languageid) {
 		// http://developer.apple.com/library/mac/#documentation/QuickTime/QTFF/QTFFChap4/qtff4.html#//apple_ref/doc/uid/TP40000939-CH206-34353
 		static $QuicktimeLanguageLookup = array();
@@ -1588,264 +1601,6 @@ if (!empty($atom_structure['sample_description_table'][$i]['width']) && !empty($
 		return (isset($QuicktimeLanguageLookup[$languageid]) ? $QuicktimeLanguageLookup[$languageid] : 'invalid');
 	}
 
-	public function QuicktimeContentRatingLookup($rtng) {
-		static $QuicktimeContentRatingLookup = array();
-		if (empty($QuicktimeContentRatingLookup)) {
-			$QuicktimeContentRatingLookup[0]  = 'None';
-			$QuicktimeContentRatingLookup[2]  = 'Clean';
-			$QuicktimeContentRatingLookup[4]  = 'Explicit';
-		}
-		return (isset($QuicktimeContentRatingLookup[$rtng]) ? $QuicktimeContentRatingLookup[$rtng] : 'invalid');
-	}
-
-	public function QuicktimeSTIKLookup($stik) {
-		static $QuicktimeSTIKLookup = array();
-		if (empty($QuicktimeSTIKLookup)) {
-			$QuicktimeSTIKLookup[0]  = 'Movie';
-			$QuicktimeSTIKLookup[1]  = 'Normal';
-			$QuicktimeSTIKLookup[2]  = 'Audiobook';
-			$QuicktimeSTIKLookup[5]  = 'Whacked Bookmark';
-			$QuicktimeSTIKLookup[6]  = 'Music Video';
-			$QuicktimeSTIKLookup[9]  = 'Short Film';
-			$QuicktimeSTIKLookup[10] = 'TV Show';
-			$QuicktimeSTIKLookup[11] = 'Booklet';
-			$QuicktimeSTIKLookup[14] = 'Ringtone';
-			$QuicktimeSTIKLookup[21] = 'Podcast';
-		}
-		return (isset($QuicktimeSTIKLookup[$stik]) ? $QuicktimeSTIKLookup[$stik] : 'invalid');
-	}
-
-	public function QuicktimeStoreFrontCodeLookup($sfid) {
-		static $QuicktimeStoreFrontCodeLookup = array();
-		if (empty($QuicktimeStoreFrontCodeLookup)) {
-			$QuicktimeStoreFrontCodeLookup[143460] = 'Australia';
-			$QuicktimeStoreFrontCodeLookup[143445] = 'Austria';
-			$QuicktimeStoreFrontCodeLookup[143446] = 'Belgium';
-			$QuicktimeStoreFrontCodeLookup[143455] = 'Canada';
-			$QuicktimeStoreFrontCodeLookup[143458] = 'Denmark';
-			$QuicktimeStoreFrontCodeLookup[143447] = 'Finland';
-			$QuicktimeStoreFrontCodeLookup[143442] = 'France';
-			$QuicktimeStoreFrontCodeLookup[143443] = 'Germany';
-			$QuicktimeStoreFrontCodeLookup[143448] = 'Greece';
-			$QuicktimeStoreFrontCodeLookup[143449] = 'Ireland';
-			$QuicktimeStoreFrontCodeLookup[143450] = 'Italy';
-			$QuicktimeStoreFrontCodeLookup[143462] = 'Japan';
-			$QuicktimeStoreFrontCodeLookup[143451] = 'Luxembourg';
-			$QuicktimeStoreFrontCodeLookup[143452] = 'Netherlands';
-			$QuicktimeStoreFrontCodeLookup[143461] = 'New Zealand';
-			$QuicktimeStoreFrontCodeLookup[143457] = 'Norway';
-			$QuicktimeStoreFrontCodeLookup[143453] = 'Portugal';
-			$QuicktimeStoreFrontCodeLookup[143454] = 'Spain';
-			$QuicktimeStoreFrontCodeLookup[143456] = 'Sweden';
-			$QuicktimeStoreFrontCodeLookup[143459] = 'Switzerland';
-			$QuicktimeStoreFrontCodeLookup[143444] = 'United Kingdom';
-			$QuicktimeStoreFrontCodeLookup[143441] = 'United States';
-		}
-		return (isset($QuicktimeStoreFrontCodeLookup[$sfid]) ? $QuicktimeStoreFrontCodeLookup[$sfid] : 'invalid');
-	}
-
-	public function CopyToAppropriateCommentsSection($keyname, $data, $boxname='') {
-		static $handyatomtranslatorarray = array();
-		if (empty($handyatomtranslatorarray)) {
-			$handyatomtranslatorarray["\xA9".'cpy'] = 'copyright';
-			$handyatomtranslatorarray["\xA9".'day'] = 'creation_date';    // iTunes 4.0
-			$handyatomtranslatorarray["\xA9".'dir'] = 'director';
-			$handyatomtranslatorarray["\xA9".'ed1'] = 'edit1';
-			$handyatomtranslatorarray["\xA9".'ed2'] = 'edit2';
-			$handyatomtranslatorarray["\xA9".'ed3'] = 'edit3';
-			$handyatomtranslatorarray["\xA9".'ed4'] = 'edit4';
-			$handyatomtranslatorarray["\xA9".'ed5'] = 'edit5';
-			$handyatomtranslatorarray["\xA9".'ed6'] = 'edit6';
-			$handyatomtranslatorarray["\xA9".'ed7'] = 'edit7';
-			$handyatomtranslatorarray["\xA9".'ed8'] = 'edit8';
-			$handyatomtranslatorarray["\xA9".'ed9'] = 'edit9';
-			$handyatomtranslatorarray["\xA9".'fmt'] = 'format';
-			$handyatomtranslatorarray["\xA9".'inf'] = 'information';
-			$handyatomtranslatorarray["\xA9".'prd'] = 'producer';
-			$handyatomtranslatorarray["\xA9".'prf'] = 'performers';
-			$handyatomtranslatorarray["\xA9".'req'] = 'system_requirements';
-			$handyatomtranslatorarray["\xA9".'src'] = 'source_credit';
-			$handyatomtranslatorarray["\xA9".'wrt'] = 'writer';
-
-			// http://www.geocities.com/xhelmboyx/quicktime/formats/qtm-layout.txt
-			$handyatomtranslatorarray["\xA9".'nam'] = 'title';           // iTunes 4.0
-			$handyatomtranslatorarray["\xA9".'cmt'] = 'comment';         // iTunes 4.0
-			$handyatomtranslatorarray["\xA9".'wrn'] = 'warning';
-			$handyatomtranslatorarray["\xA9".'hst'] = 'host_computer';
-			$handyatomtranslatorarray["\xA9".'mak'] = 'make';
-			$handyatomtranslatorarray["\xA9".'mod'] = 'model';
-			$handyatomtranslatorarray["\xA9".'PRD'] = 'product';
-			$handyatomtranslatorarray["\xA9".'swr'] = 'software';
-			$handyatomtranslatorarray["\xA9".'aut'] = 'author';
-			$handyatomtranslatorarray["\xA9".'ART'] = 'artist';
-			$handyatomtranslatorarray["\xA9".'trk'] = 'track';
-			$handyatomtranslatorarray["\xA9".'alb'] = 'album';           // iTunes 4.0
-			$handyatomtranslatorarray["\xA9".'com'] = 'comment';
-			$handyatomtranslatorarray["\xA9".'gen'] = 'genre';           // iTunes 4.0
-			$handyatomtranslatorarray["\xA9".'ope'] = 'composer';
-			$handyatomtranslatorarray["\xA9".'url'] = 'url';
-			$handyatomtranslatorarray["\xA9".'enc'] = 'encoder';
-
-			// http://atomicparsley.sourceforge.net/mpeg-4files.html
-			$handyatomtranslatorarray["\xA9".'art'] = 'artist';           // iTunes 4.0
-			$handyatomtranslatorarray['aART'] = 'album_artist';
-			$handyatomtranslatorarray['trkn'] = 'track_number';     // iTunes 4.0
-			$handyatomtranslatorarray['disk'] = 'disc_number';      // iTunes 4.0
-			$handyatomtranslatorarray['gnre'] = 'genre';            // iTunes 4.0
-			$handyatomtranslatorarray["\xA9".'too'] = 'encoder';          // iTunes 4.0
-			$handyatomtranslatorarray['tmpo'] = 'bpm';              // iTunes 4.0
-			$handyatomtranslatorarray['cprt'] = 'copyright';        // iTunes 4.0?
-			$handyatomtranslatorarray['cpil'] = 'compilation';      // iTunes 4.0
-			$handyatomtranslatorarray['covr'] = 'picture';          // iTunes 4.0
-			$handyatomtranslatorarray['rtng'] = 'rating';           // iTunes 4.0
-			$handyatomtranslatorarray["\xA9".'grp'] = 'grouping';         // iTunes 4.2
-			$handyatomtranslatorarray['stik'] = 'stik';             // iTunes 4.9
-			$handyatomtranslatorarray['pcst'] = 'podcast';          // iTunes 4.9
-			$handyatomtranslatorarray['catg'] = 'category';         // iTunes 4.9
-			$handyatomtranslatorarray['keyw'] = 'keyword';          // iTunes 4.9
-			$handyatomtranslatorarray['purl'] = 'podcast_url';      // iTunes 4.9
-			$handyatomtranslatorarray['egid'] = 'episode_guid';     // iTunes 4.9
-			$handyatomtranslatorarray['desc'] = 'description';      // iTunes 5.0
-			$handyatomtranslatorarray["\xA9".'lyr'] = 'lyrics';           // iTunes 5.0
-			$handyatomtranslatorarray['tvnn'] = 'tv_network_name';  // iTunes 6.0
-			$handyatomtranslatorarray['tvsh'] = 'tv_show_name';     // iTunes 6.0
-			$handyatomtranslatorarray['tvsn'] = 'tv_season';        // iTunes 6.0
-			$handyatomtranslatorarray['tves'] = 'tv_episode';       // iTunes 6.0
-			$handyatomtranslatorarray['purd'] = 'purchase_date';    // iTunes 6.0.2
-			$handyatomtranslatorarray['pgap'] = 'gapless_playback'; // iTunes 7.0
-
-			// http://www.geocities.com/xhelmboyx/quicktime/formats/mp4-layout.txt
-
-
-
-			// boxnames:
-			/*
-			$handyatomtranslatorarray['iTunSMPB']                    = 'iTunSMPB';
-			$handyatomtranslatorarray['iTunNORM']                    = 'iTunNORM';
-			$handyatomtranslatorarray['Encoding Params']             = 'Encoding Params';
-			$handyatomtranslatorarray['replaygain_track_gain']       = 'replaygain_track_gain';
-			$handyatomtranslatorarray['replaygain_track_peak']       = 'replaygain_track_peak';
-			$handyatomtranslatorarray['replaygain_track_minmax']     = 'replaygain_track_minmax';
-			$handyatomtranslatorarray['MusicIP PUID']                = 'MusicIP PUID';
-			$handyatomtranslatorarray['MusicBrainz Artist Id']       = 'MusicBrainz Artist Id';
-			$handyatomtranslatorarray['MusicBrainz Album Id']        = 'MusicBrainz Album Id';
-			$handyatomtranslatorarray['MusicBrainz Album Artist Id'] = 'MusicBrainz Album Artist Id';
-			$handyatomtranslatorarray['MusicBrainz Track Id']        = 'MusicBrainz Track Id';
-			$handyatomtranslatorarray['MusicBrainz Disc Id']         = 'MusicBrainz Disc Id';
-
-			// http://age.hobba.nl/audio/tag_frame_reference.html
-			$handyatomtranslatorarray['PLAY_COUNTER']                = 'play_counter'; // Foobar2000 - http://www.getid3.org/phpBB3/viewtopic.php?t=1355
-			$handyatomtranslatorarray['MEDIATYPE']                   = 'mediatype';    // Foobar2000 - http://www.getid3.org/phpBB3/viewtopic.php?t=1355
-			*/
-		}
-		$info = &$this->getid3->info;
-		$comment_key = '';
-		if ($boxname && ($boxname != $keyname)) {
-			$comment_key = (isset($handyatomtranslatorarray[$boxname]) ? $handyatomtranslatorarray[$boxname] : $boxname);
-		} elseif (isset($handyatomtranslatorarray[$keyname])) {
-			$comment_key = $handyatomtranslatorarray[$keyname];
-		}
-		if ($comment_key) {
-			if ($comment_key == 'picture') {
-				if (!is_array($data)) {
-					$image_mime = '';
-					if (preg_match('#^\x89\x50\x4E\x47\x0D\x0A\x1A\x0A#', $data)) {
-						$image_mime = 'image/png';
-					} elseif (preg_match('#^\xFF\xD8\xFF#', $data)) {
-						$image_mime = 'image/jpeg';
-					} elseif (preg_match('#^GIF#', $data)) {
-						$image_mime = 'image/gif';
-					} elseif (preg_match('#^BM#', $data)) {
-						$image_mime = 'image/bmp';
-					}
-					$data = array('data'=>$data, 'image_mime'=>$image_mime);
-				}
-			}
-			$info['quicktime']['comments'][$comment_key][] = $data;
-		}
-		return true;
-	}
-
-	public function QuicktimeDCOMLookup($compressionid) {
-		static $QuicktimeDCOMLookup = array();
-		if (empty($QuicktimeDCOMLookup)) {
-			$QuicktimeDCOMLookup['zlib'] = 'ZLib Deflate';
-			$QuicktimeDCOMLookup['adec'] = 'Apple Compression';
-		}
-		return (isset($QuicktimeDCOMLookup[$compressionid]) ? $QuicktimeDCOMLookup[$compressionid] : '');
-	}
-
-	public function NoNullString($nullterminatedstring) {
-		// remove the single null terminator on null terminated strings
-		if (substr($nullterminatedstring, strlen($nullterminatedstring) - 1, 1) === "\x00") {
-			return substr($nullterminatedstring, 0, strlen($nullterminatedstring) - 1);
-		}
-		return $nullterminatedstring;
-	}
-
-	public function QuicktimeAudioCodecLookup($codecid) {
-		static $QuicktimeAudioCodecLookup = array();
-		if (empty($QuicktimeAudioCodecLookup)) {
-			$QuicktimeAudioCodecLookup['.mp3']          = 'Fraunhofer MPEG Layer-III alias';
-			$QuicktimeAudioCodecLookup['aac ']          = 'ISO/IEC 14496-3 AAC';
-			$QuicktimeAudioCodecLookup['agsm']          = 'Apple GSM 10:1';
-			$QuicktimeAudioCodecLookup['alac']          = 'Apple Lossless Audio Codec';
-			$QuicktimeAudioCodecLookup['alaw']          = 'A-law 2:1';
-			$QuicktimeAudioCodecLookup['conv']          = 'Sample Format';
-			$QuicktimeAudioCodecLookup['dvca']          = 'DV';
-			$QuicktimeAudioCodecLookup['dvi ']          = 'DV 4:1';
-			$QuicktimeAudioCodecLookup['eqal']          = 'Frequency Equalizer';
-			$QuicktimeAudioCodecLookup['fl32']          = '32-bit Floating Point';
-			$QuicktimeAudioCodecLookup['fl64']          = '64-bit Floating Point';
-			$QuicktimeAudioCodecLookup['ima4']          = 'Interactive Multimedia Association 4:1';
-			$QuicktimeAudioCodecLookup['in24']          = '24-bit Integer';
-			$QuicktimeAudioCodecLookup['in32']          = '32-bit Integer';
-			$QuicktimeAudioCodecLookup['lpc ']          = 'LPC 23:1';
-			$QuicktimeAudioCodecLookup['MAC3']          = 'Macintosh Audio Compression/Expansion (MACE) 3:1';
-			$QuicktimeAudioCodecLookup['MAC6']          = 'Macintosh Audio Compression/Expansion (MACE) 6:1';
-			$QuicktimeAudioCodecLookup['mixb']          = '8-bit Mixer';
-			$QuicktimeAudioCodecLookup['mixw']          = '16-bit Mixer';
-			$QuicktimeAudioCodecLookup['mp4a']          = 'ISO/IEC 14496-3 AAC';
-			$QuicktimeAudioCodecLookup['MS'."\x00\x02"] = 'Microsoft ADPCM';
-			$QuicktimeAudioCodecLookup['MS'."\x00\x11"] = 'DV IMA';
-			$QuicktimeAudioCodecLookup['MS'."\x00\x55"] = 'Fraunhofer MPEG Layer III';
-			$QuicktimeAudioCodecLookup['NONE']          = 'No Encoding';
-			$QuicktimeAudioCodecLookup['Qclp']          = 'Qualcomm PureVoice';
-			$QuicktimeAudioCodecLookup['QDM2']          = 'QDesign Music 2';
-			$QuicktimeAudioCodecLookup['QDMC']          = 'QDesign Music 1';
-			$QuicktimeAudioCodecLookup['ratb']          = '8-bit Rate';
-			$QuicktimeAudioCodecLookup['ratw']          = '16-bit Rate';
-			$QuicktimeAudioCodecLookup['raw ']          = 'raw PCM';
-			$QuicktimeAudioCodecLookup['sour']          = 'Sound Source';
-			$QuicktimeAudioCodecLookup['sowt']          = 'signed/two\'s complement (Little Endian)';
-			$QuicktimeAudioCodecLookup['str1']          = 'Iomega MPEG layer II';
-			$QuicktimeAudioCodecLookup['str2']          = 'Iomega MPEG *layer II';
-			$QuicktimeAudioCodecLookup['str3']          = 'Iomega MPEG **layer II';
-			$QuicktimeAudioCodecLookup['str4']          = 'Iomega MPEG ***layer II';
-			$QuicktimeAudioCodecLookup['twos']          = 'signed/two\'s complement (Big Endian)';
-			$QuicktimeAudioCodecLookup['ulaw']          = 'mu-law 2:1';
-		}
-		return (isset($QuicktimeAudioCodecLookup[$codecid]) ? $QuicktimeAudioCodecLookup[$codecid] : '');
-	}
-
-	public function QuicktimeColorNameLookup($colordepthid) {
-		static $QuicktimeColorNameLookup = array();
-		if (empty($QuicktimeColorNameLookup)) {
-			$QuicktimeColorNameLookup[1]  = '2-color (monochrome)';
-			$QuicktimeColorNameLookup[2]  = '4-color';
-			$QuicktimeColorNameLookup[4]  = '16-color';
-			$QuicktimeColorNameLookup[8]  = '256-color';
-			$QuicktimeColorNameLookup[16] = 'thousands (16-bit color)';
-			$QuicktimeColorNameLookup[24] = 'millions (24-bit color)';
-			$QuicktimeColorNameLookup[32] = 'millions+ (32-bit color)';
-			$QuicktimeColorNameLookup[33] = 'black & white';
-			$QuicktimeColorNameLookup[34] = '4-gray';
-			$QuicktimeColorNameLookup[36] = '16-gray';
-			$QuicktimeColorNameLookup[40] = '256-gray';
-		}
-		return (isset($QuicktimeColorNameLookup[$colordepthid]) ? $QuicktimeColorNameLookup[$colordepthid] : 'invalid');
-	}
-
 	public function QuicktimeVideoCodecLookup($codecid) {
 		static $QuicktimeVideoCodecLookup = array();
 		if (empty($QuicktimeVideoCodecLookup)) {
@@ -1905,20 +1660,93 @@ if (!empty($atom_structure['sample_description_table'][$i]['width']) && !empty($
 		return (isset($QuicktimeVideoCodecLookup[$codecid]) ? $QuicktimeVideoCodecLookup[$codecid] : '');
 	}
 
-	public function Pascal2String($pascalstring) {
-		// Pascal strings have 1 unsigned byte at the beginning saying how many chars (1-255) are in the string
-		return substr($pascalstring, 1);
+	public function QuicktimeAudioCodecLookup($codecid) {
+		static $QuicktimeAudioCodecLookup = array();
+		if (empty($QuicktimeAudioCodecLookup)) {
+			$QuicktimeAudioCodecLookup['.mp3']          = 'Fraunhofer MPEG Layer-III alias';
+			$QuicktimeAudioCodecLookup['aac ']          = 'ISO/IEC 14496-3 AAC';
+			$QuicktimeAudioCodecLookup['agsm']          = 'Apple GSM 10:1';
+			$QuicktimeAudioCodecLookup['alac']          = 'Apple Lossless Audio Codec';
+			$QuicktimeAudioCodecLookup['alaw']          = 'A-law 2:1';
+			$QuicktimeAudioCodecLookup['conv']          = 'Sample Format';
+			$QuicktimeAudioCodecLookup['dvca']          = 'DV';
+			$QuicktimeAudioCodecLookup['dvi ']          = 'DV 4:1';
+			$QuicktimeAudioCodecLookup['eqal']          = 'Frequency Equalizer';
+			$QuicktimeAudioCodecLookup['fl32']          = '32-bit Floating Point';
+			$QuicktimeAudioCodecLookup['fl64']          = '64-bit Floating Point';
+			$QuicktimeAudioCodecLookup['ima4']          = 'Interactive Multimedia Association 4:1';
+			$QuicktimeAudioCodecLookup['in24']          = '24-bit Integer';
+			$QuicktimeAudioCodecLookup['in32']          = '32-bit Integer';
+			$QuicktimeAudioCodecLookup['lpc ']          = 'LPC 23:1';
+			$QuicktimeAudioCodecLookup['MAC3']          = 'Macintosh Audio Compression/Expansion (MACE) 3:1';
+			$QuicktimeAudioCodecLookup['MAC6']          = 'Macintosh Audio Compression/Expansion (MACE) 6:1';
+			$QuicktimeAudioCodecLookup['mixb']          = '8-bit Mixer';
+			$QuicktimeAudioCodecLookup['mixw']          = '16-bit Mixer';
+			$QuicktimeAudioCodecLookup['mp4a']          = 'ISO/IEC 14496-3 AAC';
+			$QuicktimeAudioCodecLookup['MS'."\x00\x02"] = 'Microsoft ADPCM';
+			$QuicktimeAudioCodecLookup['MS'."\x00\x11"] = 'DV IMA';
+			$QuicktimeAudioCodecLookup['MS'."\x00\x55"] = 'Fraunhofer MPEG Layer III';
+			$QuicktimeAudioCodecLookup['NONE']          = 'No Encoding';
+			$QuicktimeAudioCodecLookup['Qclp']          = 'Qualcomm PureVoice';
+			$QuicktimeAudioCodecLookup['QDM2']          = 'QDesign Music 2';
+			$QuicktimeAudioCodecLookup['QDMC']          = 'QDesign Music 1';
+			$QuicktimeAudioCodecLookup['ratb']          = '8-bit Rate';
+			$QuicktimeAudioCodecLookup['ratw']          = '16-bit Rate';
+			$QuicktimeAudioCodecLookup['raw ']          = 'raw PCM';
+			$QuicktimeAudioCodecLookup['sour']          = 'Sound Source';
+			$QuicktimeAudioCodecLookup['sowt']          = 'signed/two\'s complement (Little Endian)';
+			$QuicktimeAudioCodecLookup['str1']          = 'Iomega MPEG layer II';
+			$QuicktimeAudioCodecLookup['str2']          = 'Iomega MPEG *layer II';
+			$QuicktimeAudioCodecLookup['str3']          = 'Iomega MPEG **layer II';
+			$QuicktimeAudioCodecLookup['str4']          = 'Iomega MPEG ***layer II';
+			$QuicktimeAudioCodecLookup['twos']          = 'signed/two\'s complement (Big Endian)';
+			$QuicktimeAudioCodecLookup['ulaw']          = 'mu-law 2:1';
+		}
+		return (isset($QuicktimeAudioCodecLookup[$codecid]) ? $QuicktimeAudioCodecLookup[$codecid] : '');
 	}
 
-	public function quicktime_read_mp4_descr_length($data, &$offset) {
-		// http://libquicktime.sourcearchive.com/documentation/2:1.0.2plus-pdebian-2build1/esds_8c-source.html
-		$num_bytes = 0;
-		$length    = 0;
-		do {
-			$b = ord(substr($data, $offset++, 1));
-			$length = ($length << 7) | ($b & 0x7F);
-		} while (($b & 0x80) && ($num_bytes++ < 4));
-		return $length;
+	public function QuicktimeDCOMLookup($compressionid) {
+		static $QuicktimeDCOMLookup = array();
+		if (empty($QuicktimeDCOMLookup)) {
+			$QuicktimeDCOMLookup['zlib'] = 'ZLib Deflate';
+			$QuicktimeDCOMLookup['adec'] = 'Apple Compression';
+		}
+		return (isset($QuicktimeDCOMLookup[$compressionid]) ? $QuicktimeDCOMLookup[$compressionid] : '');
+	}
+
+	public function QuicktimeColorNameLookup($colordepthid) {
+		static $QuicktimeColorNameLookup = array();
+		if (empty($QuicktimeColorNameLookup)) {
+			$QuicktimeColorNameLookup[1]  = '2-color (monochrome)';
+			$QuicktimeColorNameLookup[2]  = '4-color';
+			$QuicktimeColorNameLookup[4]  = '16-color';
+			$QuicktimeColorNameLookup[8]  = '256-color';
+			$QuicktimeColorNameLookup[16] = 'thousands (16-bit color)';
+			$QuicktimeColorNameLookup[24] = 'millions (24-bit color)';
+			$QuicktimeColorNameLookup[32] = 'millions+ (32-bit color)';
+			$QuicktimeColorNameLookup[33] = 'black & white';
+			$QuicktimeColorNameLookup[34] = '4-gray';
+			$QuicktimeColorNameLookup[36] = '16-gray';
+			$QuicktimeColorNameLookup[40] = '256-gray';
+		}
+		return (isset($QuicktimeColorNameLookup[$colordepthid]) ? $QuicktimeColorNameLookup[$colordepthid] : 'invalid');
+	}
+
+	public function QuicktimeSTIKLookup($stik) {
+		static $QuicktimeSTIKLookup = array();
+		if (empty($QuicktimeSTIKLookup)) {
+			$QuicktimeSTIKLookup[0]  = 'Movie';
+			$QuicktimeSTIKLookup[1]  = 'Normal';
+			$QuicktimeSTIKLookup[2]  = 'Audiobook';
+			$QuicktimeSTIKLookup[5]  = 'Whacked Bookmark';
+			$QuicktimeSTIKLookup[6]  = 'Music Video';
+			$QuicktimeSTIKLookup[9]  = 'Short Film';
+			$QuicktimeSTIKLookup[10] = 'TV Show';
+			$QuicktimeSTIKLookup[11] = 'Booklet';
+			$QuicktimeSTIKLookup[14] = 'Ringtone';
+			$QuicktimeSTIKLookup[21] = 'Podcast';
+		}
+		return (isset($QuicktimeSTIKLookup[$stik]) ? $QuicktimeSTIKLookup[$stik] : 'invalid');
 	}
 
 	public function QuicktimeIODSaudioProfileName($audio_profile_id) {
@@ -1979,6 +1807,7 @@ if (!empty($atom_structure['sample_description_table'][$i]['width']) && !empty($
 		}
 		return (isset($QuicktimeIODSaudioProfileNameLookup[$audio_profile_id]) ? $QuicktimeIODSaudioProfileNameLookup[$audio_profile_id] : 'ISO Reserved / User Private');
 	}
+
 
 	public function QuicktimeIODSvideoProfileName($video_profile_id) {
 		static $QuicktimeIODSvideoProfileNameLookup = array();
@@ -2049,6 +1878,55 @@ if (!empty($atom_structure['sample_description_table'][$i]['width']) && !empty($
 			);
 		}
 		return (isset($QuicktimeIODSvideoProfileNameLookup[$video_profile_id]) ? $QuicktimeIODSvideoProfileNameLookup[$video_profile_id] : 'ISO Reserved Profile');
+	}
+
+
+	public function QuicktimeContentRatingLookup($rtng) {
+		static $QuicktimeContentRatingLookup = array();
+		if (empty($QuicktimeContentRatingLookup)) {
+			$QuicktimeContentRatingLookup[0]  = 'None';
+			$QuicktimeContentRatingLookup[2]  = 'Clean';
+			$QuicktimeContentRatingLookup[4]  = 'Explicit';
+		}
+		return (isset($QuicktimeContentRatingLookup[$rtng]) ? $QuicktimeContentRatingLookup[$rtng] : 'invalid');
+	}
+
+	public function QuicktimeStoreAccountTypeLookup($akid) {
+		static $QuicktimeStoreAccountTypeLookup = array();
+		if (empty($QuicktimeStoreAccountTypeLookup)) {
+			$QuicktimeStoreAccountTypeLookup[0] = 'iTunes';
+			$QuicktimeStoreAccountTypeLookup[1] = 'AOL';
+		}
+		return (isset($QuicktimeStoreAccountTypeLookup[$akid]) ? $QuicktimeStoreAccountTypeLookup[$akid] : 'invalid');
+	}
+
+	public function QuicktimeStoreFrontCodeLookup($sfid) {
+		static $QuicktimeStoreFrontCodeLookup = array();
+		if (empty($QuicktimeStoreFrontCodeLookup)) {
+			$QuicktimeStoreFrontCodeLookup[143460] = 'Australia';
+			$QuicktimeStoreFrontCodeLookup[143445] = 'Austria';
+			$QuicktimeStoreFrontCodeLookup[143446] = 'Belgium';
+			$QuicktimeStoreFrontCodeLookup[143455] = 'Canada';
+			$QuicktimeStoreFrontCodeLookup[143458] = 'Denmark';
+			$QuicktimeStoreFrontCodeLookup[143447] = 'Finland';
+			$QuicktimeStoreFrontCodeLookup[143442] = 'France';
+			$QuicktimeStoreFrontCodeLookup[143443] = 'Germany';
+			$QuicktimeStoreFrontCodeLookup[143448] = 'Greece';
+			$QuicktimeStoreFrontCodeLookup[143449] = 'Ireland';
+			$QuicktimeStoreFrontCodeLookup[143450] = 'Italy';
+			$QuicktimeStoreFrontCodeLookup[143462] = 'Japan';
+			$QuicktimeStoreFrontCodeLookup[143451] = 'Luxembourg';
+			$QuicktimeStoreFrontCodeLookup[143452] = 'Netherlands';
+			$QuicktimeStoreFrontCodeLookup[143461] = 'New Zealand';
+			$QuicktimeStoreFrontCodeLookup[143457] = 'Norway';
+			$QuicktimeStoreFrontCodeLookup[143453] = 'Portugal';
+			$QuicktimeStoreFrontCodeLookup[143454] = 'Spain';
+			$QuicktimeStoreFrontCodeLookup[143456] = 'Sweden';
+			$QuicktimeStoreFrontCodeLookup[143459] = 'Switzerland';
+			$QuicktimeStoreFrontCodeLookup[143444] = 'United Kingdom';
+			$QuicktimeStoreFrontCodeLookup[143441] = 'United States';
+		}
+		return (isset($QuicktimeStoreFrontCodeLookup[$sfid]) ? $QuicktimeStoreFrontCodeLookup[$sfid] : 'invalid');
 	}
 
 	public function QuicktimeParseNikonNCTG($atom_data) {
@@ -2229,13 +2107,140 @@ echo 'QuicktimeParseNikonNCTG()::unknown $data_size_type: '.$data_size_type.'<br
 		return $parsed;
 	}
 
-	public function QuicktimeStoreAccountTypeLookup($akid) {
-		static $QuicktimeStoreAccountTypeLookup = array();
-		if (empty($QuicktimeStoreAccountTypeLookup)) {
-			$QuicktimeStoreAccountTypeLookup[0] = 'iTunes';
-			$QuicktimeStoreAccountTypeLookup[1] = 'AOL';
+
+	public function CopyToAppropriateCommentsSection($keyname, $data, $boxname='') {
+		static $handyatomtranslatorarray = array();
+		if (empty($handyatomtranslatorarray)) {
+			$handyatomtranslatorarray["\xA9".'cpy'] = 'copyright';
+			$handyatomtranslatorarray["\xA9".'day'] = 'creation_date';    // iTunes 4.0
+			$handyatomtranslatorarray["\xA9".'dir'] = 'director';
+			$handyatomtranslatorarray["\xA9".'ed1'] = 'edit1';
+			$handyatomtranslatorarray["\xA9".'ed2'] = 'edit2';
+			$handyatomtranslatorarray["\xA9".'ed3'] = 'edit3';
+			$handyatomtranslatorarray["\xA9".'ed4'] = 'edit4';
+			$handyatomtranslatorarray["\xA9".'ed5'] = 'edit5';
+			$handyatomtranslatorarray["\xA9".'ed6'] = 'edit6';
+			$handyatomtranslatorarray["\xA9".'ed7'] = 'edit7';
+			$handyatomtranslatorarray["\xA9".'ed8'] = 'edit8';
+			$handyatomtranslatorarray["\xA9".'ed9'] = 'edit9';
+			$handyatomtranslatorarray["\xA9".'fmt'] = 'format';
+			$handyatomtranslatorarray["\xA9".'inf'] = 'information';
+			$handyatomtranslatorarray["\xA9".'prd'] = 'producer';
+			$handyatomtranslatorarray["\xA9".'prf'] = 'performers';
+			$handyatomtranslatorarray["\xA9".'req'] = 'system_requirements';
+			$handyatomtranslatorarray["\xA9".'src'] = 'source_credit';
+			$handyatomtranslatorarray["\xA9".'wrt'] = 'writer';
+
+			// http://www.geocities.com/xhelmboyx/quicktime/formats/qtm-layout.txt
+			$handyatomtranslatorarray["\xA9".'nam'] = 'title';           // iTunes 4.0
+			$handyatomtranslatorarray["\xA9".'cmt'] = 'comment';         // iTunes 4.0
+			$handyatomtranslatorarray["\xA9".'wrn'] = 'warning';
+			$handyatomtranslatorarray["\xA9".'hst'] = 'host_computer';
+			$handyatomtranslatorarray["\xA9".'mak'] = 'make';
+			$handyatomtranslatorarray["\xA9".'mod'] = 'model';
+			$handyatomtranslatorarray["\xA9".'PRD'] = 'product';
+			$handyatomtranslatorarray["\xA9".'swr'] = 'software';
+			$handyatomtranslatorarray["\xA9".'aut'] = 'author';
+			$handyatomtranslatorarray["\xA9".'ART'] = 'artist';
+			$handyatomtranslatorarray["\xA9".'trk'] = 'track';
+			$handyatomtranslatorarray["\xA9".'alb'] = 'album';           // iTunes 4.0
+			$handyatomtranslatorarray["\xA9".'com'] = 'comment';
+			$handyatomtranslatorarray["\xA9".'gen'] = 'genre';           // iTunes 4.0
+			$handyatomtranslatorarray["\xA9".'ope'] = 'composer';
+			$handyatomtranslatorarray["\xA9".'url'] = 'url';
+			$handyatomtranslatorarray["\xA9".'enc'] = 'encoder';
+
+			// http://atomicparsley.sourceforge.net/mpeg-4files.html
+			$handyatomtranslatorarray["\xA9".'art'] = 'artist';           // iTunes 4.0
+			$handyatomtranslatorarray['aART'] = 'album_artist';
+			$handyatomtranslatorarray['trkn'] = 'track_number';     // iTunes 4.0
+			$handyatomtranslatorarray['disk'] = 'disc_number';      // iTunes 4.0
+			$handyatomtranslatorarray['gnre'] = 'genre';            // iTunes 4.0
+			$handyatomtranslatorarray["\xA9".'too'] = 'encoder';          // iTunes 4.0
+			$handyatomtranslatorarray['tmpo'] = 'bpm';              // iTunes 4.0
+			$handyatomtranslatorarray['cprt'] = 'copyright';        // iTunes 4.0?
+			$handyatomtranslatorarray['cpil'] = 'compilation';      // iTunes 4.0
+			$handyatomtranslatorarray['covr'] = 'picture';          // iTunes 4.0
+			$handyatomtranslatorarray['rtng'] = 'rating';           // iTunes 4.0
+			$handyatomtranslatorarray["\xA9".'grp'] = 'grouping';         // iTunes 4.2
+			$handyatomtranslatorarray['stik'] = 'stik';             // iTunes 4.9
+			$handyatomtranslatorarray['pcst'] = 'podcast';          // iTunes 4.9
+			$handyatomtranslatorarray['catg'] = 'category';         // iTunes 4.9
+			$handyatomtranslatorarray['keyw'] = 'keyword';          // iTunes 4.9
+			$handyatomtranslatorarray['purl'] = 'podcast_url';      // iTunes 4.9
+			$handyatomtranslatorarray['egid'] = 'episode_guid';     // iTunes 4.9
+			$handyatomtranslatorarray['desc'] = 'description';      // iTunes 5.0
+			$handyatomtranslatorarray["\xA9".'lyr'] = 'lyrics';           // iTunes 5.0
+			$handyatomtranslatorarray['tvnn'] = 'tv_network_name';  // iTunes 6.0
+			$handyatomtranslatorarray['tvsh'] = 'tv_show_name';     // iTunes 6.0
+			$handyatomtranslatorarray['tvsn'] = 'tv_season';        // iTunes 6.0
+			$handyatomtranslatorarray['tves'] = 'tv_episode';       // iTunes 6.0
+			$handyatomtranslatorarray['purd'] = 'purchase_date';    // iTunes 6.0.2
+			$handyatomtranslatorarray['pgap'] = 'gapless_playback'; // iTunes 7.0
+
+			// http://www.geocities.com/xhelmboyx/quicktime/formats/mp4-layout.txt
+
+
+
+			// boxnames:
+			/*
+			$handyatomtranslatorarray['iTunSMPB']                    = 'iTunSMPB';
+			$handyatomtranslatorarray['iTunNORM']                    = 'iTunNORM';
+			$handyatomtranslatorarray['Encoding Params']             = 'Encoding Params';
+			$handyatomtranslatorarray['replaygain_track_gain']       = 'replaygain_track_gain';
+			$handyatomtranslatorarray['replaygain_track_peak']       = 'replaygain_track_peak';
+			$handyatomtranslatorarray['replaygain_track_minmax']     = 'replaygain_track_minmax';
+			$handyatomtranslatorarray['MusicIP PUID']                = 'MusicIP PUID';
+			$handyatomtranslatorarray['MusicBrainz Artist Id']       = 'MusicBrainz Artist Id';
+			$handyatomtranslatorarray['MusicBrainz Album Id']        = 'MusicBrainz Album Id';
+			$handyatomtranslatorarray['MusicBrainz Album Artist Id'] = 'MusicBrainz Album Artist Id';
+			$handyatomtranslatorarray['MusicBrainz Track Id']        = 'MusicBrainz Track Id';
+			$handyatomtranslatorarray['MusicBrainz Disc Id']         = 'MusicBrainz Disc Id';
+
+			// http://age.hobba.nl/audio/tag_frame_reference.html
+			$handyatomtranslatorarray['PLAY_COUNTER']                = 'play_counter'; // Foobar2000 - http://www.getid3.org/phpBB3/viewtopic.php?t=1355
+			$handyatomtranslatorarray['MEDIATYPE']                   = 'mediatype';    // Foobar2000 - http://www.getid3.org/phpBB3/viewtopic.php?t=1355
+			*/
 		}
-		return (isset($QuicktimeStoreAccountTypeLookup[$akid]) ? $QuicktimeStoreAccountTypeLookup[$akid] : 'invalid');
+		$info = &$this->getid3->info;
+		$comment_key = '';
+		if ($boxname && ($boxname != $keyname)) {
+			$comment_key = (isset($handyatomtranslatorarray[$boxname]) ? $handyatomtranslatorarray[$boxname] : $boxname);
+		} elseif (isset($handyatomtranslatorarray[$keyname])) {
+			$comment_key = $handyatomtranslatorarray[$keyname];
+		}
+		if ($comment_key) {
+			if ($comment_key == 'picture') {
+				if (!is_array($data)) {
+					$image_mime = '';
+					if (preg_match('#^\x89\x50\x4E\x47\x0D\x0A\x1A\x0A#', $data)) {
+						$image_mime = 'image/png';
+					} elseif (preg_match('#^\xFF\xD8\xFF#', $data)) {
+						$image_mime = 'image/jpeg';
+					} elseif (preg_match('#^GIF#', $data)) {
+						$image_mime = 'image/gif';
+					} elseif (preg_match('#^BM#', $data)) {
+						$image_mime = 'image/bmp';
+					}
+					$data = array('data'=>$data, 'image_mime'=>$image_mime);
+				}
+			}
+			$info['quicktime']['comments'][$comment_key][] = $data;
+		}
+		return true;
+	}
+
+	public function NoNullString($nullterminatedstring) {
+		// remove the single null terminator on null terminated strings
+		if (substr($nullterminatedstring, strlen($nullterminatedstring) - 1, 1) === "\x00") {
+			return substr($nullterminatedstring, 0, strlen($nullterminatedstring) - 1);
+		}
+		return $nullterminatedstring;
+	}
+
+	public function Pascal2String($pascalstring) {
+		// Pascal strings have 1 unsigned byte at the beginning saying how many chars (1-255) are in the string
+		return substr($pascalstring, 1);
 	}
 
 }

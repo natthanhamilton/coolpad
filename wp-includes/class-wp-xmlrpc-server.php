@@ -14,7 +14,7 @@
  * options, etc.
  *
  * As of WordPress 3.5.0, XML-RPC is enabled by default. It can be disabled
- * via the xmlrpc_enabled filter found in wp_xmlrpc_server::login().
+ * via the {@see 'xmlrpc_enabled'} filter found in wp_xmlrpc_server::login().
  *
  * @package WordPress
  * @subpackage Publishing
@@ -54,11 +54,11 @@ class wp_xmlrpc_server extends IXR_Server {
 	protected $auth_failed = false;
 
 	/**
-	 * Register all of the XMLRPC methods that XMLRPC server understands.
+	 * Registers all of the XMLRPC methods that XMLRPC server understands.
 	 *
 	 * Sets up server and method property. Passes XMLRPC
-	 * methods through the 'xmlrpc_methods' filter to allow plugins to extend
-	 * or replace XMLRPC methods.
+	 * methods through the {@see 'xmlrpc_methods'} filter to allow plugins to extend
+	 * or replace XML-RPC methods.
 	 *
 	 * @since 1.5.0
 	 */
@@ -159,7 +159,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		$this->initialise_blog_option_info();
 
 		/**
-		 * Filter the methods exposed by the XML-RPC server.
+		 * Filters the methods exposed by the XML-RPC server.
 		 *
 		 * This filter can be used to add new methods, and remove built-in methods.
 		 *
@@ -168,6 +168,234 @@ class wp_xmlrpc_server extends IXR_Server {
 		 * @param array $methods An array of XML-RPC methods.
 		 */
 		$this->methods = apply_filters( 'xmlrpc_methods', $this->methods );
+	}
+
+	/**
+	 * Make private/protected methods readable for backward compatibility.
+	 *
+	 * @since 4.0.0
+	 * @access public
+	 *
+	 * @param callable $name      Method to call.
+	 * @param array    $arguments Arguments to pass when calling.
+	 * @return array|IXR_Error|false Return value of the callback, false otherwise.
+	 */
+	public function __call( $name, $arguments ) {
+		if ( '_multisite_getUsersBlogs' === $name ) {
+			return call_user_func_array( array( $this, $name ), $arguments );
+		}
+		return false;
+	}
+
+	/**
+	 * Serves the XML-RPC request.
+	 *
+	 * @since 2.9.0
+	 * @access public
+	 */
+	public function serve_request() {
+		$this->IXR_Server($this->methods);
+	}
+
+	/**
+	 * Test XMLRPC API by saying, "Hello!" to client.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @return string Hello string response.
+	 */
+	public function sayHello() {
+		return 'Hello!';
+	}
+
+	/**
+	 * Test XMLRPC API by adding two numbers for client.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int $number1 A number to add.
+	 *     @type int $number2 A second number to add.
+	 * }
+	 * @return int Sum of the two given numbers.
+	 */
+	public function addTwoNumbers( $args ) {
+		$number1 = $args[0];
+		$number2 = $args[1];
+		return $number1 + $number2;
+	}
+
+	/**
+	 * Log user in.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $username User's username.
+	 * @param string $password User's password.
+	 * @return WP_User|bool WP_User object if authentication passed, false otherwise
+	 */
+	public function login( $username, $password ) {
+		/*
+		 * Respect old get_option() filters left for back-compat when the 'enable_xmlrpc'
+		 * option was deprecated in 3.5.0. Use the 'xmlrpc_enabled' hook instead.
+		 */
+		$enabled = apply_filters( 'pre_option_enable_xmlrpc', false );
+		if ( false === $enabled ) {
+			$enabled = apply_filters( 'option_enable_xmlrpc', true );
+		}
+
+		/**
+		 * Filters whether XML-RPC methods requiring authentication are enabled.
+		 *
+		 * Contrary to the way it's named, this filter does not control whether XML-RPC is *fully*
+		 * enabled, rather, it only controls whether XML-RPC methods requiring authentication - such
+		 * as for publishing purposes - are enabled.
+		 *
+		 * Further, the filter does not control whether pingbacks or other custom endpoints that don't
+		 * require authentication are enabled. This behavior is expected, and due to how parity was matched
+		 * with the `enable_xmlrpc` UI option the filter replaced when it was introduced in 3.5.
+		 *
+		 * To disable XML-RPC methods that require authentication, use:
+		 *
+		 *     add_filter( 'xmlrpc_enabled', '__return_false' );
+		 *
+		 * For more granular control over all XML-RPC methods and requests, see the {@see 'xmlrpc_methods'}
+		 * and {@see 'xmlrpc_element_limit'} hooks.
+		 *
+		 * @since 3.5.0
+		 *
+		 * @param bool $enabled Whether XML-RPC is enabled. Default true.
+		 */
+		$enabled = apply_filters( 'xmlrpc_enabled', $enabled );
+
+		if ( ! $enabled ) {
+			$this->error = new IXR_Error( 405, sprintf( __( 'XML-RPC services are disabled on this site.' ) ) );
+			return false;
+		}
+
+		if ( $this->auth_failed ) {
+			$user = new WP_Error( 'login_prevented' );
+		} else {
+			$user = wp_authenticate( $username, $password );
+		}
+
+		if ( is_wp_error( $user ) ) {
+			$this->error = new IXR_Error( 403, __( 'Incorrect username or password.' ) );
+
+			// Flag that authentication has failed once on this wp_xmlrpc_server instance
+			$this->auth_failed = true;
+
+			/**
+			 * Filters the XML-RPC user login error message.
+			 *
+			 * @since 3.5.0
+			 *
+			 * @param string  $error The XML-RPC error message.
+			 * @param WP_User $user  WP_User object.
+			 */
+			$this->error = apply_filters( 'xmlrpc_login_error', $this->error, $user );
+			return false;
+		}
+
+		wp_set_current_user( $user->ID );
+		return $user;
+	}
+
+	/**
+	 * Check user's credentials. Deprecated.
+	 *
+	 * @since 1.5.0
+	 * @deprecated 2.8.0 Use wp_xmlrpc_server::login()
+	 * @see wp_xmlrpc_server::login()
+	 *
+	 * @param string $username User's username.
+	 * @param string $password User's password.
+	 * @return bool Whether authentication passed.
+	 */
+	public function login_pass_ok( $username, $password ) {
+		return (bool) $this->login( $username, $password );
+	}
+
+	/**
+	 * Escape string or array of strings for database.
+	 *
+	 * @since 1.5.2
+	 *
+	 * @param string|array $data Escape single string or array of strings.
+	 * @return string|void Returns with string is passed, alters by-reference
+	 *                     when array is passed.
+	 */
+	public function escape( &$data ) {
+		if ( ! is_array( $data ) )
+			return wp_slash( $data );
+
+		foreach ( $data as &$v ) {
+			if ( is_array( $v ) )
+				$this->escape( $v );
+			elseif ( ! is_object( $v ) )
+				$v = wp_slash( $v );
+		}
+	}
+
+	/**
+	 * Retrieve custom fields for post.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param int $post_id Post ID.
+	 * @return array Custom fields, if exist.
+	 */
+	public function get_custom_fields($post_id) {
+		$post_id = (int) $post_id;
+
+		$custom_fields = array();
+
+		foreach ( (array) has_meta($post_id) as $meta ) {
+			// Don't expose protected fields.
+			if ( ! current_user_can( 'edit_post_meta', $post_id , $meta['meta_key'] ) )
+				continue;
+
+			$custom_fields[] = array(
+				"id"    => $meta['meta_id'],
+				"key"   => $meta['meta_key'],
+				"value" => $meta['meta_value']
+			);
+		}
+
+		return $custom_fields;
+	}
+
+	/**
+	 * Set custom fields for post.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param int $post_id Post ID.
+	 * @param array $fields Custom fields.
+	 */
+	public function set_custom_fields($post_id, $fields) {
+		$post_id = (int) $post_id;
+
+		foreach ( (array) $fields as $meta ) {
+			if ( isset($meta['id']) ) {
+				$meta['id'] = (int) $meta['id'];
+				$pmeta = get_metadata_by_mid( 'post', $meta['id'] );
+				if ( isset($meta['key']) ) {
+					$meta['key'] = wp_unslash( $meta['key'] );
+					if ( $meta['key'] !== $pmeta->meta_key )
+						continue;
+					$meta['value'] = wp_unslash( $meta['value'] );
+					if ( current_user_can( 'edit_post_meta', $post_id, $meta['key'] ) )
+						update_metadata_by_mid( 'post', $meta['id'], $meta['value'] );
+				} elseif ( current_user_can( 'delete_post_meta', $post_id, $pmeta->meta_key ) ) {
+					delete_metadata_by_mid( 'post', $meta['id'] );
+				}
+			} elseif ( current_user_can( 'add_post_meta', $post_id, wp_unslash( $meta['key'] ) ) ) {
+				add_post_meta( $post_id, $meta['key'], $meta['value'] );
+			}
+		}
 	}
 
 	/**
@@ -334,161 +562,13 @@ class wp_xmlrpc_server extends IXR_Server {
 		);
 
 		/**
-		 * Filter the XML-RPC blog options property.
+		 * Filters the XML-RPC blog options property.
 		 *
 		 * @since 2.6.0
 		 *
 		 * @param array $blog_options An array of XML-RPC blog options.
 		 */
 		$this->blog_options = apply_filters( 'xmlrpc_blog_options', $this->blog_options );
-	}
-
-	/**
-	 * Make private/protected methods readable for backwards compatibility.
-	 *
-	 * @since 4.0.0
-	 * @access public
-	 *
-	 * @param callable $name      Method to call.
-	 * @param array    $arguments Arguments to pass when calling.
-	 * @return array|IXR_Error|false Return value of the callback, false otherwise.
-	 */
-	public function __call( $name, $arguments ) {
-		if ( '_multisite_getUsersBlogs' === $name ) {
-			return call_user_func_array( array( $this, $name ), $arguments );
-		}
-		return false;
-	}
-
-	/**
-	 * Serves the XML-RPC request.
-	 *
-	 * @since 2.9.0
-	 * @access public
-	 */
-	public function serve_request() {
-		$this->IXR_Server($this->methods);
-	}
-
-	/**
-	 * Test XMLRPC API by saying, "Hello!" to client.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @return string Hello string response.
-	 */
-	public function sayHello() {
-		return 'Hello!';
-	}
-
-	/**
-	 * Test XMLRPC API by adding two numbers for client.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int $number1 A number to add.
-	 *     @type int $number2 A second number to add.
-	 * }
-	 * @return int Sum of the two given numbers.
-	 */
-	public function addTwoNumbers( $args ) {
-		$number1 = $args[0];
-		$number2 = $args[1];
-		return $number1 + $number2;
-	}
-
-	/**
-	 * Check user's credentials. Deprecated.
-	 *
-	 * @since 1.5.0
-	 * @deprecated 2.8.0 Use wp_xmlrpc_server::login()
-	 * @see wp_xmlrpc_server::login()
-	 *
-	 * @param string $username User's username.
-	 * @param string $password User's password.
-	 * @return bool Whether authentication passed.
-	 */
-	public function login_pass_ok( $username, $password ) {
-		return (bool) $this->login( $username, $password );
-	}
-
-	/**
-	 * Log user in.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param string $username User's username.
-	 * @param string $password User's password.
-	 * @return WP_User|bool WP_User object if authentication passed, false otherwise
-	 */
-	public function login( $username, $password ) {
-		/*
-		 * Respect old get_option() filters left for back-compat when the 'enable_xmlrpc'
-		 * option was deprecated in 3.5.0. Use the 'xmlrpc_enabled' hook instead.
-		 */
-		$enabled = apply_filters( 'pre_option_enable_xmlrpc', false );
-		if ( false === $enabled ) {
-			$enabled = apply_filters( 'option_enable_xmlrpc', true );
-		}
-
-		/**
-		 * Filter whether XML-RPC methods requiring authentication are enabled.
-		 *
-		 * Contrary to the way it's named, this filter does not control whether XML-RPC is *fully*
-		 * enabled, rather, it only controls whether XML-RPC methods requiring authentication - such
-		 * as for publishing purposes - are enabled.
-		 *
-		 * Further, the filter does not control whether pingbacks or other custom endpoints that don't
-		 * require authentication are enabled. This behavior is expected, and due to how parity was matched
-		 * with the `enable_xmlrpc` UI option the filter replaced when it was introduced in 3.5.
-		 *
-		 * To disable XML-RPC methods that require authentication, use:
-		 *
-		 *     add_filter( 'xmlrpc_enabled', '__return_false' );
-		 *
-		 * For more granular control over all XML-RPC methods and requests, see the {@see 'xmlrpc_methods'}
-		 * and {@see 'xmlrpc_element_limit'} hooks.
-		 *
-		 * @since 3.5.0
-		 *
-		 * @param bool $enabled Whether XML-RPC is enabled. Default true.
-		 */
-		$enabled = apply_filters( 'xmlrpc_enabled', $enabled );
-
-		if ( ! $enabled ) {
-			$this->error = new IXR_Error( 405, sprintf( __( 'XML-RPC services are disabled on this site.' ) ) );
-			return false;
-		}
-
-		if ( $this->auth_failed ) {
-			$user = new WP_Error( 'login_prevented' );
-		} else {
-			$user = wp_authenticate( $username, $password );
-		}
-
-		if ( is_wp_error( $user ) ) {
-			$this->error = new IXR_Error( 403, __( 'Incorrect username or password.' ) );
-
-			// Flag that authentication has failed once on this wp_xmlrpc_server instance
-			$this->auth_failed = true;
-
-			/**
-			 * Filter the XML-RPC user login error message.
-			 *
-			 * @since 3.5.0
-			 *
-			 * @param string  $error The XML-RPC error message.
-			 * @param WP_User $user  WP_User object.
-			 */
-			$this->error = apply_filters( 'xmlrpc_login_error', $this->error, $user );
-			return false;
-		}
-
-		wp_set_current_user( $user->ID );
-		return $user;
 	}
 
 	/**
@@ -574,106 +654,500 @@ class wp_xmlrpc_server extends IXR_Server {
 	}
 
 	/**
-	 * Retrieve blogs that user owns.
+	 * Checks if the method received at least the minimum number of arguments.
 	 *
-	 * Will make more sense once we support multiple blogs.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function blogger_getUsersBlogs($args) {
-		if ( is_multisite() )
-			return $this->_multisite_getUsersBlogs($args);
-
-		$this->escape($args);
-
-		$username = $args[1];
-		$password = $args[2];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'blogger.getUsersBlogs' );
-
-		$is_admin = current_user_can('manage_options');
-
-		$struct = array(
-			'isAdmin'  => $is_admin,
-			'url'      => get_option('home') . '/',
-			'blogid'   => '1',
-			'blogName' => get_option('blogname'),
-			'xmlrpc'   => site_url( 'xmlrpc.php', 'rpc' ),
-		);
-
-		return array($struct);
-	}
-
-	/**
-	 * Private function for retrieving a users blogs for multisite setups
-	 *
-	 * @since 3.0.0
+	 * @since 3.4.0
 	 * @access protected
 	 *
-	 * @param array $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type string $username Username.
-	 *     @type string $password Password.
-	 * }
-	 * @return array|IXR_Error
+	 * @param string|array $args Sanitize single string or array of strings.
+	 * @param int $count         Minimum number of arguments.
+	 * @return bool if `$args` contains at least $count arguments.
 	 */
-	protected function _multisite_getUsersBlogs( $args ) {
-		$current_blog = get_blog_details();
-
-		$domain = $current_blog->domain;
-		$path = $current_blog->path . 'xmlrpc.php';
-
-		$rpc = new IXR_Client( set_url_scheme( "http://{$domain}{$path}" ) );
-		$rpc->query('wp.getUsersBlogs', $args[1], $args[2]);
-		$blogs = $rpc->getResponse();
-
-		if ( isset($blogs['faultCode']) )
-			return new IXR_Error($blogs['faultCode'], $blogs['faultString']);
-
-		if ( $_SERVER['HTTP_HOST'] == $domain && $_SERVER['REQUEST_URI'] == $path ) {
-			return $blogs;
-		} else {
-			foreach ( (array) $blogs as $blog ) {
-				if ( strpos($blog['url'], $_SERVER['HTTP_HOST']) )
-					return array($blog);
-			}
-			return array();
+	protected function minimum_args( $args, $count ) {
+		if ( count( $args ) < $count ) {
+			$this->error = new IXR_Error( 400, __( 'Insufficient arguments passed to this XML-RPC method.' ) );
+			return false;
 		}
+
+		return true;
 	}
 
 	/**
-	 * Escape string or array of strings for database.
+	 * Prepares taxonomy data for return in an XML-RPC object.
 	 *
-	 * @since 1.5.2
+	 * @access protected
 	 *
-	 * @param string|array $data Escape single string or array of strings.
-	 * @return string|void Returns with string is passed, alters by-reference
-	 *                     when array is passed.
+	 * @param object $taxonomy The unprepared taxonomy data.
+	 * @param array $fields    The subset of taxonomy fields to return.
+	 * @return array The prepared taxonomy data.
 	 */
-	public function escape( &$data ) {
-		if ( ! is_array( $data ) )
-			return wp_slash( $data );
+	protected function _prepare_taxonomy( $taxonomy, $fields ) {
+		$_taxonomy = array(
+			'name' => $taxonomy->name,
+			'label' => $taxonomy->label,
+			'hierarchical' => (bool) $taxonomy->hierarchical,
+			'public' => (bool) $taxonomy->public,
+			'show_ui' => (bool) $taxonomy->show_ui,
+			'_builtin' => (bool) $taxonomy->_builtin,
+		);
 
-		foreach ( $data as &$v ) {
-			if ( is_array( $v ) )
-				$this->escape( $v );
-			elseif ( ! is_object( $v ) )
-				$v = wp_slash( $v );
+		if ( in_array( 'labels', $fields ) )
+			$_taxonomy['labels'] = (array) $taxonomy->labels;
+
+		if ( in_array( 'cap', $fields ) )
+			$_taxonomy['cap'] = (array) $taxonomy->cap;
+
+		if ( in_array( 'menu', $fields ) )
+			$_taxonomy['show_in_menu'] = (bool) $_taxonomy->show_in_menu;
+
+		if ( in_array( 'object_type', $fields ) )
+			$_taxonomy['object_type'] = array_unique( (array) $taxonomy->object_type );
+
+		/**
+		 * Filters XML-RPC-prepared data for the given taxonomy.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param array  $_taxonomy An array of taxonomy data.
+		 * @param object $taxonomy  Taxonomy object.
+		 * @param array  $fields    The subset of taxonomy fields to return.
+		 */
+		return apply_filters( 'xmlrpc_prepare_taxonomy', $_taxonomy, $taxonomy, $fields );
+	}
+
+	/**
+	 * Prepares term data for return in an XML-RPC object.
+	 *
+	 * @access protected
+	 *
+	 * @param array|object $term The unprepared term data.
+	 * @return array The prepared term data.
+	 */
+	protected function _prepare_term( $term ) {
+		$_term = $term;
+		if ( ! is_array( $_term ) )
+			$_term = get_object_vars( $_term );
+
+		// For integers which may be larger than XML-RPC supports ensure we return strings.
+		$_term['term_id'] = strval( $_term['term_id'] );
+		$_term['term_group'] = strval( $_term['term_group'] );
+		$_term['term_taxonomy_id'] = strval( $_term['term_taxonomy_id'] );
+		$_term['parent'] = strval( $_term['parent'] );
+
+		// Count we are happy to return as an integer because people really shouldn't use terms that much.
+		$_term['count'] = intval( $_term['count'] );
+
+		/**
+		 * Filters XML-RPC-prepared data for the given term.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param array        $_term An array of term data.
+		 * @param array|object $term  Term object or array.
+		 */
+		return apply_filters( 'xmlrpc_prepare_term', $_term, $term );
+	}
+
+	/**
+	 * Convert a WordPress date string to an IXR_Date object.
+	 *
+	 * @access protected
+	 *
+	 * @param string $date Date string to convert.
+	 * @return IXR_Date IXR_Date object.
+	 */
+	protected function _convert_date( $date ) {
+		if ( $date === '0000-00-00 00:00:00' ) {
+			return new IXR_Date( '00000000T00:00:00Z' );
 		}
+		return new IXR_Date( mysql2date( 'Ymd\TH:i:s', $date, false ) );
+	}
+
+	/**
+	 * Convert a WordPress GMT date string to an IXR_Date object.
+	 *
+	 * @access protected
+	 *
+	 * @param string $date_gmt WordPress GMT date string.
+	 * @param string $date     Date string.
+	 * @return IXR_Date IXR_Date object.
+	 */
+	protected function _convert_date_gmt( $date_gmt, $date ) {
+		if ( $date !== '0000-00-00 00:00:00' && $date_gmt === '0000-00-00 00:00:00' ) {
+			return new IXR_Date( get_gmt_from_date( mysql2date( 'Y-m-d H:i:s', $date, false ), 'Ymd\TH:i:s' ) );
+		}
+		return $this->_convert_date( $date_gmt );
+	}
+
+	/**
+	 * Prepares post data for return in an XML-RPC object.
+	 *
+	 * @access protected
+	 *
+	 * @param array $post   The unprepared post data.
+	 * @param array $fields The subset of post type fields to return.
+	 * @return array The prepared post data.
+	 */
+	protected function _prepare_post( $post, $fields ) {
+		// Holds the data for this post. built up based on $fields.
+		$_post = array( 'post_id' => strval( $post['ID'] ) );
+
+		// Prepare common post fields.
+		$post_fields = array(
+			'post_title'        => $post['post_title'],
+			'post_date'         => $this->_convert_date( $post['post_date'] ),
+			'post_date_gmt'     => $this->_convert_date_gmt( $post['post_date_gmt'], $post['post_date'] ),
+			'post_modified'     => $this->_convert_date( $post['post_modified'] ),
+			'post_modified_gmt' => $this->_convert_date_gmt( $post['post_modified_gmt'], $post['post_modified'] ),
+			'post_status'       => $post['post_status'],
+			'post_type'         => $post['post_type'],
+			'post_name'         => $post['post_name'],
+			'post_author'       => $post['post_author'],
+			'post_password'     => $post['post_password'],
+			'post_excerpt'      => $post['post_excerpt'],
+			'post_content'      => $post['post_content'],
+			'post_parent'       => strval( $post['post_parent'] ),
+			'post_mime_type'    => $post['post_mime_type'],
+			'link'              => get_permalink( $post['ID'] ),
+			'guid'              => $post['guid'],
+			'menu_order'        => intval( $post['menu_order'] ),
+			'comment_status'    => $post['comment_status'],
+			'ping_status'       => $post['ping_status'],
+			'sticky'            => ( $post['post_type'] === 'post' && is_sticky( $post['ID'] ) ),
+		);
+
+		// Thumbnail.
+		$post_fields['post_thumbnail'] = array();
+		$thumbnail_id = get_post_thumbnail_id( $post['ID'] );
+		if ( $thumbnail_id ) {
+			$thumbnail_size = current_theme_supports('post-thumbnail') ? 'post-thumbnail' : 'thumbnail';
+			$post_fields['post_thumbnail'] = $this->_prepare_media_item( get_post( $thumbnail_id ), $thumbnail_size );
+		}
+
+		// Consider future posts as published.
+		if ( $post_fields['post_status'] === 'future' )
+			$post_fields['post_status'] = 'publish';
+
+		// Fill in blank post format.
+		$post_fields['post_format'] = get_post_format( $post['ID'] );
+		if ( empty( $post_fields['post_format'] ) )
+			$post_fields['post_format'] = 'standard';
+
+		// Merge requested $post_fields fields into $_post.
+		if ( in_array( 'post', $fields ) ) {
+			$_post = array_merge( $_post, $post_fields );
+		} else {
+			$requested_fields = array_intersect_key( $post_fields, array_flip( $fields ) );
+			$_post = array_merge( $_post, $requested_fields );
+		}
+
+		$all_taxonomy_fields = in_array( 'taxonomies', $fields );
+
+		if ( $all_taxonomy_fields || in_array( 'terms', $fields ) ) {
+			$post_type_taxonomies = get_object_taxonomies( $post['post_type'], 'names' );
+			$terms = wp_get_object_terms( $post['ID'], $post_type_taxonomies );
+			$_post['terms'] = array();
+			foreach ( $terms as $term ) {
+				$_post['terms'][] = $this->_prepare_term( $term );
+			}
+		}
+
+		if ( in_array( 'custom_fields', $fields ) )
+			$_post['custom_fields'] = $this->get_custom_fields( $post['ID'] );
+
+		if ( in_array( 'enclosure', $fields ) ) {
+			$_post['enclosure'] = array();
+			$enclosures = (array) get_post_meta( $post['ID'], 'enclosure' );
+			if ( ! empty( $enclosures ) ) {
+				$encdata = explode( "\n", $enclosures[0] );
+				$_post['enclosure']['url'] = trim( htmlspecialchars( $encdata[0] ) );
+				$_post['enclosure']['length'] = (int) trim( $encdata[1] );
+				$_post['enclosure']['type'] = trim( $encdata[2] );
+			}
+		}
+
+		/**
+		 * Filters XML-RPC-prepared date for the given post.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param array $_post  An array of modified post data.
+		 * @param array $post   An array of post data.
+		 * @param array $fields An array of post fields.
+		 */
+		return apply_filters( 'xmlrpc_prepare_post', $_post, $post, $fields );
+	}
+
+	/**
+	 * Prepares post data for return in an XML-RPC object.
+	 *
+	 * @since 3.4.0
+	 * @since 4.6.0 Converted the `$post_type` parameter to accept a WP_Post_Type object.
+	 * @access protected
+	 *
+	 * @param WP_Post_Type $post_type Post type object.
+	 * @param array        $fields    The subset of post fields to return.
+	 * @return array The prepared post type data.
+	 */
+	protected function _prepare_post_type( $post_type, $fields ) {
+		$_post_type = array(
+			'name' => $post_type->name,
+			'label' => $post_type->label,
+			'hierarchical' => (bool) $post_type->hierarchical,
+			'public' => (bool) $post_type->public,
+			'show_ui' => (bool) $post_type->show_ui,
+			'_builtin' => (bool) $post_type->_builtin,
+			'has_archive' => (bool) $post_type->has_archive,
+			'supports' => get_all_post_type_supports( $post_type->name ),
+		);
+
+		if ( in_array( 'labels', $fields ) ) {
+			$_post_type['labels'] = (array) $post_type->labels;
+		}
+
+		if ( in_array( 'cap', $fields ) ) {
+			$_post_type['cap'] = (array) $post_type->cap;
+			$_post_type['map_meta_cap'] = (bool) $post_type->map_meta_cap;
+		}
+
+		if ( in_array( 'menu', $fields ) ) {
+			$_post_type['menu_position'] = (int) $post_type->menu_position;
+			$_post_type['menu_icon'] = $post_type->menu_icon;
+			$_post_type['show_in_menu'] = (bool) $post_type->show_in_menu;
+		}
+
+		if ( in_array( 'taxonomies', $fields ) )
+			$_post_type['taxonomies'] = get_object_taxonomies( $post_type->name, 'names' );
+
+		/**
+		 * Filters XML-RPC-prepared date for the given post type.
+		 *
+		 * @since 3.4.0
+		 * @since 4.6.0 Converted the `$post_type` parameter to accept a WP_Post_Type object.
+		 *
+		 * @param array        $_post_type An array of post type data.
+		 * @param WP_Post_Type $post_type  Post type object.
+		 */
+		return apply_filters( 'xmlrpc_prepare_post_type', $_post_type, $post_type );
+	}
+
+	/**
+	 * Prepares media item data for return in an XML-RPC object.
+	 *
+	 * @access protected
+	 *
+	 * @param object $media_item     The unprepared media item data.
+	 * @param string $thumbnail_size The image size to use for the thumbnail URL.
+	 * @return array The prepared media item data.
+	 */
+	protected function _prepare_media_item( $media_item, $thumbnail_size = 'thumbnail' ) {
+		$_media_item = array(
+			'attachment_id'    => strval( $media_item->ID ),
+			'date_created_gmt' => $this->_convert_date_gmt( $media_item->post_date_gmt, $media_item->post_date ),
+			'parent'           => $media_item->post_parent,
+			'link'             => wp_get_attachment_url( $media_item->ID ),
+			'title'            => $media_item->post_title,
+			'caption'          => $media_item->post_excerpt,
+			'description'      => $media_item->post_content,
+			'metadata'         => wp_get_attachment_metadata( $media_item->ID ),
+			'type'             => $media_item->post_mime_type
+		);
+
+		$thumbnail_src = image_downsize( $media_item->ID, $thumbnail_size );
+		if ( $thumbnail_src )
+			$_media_item['thumbnail'] = $thumbnail_src[0];
+		else
+			$_media_item['thumbnail'] = $_media_item['link'];
+
+		/**
+		 * Filters XML-RPC-prepared data for the given media item.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param array  $_media_item    An array of media item data.
+		 * @param object $media_item     Media item object.
+		 * @param string $thumbnail_size Image size.
+		 */
+		return apply_filters( 'xmlrpc_prepare_media_item', $_media_item, $media_item, $thumbnail_size );
+	}
+
+	/**
+	 * Prepares page data for return in an XML-RPC object.
+	 *
+	 * @access protected
+	 *
+	 * @param object $page The unprepared page data.
+	 * @return array The prepared page data.
+	 */
+	protected function _prepare_page( $page ) {
+		// Get all of the page content and link.
+		$full_page = get_extended( $page->post_content );
+		$link = get_permalink( $page->ID );
+
+		// Get info the page parent if there is one.
+		$parent_title = "";
+		if ( ! empty( $page->post_parent ) ) {
+			$parent = get_post( $page->post_parent );
+			$parent_title = $parent->post_title;
+		}
+
+		// Determine comment and ping settings.
+		$allow_comments = comments_open( $page->ID ) ? 1 : 0;
+		$allow_pings = pings_open( $page->ID ) ? 1 : 0;
+
+		// Format page date.
+		$page_date = $this->_convert_date( $page->post_date );
+		$page_date_gmt = $this->_convert_date_gmt( $page->post_date_gmt, $page->post_date );
+
+		// Pull the categories info together.
+		$categories = array();
+		if ( is_object_in_taxonomy( 'page', 'category' ) ) {
+			foreach ( wp_get_post_categories( $page->ID ) as $cat_id ) {
+				$categories[] = get_cat_name( $cat_id );
+			}
+		}
+
+		// Get the author info.
+		$author = get_userdata( $page->post_author );
+
+		$page_template = get_page_template_slug( $page->ID );
+		if ( empty( $page_template ) )
+			$page_template = 'default';
+
+		$_page = array(
+			'dateCreated'            => $page_date,
+			'userid'                 => $page->post_author,
+			'page_id'                => $page->ID,
+			'page_status'            => $page->post_status,
+			'description'            => $full_page['main'],
+			'title'                  => $page->post_title,
+			'link'                   => $link,
+			'permaLink'              => $link,
+			'categories'             => $categories,
+			'excerpt'                => $page->post_excerpt,
+			'text_more'              => $full_page['extended'],
+			'mt_allow_comments'      => $allow_comments,
+			'mt_allow_pings'         => $allow_pings,
+			'wp_slug'                => $page->post_name,
+			'wp_password'            => $page->post_password,
+			'wp_author'              => $author->display_name,
+			'wp_page_parent_id'      => $page->post_parent,
+			'wp_page_parent_title'   => $parent_title,
+			'wp_page_order'          => $page->menu_order,
+			'wp_author_id'           => (string) $author->ID,
+			'wp_author_display_name' => $author->display_name,
+			'date_created_gmt'       => $page_date_gmt,
+			'custom_fields'          => $this->get_custom_fields( $page->ID ),
+			'wp_page_template'       => $page_template
+		);
+
+		/**
+		 * Filters XML-RPC-prepared data for the given page.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param array   $_page An array of page data.
+		 * @param WP_Post $page  Page object.
+		 */
+		return apply_filters( 'xmlrpc_prepare_page', $_page, $page );
+	}
+
+	/**
+	 * Prepares comment data for return in an XML-RPC object.
+	 *
+	 * @access protected
+	 *
+	 * @param object $comment The unprepared comment data.
+	 * @return array The prepared comment data.
+	 */
+	protected function _prepare_comment( $comment ) {
+		// Format page date.
+		$comment_date_gmt = $this->_convert_date_gmt( $comment->comment_date_gmt, $comment->comment_date );
+
+		if ( '0' == $comment->comment_approved ) {
+			$comment_status = 'hold';
+		} elseif ( 'spam' == $comment->comment_approved ) {
+			$comment_status = 'spam';
+		} elseif ( '1' == $comment->comment_approved ) {
+			$comment_status = 'approve';
+		} else {
+			$comment_status = $comment->comment_approved;
+		}
+		$_comment = array(
+			'date_created_gmt' => $comment_date_gmt,
+			'user_id'          => $comment->user_id,
+			'comment_id'       => $comment->comment_ID,
+			'parent'           => $comment->comment_parent,
+			'status'           => $comment_status,
+			'content'          => $comment->comment_content,
+			'link'             => get_comment_link($comment),
+			'post_id'          => $comment->comment_post_ID,
+			'post_title'       => get_the_title($comment->comment_post_ID),
+			'author'           => $comment->comment_author,
+			'author_url'       => $comment->comment_author_url,
+			'author_email'     => $comment->comment_author_email,
+			'author_ip'        => $comment->comment_author_IP,
+			'type'             => $comment->comment_type,
+		);
+
+		/**
+		 * Filters XML-RPC-prepared data for the given comment.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param array      $_comment An array of prepared comment data.
+		 * @param WP_Comment $comment  Comment object.
+		 */
+		return apply_filters( 'xmlrpc_prepare_comment', $_comment, $comment );
+	}
+
+	/**
+	 * Prepares user data for return in an XML-RPC object.
+	 *
+	 * @access protected
+	 *
+	 * @param WP_User $user   The unprepared user object.
+	 * @param array   $fields The subset of user fields to return.
+	 * @return array The prepared user data.
+	 */
+	protected function _prepare_user( $user, $fields ) {
+		$_user = array( 'user_id' => strval( $user->ID ) );
+
+		$user_fields = array(
+			'username'          => $user->user_login,
+			'first_name'        => $user->user_firstname,
+			'last_name'         => $user->user_lastname,
+			'registered'        => $this->_convert_date( $user->user_registered ),
+			'bio'               => $user->user_description,
+			'email'             => $user->user_email,
+			'nickname'          => $user->nickname,
+			'nicename'          => $user->user_nicename,
+			'url'               => $user->user_url,
+			'display_name'      => $user->display_name,
+			'roles'             => $user->roles,
+		);
+
+		if ( in_array( 'all', $fields ) ) {
+			$_user = array_merge( $_user, $user_fields );
+		} else {
+			if ( in_array( 'basic', $fields ) ) {
+				$basic_fields = array( 'username', 'email', 'registered', 'display_name', 'nicename' );
+				$fields = array_merge( $fields, $basic_fields );
+			}
+			$requested_fields = array_intersect_key( $user_fields, array_flip( $fields ) );
+			$_user = array_merge( $_user, $requested_fields );
+		}
+
+		/**
+		 * Filters XML-RPC-prepared data for the given user.
+		 *
+		 * @since 3.5.0
+		 *
+		 * @param array   $_user  An array of user data.
+		 * @param WP_User $user   User object.
+		 * @param array   $fields An array of user fields.
+		 */
+		return apply_filters( 'xmlrpc_prepare_user', $_user, $user, $fields );
 	}
 
 	/**
@@ -681,7 +1155,7 @@ class wp_xmlrpc_server extends IXR_Server {
 	 *
 	 * @since 3.4.0
 	 *
-	 * @link http://en.wikipedia.org/wiki/RSS_enclosure for information on RSS enclosures.
+	 * @link https://en.wikipedia.org/wiki/RSS_enclosure for information on RSS enclosures.
 	 *
 	 * @param array  $args {
 	 *     Method arguments. Note: top-level arguments must be ordered as documented.
@@ -760,37 +1234,52 @@ class wp_xmlrpc_server extends IXR_Server {
 	}
 
 	/**
-	 * Checks if the method received at least the minimum number of arguments.
+	 * Helper method for filtering out elements from an array.
 	 *
 	 * @since 3.4.0
-	 * @access protected
 	 *
-	 * @param string|array $args Sanitize single string or array of strings.
-	 * @param int $count         Minimum number of arguments.
-	 * @return bool if `$args` contains at least $count arguments.
+	 * @param int $count Number to compare to one.
 	 */
-	protected function minimum_args( $args, $count ) {
-		if ( count( $args ) < $count ) {
-			$this->error = new IXR_Error( 400, __( 'Insufficient arguments passed to this XML-RPC method.' ) );
-			return false;
-		}
-
-		return true;
+	private function _is_greater_than_one( $count ) {
+		return $count > 1;
 	}
 
 	/**
-	 * Convert a WordPress date string to an IXR_Date object.
+	 * Encapsulate the logic for sticking a post
+	 * and determining if the user has permission to do so
 	 *
-	 * @access protected
+	 * @since 4.3.0
+	 * @access private
 	 *
-	 * @param string $date Date string to convert.
-	 * @return IXR_Date IXR_Date object.
+	 * @param array $post_data
+	 * @param bool  $update
+	 * @return void|IXR_Error
 	 */
-	protected function _convert_date( $date ) {
-		if ( $date === '0000-00-00 00:00:00' ) {
-			return new IXR_Date( '00000000T00:00:00Z' );
+	private function _toggle_sticky( $post_data, $update = false ) {
+		$post_type = get_post_type_object( $post_data['post_type'] );
+
+		// Private and password-protected posts cannot be stickied.
+		if ( 'private' === $post_data['post_status'] || ! empty( $post_data['post_password'] ) ) {
+			// Error if the client tried to stick the post, otherwise, silently unstick.
+			if ( ! empty( $post_data['sticky'] ) ) {
+				return new IXR_Error( 401, __( 'Sorry, you cannot stick a private post.' ) );
+			}
+
+			if ( $update ) {
+				unstick_post( $post_data['ID'] );
+			}
+		} elseif ( isset( $post_data['sticky'] ) )  {
+			if ( ! current_user_can( $post_type->cap->edit_others_posts ) ) {
+				return new IXR_Error( 401, __( 'Sorry, you are not allowed to stick this post.' ) );
+			}
+
+			$sticky = wp_validate_boolean( $post_data['sticky'] );
+			if ( $sticky ) {
+				stick_post( $post_data['ID'] );
+			} else {
+				unstick_post( $post_data['ID'] );
+			}
 		}
-		return new IXR_Date( mysql2date( 'Ymd\TH:i:s', $date, false ) );
 	}
 
 	/**
@@ -813,7 +1302,7 @@ class wp_xmlrpc_server extends IXR_Server {
 
 		$post_type = get_post_type_object( $post_data['post_type'] );
 		if ( ! $post_type )
-			return new IXR_Error( 403, __( 'Invalid post type' ) );
+			return new IXR_Error( 403, __( 'Invalid post type.' ) );
 
 		$update = ! empty( $post_data['ID'] );
 
@@ -854,7 +1343,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		$post_data['post_author'] = absint( $post_data['post_author'] );
 		if ( ! empty( $post_data['post_author'] ) && $post_data['post_author'] != $user->ID ) {
 			if ( ! current_user_can( $post_type->cap->edit_others_posts ) )
-				return new IXR_Error( 401, __( 'You are not allowed to create posts as this user.' ) );
+				return new IXR_Error( 401, __( 'Sorry, you are not allowed to create posts as this user.' ) );
 
 			$author = get_userdata( $post_data['post_author'] );
 
@@ -937,7 +1426,7 @@ class wp_xmlrpc_server extends IXR_Server {
 						$term = get_term_by( 'id', $term_id, $taxonomy );
 
 						if ( ! $term )
-							return new IXR_Error( 403, __( 'Invalid term ID' ) );
+							return new IXR_Error( 403, __( 'Invalid term ID.' ) );
 
 						$terms[$taxonomy][] = (int) $term_id;
 					}
@@ -1020,7 +1509,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		$this->attach_uploads( $post_ID, $post_data['post_content'] );
 
 		/**
-		 * Filter post data array to be inserted via XML-RPC.
+		 * Filters post data array to be inserted via XML-RPC.
 		 *
 		 * @since 3.4.0
 		 *
@@ -1037,124 +1526,6 @@ class wp_xmlrpc_server extends IXR_Server {
 			return new IXR_Error( 401, __( 'Sorry, your entry could not be posted. Something wrong happened.' ) );
 
 		return strval( $post_ID );
-	}
-
-	/**
-	 * Encapsulate the logic for sticking a post
-	 * and determining if the user has permission to do so
-	 *
-	 * @since 4.3.0
-	 * @access private
-	 *
-	 * @param array $post_data
-	 * @param bool  $update
-	 * @return void|IXR_Error
-	 */
-	private function _toggle_sticky( $post_data, $update = false ) {
-		$post_type = get_post_type_object( $post_data['post_type'] );
-
-		// Private and password-protected posts cannot be stickied.
-		if ( 'private' === $post_data['post_status'] || ! empty( $post_data['post_password'] ) ) {
-			// Error if the client tried to stick the post, otherwise, silently unstick.
-			if ( ! empty( $post_data['sticky'] ) ) {
-				return new IXR_Error( 401, __( 'Sorry, you cannot stick a private post.' ) );
-			}
-
-			if ( $update ) {
-				unstick_post( $post_data['ID'] );
-			}
-		} elseif ( isset( $post_data['sticky'] ) )  {
-			if ( ! current_user_can( $post_type->cap->edit_others_posts ) ) {
-				return new IXR_Error( 401, __( 'Sorry, you are not allowed to stick this post.' ) );
-			}
-
-			$sticky = wp_validate_boolean( $post_data['sticky'] );
-			if ( $sticky ) {
-				stick_post( $post_data['ID'] );
-			} else {
-				unstick_post( $post_data['ID'] );
-			}
-		}
-	}
-
-	/**
-	 * Set custom fields for post.
-	 *
-	 * @since 2.5.0
-	 *
-	 * @param int $post_id Post ID.
-	 * @param array $fields Custom fields.
-	 */
-	public function set_custom_fields($post_id, $fields) {
-		$post_id = (int) $post_id;
-
-		foreach ( (array) $fields as $meta ) {
-			if ( isset($meta['id']) ) {
-				$meta['id'] = (int) $meta['id'];
-				$pmeta = get_metadata_by_mid( 'post', $meta['id'] );
-				if ( isset($meta['key']) ) {
-					$meta['key'] = wp_unslash( $meta['key'] );
-					if ( $meta['key'] !== $pmeta->meta_key )
-						continue;
-					$meta['value'] = wp_unslash( $meta['value'] );
-					if ( current_user_can( 'edit_post_meta', $post_id, $meta['key'] ) )
-						update_metadata_by_mid( 'post', $meta['id'], $meta['value'] );
-				} elseif ( current_user_can( 'delete_post_meta', $post_id, $pmeta->meta_key ) ) {
-					delete_metadata_by_mid( 'post', $meta['id'] );
-				}
-			} elseif ( current_user_can( 'add_post_meta', $post_id, wp_unslash( $meta['key'] ) ) ) {
-				add_post_meta( $post_id, $meta['key'], $meta['value'] );
-			}
-		}
-	}
-
-	/**
-	 * Adds an enclosure to a post if it's new.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @param integer $post_ID   Post ID.
-	 * @param array   $enclosure Enclosure data.
-	 */
-	public function add_enclosure_if_new( $post_ID, $enclosure ) {
-		if ( is_array( $enclosure ) && isset( $enclosure['url'] ) && isset( $enclosure['length'] ) && isset( $enclosure['type'] ) ) {
-			$encstring = $enclosure['url'] . "\n" . $enclosure['length'] . "\n" . $enclosure['type'] . "\n";
-			$found = false;
-			if ( $enclosures = get_post_meta( $post_ID, 'enclosure' ) ) {
-				foreach ( $enclosures as $enc ) {
-					// This method used to omit the trailing new line. #23219
-					if ( rtrim( $enc, "\n" ) == rtrim( $encstring, "\n" ) ) {
-						$found = true;
-						break;
-					}
-				}
-			}
-			if ( ! $found )
-				add_post_meta( $post_ID, 'enclosure', $encstring );
-		}
-	}
-
-	/**
-	 * Attach upload to a post.
-	 *
-	 * @since 2.1.0
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
-	 * @param int $post_ID Post ID.
-	 * @param string $post_content Post Content for attachment.
-	 */
-	public function attach_uploads( $post_ID, $post_content ) {
-		global $wpdb;
-
-		// find any unattached files
-		$attachments = $wpdb->get_results( "SELECT ID, guid FROM {$wpdb->posts} WHERE post_parent = '0' AND post_type = 'attachment'" );
-		if ( is_array( $attachments ) ) {
-			foreach ( $attachments as $file ) {
-				if ( ! empty( $file->guid ) && strpos( $post_content, $file->guid ) !== false )
-					$wpdb->update($wpdb->posts, array('post_parent' => $post_ID), array('ID' => $file->ID) );
-			}
-		}
 	}
 
 	/**
@@ -1266,7 +1637,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		}
 
 		if ( ! current_user_can( 'delete_post', $post_id ) ) {
-			return new IXR_Error( 401, __( 'Sorry, you do not have the right to delete this post.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to delete this post.' ) );
 		}
 
 		$result = wp_delete_post( $post_id );
@@ -1341,7 +1712,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			$fields = $args[4];
 		} else {
 			/**
-			 * Filter the list of post query fields used by the given XML-RPC method.
+			 * Filters the list of post query fields used by the given XML-RPC method.
 			 *
 			 * @since 3.4.0
 			 *
@@ -1363,225 +1734,9 @@ class wp_xmlrpc_server extends IXR_Server {
 			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
 
 		if ( ! current_user_can( 'edit_post', $post_id ) )
-			return new IXR_Error( 401, __( 'Sorry, you cannot edit this post.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit this post.' ) );
 
 		return $this->_prepare_post( $post, $fields );
-	}
-
-	/**
-	 * Prepares post data for return in an XML-RPC object.
-	 *
-	 * @access protected
-	 *
-	 * @param array $post   The unprepared post data.
-	 * @param array $fields The subset of post type fields to return.
-	 * @return array The prepared post data.
-	 */
-	protected function _prepare_post( $post, $fields ) {
-		// Holds the data for this post. built up based on $fields.
-		$_post = array( 'post_id' => strval( $post['ID'] ) );
-
-		// Prepare common post fields.
-		$post_fields = array(
-			'post_title'        => $post['post_title'],
-			'post_date'         => $this->_convert_date( $post['post_date'] ),
-			'post_date_gmt'     => $this->_convert_date_gmt( $post['post_date_gmt'], $post['post_date'] ),
-			'post_modified'     => $this->_convert_date( $post['post_modified'] ),
-			'post_modified_gmt' => $this->_convert_date_gmt( $post['post_modified_gmt'], $post['post_modified'] ),
-			'post_status'       => $post['post_status'],
-			'post_type'         => $post['post_type'],
-			'post_name'         => $post['post_name'],
-			'post_author'       => $post['post_author'],
-			'post_password'     => $post['post_password'],
-			'post_excerpt'      => $post['post_excerpt'],
-			'post_content'      => $post['post_content'],
-			'post_parent'       => strval( $post['post_parent'] ),
-			'post_mime_type'    => $post['post_mime_type'],
-			'link'              => get_permalink( $post['ID'] ),
-			'guid'              => $post['guid'],
-			'menu_order'        => intval( $post['menu_order'] ),
-			'comment_status'    => $post['comment_status'],
-			'ping_status'       => $post['ping_status'],
-			'sticky'            => ( $post['post_type'] === 'post' && is_sticky( $post['ID'] ) ),
-		);
-
-		// Thumbnail.
-		$post_fields['post_thumbnail'] = array();
-		$thumbnail_id = get_post_thumbnail_id( $post['ID'] );
-		if ( $thumbnail_id ) {
-			$thumbnail_size = current_theme_supports('post-thumbnail') ? 'post-thumbnail' : 'thumbnail';
-			$post_fields['post_thumbnail'] = $this->_prepare_media_item( get_post( $thumbnail_id ), $thumbnail_size );
-		}
-
-		// Consider future posts as published.
-		if ( $post_fields['post_status'] === 'future' )
-			$post_fields['post_status'] = 'publish';
-
-		// Fill in blank post format.
-		$post_fields['post_format'] = get_post_format( $post['ID'] );
-		if ( empty( $post_fields['post_format'] ) )
-			$post_fields['post_format'] = 'standard';
-
-		// Merge requested $post_fields fields into $_post.
-		if ( in_array( 'post', $fields ) ) {
-			$_post = array_merge( $_post, $post_fields );
-		} else {
-			$requested_fields = array_intersect_key( $post_fields, array_flip( $fields ) );
-			$_post = array_merge( $_post, $requested_fields );
-		}
-
-		$all_taxonomy_fields = in_array( 'taxonomies', $fields );
-
-		if ( $all_taxonomy_fields || in_array( 'terms', $fields ) ) {
-			$post_type_taxonomies = get_object_taxonomies( $post['post_type'], 'names' );
-			$terms = wp_get_object_terms( $post['ID'], $post_type_taxonomies );
-			$_post['terms'] = array();
-			foreach ( $terms as $term ) {
-				$_post['terms'][] = $this->_prepare_term( $term );
-			}
-		}
-
-		if ( in_array( 'custom_fields', $fields ) )
-			$_post['custom_fields'] = $this->get_custom_fields( $post['ID'] );
-
-		if ( in_array( 'enclosure', $fields ) ) {
-			$_post['enclosure'] = array();
-			$enclosures = (array) get_post_meta( $post['ID'], 'enclosure' );
-			if ( ! empty( $enclosures ) ) {
-				$encdata = explode( "\n", $enclosures[0] );
-				$_post['enclosure']['url'] = trim( htmlspecialchars( $encdata[0] ) );
-				$_post['enclosure']['length'] = (int) trim( $encdata[1] );
-				$_post['enclosure']['type'] = trim( $encdata[2] );
-			}
-		}
-
-		/**
-		 * Filter XML-RPC-prepared date for the given post.
-		 *
-		 * @since 3.4.0
-		 *
-		 * @param array $_post  An array of modified post data.
-		 * @param array $post   An array of post data.
-		 * @param array $fields An array of post fields.
-		 */
-		return apply_filters( 'xmlrpc_prepare_post', $_post, $post, $fields );
-	}
-
-	/**
-	 * Convert a WordPress GMT date string to an IXR_Date object.
-	 *
-	 * @access protected
-	 *
-	 * @param string $date_gmt WordPress GMT date string.
-	 * @param string $date     Date string.
-	 * @return IXR_Date IXR_Date object.
-	 */
-	protected function _convert_date_gmt( $date_gmt, $date ) {
-		if ( $date !== '0000-00-00 00:00:00' && $date_gmt === '0000-00-00 00:00:00' ) {
-			return new IXR_Date( get_gmt_from_date( mysql2date( 'Y-m-d H:i:s', $date, false ), 'Ymd\TH:i:s' ) );
-		}
-		return $this->_convert_date( $date_gmt );
-	}
-
-	/**
-	 * Prepares media item data for return in an XML-RPC object.
-	 *
-	 * @access protected
-	 *
-	 * @param object $media_item     The unprepared media item data.
-	 * @param string $thumbnail_size The image size to use for the thumbnail URL.
-	 * @return array The prepared media item data.
-	 */
-	protected function _prepare_media_item( $media_item, $thumbnail_size = 'thumbnail' ) {
-		$_media_item = array(
-			'attachment_id'    => strval( $media_item->ID ),
-			'date_created_gmt' => $this->_convert_date_gmt( $media_item->post_date_gmt, $media_item->post_date ),
-			'parent'           => $media_item->post_parent,
-			'link'             => wp_get_attachment_url( $media_item->ID ),
-			'title'            => $media_item->post_title,
-			'caption'          => $media_item->post_excerpt,
-			'description'      => $media_item->post_content,
-			'metadata'         => wp_get_attachment_metadata( $media_item->ID ),
-			'type'             => $media_item->post_mime_type
-		);
-
-		$thumbnail_src = image_downsize( $media_item->ID, $thumbnail_size );
-		if ( $thumbnail_src )
-			$_media_item['thumbnail'] = $thumbnail_src[0];
-		else
-			$_media_item['thumbnail'] = $_media_item['link'];
-
-		/**
-		 * Filter XML-RPC-prepared data for the given media item.
-		 *
-		 * @since 3.4.0
-		 *
-		 * @param array  $_media_item    An array of media item data.
-		 * @param object $media_item     Media item object.
-		 * @param string $thumbnail_size Image size.
-		 */
-		return apply_filters( 'xmlrpc_prepare_media_item', $_media_item, $media_item, $thumbnail_size );
-	}
-
-	/**
-	 * Prepares term data for return in an XML-RPC object.
-	 *
-	 * @access protected
-	 *
-	 * @param array|object $term The unprepared term data.
-	 * @return array The prepared term data.
-	 */
-	protected function _prepare_term( $term ) {
-		$_term = $term;
-		if ( ! is_array( $_term ) )
-			$_term = get_object_vars( $_term );
-
-		// For integers which may be larger than XML-RPC supports ensure we return strings.
-		$_term['term_id'] = strval( $_term['term_id'] );
-		$_term['term_group'] = strval( $_term['term_group'] );
-		$_term['term_taxonomy_id'] = strval( $_term['term_taxonomy_id'] );
-		$_term['parent'] = strval( $_term['parent'] );
-
-		// Count we are happy to return as an integer because people really shouldn't use terms that much.
-		$_term['count'] = intval( $_term['count'] );
-
-		/**
-		 * Filter XML-RPC-prepared data for the given term.
-		 *
-		 * @since 3.4.0
-		 *
-		 * @param array        $_term An array of term data.
-		 * @param array|object $term  Term object or array.
-		 */
-		return apply_filters( 'xmlrpc_prepare_term', $_term, $term );
-	}
-
-	/**
-	 * Retrieve custom fields for post.
-	 *
-	 * @since 2.5.0
-	 *
-	 * @param int $post_id Post ID.
-	 * @return array Custom fields, if exist.
-	 */
-	public function get_custom_fields($post_id) {
-		$post_id = (int) $post_id;
-
-		$custom_fields = array();
-
-		foreach ( (array) has_meta($post_id) as $meta ) {
-			// Don't expose protected fields.
-			if ( ! current_user_can( 'edit_post_meta', $post_id , $meta['meta_key'] ) )
-				continue;
-
-			$custom_fields[] = array(
-				"id"    => $meta['meta_id'],
-				"key"   => $meta['meta_key'],
-				"value" => $meta['meta_value']
-			);
-		}
-
-		return $custom_fields;
 	}
 
 	/**
@@ -1640,7 +1795,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		}
 
 		if ( ! current_user_can( $post_type->cap->edit_posts ) )
-			return new IXR_Error( 401, __( 'You are not allowed to edit posts in this post type.' ));
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit posts in this post type.' ));
 
 		$query['post_type'] = $post_type->name;
 
@@ -1718,12 +1873,12 @@ class wp_xmlrpc_server extends IXR_Server {
 		do_action( 'xmlrpc_call', 'wp.newTerm' );
 
 		if ( ! taxonomy_exists( $content_struct['taxonomy'] ) )
-			return new IXR_Error( 403, __( 'Invalid taxonomy' ) );
+			return new IXR_Error( 403, __( 'Invalid taxonomy.' ) );
 
 		$taxonomy = get_taxonomy( $content_struct['taxonomy'] );
 
 		if ( ! current_user_can( $taxonomy->cap->manage_terms ) )
-			return new IXR_Error( 401, __( 'You are not allowed to create terms in this taxonomy.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to create terms in this taxonomy.' ) );
 
 		$taxonomy = (array) $taxonomy;
 
@@ -1805,12 +1960,12 @@ class wp_xmlrpc_server extends IXR_Server {
 		do_action( 'xmlrpc_call', 'wp.editTerm' );
 
 		if ( ! taxonomy_exists( $content_struct['taxonomy'] ) )
-			return new IXR_Error( 403, __( 'Invalid taxonomy' ) );
+			return new IXR_Error( 403, __( 'Invalid taxonomy.' ) );
 
 		$taxonomy = get_taxonomy( $content_struct['taxonomy'] );
 
 		if ( ! current_user_can( $taxonomy->cap->edit_terms ) )
-			return new IXR_Error( 401, __( 'You are not allowed to edit terms in this taxonomy.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit terms in this taxonomy.' ) );
 
 		$taxonomy = (array) $taxonomy;
 
@@ -1823,7 +1978,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			return new IXR_Error( 500, $term->get_error_message() );
 
 		if ( ! $term )
-			return new IXR_Error( 404, __( 'Invalid term ID' ) );
+			return new IXR_Error( 404, __( 'Invalid term ID.' ) );
 
 		if ( isset( $content_struct['name'] ) ) {
 			$term_data['name'] = trim( $content_struct['name'] );
@@ -1901,12 +2056,12 @@ class wp_xmlrpc_server extends IXR_Server {
 		do_action( 'xmlrpc_call', 'wp.deleteTerm' );
 
 		if ( ! taxonomy_exists( $taxonomy ) )
-			return new IXR_Error( 403, __( 'Invalid taxonomy' ) );
+			return new IXR_Error( 403, __( 'Invalid taxonomy.' ) );
 
 		$taxonomy = get_taxonomy( $taxonomy );
 
 		if ( ! current_user_can( $taxonomy->cap->delete_terms ) )
-			return new IXR_Error( 401, __( 'You are not allowed to delete terms in this taxonomy.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to delete terms in this taxonomy.' ) );
 
 		$term = get_term( $term_id, $taxonomy->name );
 
@@ -1914,7 +2069,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			return new IXR_Error( 500, $term->get_error_message() );
 
 		if ( ! $term )
-			return new IXR_Error( 404, __( 'Invalid term ID' ) );
+			return new IXR_Error( 404, __( 'Invalid term ID.' ) );
 
 		$result = wp_delete_term( $term_id, $taxonomy->name );
 
@@ -1972,12 +2127,12 @@ class wp_xmlrpc_server extends IXR_Server {
 		do_action( 'xmlrpc_call', 'wp.getTerm' );
 
 		if ( ! taxonomy_exists( $taxonomy ) )
-			return new IXR_Error( 403, __( 'Invalid taxonomy' ) );
+			return new IXR_Error( 403, __( 'Invalid taxonomy.' ) );
 
 		$taxonomy = get_taxonomy( $taxonomy );
 
 		if ( ! current_user_can( $taxonomy->cap->assign_terms ) )
-			return new IXR_Error( 401, __( 'You are not allowed to assign terms in this taxonomy.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to assign terms in this taxonomy.' ) );
 
 		$term = get_term( $term_id , $taxonomy->name, ARRAY_A );
 
@@ -1985,7 +2140,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			return new IXR_Error( 500, $term->get_error_message() );
 
 		if ( ! $term )
-			return new IXR_Error( 404, __( 'Invalid term ID' ) );
+			return new IXR_Error( 404, __( 'Invalid term ID.' ) );
 
 		return $this->_prepare_term( $term );
 	}
@@ -2030,12 +2185,12 @@ class wp_xmlrpc_server extends IXR_Server {
 		do_action( 'xmlrpc_call', 'wp.getTerms' );
 
 		if ( ! taxonomy_exists( $taxonomy ) )
-			return new IXR_Error( 403, __( 'Invalid taxonomy' ) );
+			return new IXR_Error( 403, __( 'Invalid taxonomy.' ) );
 
 		$taxonomy = get_taxonomy( $taxonomy );
 
 		if ( ! current_user_can( $taxonomy->cap->assign_terms ) )
-			return new IXR_Error( 401, __( 'You are not allowed to assign terms in this taxonomy.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to assign terms in this taxonomy.' ) );
 
 		$query = array();
 
@@ -2108,7 +2263,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			$fields = $args[4];
 		} else {
 			/**
-			 * Filter the taxonomy query fields used by the given XML-RPC method.
+			 * Filters the taxonomy query fields used by the given XML-RPC method.
 			 *
 			 * @since 3.4.0
 			 *
@@ -2125,57 +2280,14 @@ class wp_xmlrpc_server extends IXR_Server {
 		do_action( 'xmlrpc_call', 'wp.getTaxonomy' );
 
 		if ( ! taxonomy_exists( $taxonomy ) )
-			return new IXR_Error( 403, __( 'Invalid taxonomy' ) );
+			return new IXR_Error( 403, __( 'Invalid taxonomy.' ) );
 
 		$taxonomy = get_taxonomy( $taxonomy );
 
 		if ( ! current_user_can( $taxonomy->cap->assign_terms ) )
-			return new IXR_Error( 401, __( 'You are not allowed to assign terms in this taxonomy.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to assign terms in this taxonomy.' ) );
 
 		return $this->_prepare_taxonomy( $taxonomy, $fields );
-	}
-
-	/**
-	 * Prepares taxonomy data for return in an XML-RPC object.
-	 *
-	 * @access protected
-	 *
-	 * @param object $taxonomy The unprepared taxonomy data.
-	 * @param array $fields    The subset of taxonomy fields to return.
-	 * @return array The prepared taxonomy data.
-	 */
-	protected function _prepare_taxonomy( $taxonomy, $fields ) {
-		$_taxonomy = array(
-			'name' => $taxonomy->name,
-			'label' => $taxonomy->label,
-			'hierarchical' => (bool) $taxonomy->hierarchical,
-			'public' => (bool) $taxonomy->public,
-			'show_ui' => (bool) $taxonomy->show_ui,
-			'_builtin' => (bool) $taxonomy->_builtin,
-		);
-
-		if ( in_array( 'labels', $fields ) )
-			$_taxonomy['labels'] = (array) $taxonomy->labels;
-
-		if ( in_array( 'cap', $fields ) )
-			$_taxonomy['cap'] = (array) $taxonomy->cap;
-
-		if ( in_array( 'menu', $fields ) )
-			$_taxonomy['show_in_menu'] = (bool) $_taxonomy->show_in_menu;
-
-		if ( in_array( 'object_type', $fields ) )
-			$_taxonomy['object_type'] = array_unique( (array) $taxonomy->object_type );
-
-		/**
-		 * Filter XML-RPC-prepared data for the given taxonomy.
-		 *
-		 * @since 3.4.0
-		 *
-		 * @param array  $_taxonomy An array of taxonomy data.
-		 * @param object $taxonomy  Taxonomy object.
-		 * @param array  $fields    The subset of taxonomy fields to return.
-		 */
-		return apply_filters( 'xmlrpc_prepare_taxonomy', $_taxonomy, $taxonomy, $fields );
 	}
 
 	/**
@@ -2286,7 +2398,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			$fields = $args[4];
 		} else {
 			/**
-			 * Filter the default user query fields used by the given XML-RPC method.
+			 * Filters the default user query fields used by the given XML-RPC method.
 			 *
 			 * @since 3.5.0
 			 *
@@ -2303,7 +2415,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		do_action( 'xmlrpc_call', 'wp.getUser' );
 
 		if ( ! current_user_can( 'edit_user', $user_id ) )
-			return new IXR_Error( 401, __( 'Sorry, you cannot edit users.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit this user.' ) );
 
 		$user_data = get_userdata( $user_id );
 
@@ -2311,55 +2423,6 @@ class wp_xmlrpc_server extends IXR_Server {
 			return new IXR_Error( 404, __( 'Invalid user ID.' ) );
 
 		return $this->_prepare_user( $user_data, $fields );
-	}
-
-	/**
-	 * Prepares user data for return in an XML-RPC object.
-	 *
-	 * @access protected
-	 *
-	 * @param WP_User $user   The unprepared user object.
-	 * @param array   $fields The subset of user fields to return.
-	 * @return array The prepared user data.
-	 */
-	protected function _prepare_user( $user, $fields ) {
-		$_user = array( 'user_id' => strval( $user->ID ) );
-
-		$user_fields = array(
-			'username'          => $user->user_login,
-			'first_name'        => $user->user_firstname,
-			'last_name'         => $user->user_lastname,
-			'registered'        => $this->_convert_date( $user->user_registered ),
-			'bio'               => $user->user_description,
-			'email'             => $user->user_email,
-			'nickname'          => $user->nickname,
-			'nicename'          => $user->user_nicename,
-			'url'               => $user->user_url,
-			'display_name'      => $user->display_name,
-			'roles'             => $user->roles,
-		);
-
-		if ( in_array( 'all', $fields ) ) {
-			$_user = array_merge( $_user, $user_fields );
-		} else {
-			if ( in_array( 'basic', $fields ) ) {
-				$basic_fields = array( 'username', 'email', 'registered', 'display_name', 'nicename' );
-				$fields = array_merge( $fields, $basic_fields );
-			}
-			$requested_fields = array_intersect_key( $user_fields, array_flip( $fields ) );
-			$_user = array_merge( $_user, $requested_fields );
-		}
-
-		/**
-		 * Filter XML-RPC-prepared data for the given user.
-		 *
-		 * @since 3.5.0
-		 *
-		 * @param array   $_user  An array of user data.
-		 * @param WP_User $user   User object.
-		 * @param array   $fields An array of user fields.
-		 */
-		return apply_filters( 'xmlrpc_prepare_user', $_user, $user, $fields );
 	}
 
 	/**
@@ -2410,7 +2473,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		do_action( 'xmlrpc_call', 'wp.getUsers' );
 
 		if ( ! current_user_can( 'list_users' ) )
-			return new IXR_Error( 401, __( 'You are not allowed to browse users.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to browse users.' ) );
 
 		$query = array( 'fields' => 'all_with_meta' );
 
@@ -2483,7 +2546,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		do_action( 'xmlrpc_call', 'wp.getProfile' );
 
 		if ( ! current_user_can( 'edit_user', $user->ID ) )
-			return new IXR_Error( 401, __( 'Sorry, you cannot edit your profile.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit your profile.' ) );
 
 		$user_data = get_userdata( $user->ID );
 
@@ -2529,7 +2592,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		do_action( 'xmlrpc_call', 'wp.editProfile' );
 
 		if ( ! current_user_can( 'edit_user', $user->ID ) )
-			return new IXR_Error( 401, __( 'Sorry, you cannot edit your profile.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit your profile.' ) );
 
 		// holds data of the user
 		$user_data = array();
@@ -2599,7 +2662,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
 
 		if ( !current_user_can( 'edit_page', $page_id ) )
-			return new IXR_Error( 401, __( 'Sorry, you cannot edit this page.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit this page.' ) );
 
 		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
 		do_action( 'xmlrpc_call', 'wp.getPage' );
@@ -2612,87 +2675,6 @@ class wp_xmlrpc_server extends IXR_Server {
 		else {
 			return new IXR_Error( 404, __( 'Sorry, no such page.' ) );
 		}
-	}
-
-	/**
-	 * Prepares page data for return in an XML-RPC object.
-	 *
-	 * @access protected
-	 *
-	 * @param object $page The unprepared page data.
-	 * @return array The prepared page data.
-	 */
-	protected function _prepare_page( $page ) {
-		// Get all of the page content and link.
-		$full_page = get_extended( $page->post_content );
-		$link = get_permalink( $page->ID );
-
-		// Get info the page parent if there is one.
-		$parent_title = "";
-		if ( ! empty( $page->post_parent ) ) {
-			$parent = get_post( $page->post_parent );
-			$parent_title = $parent->post_title;
-		}
-
-		// Determine comment and ping settings.
-		$allow_comments = comments_open( $page->ID ) ? 1 : 0;
-		$allow_pings = pings_open( $page->ID ) ? 1 : 0;
-
-		// Format page date.
-		$page_date = $this->_convert_date( $page->post_date );
-		$page_date_gmt = $this->_convert_date_gmt( $page->post_date_gmt, $page->post_date );
-
-		// Pull the categories info together.
-		$categories = array();
-		if ( is_object_in_taxonomy( 'page', 'category' ) ) {
-			foreach ( wp_get_post_categories( $page->ID ) as $cat_id ) {
-				$categories[] = get_cat_name( $cat_id );
-			}
-		}
-
-		// Get the author info.
-		$author = get_userdata( $page->post_author );
-
-		$page_template = get_page_template_slug( $page->ID );
-		if ( empty( $page_template ) )
-			$page_template = 'default';
-
-		$_page = array(
-			'dateCreated'            => $page_date,
-			'userid'                 => $page->post_author,
-			'page_id'                => $page->ID,
-			'page_status'            => $page->post_status,
-			'description'            => $full_page['main'],
-			'title'                  => $page->post_title,
-			'link'                   => $link,
-			'permaLink'              => $link,
-			'categories'             => $categories,
-			'excerpt'                => $page->post_excerpt,
-			'text_more'              => $full_page['extended'],
-			'mt_allow_comments'      => $allow_comments,
-			'mt_allow_pings'         => $allow_pings,
-			'wp_slug'                => $page->post_name,
-			'wp_password'            => $page->post_password,
-			'wp_author'              => $author->display_name,
-			'wp_page_parent_id'      => $page->post_parent,
-			'wp_page_parent_title'   => $parent_title,
-			'wp_page_order'          => $page->menu_order,
-			'wp_author_id'           => (string) $author->ID,
-			'wp_author_display_name' => $author->display_name,
-			'date_created_gmt'       => $page_date_gmt,
-			'custom_fields'          => $this->get_custom_fields( $page->ID ),
-			'wp_page_template'       => $page_template
-		);
-
-		/**
-		 * Filter XML-RPC-prepared data for the given page.
-		 *
-		 * @since 3.4.0
-		 *
-		 * @param array   $_page An array of page data.
-		 * @param WP_Post $page  Page object.
-		 */
-		return apply_filters( 'xmlrpc_prepare_page', $_page, $page );
 	}
 
 	/**
@@ -2721,7 +2703,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			return $this->error;
 
 		if ( !current_user_can( 'edit_pages' ) )
-			return new IXR_Error( 401, __( 'Sorry, you cannot edit pages.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit pages.' ) );
 
 		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
 		do_action( 'xmlrpc_call', 'wp.getPages' );
@@ -2778,6 +2760,2026 @@ class wp_xmlrpc_server extends IXR_Server {
 		// Let mw_newPost do all of the heavy lifting.
 		return $this->mw_newPost( $args );
 	}
+
+	/**
+	 * Delete page.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type int    $page_id
+	 * }
+	 * @return true|IXR_Error True, if success.
+	 */
+	public function wp_deletePage( $args ) {
+		$this->escape( $args );
+
+		$username = $args[1];
+		$password = $args[2];
+		$page_id  = (int) $args[3];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.deletePage' );
+
+		// Get the current page based on the page_id and
+		// make sure it is a page and not a post.
+		$actual_page = get_post($page_id, ARRAY_A);
+		if ( !$actual_page || ($actual_page['post_type'] != 'page') )
+			return new IXR_Error( 404, __( 'Sorry, no such page.' ) );
+
+		// Make sure the user can delete pages.
+		if ( !current_user_can('delete_page', $page_id) )
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to delete this page.' ) );
+
+		// Attempt to delete the page.
+		$result = wp_delete_post($page_id);
+		if ( !$result )
+			return new IXR_Error( 500, __( 'Failed to delete the page.' ) );
+
+		/**
+		 * Fires after a page has been successfully deleted via XML-RPC.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param int   $page_id ID of the deleted page.
+		 * @param array $args    An array of arguments to delete the page.
+		 */
+		do_action( 'xmlrpc_call_success_wp_deletePage', $page_id, $args );
+
+		return true;
+	}
+
+	/**
+	 * Edit page.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type int    $page_id
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type string $content
+	 *     @type string $publish
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function wp_editPage( $args ) {
+		// Items will be escaped in mw_editPost.
+		$page_id  = (int) $args[1];
+		$username = $args[2];
+		$password = $args[3];
+		$content  = $args[4];
+		$publish  = $args[5];
+
+		$escaped_username = $this->escape( $username );
+		$escaped_password = $this->escape( $password );
+
+		if ( !$user = $this->login( $escaped_username, $escaped_password ) ) {
+			return $this->error;
+		}
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.editPage' );
+
+		// Get the page data and make sure it is a page.
+		$actual_page = get_post($page_id, ARRAY_A);
+		if ( !$actual_page || ($actual_page['post_type'] != 'page') )
+			return new IXR_Error( 404, __( 'Sorry, no such page.' ) );
+
+		// Make sure the user is allowed to edit pages.
+		if ( !current_user_can('edit_page', $page_id) )
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit this page.' ) );
+
+		// Mark this as content for a page.
+		$content['post_type'] = 'page';
+
+		// Arrange args in the way mw_editPost understands.
+		$args = array(
+			$page_id,
+			$username,
+			$password,
+			$content,
+			$publish
+		);
+
+		// Let mw_editPost do all of the heavy lifting.
+		return $this->mw_editPost( $args );
+	}
+
+	/**
+	 * Retrieve page list.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @global wpdb $wpdb WordPress database abstraction object.
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function wp_getPageList( $args ) {
+		global $wpdb;
+
+		$this->escape( $args );
+
+		$username = $args[1];
+		$password = $args[2];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		if ( !current_user_can( 'edit_pages' ) )
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit pages.' ) );
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.getPageList' );
+
+		// Get list of pages ids and titles
+		$page_list = $wpdb->get_results("
+			SELECT ID page_id,
+				post_title page_title,
+				post_parent page_parent_id,
+				post_date_gmt,
+				post_date,
+				post_status
+			FROM {$wpdb->posts}
+			WHERE post_type = 'page'
+			ORDER BY ID
+		");
+
+		// The date needs to be formatted properly.
+		$num_pages = count($page_list);
+		for ( $i = 0; $i < $num_pages; $i++ ) {
+			$page_list[$i]->dateCreated = $this->_convert_date(  $page_list[$i]->post_date );
+			$page_list[$i]->date_created_gmt = $this->_convert_date_gmt( $page_list[$i]->post_date_gmt, $page_list[$i]->post_date );
+
+			unset($page_list[$i]->post_date_gmt);
+			unset($page_list[$i]->post_date);
+			unset($page_list[$i]->post_status);
+		}
+
+		return $page_list;
+	}
+
+	/**
+	 * Retrieve authors list.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function wp_getAuthors( $args ) {
+		$this->escape( $args );
+
+		$username = $args[1];
+		$password = $args[2];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		if ( !current_user_can('edit_posts') )
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit posts.' ) );
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.getAuthors' );
+
+		$authors = array();
+		foreach ( get_users( array( 'fields' => array('ID','user_login','display_name') ) ) as $user ) {
+			$authors[] = array(
+				'user_id'       => $user->ID,
+				'user_login'    => $user->user_login,
+				'display_name'  => $user->display_name
+			);
+		}
+
+		return $authors;
+	}
+
+	/**
+	 * Get list of all tags
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function wp_getTags( $args ) {
+		$this->escape( $args );
+
+		$username = $args[1];
+		$password = $args[2];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		if ( !current_user_can( 'edit_posts' ) )
+			return new IXR_Error( 401, __( 'Sorry, you must be able to edit posts on this site in order to view tags.' ) );
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.getKeywords' );
+
+		$tags = array();
+
+		if ( $all_tags = get_tags() ) {
+			foreach ( (array) $all_tags as $tag ) {
+				$struct = array();
+				$struct['tag_id']			= $tag->term_id;
+				$struct['name']				= $tag->name;
+				$struct['count']			= $tag->count;
+				$struct['slug']				= $tag->slug;
+				$struct['html_url']			= esc_html( get_tag_link( $tag->term_id ) );
+				$struct['rss_url']			= esc_html( get_tag_feed_link( $tag->term_id ) );
+
+				$tags[] = $struct;
+			}
+		}
+
+		return $tags;
+	}
+
+	/**
+	 * Create new category.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type array  $category
+	 * }
+	 * @return int|IXR_Error Category ID.
+	 */
+	public function wp_newCategory( $args ) {
+		$this->escape( $args );
+
+		$username = $args[1];
+		$password = $args[2];
+		$category = $args[3];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.newCategory' );
+
+		// Make sure the user is allowed to add a category.
+		if ( !current_user_can('manage_categories') )
+			return new IXR_Error(401, __('Sorry, you are not allowed to add a category.'));
+
+		// If no slug was provided make it empty so that
+		// WordPress will generate one.
+		if ( empty($category['slug']) )
+			$category['slug'] = '';
+
+		// If no parent_id was provided make it empty
+		// so that it will be a top level page (no parent).
+		if ( !isset($category['parent_id']) )
+			$category['parent_id'] = '';
+
+		// If no description was provided make it empty.
+		if ( empty($category["description"]) )
+			$category["description"] = "";
+
+		$new_category = array(
+			'cat_name'				=> $category['name'],
+			'category_nicename'		=> $category['slug'],
+			'category_parent'		=> $category['parent_id'],
+			'category_description'	=> $category['description']
+		);
+
+		$cat_id = wp_insert_category($new_category, true);
+		if ( is_wp_error( $cat_id ) ) {
+			if ( 'term_exists' == $cat_id->get_error_code() )
+				return (int) $cat_id->get_error_data();
+			else
+				return new IXR_Error(500, __('Sorry, the new category failed.'));
+		} elseif ( ! $cat_id ) {
+			return new IXR_Error(500, __('Sorry, the new category failed.'));
+		}
+
+		/**
+		 * Fires after a new category has been successfully created via XML-RPC.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param int   $cat_id ID of the new category.
+		 * @param array $args   An array of new category arguments.
+		 */
+		do_action( 'xmlrpc_call_success_wp_newCategory', $cat_id, $args );
+
+		return $cat_id;
+	}
+
+	/**
+	 * Remove category.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type int    $category_id
+	 * }
+	 * @return bool|IXR_Error See wp_delete_term() for return info.
+	 */
+	public function wp_deleteCategory( $args ) {
+		$this->escape( $args );
+
+		$username    = $args[1];
+		$password    = $args[2];
+		$category_id = (int) $args[3];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.deleteCategory' );
+
+		if ( !current_user_can('manage_categories') )
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to delete a category.' ) );
+
+		$status = wp_delete_term( $category_id, 'category' );
+
+		if ( true == $status ) {
+			/**
+			 * Fires after a category has been successfully deleted via XML-RPC.
+			 *
+			 * @since 3.4.0
+			 *
+			 * @param int   $category_id ID of the deleted category.
+			 * @param array $args        An array of arguments to delete the category.
+			 */
+			do_action( 'xmlrpc_call_success_wp_deleteCategory', $category_id, $args );
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Retrieve category list.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type array  $category
+	 *     @type int    $max_results
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function wp_suggestCategories( $args ) {
+		$this->escape( $args );
+
+		$username    = $args[1];
+		$password    = $args[2];
+		$category    = $args[3];
+		$max_results = (int) $args[4];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		if ( !current_user_can( 'edit_posts' ) )
+			return new IXR_Error( 401, __( 'Sorry, you must be able to edit posts on this site in order to view categories.' ) );
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.suggestCategories' );
+
+		$category_suggestions = array();
+		$args = array('get' => 'all', 'number' => $max_results, 'name__like' => $category);
+		foreach ( (array) get_categories($args) as $cat ) {
+			$category_suggestions[] = array(
+				'category_id'	=> $cat->term_id,
+				'category_name'	=> $cat->name
+			);
+		}
+
+		return $category_suggestions;
+	}
+
+	/**
+	 * Retrieve comment.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type int    $comment_id
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function wp_getComment($args) {
+		$this->escape($args);
+
+		$username	= $args[1];
+		$password	= $args[2];
+		$comment_id	= (int) $args[3];
+
+		if ( ! $user = $this->login( $username, $password ) ) {
+			return $this->error;
+		}
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.getComment' );
+
+		if ( ! $comment = get_comment( $comment_id ) ) {
+			return new IXR_Error( 404, __( 'Invalid comment ID.' ) );
+		}
+
+		if ( ! current_user_can( 'edit_comment', $comment_id ) ) {
+			return new IXR_Error( 403, __( 'Sorry, you are not allowed to moderate or edit this comment.' ) );
+		}
+
+		return $this->_prepare_comment( $comment );
+	}
+
+	/**
+	 * Retrieve comments.
+	 *
+	 * Besides the common blog_id (unused), username, and password arguments, it takes a filter
+	 * array as last argument.
+	 *
+	 * Accepted 'filter' keys are 'status', 'post_id', 'offset', and 'number'.
+	 *
+	 * The defaults are as follows:
+	 * - 'status' - Default is ''. Filter by status (e.g., 'approve', 'hold')
+	 * - 'post_id' - Default is ''. The post where the comment is posted. Empty string shows all comments.
+	 * - 'number' - Default is 10. Total number of media items to retrieve.
+	 * - 'offset' - Default is 0. See WP_Query::query() for more.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type array  $struct
+	 * }
+	 * @return array|IXR_Error Contains a collection of comments. See wp_xmlrpc_server::wp_getComment() for a description of each item contents
+	 */
+	public function wp_getComments( $args ) {
+		$this->escape( $args );
+
+		$username = $args[1];
+		$password = $args[2];
+		$struct	  = isset( $args[3] ) ? $args[3] : array();
+
+		if ( ! $user = $this->login( $username, $password ) ) {
+			return $this->error;
+		}
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.getComments' );
+
+		if ( isset( $struct['status'] ) ) {
+			$status = $struct['status'];
+		} else {
+			$status = '';
+		}
+
+		if ( ! current_user_can( 'moderate_comments' ) && 'approve' !== $status ) {
+			return new IXR_Error( 401, __( 'Invalid comment status.' ) );
+		}
+
+		$post_id = '';
+		if ( isset( $struct['post_id'] ) ) {
+			$post_id = absint( $struct['post_id'] );
+		}
+
+		$post_type = '';
+		if ( isset( $struct['post_type'] ) ) {
+			$post_type_object = get_post_type_object( $struct['post_type'] );
+			if ( ! $post_type_object || ! post_type_supports( $post_type_object->name, 'comments' ) ) {
+				return new IXR_Error( 404, __( 'Invalid post type.' ) );
+			}
+			$post_type = $struct['post_type'];
+		}
+
+		$offset = 0;
+		if ( isset( $struct['offset'] ) ) {
+			$offset = absint( $struct['offset'] );
+		}
+
+		$number = 10;
+		if ( isset( $struct['number'] ) ) {
+			$number = absint( $struct['number'] );
+		}
+
+		$comments = get_comments( array(
+			'status' => $status,
+			'post_id' => $post_id,
+			'offset' => $offset,
+			'number' => $number,
+			'post_type' => $post_type,
+		) );
+
+		$comments_struct = array();
+		if ( is_array( $comments ) ) {
+			foreach ( $comments as $comment ) {
+				$comments_struct[] = $this->_prepare_comment( $comment );
+			}
+		}
+
+		return $comments_struct;
+	}
+
+	/**
+	 * Delete a comment.
+	 *
+	 * By default, the comment will be moved to the trash instead of deleted.
+	 * See wp_delete_comment() for more information on this behavior.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type int    $comment_ID
+	 * }
+	 * @return bool|IXR_Error See wp_delete_comment().
+	 */
+	public function wp_deleteComment( $args ) {
+		$this->escape($args);
+
+		$username	= $args[1];
+		$password	= $args[2];
+		$comment_ID	= (int) $args[3];
+
+		if ( ! $user = $this->login( $username, $password ) ) {
+			return $this->error;
+		}
+
+		if ( ! get_comment( $comment_ID ) ) {
+			return new IXR_Error( 404, __( 'Invalid comment ID.' ) );
+		}
+
+		if ( !current_user_can( 'edit_comment', $comment_ID ) ) {
+			return new IXR_Error( 403, __( 'Sorry, you are not allowed to moderate or edit this comment.' ) );
+		}
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.deleteComment' );
+
+		$status = wp_delete_comment( $comment_ID );
+
+		if ( $status ) {
+			/**
+			 * Fires after a comment has been successfully deleted via XML-RPC.
+			 *
+			 * @since 3.4.0
+			 *
+			 * @param int   $comment_ID ID of the deleted comment.
+			 * @param array $args       An array of arguments to delete the comment.
+			 */
+			do_action( 'xmlrpc_call_success_wp_deleteComment', $comment_ID, $args );
+		}
+
+		return $status;
+	}
+
+	/**
+	 * Edit comment.
+	 *
+	 * Besides the common blog_id (unused), username, and password arguments, it takes a
+	 * comment_id integer and a content_struct array as last argument.
+	 *
+	 * The allowed keys in the content_struct array are:
+	 *  - 'author'
+	 *  - 'author_url'
+	 *  - 'author_email'
+	 *  - 'content'
+	 *  - 'date_created_gmt'
+	 *  - 'status'. Common statuses are 'approve', 'hold', 'spam'. See get_comment_statuses() for more details
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type int    $comment_ID
+	 *     @type array  $content_struct
+	 * }
+	 * @return true|IXR_Error True, on success.
+	 */
+	public function wp_editComment( $args ) {
+		$this->escape( $args );
+
+		$username	= $args[1];
+		$password	= $args[2];
+		$comment_ID	= (int) $args[3];
+		$content_struct = $args[4];
+
+		if ( !$user = $this->login( $username, $password ) ) {
+			return $this->error;
+		}
+
+		if ( ! get_comment( $comment_ID ) ) {
+			return new IXR_Error( 404, __( 'Invalid comment ID.' ) );
+		}
+
+		if ( ! current_user_can( 'edit_comment', $comment_ID ) ) {
+			return new IXR_Error( 403, __( 'Sorry, you are not allowed to moderate or edit this comment.' ) );
+		}
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.editComment' );
+
+		if ( isset($content_struct['status']) ) {
+			$statuses = get_comment_statuses();
+			$statuses = array_keys($statuses);
+
+			if ( ! in_array($content_struct['status'], $statuses) )
+				return new IXR_Error( 401, __( 'Invalid comment status.' ) );
+			$comment_approved = $content_struct['status'];
+		}
+
+		// Do some timestamp voodoo
+		if ( !empty( $content_struct['date_created_gmt'] ) ) {
+			// We know this is supposed to be GMT, so we're going to slap that Z on there by force
+			$dateCreated = rtrim( $content_struct['date_created_gmt']->getIso(), 'Z' ) . 'Z';
+			$comment_date = get_date_from_gmt(iso8601_to_datetime($dateCreated));
+			$comment_date_gmt = iso8601_to_datetime($dateCreated, 'GMT');
+		}
+
+		if ( isset($content_struct['content']) )
+			$comment_content = $content_struct['content'];
+
+		if ( isset($content_struct['author']) )
+			$comment_author = $content_struct['author'];
+
+		if ( isset($content_struct['author_url']) )
+			$comment_author_url = $content_struct['author_url'];
+
+		if ( isset($content_struct['author_email']) )
+			$comment_author_email = $content_struct['author_email'];
+
+		// We've got all the data -- post it:
+		$comment = compact('comment_ID', 'comment_content', 'comment_approved', 'comment_date', 'comment_date_gmt', 'comment_author', 'comment_author_email', 'comment_author_url');
+
+		$result = wp_update_comment($comment);
+		if ( is_wp_error( $result ) )
+			return new IXR_Error(500, $result->get_error_message());
+
+		if ( !$result )
+			return new IXR_Error(500, __('Sorry, the comment could not be edited. Something wrong happened.'));
+
+		/**
+		 * Fires after a comment has been successfully updated via XML-RPC.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param int   $comment_ID ID of the updated comment.
+		 * @param array $args       An array of arguments to update the comment.
+		 */
+		do_action( 'xmlrpc_call_success_wp_editComment', $comment_ID, $args );
+
+		return true;
+	}
+
+	/**
+	 * Create new comment.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int        $blog_id (unused)
+	 *     @type string     $username
+	 *     @type string     $password
+	 *     @type string|int $post
+	 *     @type array      $content_struct
+	 * }
+	 * @return int|IXR_Error See wp_new_comment().
+	 */
+	public function wp_newComment($args) {
+		$this->escape($args);
+
+		$username       = $args[1];
+		$password       = $args[2];
+		$post           = $args[3];
+		$content_struct = $args[4];
+
+		/**
+		 * Filters whether to allow anonymous comments over XML-RPC.
+		 *
+		 * @since 2.7.0
+		 *
+		 * @param bool $allow Whether to allow anonymous commenting via XML-RPC.
+		 *                    Default false.
+		 */
+		$allow_anon = apply_filters( 'xmlrpc_allow_anonymous_comments', false );
+
+		$user = $this->login($username, $password);
+
+		if ( !$user ) {
+			$logged_in = false;
+			if ( $allow_anon && get_option('comment_registration') ) {
+				return new IXR_Error( 403, __( 'You must be registered to comment' ) );
+			} elseif ( ! $allow_anon ) {
+				return $this->error;
+			}
+		} else {
+			$logged_in = true;
+		}
+
+		if ( is_numeric($post) )
+			$post_id = absint($post);
+		else
+			$post_id = url_to_postid($post);
+
+		if ( ! $post_id ) {
+			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
+		}
+
+		if ( ! get_post( $post_id ) ) {
+			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
+		}
+
+		if ( ! comments_open( $post_id ) ) {
+			return new IXR_Error( 403, __( 'Sorry, comments are closed for this item.' ) );
+		}
+
+		$comment = array();
+		$comment['comment_post_ID'] = $post_id;
+
+		if ( $logged_in ) {
+			$display_name = $user->display_name;
+			$user_email = $user->user_email;
+			$user_url = $user->user_url;
+
+			$comment['comment_author'] = $this->escape( $display_name );
+			$comment['comment_author_email'] = $this->escape( $user_email );
+			$comment['comment_author_url'] = $this->escape( $user_url );
+			$comment['user_ID'] = $user->ID;
+		} else {
+			$comment['comment_author'] = '';
+			if ( isset($content_struct['author']) )
+				$comment['comment_author'] = $content_struct['author'];
+
+			$comment['comment_author_email'] = '';
+			if ( isset($content_struct['author_email']) )
+				$comment['comment_author_email'] = $content_struct['author_email'];
+
+			$comment['comment_author_url'] = '';
+			if ( isset($content_struct['author_url']) )
+				$comment['comment_author_url'] = $content_struct['author_url'];
+
+			$comment['user_ID'] = 0;
+
+			if ( get_option('require_name_email') ) {
+				if ( 6 > strlen($comment['comment_author_email']) || '' == $comment['comment_author'] )
+					return new IXR_Error( 403, __( 'Comment author name and email are required' ) );
+				elseif ( !is_email($comment['comment_author_email']) )
+					return new IXR_Error( 403, __( 'A valid email address is required' ) );
+			}
+		}
+
+		$comment['comment_parent'] = isset($content_struct['comment_parent']) ? absint($content_struct['comment_parent']) : 0;
+
+		$comment['comment_content'] =  isset($content_struct['content']) ? $content_struct['content'] : null;
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.newComment' );
+
+		$comment_ID = wp_new_comment( $comment );
+
+		/**
+		 * Fires after a new comment has been successfully created via XML-RPC.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param int   $comment_ID ID of the new comment.
+		 * @param array $args       An array of new comment arguments.
+		 */
+		do_action( 'xmlrpc_call_success_wp_newComment', $comment_ID, $args );
+
+		return $comment_ID;
+	}
+
+	/**
+	 * Retrieve all of the comment status.
+	 *
+	 * @since 2.7.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function wp_getCommentStatusList( $args ) {
+		$this->escape( $args );
+
+		$username = $args[1];
+		$password = $args[2];
+
+		if ( ! $user = $this->login( $username, $password ) ) {
+			return $this->error;
+		}
+
+		if ( ! current_user_can( 'publish_posts' ) ) {
+			return new IXR_Error( 403, __( 'Sorry, you are not allowed access to details about this site.' ) );
+		}
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.getCommentStatusList' );
+
+		return get_comment_statuses();
+	}
+
+	/**
+	 * Retrieve comment count.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type int    $post_id
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function wp_getCommentCount( $args ) {
+		$this->escape( $args );
+
+		$username	= $args[1];
+		$password	= $args[2];
+		$post_id	= (int) $args[3];
+
+		if ( ! $user = $this->login( $username, $password ) ) {
+			return $this->error;
+		}
+
+		$post = get_post( $post_id, ARRAY_A );
+		if ( empty( $post['ID'] ) ) {
+			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
+		}
+
+		if ( ! current_user_can( 'edit_post', $post_id ) ) {
+			return new IXR_Error( 403, __( 'Sorry, you are not allowed access to details of this post.' ) );
+		}
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.getCommentCount' );
+
+		$count = wp_count_comments( $post_id );
+
+		return array(
+			'approved' => $count->approved,
+			'awaiting_moderation' => $count->moderated,
+			'spam' => $count->spam,
+			'total_comments' => $count->total_comments
+		);
+	}
+
+	/**
+	 * Retrieve post statuses.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function wp_getPostStatusList( $args ) {
+		$this->escape( $args );
+
+		$username = $args[1];
+		$password = $args[2];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		if ( !current_user_can( 'edit_posts' ) )
+			return new IXR_Error( 403, __( 'Sorry, you are not allowed access to details about this site.' ) );
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.getPostStatusList' );
+
+		return get_post_statuses();
+	}
+
+	/**
+	 * Retrieve page statuses.
+	 *
+	 * @since 2.5.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function wp_getPageStatusList( $args ) {
+		$this->escape( $args );
+
+		$username = $args[1];
+		$password = $args[2];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		if ( !current_user_can( 'edit_pages' ) )
+			return new IXR_Error( 403, __( 'Sorry, you are not allowed access to details about this site.' ) );
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.getPageStatusList' );
+
+		return get_page_statuses();
+	}
+
+	/**
+	 * Retrieve page templates.
+	 *
+	 * @since 2.6.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function wp_getPageTemplates( $args ) {
+		$this->escape( $args );
+
+		$username = $args[1];
+		$password = $args[2];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		if ( !current_user_can( 'edit_pages' ) )
+			return new IXR_Error( 403, __( 'Sorry, you are not allowed access to details about this site.' ) );
+
+		$templates = get_page_templates();
+		$templates['Default'] = 'default';
+
+		return $templates;
+	}
+
+	/**
+	 * Retrieve blog options.
+	 *
+	 * @since 2.6.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type array  $options
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function wp_getOptions( $args ) {
+		$this->escape( $args );
+
+		$username	= $args[1];
+		$password	= $args[2];
+		$options	= isset( $args[3] ) ? (array) $args[3] : array();
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		// If no specific options where asked for, return all of them
+		if ( count( $options ) == 0 )
+			$options = array_keys($this->blog_options);
+
+		return $this->_getOptions($options);
+	}
+
+	/**
+	 * Retrieve blog options value from list.
+	 *
+	 * @since 2.6.0
+	 *
+	 * @param array $options Options to retrieve.
+	 * @return array
+	 */
+	public function _getOptions($options) {
+		$data = array();
+		$can_manage = current_user_can( 'manage_options' );
+		foreach ( $options as $option ) {
+			if ( array_key_exists( $option, $this->blog_options ) ) {
+				$data[$option] = $this->blog_options[$option];
+				//Is the value static or dynamic?
+				if ( isset( $data[$option]['option'] ) ) {
+					$data[$option]['value'] = get_option( $data[$option]['option'] );
+					unset($data[$option]['option']);
+				}
+
+				if ( ! $can_manage )
+					$data[$option]['readonly'] = true;
+			}
+		}
+
+		return $data;
+	}
+
+	/**
+	 * Update blog options.
+	 *
+	 * @since 2.6.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type array  $options
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function wp_setOptions( $args ) {
+		$this->escape( $args );
+
+		$username	= $args[1];
+		$password	= $args[2];
+		$options	= (array) $args[3];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		if ( !current_user_can( 'manage_options' ) )
+			return new IXR_Error( 403, __( 'Sorry, you are not allowed to update options.' ) );
+
+		$option_names = array();
+		foreach ( $options as $o_name => $o_value ) {
+			$option_names[] = $o_name;
+			if ( !array_key_exists( $o_name, $this->blog_options ) )
+				continue;
+
+			if ( $this->blog_options[$o_name]['readonly'] == true )
+				continue;
+
+			update_option( $this->blog_options[$o_name]['option'], wp_unslash( $o_value ) );
+		}
+
+		//Now return the updated values
+		return $this->_getOptions($option_names);
+	}
+
+	/**
+	 * Retrieve a media item by ID
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type int    $attachment_id
+	 * }
+	 * @return array|IXR_Error Associative array contains:
+	 *  - 'date_created_gmt'
+	 *  - 'parent'
+	 *  - 'link'
+	 *  - 'thumbnail'
+	 *  - 'title'
+	 *  - 'caption'
+	 *  - 'description'
+	 *  - 'metadata'
+	 */
+	public function wp_getMediaItem( $args ) {
+		$this->escape( $args );
+
+		$username		= $args[1];
+		$password		= $args[2];
+		$attachment_id	= (int) $args[3];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		if ( !current_user_can( 'upload_files' ) )
+			return new IXR_Error( 403, __( 'Sorry, you are not allowed to upload files.' ) );
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.getMediaItem' );
+
+		if ( ! $attachment = get_post($attachment_id) )
+			return new IXR_Error( 404, __( 'Invalid attachment ID.' ) );
+
+		return $this->_prepare_media_item( $attachment );
+	}
+
+	/**
+	 * Retrieves a collection of media library items (or attachments)
+	 *
+	 * Besides the common blog_id (unused), username, and password arguments, it takes a filter
+	 * array as last argument.
+	 *
+	 * Accepted 'filter' keys are 'parent_id', 'mime_type', 'offset', and 'number'.
+	 *
+	 * The defaults are as follows:
+	 * - 'number' - Default is 5. Total number of media items to retrieve.
+	 * - 'offset' - Default is 0. See WP_Query::query() for more.
+	 * - 'parent_id' - Default is ''. The post where the media item is attached. Empty string shows all media items. 0 shows unattached media items.
+	 * - 'mime_type' - Default is ''. Filter by mime type (e.g., 'image/jpeg', 'application/pdf')
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type array  $struct
+	 * }
+	 * @return array|IXR_Error Contains a collection of media items. See wp_xmlrpc_server::wp_getMediaItem() for a description of each item contents
+	 */
+	public function wp_getMediaLibrary($args) {
+		$this->escape($args);
+
+		$username	= $args[1];
+		$password	= $args[2];
+		$struct		= isset( $args[3] ) ? $args[3] : array() ;
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		if ( !current_user_can( 'upload_files' ) )
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to upload files.' ) );
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.getMediaLibrary' );
+
+		$parent_id = ( isset($struct['parent_id']) ) ? absint($struct['parent_id']) : '' ;
+		$mime_type = ( isset($struct['mime_type']) ) ? $struct['mime_type'] : '' ;
+		$offset = ( isset($struct['offset']) ) ? absint($struct['offset']) : 0 ;
+		$number = ( isset($struct['number']) ) ? absint($struct['number']) : -1 ;
+
+		$attachments = get_posts( array('post_type' => 'attachment', 'post_parent' => $parent_id, 'offset' => $offset, 'numberposts' => $number, 'post_mime_type' => $mime_type ) );
+
+		$attachments_struct = array();
+
+		foreach ($attachments as $attachment )
+			$attachments_struct[] = $this->_prepare_media_item( $attachment );
+
+		return $attachments_struct;
+	}
+
+	/**
+	 * Retrieves a list of post formats used by the site.
+	 *
+	 * @since 3.1.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 * }
+	 * @return array|IXR_Error List of post formats, otherwise IXR_Error object.
+	 */
+	public function wp_getPostFormats( $args ) {
+		$this->escape( $args );
+
+		$username = $args[1];
+		$password = $args[2];
+
+		if ( !$user = $this->login( $username, $password ) )
+			return $this->error;
+
+		if ( !current_user_can( 'edit_posts' ) )
+			return new IXR_Error( 403, __( 'Sorry, you are not allowed access to details about this site.' ) );
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.getPostFormats' );
+
+		$formats = get_post_format_strings();
+
+		// find out if they want a list of currently supports formats
+		if ( isset( $args[3] ) && is_array( $args[3] ) ) {
+			if ( $args[3]['show-supported'] ) {
+				if ( current_theme_supports( 'post-formats' ) ) {
+					$supported = get_theme_support( 'post-formats' );
+
+					$data = array();
+					$data['all'] = $formats;
+					$data['supported'] = $supported[0];
+
+					$formats = $data;
+				}
+			}
+		}
+
+		return $formats;
+	}
+
+	/**
+	 * Retrieves a post type
+	 *
+	 * @since 3.4.0
+	 *
+	 * @see get_post_type_object()
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type string $post_type_name
+	 *     @type array  $fields (optional)
+	 * }
+	 * @return array|IXR_Error Array contains:
+	 *  - 'labels'
+	 *  - 'description'
+	 *  - 'capability_type'
+	 *  - 'cap'
+	 *  - 'map_meta_cap'
+	 *  - 'hierarchical'
+	 *  - 'menu_position'
+	 *  - 'taxonomies'
+	 *  - 'supports'
+	 */
+	public function wp_getPostType( $args ) {
+		if ( ! $this->minimum_args( $args, 4 ) )
+			return $this->error;
+
+		$this->escape( $args );
+
+		$username       = $args[1];
+		$password       = $args[2];
+		$post_type_name = $args[3];
+
+		if ( isset( $args[4] ) ) {
+			$fields = $args[4];
+		} else {
+			/**
+			 * Filters the default query fields used by the given XML-RPC method.
+			 *
+			 * @since 3.4.0
+			 *
+			 * @param array  $fields An array of post type query fields for the given method.
+			 * @param string $method The method name.
+			 */
+			$fields = apply_filters( 'xmlrpc_default_posttype_fields', array( 'labels', 'cap', 'taxonomies' ), 'wp.getPostType' );
+		}
+
+		if ( !$user = $this->login( $username, $password ) )
+			return $this->error;
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.getPostType' );
+
+		if ( ! post_type_exists( $post_type_name ) )
+			return new IXR_Error( 403, __( 'Invalid post type.' ) );
+
+		$post_type = get_post_type_object( $post_type_name );
+
+		if ( ! current_user_can( $post_type->cap->edit_posts ) )
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit this post type.' ) );
+
+		return $this->_prepare_post_type( $post_type, $fields );
+	}
+
+	/**
+	 * Retrieves a post types
+	 *
+	 * @since 3.4.0
+	 *
+	 * @see get_post_types()
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type array  $filter (optional)
+	 *     @type array  $fields (optional)
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function wp_getPostTypes( $args ) {
+		if ( ! $this->minimum_args( $args, 3 ) )
+			return $this->error;
+
+		$this->escape( $args );
+
+		$username = $args[1];
+		$password = $args[2];
+		$filter   = isset( $args[3] ) ? $args[3] : array( 'public' => true );
+
+		if ( isset( $args[4] ) ) {
+			$fields = $args[4];
+		} else {
+			/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+			$fields = apply_filters( 'xmlrpc_default_posttype_fields', array( 'labels', 'cap', 'taxonomies' ), 'wp.getPostTypes' );
+		}
+
+		if ( ! $user = $this->login( $username, $password ) )
+			return $this->error;
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.getPostTypes' );
+
+		$post_types = get_post_types( $filter, 'objects' );
+
+		$struct = array();
+
+		foreach ( $post_types as $post_type ) {
+			if ( ! current_user_can( $post_type->cap->edit_posts ) )
+				continue;
+
+			$struct[$post_type->name] = $this->_prepare_post_type( $post_type, $fields );
+		}
+
+		return $struct;
+	}
+
+	/**
+	 * Retrieve revisions for a specific post.
+	 *
+	 * @since 3.5.0
+	 *
+	 * The optional $fields parameter specifies what fields will be included
+	 * in the response array.
+	 *
+	 * @uses wp_get_post_revisions()
+	 * @see wp_getPost() for more on $fields
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type int    $post_id
+	 *     @type array  $fields (optional)
+	 * }
+	 * @return array|IXR_Error contains a collection of posts.
+	 */
+	public function wp_getRevisions( $args ) {
+		if ( ! $this->minimum_args( $args, 4 ) )
+			return $this->error;
+
+		$this->escape( $args );
+
+		$username = $args[1];
+		$password = $args[2];
+		$post_id  = (int) $args[3];
+
+		if ( isset( $args[4] ) ) {
+			$fields = $args[4];
+		} else {
+			/**
+			 * Filters the default revision query fields used by the given XML-RPC method.
+			 *
+			 * @since 3.5.0
+			 *
+			 * @param array  $field  An array of revision query fields.
+			 * @param string $method The method name.
+			 */
+			$fields = apply_filters( 'xmlrpc_default_revision_fields', array( 'post_date', 'post_date_gmt' ), 'wp.getRevisions' );
+		}
+
+		if ( ! $user = $this->login( $username, $password ) )
+			return $this->error;
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.getRevisions' );
+
+		if ( ! $post = get_post( $post_id ) )
+			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
+
+		if ( ! current_user_can( 'edit_post', $post_id ) )
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit posts.' ) );
+
+		// Check if revisions are enabled.
+		if ( ! wp_revisions_enabled( $post ) )
+			return new IXR_Error( 401, __( 'Sorry, revisions are disabled.' ) );
+
+		$revisions = wp_get_post_revisions( $post_id );
+
+		if ( ! $revisions )
+			return array();
+
+		$struct = array();
+
+		foreach ( $revisions as $revision ) {
+			if ( ! current_user_can( 'read_post', $revision->ID ) )
+				continue;
+
+			// Skip autosaves
+			if ( wp_is_post_autosave( $revision ) )
+				continue;
+
+			$struct[] = $this->_prepare_post( get_object_vars( $revision ), $fields );
+		}
+
+		return $struct;
+	}
+
+	/**
+	 * Restore a post revision
+	 *
+	 * @since 3.5.0
+	 *
+	 * @uses wp_restore_post_revision()
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type int    $revision_id
+	 * }
+	 * @return bool|IXR_Error false if there was an error restoring, true if success.
+	 */
+	public function wp_restoreRevision( $args ) {
+		if ( ! $this->minimum_args( $args, 3 ) )
+			return $this->error;
+
+		$this->escape( $args );
+
+		$username    = $args[1];
+		$password    = $args[2];
+		$revision_id = (int) $args[3];
+
+		if ( ! $user = $this->login( $username, $password ) )
+			return $this->error;
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'wp.restoreRevision' );
+
+		if ( ! $revision = wp_get_post_revision( $revision_id ) )
+			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
+
+		if ( wp_is_post_autosave( $revision ) )
+			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
+
+		if ( ! $post = get_post( $revision->post_parent ) )
+			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
+
+		if ( ! current_user_can( 'edit_post', $revision->post_parent ) )
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit this post.' ) );
+
+		// Check if revisions are disabled.
+		if ( ! wp_revisions_enabled( $post ) )
+			return new IXR_Error( 401, __( 'Sorry, revisions are disabled.' ) );
+
+		$post = wp_restore_post_revision( $revision_id );
+
+		return (bool) $post;
+	}
+
+	/* Blogger API functions.
+	 * specs on http://plant.blogger.com/api and https://groups.yahoo.com/group/bloggerDev/
+	 */
+
+	/**
+	 * Retrieve blogs that user owns.
+	 *
+	 * Will make more sense once we support multiple blogs.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function blogger_getUsersBlogs($args) {
+		if ( is_multisite() )
+			return $this->_multisite_getUsersBlogs($args);
+
+		$this->escape($args);
+
+		$username = $args[1];
+		$password = $args[2];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'blogger.getUsersBlogs' );
+
+		$is_admin = current_user_can('manage_options');
+
+		$struct = array(
+			'isAdmin'  => $is_admin,
+			'url'      => get_option('home') . '/',
+			'blogid'   => '1',
+			'blogName' => get_option('blogname'),
+			'xmlrpc'   => site_url( 'xmlrpc.php', 'rpc' ),
+		);
+
+		return array($struct);
+	}
+
+	/**
+	 * Private function for retrieving a users blogs for multisite setups
+	 *
+	 * @since 3.0.0
+	 * @access protected
+	 *
+	 * @param array $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type string $username Username.
+	 *     @type string $password Password.
+	 * }
+	 * @return array|IXR_Error
+	 */
+	protected function _multisite_getUsersBlogs( $args ) {
+		$current_blog = get_blog_details();
+
+		$domain = $current_blog->domain;
+		$path = $current_blog->path . 'xmlrpc.php';
+
+		$rpc = new IXR_Client( set_url_scheme( "http://{$domain}{$path}" ) );
+		$rpc->query('wp.getUsersBlogs', $args[1], $args[2]);
+		$blogs = $rpc->getResponse();
+
+		if ( isset($blogs['faultCode']) )
+			return new IXR_Error($blogs['faultCode'], $blogs['faultString']);
+
+		if ( $_SERVER['HTTP_HOST'] == $domain && $_SERVER['REQUEST_URI'] == $path ) {
+			return $blogs;
+		} else {
+			foreach ( (array) $blogs as $blog ) {
+				if ( strpos($blog['url'], $_SERVER['HTTP_HOST']) )
+					return array($blog);
+			}
+			return array();
+		}
+	}
+
+	/**
+	 * Retrieve user's data.
+	 *
+	 * Gives your client some info about you, so you don't have to.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function blogger_getUserInfo( $args ) {
+		$this->escape( $args );
+
+		$username = $args[1];
+		$password = $args[2];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		if ( !current_user_can( 'edit_posts' ) )
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to access user data on this site.' ) );
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'blogger.getUserInfo' );
+
+		$struct = array(
+			'nickname'  => $user->nickname,
+			'userid'    => $user->ID,
+			'url'       => $user->user_url,
+			'lastname'  => $user->last_name,
+			'firstname' => $user->first_name
+		);
+
+		return $struct;
+	}
+
+	/**
+	 * Retrieve post.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type int    $post_ID
+	 *     @type string $username
+	 *     @type string $password
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function blogger_getPost( $args ) {
+		$this->escape( $args );
+
+		$post_ID  = (int) $args[1];
+		$username = $args[2];
+		$password = $args[3];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		$post_data = get_post($post_ID, ARRAY_A);
+		if ( ! $post_data )
+			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
+
+		if ( !current_user_can( 'edit_post', $post_ID ) )
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit this post.' ) );
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'blogger.getPost' );
+
+		$categories = implode(',', wp_get_post_categories($post_ID));
+
+		$content  = '<title>'.wp_unslash($post_data['post_title']).'</title>';
+		$content .= '<category>'.$categories.'</category>';
+		$content .= wp_unslash($post_data['post_content']);
+
+		$struct = array(
+			'userid'    => $post_data['post_author'],
+			'dateCreated' => $this->_convert_date( $post_data['post_date'] ),
+			'content'     => $content,
+			'postid'  => (string) $post_data['ID']
+		);
+
+		return $struct;
+	}
+
+	/**
+	 * Retrieve list of recent posts.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type string $appkey (unused)
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type int    $numberposts (optional)
+	 * }
+	 * @return array|IXR_Error
+	 */
+	public function blogger_getRecentPosts( $args ) {
+
+		$this->escape($args);
+
+		// $args[0] = appkey - ignored
+		$username = $args[2];
+		$password = $args[3];
+		if ( isset( $args[4] ) )
+			$query = array( 'numberposts' => absint( $args[4] ) );
+		else
+			$query = array();
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		if ( ! current_user_can( 'edit_posts' ) )
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit posts.' ) );
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'blogger.getRecentPosts' );
+
+		$posts_list = wp_get_recent_posts( $query );
+
+		if ( !$posts_list ) {
+			$this->error = new IXR_Error(500, __('Either there are no posts, or something went wrong.'));
+			return $this->error;
+		}
+
+		$recent_posts = array();
+		foreach ($posts_list as $entry) {
+			if ( !current_user_can( 'edit_post', $entry['ID'] ) )
+				continue;
+
+			$post_date  = $this->_convert_date( $entry['post_date'] );
+			$categories = implode(',', wp_get_post_categories($entry['ID']));
+
+			$content  = '<title>'.wp_unslash($entry['post_title']).'</title>';
+			$content .= '<category>'.$categories.'</category>';
+			$content .= wp_unslash($entry['post_content']);
+
+			$recent_posts[] = array(
+				'userid' => $entry['post_author'],
+				'dateCreated' => $post_date,
+				'content' => $content,
+				'postid' => (string) $entry['ID'],
+			);
+		}
+
+		return $recent_posts;
+	}
+
+	/**
+	 * Deprecated.
+	 *
+	 * @since 1.5.0
+	 * @deprecated 3.5.0
+	 *
+	 * @param array $args Unused.
+	 * @return IXR_Error Error object.
+	 */
+	public function blogger_getTemplate($args) {
+		return new IXR_Error( 403, __('Sorry, that file cannot be edited.' ) );
+	}
+
+	/**
+	 * Deprecated.
+	 *
+	 * @since 1.5.0
+	 * @deprecated 3.5.0
+	 *
+	 * @param array $args Unused.
+	 * @return IXR_Error Error object.
+	 */
+	public function blogger_setTemplate($args) {
+		return new IXR_Error( 403, __('Sorry, that file cannot be edited.' ) );
+	}
+
+	/**
+	 * Creates new post.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type string $appkey (unused)
+	 *     @type int    $blog_id (unused)
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type string $content
+	 *     @type string $publish
+	 * }
+	 * @return int|IXR_Error
+	 */
+	public function blogger_newPost( $args ) {
+		$this->escape( $args );
+
+		$username = $args[2];
+		$password = $args[3];
+		$content  = $args[4];
+		$publish  = $args[5];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'blogger.newPost' );
+
+		$cap = ($publish) ? 'publish_posts' : 'edit_posts';
+		if ( ! current_user_can( get_post_type_object( 'post' )->cap->create_posts ) || !current_user_can($cap) )
+			return new IXR_Error(401, __('Sorry, you are not allowed to post on this site.'));
+
+		$post_status = ($publish) ? 'publish' : 'draft';
+
+		$post_author = $user->ID;
+
+		$post_title = xmlrpc_getposttitle($content);
+		$post_category = xmlrpc_getpostcategory($content);
+		$post_content = xmlrpc_removepostdata($content);
+
+		$post_date = current_time('mysql');
+		$post_date_gmt = current_time('mysql', 1);
+
+		$post_data = compact('post_author', 'post_date', 'post_date_gmt', 'post_content', 'post_title', 'post_category', 'post_status');
+
+		$post_ID = wp_insert_post($post_data);
+		if ( is_wp_error( $post_ID ) )
+			return new IXR_Error(500, $post_ID->get_error_message());
+
+		if ( !$post_ID )
+			return new IXR_Error(500, __('Sorry, your entry could not be posted. Something wrong happened.'));
+
+		$this->attach_uploads( $post_ID, $post_content );
+
+		/**
+		 * Fires after a new post has been successfully created via the XML-RPC Blogger API.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param int   $post_ID ID of the new post.
+		 * @param array $args    An array of new post arguments.
+		 */
+		do_action( 'xmlrpc_call_success_blogger_newPost', $post_ID, $args );
+
+		return $post_ID;
+	}
+
+	/**
+	 * Edit a post.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type int    $post_ID
+	 *     @type string $username
+	 *     @type string $password
+	 *     @type string $content
+	 *     @type bool   $publish
+	 * }
+	 * @return true|IXR_Error true when done.
+	 */
+	public function blogger_editPost( $args ) {
+
+		$this->escape($args);
+
+		$post_ID  = (int) $args[1];
+		$username = $args[2];
+		$password = $args[3];
+		$content  = $args[4];
+		$publish  = $args[5];
+
+		if ( ! $user = $this->login( $username, $password ) ) {
+			return $this->error;
+		}
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'blogger.editPost' );
+
+		$actual_post = get_post( $post_ID, ARRAY_A );
+
+		if ( ! $actual_post || $actual_post['post_type'] != 'post' ) {
+			return new IXR_Error( 404, __( 'Sorry, no such post.' ) );
+		}
+
+		$this->escape($actual_post);
+
+		if ( ! current_user_can( 'edit_post', $post_ID ) ) {
+			return new IXR_Error(401, __('Sorry, you are not allowed to edit this post.'));
+		}
+		if ( 'publish' == $actual_post['post_status'] && ! current_user_can( 'publish_posts' ) ) {
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to publish this post.' ) );
+		}
+
+		$postdata = array();
+		$postdata['ID'] = $actual_post['ID'];
+		$postdata['post_content'] = xmlrpc_removepostdata( $content );
+		$postdata['post_title'] = xmlrpc_getposttitle( $content );
+		$postdata['post_category'] = xmlrpc_getpostcategory( $content );
+		$postdata['post_status'] = $actual_post['post_status'];
+		$postdata['post_excerpt'] = $actual_post['post_excerpt'];
+		$postdata['post_status'] = $publish ? 'publish' : 'draft';
+
+		$result = wp_update_post( $postdata );
+
+		if ( ! $result ) {
+			return new IXR_Error(500, __('For some strange yet very annoying reason, this post could not be edited.'));
+		}
+		$this->attach_uploads( $actual_post['ID'], $postdata['post_content'] );
+
+		/**
+		 * Fires after a post has been successfully updated via the XML-RPC Blogger API.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param int   $post_ID ID of the updated post.
+		 * @param array $args    An array of arguments for the post to edit.
+		 */
+		do_action( 'xmlrpc_call_success_blogger_editPost', $post_ID, $args );
+
+		return true;
+	}
+
+	/**
+	 * Remove a post.
+	 *
+	 * @since 1.5.0
+	 *
+	 * @param array  $args {
+	 *     Method arguments. Note: arguments must be ordered as documented.
+	 *
+	 *     @type int    $blog_id (unused)
+	 *     @type int    $post_ID
+	 *     @type string $username
+	 *     @type string $password
+	 * }
+	 * @return true|IXR_Error True when post is deleted.
+	 */
+	public function blogger_deletePost( $args ) {
+		$this->escape( $args );
+
+		$post_ID  = (int) $args[1];
+		$username = $args[2];
+		$password = $args[3];
+
+		if ( !$user = $this->login($username, $password) )
+			return $this->error;
+
+		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
+		do_action( 'xmlrpc_call', 'blogger.deletePost' );
+
+		$actual_post = get_post( $post_ID, ARRAY_A );
+
+		if ( ! $actual_post || $actual_post['post_type'] != 'post' ) {
+			return new IXR_Error( 404, __( 'Sorry, no such post.' ) );
+		}
+
+		if ( ! current_user_can( 'delete_post', $post_ID ) ) {
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to delete this post.' ) );
+		}
+
+		$result = wp_delete_post( $post_ID );
+
+		if ( ! $result ) {
+			return new IXR_Error( 500, __( 'The post cannot be deleted.' ) );
+		}
+
+		/**
+		 * Fires after a post has been successfully deleted via the XML-RPC Blogger API.
+		 *
+		 * @since 3.4.0
+		 *
+		 * @param int   $post_ID ID of the deleted post.
+		 * @param array $args    An array of arguments to delete the post.
+		 */
+		do_action( 'xmlrpc_call_success_blogger_deletePost', $post_ID, $args );
+
+		return true;
+	}
+
+	/* MetaWeblog API functions
+	 * specs on wherever Dave Winer wants them to be
+	 */
 
 	/**
 	 * Create a new post.
@@ -2855,7 +4857,7 @@ class wp_xmlrpc_server extends IXR_Server {
 				$post_type = 'post';
 			} else {
 				// No other post_type values are allowed here
-				return new IXR_Error( 401, __( 'Invalid post type' ) );
+				return new IXR_Error( 401, __( 'Invalid post type.' ) );
 			}
 		} else {
 			if ( $publish )
@@ -2906,14 +4908,14 @@ class wp_xmlrpc_server extends IXR_Server {
 			switch ( $post_type ) {
 				case "post":
 					if ( !current_user_can( 'edit_others_posts' ) )
-						return new IXR_Error( 401, __( 'You are not allowed to create posts as this user.' ) );
+						return new IXR_Error( 401, __( 'Sorry, you are not allowed to create posts as this user.' ) );
 					break;
 				case "page":
 					if ( !current_user_can( 'edit_others_pages' ) )
-						return new IXR_Error( 401, __( 'You are not allowed to create pages as this user.' ) );
+						return new IXR_Error( 401, __( 'Sorry, you are not allowed to create pages as this user.' ) );
 					break;
 				default:
-					return new IXR_Error( 401, __( 'Invalid post type' ) );
+					return new IXR_Error( 401, __( 'Invalid post type.' ) );
 			}
 			$author = get_userdata( $content_struct['wp_author_id'] );
 			if ( ! $author )
@@ -3098,119 +5100,52 @@ class wp_xmlrpc_server extends IXR_Server {
 	}
 
 	/**
-	 * Delete page.
+	 * Adds an enclosure to a post if it's new.
 	 *
-	 * @since 2.2.0
+	 * @since 2.8.0
 	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type int    $page_id
-	 * }
-	 * @return true|IXR_Error True, if success.
+	 * @param integer $post_ID   Post ID.
+	 * @param array   $enclosure Enclosure data.
 	 */
-	public function wp_deletePage( $args ) {
-		$this->escape( $args );
-
-		$username = $args[1];
-		$password = $args[2];
-		$page_id  = (int) $args[3];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.deletePage' );
-
-		// Get the current page based on the page_id and
-		// make sure it is a page and not a post.
-		$actual_page = get_post($page_id, ARRAY_A);
-		if ( !$actual_page || ($actual_page['post_type'] != 'page') )
-			return new IXR_Error( 404, __( 'Sorry, no such page.' ) );
-
-		// Make sure the user can delete pages.
-		if ( !current_user_can('delete_page', $page_id) )
-			return new IXR_Error( 401, __( 'Sorry, you do not have the right to delete this page.' ) );
-
-		// Attempt to delete the page.
-		$result = wp_delete_post($page_id);
-		if ( !$result )
-			return new IXR_Error( 500, __( 'Failed to delete the page.' ) );
-
-		/**
-		 * Fires after a page has been successfully deleted via XML-RPC.
-		 *
-		 * @since 3.4.0
-		 *
-		 * @param int   $page_id ID of the deleted page.
-		 * @param array $args    An array of arguments to delete the page.
-		 */
-		do_action( 'xmlrpc_call_success_wp_deletePage', $page_id, $args );
-
-		return true;
+	public function add_enclosure_if_new( $post_ID, $enclosure ) {
+		if ( is_array( $enclosure ) && isset( $enclosure['url'] ) && isset( $enclosure['length'] ) && isset( $enclosure['type'] ) ) {
+			$encstring = $enclosure['url'] . "\n" . $enclosure['length'] . "\n" . $enclosure['type'] . "\n";
+			$found = false;
+			if ( $enclosures = get_post_meta( $post_ID, 'enclosure' ) ) {
+				foreach ( $enclosures as $enc ) {
+					// This method used to omit the trailing new line. #23219
+					if ( rtrim( $enc, "\n" ) == rtrim( $encstring, "\n" ) ) {
+						$found = true;
+						break;
+					}
+				}
+			}
+			if ( ! $found )
+				add_post_meta( $post_ID, 'enclosure', $encstring );
+		}
 	}
 
 	/**
-	 * Edit page.
+	 * Attach upload to a post.
 	 *
-	 * @since 2.2.0
+	 * @since 2.1.0
 	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
+	 * @global wpdb $wpdb WordPress database abstraction object.
 	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type int    $page_id
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type string $content
-	 *     @type string $publish
-	 * }
-	 * @return array|IXR_Error
+	 * @param int $post_ID Post ID.
+	 * @param string $post_content Post Content for attachment.
 	 */
-	public function wp_editPage( $args ) {
-		// Items will be escaped in mw_editPost.
-		$page_id  = (int) $args[1];
-		$username = $args[2];
-		$password = $args[3];
-		$content  = $args[4];
-		$publish  = $args[5];
+	public function attach_uploads( $post_ID, $post_content ) {
+		global $wpdb;
 
-		$escaped_username = $this->escape( $username );
-		$escaped_password = $this->escape( $password );
-
-		if ( !$user = $this->login( $escaped_username, $escaped_password ) ) {
-			return $this->error;
+		// find any unattached files
+		$attachments = $wpdb->get_results( "SELECT ID, guid FROM {$wpdb->posts} WHERE post_parent = '0' AND post_type = 'attachment'" );
+		if ( is_array( $attachments ) ) {
+			foreach ( $attachments as $file ) {
+				if ( ! empty( $file->guid ) && strpos( $post_content, $file->guid ) !== false )
+					$wpdb->update($wpdb->posts, array('post_parent' => $post_ID), array('ID' => $file->ID) );
+			}
 		}
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.editPage' );
-
-		// Get the page data and make sure it is a page.
-		$actual_page = get_post($page_id, ARRAY_A);
-		if ( !$actual_page || ($actual_page['post_type'] != 'page') )
-			return new IXR_Error( 404, __( 'Sorry, no such page.' ) );
-
-		// Make sure the user is allowed to edit pages.
-		if ( !current_user_can('edit_page', $page_id) )
-			return new IXR_Error( 401, __( 'Sorry, you do not have the right to edit this page.' ) );
-
-		// Mark this as content for a page.
-		$content['post_type'] = 'page';
-
-		// Arrange args in the way mw_editPost understands.
-		$args = array(
-			$page_id,
-			$username,
-			$password,
-			$content,
-			$publish
-		);
-
-		// Let mw_editPost do all of the heavy lifting.
-		return $this->mw_editPost( $args );
 	}
 
 	/**
@@ -3254,11 +5189,11 @@ class wp_xmlrpc_server extends IXR_Server {
 			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
 
 		if ( ! current_user_can( 'edit_post', $post_ID ) )
-			return new IXR_Error( 401, __( 'Sorry, you do not have the right to edit this post.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit this post.' ) );
 
 		// Use wp.editPost to edit post types other than post and page.
 		if ( ! in_array( $postdata[ 'post_type' ], array( 'post', 'page' ) ) )
-			return new IXR_Error( 401, __( 'Invalid post type' ) );
+			return new IXR_Error( 401, __( 'Invalid post type.' ) );
 
 		// Thwart attempt to change the post type.
 		if ( ! empty( $content_struct[ 'post_type' ] ) && ( $content_struct['post_type'] != $postdata[ 'post_type' ] ) )
@@ -3313,16 +5248,16 @@ class wp_xmlrpc_server extends IXR_Server {
 				switch ( $post_type ) {
 					case 'post':
 						if ( ! current_user_can( 'edit_others_posts' ) ) {
-							return new IXR_Error( 401, __( 'You are not allowed to change the post author as this user.' ) );
+							return new IXR_Error( 401, __( 'Sorry, you are not allowed to change the post author as this user.' ) );
 						}
 						break;
 					case 'page':
 						if ( ! current_user_can( 'edit_others_pages' ) ) {
-							return new IXR_Error( 401, __( 'You are not allowed to change the page author as this user.' ) );
+							return new IXR_Error( 401, __( 'Sorry, you are not allowed to change the page author as this user.' ) );
 						}
 						break;
 					default:
-						return new IXR_Error( 401, __( 'Invalid post type' ) );
+						return new IXR_Error( 401, __( 'Invalid post type.' ) );
 				}
 				$post_author = $content_struct['wp_author_id'];
 			}
@@ -3425,9 +5360,9 @@ class wp_xmlrpc_server extends IXR_Server {
 
 		if ( 'publish' == $post_status || 'private' == $post_status ) {
 			if ( 'page' == $post_type && ! current_user_can( 'publish_pages' ) ) {
-				return new IXR_Error( 401, __( 'Sorry, you do not have the right to publish this page.' ) );
+				return new IXR_Error( 401, __( 'Sorry, you are not allowed to publish this page.' ) );
 			} elseif ( ! current_user_can( 'publish_posts' ) ) {
-				return new IXR_Error( 401, __( 'Sorry, you do not have the right to publish this post.' ) );
+				return new IXR_Error( 401, __( 'Sorry, you are not allowed to publish this post.' ) );
 			}
 		}
 
@@ -3522,1928 +5457,6 @@ class wp_xmlrpc_server extends IXR_Server {
 	}
 
 	/**
-	 * Retrieve page list.
-	 *
-	 * @since 2.2.0
-	 *
-	 * @global wpdb $wpdb WordPress database abstraction object.
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function wp_getPageList( $args ) {
-		global $wpdb;
-
-		$this->escape( $args );
-
-		$username = $args[1];
-		$password = $args[2];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		if ( !current_user_can( 'edit_pages' ) )
-			return new IXR_Error( 401, __( 'Sorry, you cannot edit pages.' ) );
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.getPageList' );
-
-		// Get list of pages ids and titles
-		$page_list = $wpdb->get_results("
-			SELECT ID page_id,
-				post_title page_title,
-				post_parent page_parent_id,
-				post_date_gmt,
-				post_date,
-				post_status
-			FROM {$wpdb->posts}
-			WHERE post_type = 'page'
-			ORDER BY ID
-		");
-
-		// The date needs to be formatted properly.
-		$num_pages = count($page_list);
-		for ( $i = 0; $i < $num_pages; $i++ ) {
-			$page_list[$i]->dateCreated = $this->_convert_date(  $page_list[$i]->post_date );
-			$page_list[$i]->date_created_gmt = $this->_convert_date_gmt( $page_list[$i]->post_date_gmt, $page_list[$i]->post_date );
-
-			unset($page_list[$i]->post_date_gmt);
-			unset($page_list[$i]->post_date);
-			unset($page_list[$i]->post_status);
-		}
-
-		return $page_list;
-	}
-
-	/**
-	 * Retrieve authors list.
-	 *
-	 * @since 2.2.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function wp_getAuthors( $args ) {
-		$this->escape( $args );
-
-		$username = $args[1];
-		$password = $args[2];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		if ( !current_user_can('edit_posts') )
-			return new IXR_Error( 401, __( 'Sorry, you cannot edit posts on this site.' ) );
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.getAuthors' );
-
-		$authors = array();
-		foreach ( get_users( array( 'fields' => array('ID','user_login','display_name') ) ) as $user ) {
-			$authors[] = array(
-				'user_id'       => $user->ID,
-				'user_login'    => $user->user_login,
-				'display_name'  => $user->display_name
-			);
-		}
-
-		return $authors;
-	}
-
-	/**
-	 * Get list of all tags
-	 *
-	 * @since 2.7.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function wp_getTags( $args ) {
-		$this->escape( $args );
-
-		$username = $args[1];
-		$password = $args[2];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		if ( !current_user_can( 'edit_posts' ) )
-			return new IXR_Error( 401, __( 'Sorry, you must be able to edit posts on this site in order to view tags.' ) );
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.getKeywords' );
-
-		$tags = array();
-
-		if ( $all_tags = get_tags() ) {
-			foreach ( (array) $all_tags as $tag ) {
-				$struct = array();
-				$struct['tag_id']			= $tag->term_id;
-				$struct['name']				= $tag->name;
-				$struct['count']			= $tag->count;
-				$struct['slug']				= $tag->slug;
-				$struct['html_url']			= esc_html( get_tag_link( $tag->term_id ) );
-				$struct['rss_url']			= esc_html( get_tag_feed_link( $tag->term_id ) );
-
-				$tags[] = $struct;
-			}
-		}
-
-		return $tags;
-	}
-
-	/**
-	 * Create new category.
-	 *
-	 * @since 2.2.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type array  $category
-	 * }
-	 * @return int|IXR_Error Category ID.
-	 */
-	public function wp_newCategory( $args ) {
-		$this->escape( $args );
-
-		$username = $args[1];
-		$password = $args[2];
-		$category = $args[3];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.newCategory' );
-
-		// Make sure the user is allowed to add a category.
-		if ( !current_user_can('manage_categories') )
-			return new IXR_Error(401, __('Sorry, you do not have the right to add a category.'));
-
-		// If no slug was provided make it empty so that
-		// WordPress will generate one.
-		if ( empty($category['slug']) )
-			$category['slug'] = '';
-
-		// If no parent_id was provided make it empty
-		// so that it will be a top level page (no parent).
-		if ( !isset($category['parent_id']) )
-			$category['parent_id'] = '';
-
-		// If no description was provided make it empty.
-		if ( empty($category["description"]) )
-			$category["description"] = "";
-
-		$new_category = array(
-			'cat_name'				=> $category['name'],
-			'category_nicename'		=> $category['slug'],
-			'category_parent'		=> $category['parent_id'],
-			'category_description'	=> $category['description']
-		);
-
-		$cat_id = wp_insert_category($new_category, true);
-		if ( is_wp_error( $cat_id ) ) {
-			if ( 'term_exists' == $cat_id->get_error_code() )
-				return (int) $cat_id->get_error_data();
-			else
-				return new IXR_Error(500, __('Sorry, the new category failed.'));
-		} elseif ( ! $cat_id ) {
-			return new IXR_Error(500, __('Sorry, the new category failed.'));
-		}
-
-		/**
-		 * Fires after a new category has been successfully created via XML-RPC.
-		 *
-		 * @since 3.4.0
-		 *
-		 * @param int   $cat_id ID of the new category.
-		 * @param array $args   An array of new category arguments.
-		 */
-		do_action( 'xmlrpc_call_success_wp_newCategory', $cat_id, $args );
-
-		return $cat_id;
-	}
-
-	/**
-	 * Remove category.
-	 *
-	 * @since 2.5.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type int    $category_id
-	 * }
-	 * @return bool|IXR_Error See {@link wp_delete_term()} for return info.
-	 */
-	public function wp_deleteCategory( $args ) {
-		$this->escape( $args );
-
-		$username    = $args[1];
-		$password    = $args[2];
-		$category_id = (int) $args[3];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.deleteCategory' );
-
-		if ( !current_user_can('manage_categories') )
-			return new IXR_Error( 401, __( 'Sorry, you do not have the right to delete a category.' ) );
-
-		$status = wp_delete_term( $category_id, 'category' );
-
-		if ( true == $status ) {
-			/**
-			 * Fires after a category has been successfully deleted via XML-RPC.
-			 *
-			 * @since 3.4.0
-			 *
-			 * @param int   $category_id ID of the deleted category.
-			 * @param array $args        An array of arguments to delete the category.
-			 */
-			do_action( 'xmlrpc_call_success_wp_deleteCategory', $category_id, $args );
-		}
-
-		return $status;
-	}
-
-	/**
-	 * Retrieve category list.
-	 *
-	 * @since 2.2.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type array  $category
-	 *     @type int    $max_results
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function wp_suggestCategories( $args ) {
-		$this->escape( $args );
-
-		$username    = $args[1];
-		$password    = $args[2];
-		$category    = $args[3];
-		$max_results = (int) $args[4];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		if ( !current_user_can( 'edit_posts' ) )
-			return new IXR_Error( 401, __( 'Sorry, you must be able to edit posts on this site in order to view categories.' ) );
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.suggestCategories' );
-
-		$category_suggestions = array();
-		$args = array('get' => 'all', 'number' => $max_results, 'name__like' => $category);
-		foreach ( (array) get_categories($args) as $cat ) {
-			$category_suggestions[] = array(
-				'category_id'	=> $cat->term_id,
-				'category_name'	=> $cat->name
-			);
-		}
-
-		return $category_suggestions;
-	}
-
-	/**
-	 * Retrieve comment.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type int    $comment_id
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function wp_getComment($args) {
-		$this->escape($args);
-
-		$username	= $args[1];
-		$password	= $args[2];
-		$comment_id	= (int) $args[3];
-
-		if ( ! $user = $this->login( $username, $password ) ) {
-			return $this->error;
-		}
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.getComment' );
-
-		if ( ! $comment = get_comment( $comment_id ) ) {
-			return new IXR_Error( 404, __( 'Invalid comment ID.' ) );
-		}
-
-		if ( ! current_user_can( 'edit_comment', $comment_id ) ) {
-			return new IXR_Error( 403, __( 'You are not allowed to moderate or edit this comment.' ) );
-		}
-
-		return $this->_prepare_comment( $comment );
-	}
-
-	/**
-	 * Prepares comment data for return in an XML-RPC object.
-	 *
-	 * @access protected
-	 *
-	 * @param object $comment The unprepared comment data.
-	 * @return array The prepared comment data.
-	 */
-	protected function _prepare_comment( $comment ) {
-		// Format page date.
-		$comment_date_gmt = $this->_convert_date_gmt( $comment->comment_date_gmt, $comment->comment_date );
-
-		if ( '0' == $comment->comment_approved ) {
-			$comment_status = 'hold';
-		} elseif ( 'spam' == $comment->comment_approved ) {
-			$comment_status = 'spam';
-		} elseif ( '1' == $comment->comment_approved ) {
-			$comment_status = 'approve';
-		} else {
-			$comment_status = $comment->comment_approved;
-		}
-		$_comment = array(
-			'date_created_gmt' => $comment_date_gmt,
-			'user_id'          => $comment->user_id,
-			'comment_id'       => $comment->comment_ID,
-			'parent'           => $comment->comment_parent,
-			'status'           => $comment_status,
-			'content'          => $comment->comment_content,
-			'link'             => get_comment_link($comment),
-			'post_id'          => $comment->comment_post_ID,
-			'post_title'       => get_the_title($comment->comment_post_ID),
-			'author'           => $comment->comment_author,
-			'author_url'       => $comment->comment_author_url,
-			'author_email'     => $comment->comment_author_email,
-			'author_ip'        => $comment->comment_author_IP,
-			'type'             => $comment->comment_type,
-		);
-
-		/**
-		 * Filter XML-RPC-prepared data for the given comment.
-		 *
-		 * @since 3.4.0
-		 *
-		 * @param array      $_comment An array of prepared comment data.
-		 * @param WP_Comment $comment  Comment object.
-		 */
-		return apply_filters( 'xmlrpc_prepare_comment', $_comment, $comment );
-	}
-
-	/**
-	 * Retrieve comments.
-	 *
-	 * Besides the common blog_id (unused), username, and password arguments, it takes a filter
-	 * array as last argument.
-	 *
-	 * Accepted 'filter' keys are 'status', 'post_id', 'offset', and 'number'.
-	 *
-	 * The defaults are as follows:
-	 * - 'status' - Default is ''. Filter by status (e.g., 'approve', 'hold')
-	 * - 'post_id' - Default is ''. The post where the comment is posted. Empty string shows all comments.
-	 * - 'number' - Default is 10. Total number of media items to retrieve.
-	 * - 'offset' - Default is 0. See {@link WP_Query::query()} for more.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type array  $struct
-	 * }
-	 * @return array|IXR_Error Contains a collection of comments. See {@link wp_xmlrpc_server::wp_getComment()} for a description of each item contents
-	 */
-	public function wp_getComments( $args ) {
-		$this->escape( $args );
-
-		$username = $args[1];
-		$password = $args[2];
-		$struct	  = isset( $args[3] ) ? $args[3] : array();
-
-		if ( ! $user = $this->login( $username, $password ) ) {
-			return $this->error;
-		}
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.getComments' );
-
-		if ( isset( $struct['status'] ) ) {
-			$status = $struct['status'];
-		} else {
-			$status = '';
-		}
-
-		if ( ! current_user_can( 'moderate_comments' ) && 'approve' !== $status ) {
-			return new IXR_Error( 401, __( 'Invalid comment status.' ) );
-		}
-
-		$post_id = '';
-		if ( isset( $struct['post_id'] ) ) {
-			$post_id = absint( $struct['post_id'] );
-		}
-
-		$post_type = '';
-		if ( isset( $struct['post_type'] ) ) {
-			$post_type_object = get_post_type_object( $struct['post_type'] );
-			if ( ! $post_type_object || ! post_type_supports( $post_type_object->name, 'comments' ) ) {
-				return new IXR_Error( 404, __( 'Invalid post type.' ) );
-			}
-			$post_type = $struct['post_type'];
-		}
-
-		$offset = 0;
-		if ( isset( $struct['offset'] ) ) {
-			$offset = absint( $struct['offset'] );
-		}
-
-		$number = 10;
-		if ( isset( $struct['number'] ) ) {
-			$number = absint( $struct['number'] );
-		}
-
-		$comments = get_comments( array(
-			'status' => $status,
-			'post_id' => $post_id,
-			'offset' => $offset,
-			'number' => $number,
-			'post_type' => $post_type,
-		) );
-
-		$comments_struct = array();
-		if ( is_array( $comments ) ) {
-			foreach ( $comments as $comment ) {
-				$comments_struct[] = $this->_prepare_comment( $comment );
-			}
-		}
-
-		return $comments_struct;
-	}
-
-	/**
-	 * Delete a comment.
-	 *
-	 * By default, the comment will be moved to the trash instead of deleted.
-	 * See {@link wp_delete_comment()} for more information on
-	 * this behavior.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type int    $comment_ID
-	 * }
-	 * @return bool|IXR_Error {@link wp_delete_comment()}
-	 */
-	public function wp_deleteComment( $args ) {
-		$this->escape($args);
-
-		$username	= $args[1];
-		$password	= $args[2];
-		$comment_ID	= (int) $args[3];
-
-		if ( ! $user = $this->login( $username, $password ) ) {
-			return $this->error;
-		}
-
-		if ( ! get_comment( $comment_ID ) ) {
-			return new IXR_Error( 404, __( 'Invalid comment ID.' ) );
-		}
-
-		if ( !current_user_can( 'edit_comment', $comment_ID ) ) {
-			return new IXR_Error( 403, __( 'You are not allowed to moderate or edit this comment.' ) );
-		}
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.deleteComment' );
-
-		$status = wp_delete_comment( $comment_ID );
-
-		if ( $status ) {
-			/**
-			 * Fires after a comment has been successfully deleted via XML-RPC.
-			 *
-			 * @since 3.4.0
-			 *
-			 * @param int   $comment_ID ID of the deleted comment.
-			 * @param array $args       An array of arguments to delete the comment.
-			 */
-			do_action( 'xmlrpc_call_success_wp_deleteComment', $comment_ID, $args );
-		}
-
-		return $status;
-	}
-
-	/**
-	 * Edit comment.
-	 *
-	 * Besides the common blog_id (unused), username, and password arguments, it takes a
-	 * comment_id integer and a content_struct array as last argument.
-	 *
-	 * The allowed keys in the content_struct array are:
-	 *  - 'author'
-	 *  - 'author_url'
-	 *  - 'author_email'
-	 *  - 'content'
-	 *  - 'date_created_gmt'
-	 *  - 'status'. Common statuses are 'approve', 'hold', 'spam'. See get_comment_statuses() for more details
-	 *
-	 * @since 2.7.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type int    $comment_ID
-	 *     @type array  $content_struct
-	 * }
-	 * @return true|IXR_Error True, on success.
-	 */
-	public function wp_editComment( $args ) {
-		$this->escape( $args );
-
-		$username	= $args[1];
-		$password	= $args[2];
-		$comment_ID	= (int) $args[3];
-		$content_struct = $args[4];
-
-		if ( !$user = $this->login( $username, $password ) ) {
-			return $this->error;
-		}
-
-		if ( ! get_comment( $comment_ID ) ) {
-			return new IXR_Error( 404, __( 'Invalid comment ID.' ) );
-		}
-
-		if ( ! current_user_can( 'edit_comment', $comment_ID ) ) {
-			return new IXR_Error( 403, __( 'You are not allowed to moderate or edit this comment.' ) );
-		}
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.editComment' );
-
-		if ( isset($content_struct['status']) ) {
-			$statuses = get_comment_statuses();
-			$statuses = array_keys($statuses);
-
-			if ( ! in_array($content_struct['status'], $statuses) )
-				return new IXR_Error( 401, __( 'Invalid comment status.' ) );
-			$comment_approved = $content_struct['status'];
-		}
-
-		// Do some timestamp voodoo
-		if ( !empty( $content_struct['date_created_gmt'] ) ) {
-			// We know this is supposed to be GMT, so we're going to slap that Z on there by force
-			$dateCreated = rtrim( $content_struct['date_created_gmt']->getIso(), 'Z' ) . 'Z';
-			$comment_date = get_date_from_gmt(iso8601_to_datetime($dateCreated));
-			$comment_date_gmt = iso8601_to_datetime($dateCreated, 'GMT');
-		}
-
-		if ( isset($content_struct['content']) )
-			$comment_content = $content_struct['content'];
-
-		if ( isset($content_struct['author']) )
-			$comment_author = $content_struct['author'];
-
-		if ( isset($content_struct['author_url']) )
-			$comment_author_url = $content_struct['author_url'];
-
-		if ( isset($content_struct['author_email']) )
-			$comment_author_email = $content_struct['author_email'];
-
-		// We've got all the data -- post it:
-		$comment = compact('comment_ID', 'comment_content', 'comment_approved', 'comment_date', 'comment_date_gmt', 'comment_author', 'comment_author_email', 'comment_author_url');
-
-		$result = wp_update_comment($comment);
-		if ( is_wp_error( $result ) )
-			return new IXR_Error(500, $result->get_error_message());
-
-		if ( !$result )
-			return new IXR_Error(500, __('Sorry, the comment could not be edited. Something wrong happened.'));
-
-		/**
-		 * Fires after a comment has been successfully updated via XML-RPC.
-		 *
-		 * @since 3.4.0
-		 *
-		 * @param int   $comment_ID ID of the updated comment.
-		 * @param array $args       An array of arguments to update the comment.
-		 */
-		do_action( 'xmlrpc_call_success_wp_editComment', $comment_ID, $args );
-
-		return true;
-	}
-
-	/**
-	 * Create new comment.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int        $blog_id (unused)
-	 *     @type string     $username
-	 *     @type string     $password
-	 *     @type string|int $post
-	 *     @type array      $content_struct
-	 * }
-	 * @return int|IXR_Error {@link wp_new_comment()}
-	 */
-	public function wp_newComment($args) {
-		$this->escape($args);
-
-		$username       = $args[1];
-		$password       = $args[2];
-		$post           = $args[3];
-		$content_struct = $args[4];
-
-		/**
-		 * Filter whether to allow anonymous comments over XML-RPC.
-		 *
-		 * @since 2.7.0
-		 *
-		 * @param bool $allow Whether to allow anonymous commenting via XML-RPC.
-		 *                    Default false.
-		 */
-		$allow_anon = apply_filters( 'xmlrpc_allow_anonymous_comments', false );
-
-		$user = $this->login($username, $password);
-
-		if ( !$user ) {
-			$logged_in = false;
-			if ( $allow_anon && get_option('comment_registration') ) {
-				return new IXR_Error( 403, __( 'You must be registered to comment' ) );
-			} elseif ( ! $allow_anon ) {
-				return $this->error;
-			}
-		} else {
-			$logged_in = true;
-		}
-
-		if ( is_numeric($post) )
-			$post_id = absint($post);
-		else
-			$post_id = url_to_postid($post);
-
-		if ( ! $post_id ) {
-			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
-		}
-
-		if ( ! get_post( $post_id ) ) {
-			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
-		}
-
-		if ( ! comments_open( $post_id ) ) {
-			return new IXR_Error( 403, __( 'Sorry, comments are closed for this item.' ) );
-		}
-
-		$comment = array();
-		$comment['comment_post_ID'] = $post_id;
-
-		if ( $logged_in ) {
-			$display_name = $user->display_name;
-			$user_email = $user->user_email;
-			$user_url = $user->user_url;
-
-			$comment['comment_author'] = $this->escape( $display_name );
-			$comment['comment_author_email'] = $this->escape( $user_email );
-			$comment['comment_author_url'] = $this->escape( $user_url );
-			$comment['user_ID'] = $user->ID;
-		} else {
-			$comment['comment_author'] = '';
-			if ( isset($content_struct['author']) )
-				$comment['comment_author'] = $content_struct['author'];
-
-			$comment['comment_author_email'] = '';
-			if ( isset($content_struct['author_email']) )
-				$comment['comment_author_email'] = $content_struct['author_email'];
-
-			$comment['comment_author_url'] = '';
-			if ( isset($content_struct['author_url']) )
-				$comment['comment_author_url'] = $content_struct['author_url'];
-
-			$comment['user_ID'] = 0;
-
-			if ( get_option('require_name_email') ) {
-				if ( 6 > strlen($comment['comment_author_email']) || '' == $comment['comment_author'] )
-					return new IXR_Error( 403, __( 'Comment author name and email are required' ) );
-				elseif ( !is_email($comment['comment_author_email']) )
-					return new IXR_Error( 403, __( 'A valid email address is required' ) );
-			}
-		}
-
-		$comment['comment_parent'] = isset($content_struct['comment_parent']) ? absint($content_struct['comment_parent']) : 0;
-
-		$comment['comment_content'] =  isset($content_struct['content']) ? $content_struct['content'] : null;
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.newComment' );
-
-		$comment_ID = wp_new_comment( $comment );
-
-		/**
-		 * Fires after a new comment has been successfully created via XML-RPC.
-		 *
-		 * @since 3.4.0
-		 *
-		 * @param int   $comment_ID ID of the new comment.
-		 * @param array $args       An array of new comment arguments.
-		 */
-		do_action( 'xmlrpc_call_success_wp_newComment', $comment_ID, $args );
-
-		return $comment_ID;
-	}
-
-	/**
-	 * Retrieve all of the comment status.
-	 *
-	 * @since 2.7.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function wp_getCommentStatusList( $args ) {
-		$this->escape( $args );
-
-		$username = $args[1];
-		$password = $args[2];
-
-		if ( ! $user = $this->login( $username, $password ) ) {
-			return $this->error;
-		}
-
-		if ( ! current_user_can( 'publish_posts' ) ) {
-			return new IXR_Error( 403, __( 'You are not allowed access to details about this site.' ) );
-		}
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.getCommentStatusList' );
-
-		return get_comment_statuses();
-	}
-
-	/**
-	 * Retrieve comment count.
-	 *
-	 * @since 2.5.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type int    $post_id
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function wp_getCommentCount( $args ) {
-		$this->escape( $args );
-
-		$username	= $args[1];
-		$password	= $args[2];
-		$post_id	= (int) $args[3];
-
-		if ( ! $user = $this->login( $username, $password ) ) {
-			return $this->error;
-		}
-
-		$post = get_post( $post_id, ARRAY_A );
-		if ( empty( $post['ID'] ) ) {
-			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
-		}
-
-		if ( ! current_user_can( 'edit_post', $post_id ) ) {
-			return new IXR_Error( 403, __( 'You are not allowed access to details of this post.' ) );
-		}
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.getCommentCount' );
-
-		$count = wp_count_comments( $post_id );
-
-		return array(
-			'approved' => $count->approved,
-			'awaiting_moderation' => $count->moderated,
-			'spam' => $count->spam,
-			'total_comments' => $count->total_comments
-		);
-	}
-
-	/**
-	 * Retrieve post statuses.
-	 *
-	 * @since 2.5.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function wp_getPostStatusList( $args ) {
-		$this->escape( $args );
-
-		$username = $args[1];
-		$password = $args[2];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		if ( !current_user_can( 'edit_posts' ) )
-			return new IXR_Error( 403, __( 'You are not allowed access to details about this site.' ) );
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.getPostStatusList' );
-
-		return get_post_statuses();
-	}
-
-	/**
-	 * Retrieve page statuses.
-	 *
-	 * @since 2.5.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function wp_getPageStatusList( $args ) {
-		$this->escape( $args );
-
-		$username = $args[1];
-		$password = $args[2];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		if ( !current_user_can( 'edit_pages' ) )
-			return new IXR_Error( 403, __( 'You are not allowed access to details about this site.' ) );
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.getPageStatusList' );
-
-		return get_page_statuses();
-	}
-
-	/**
-	 * Retrieve page templates.
-	 *
-	 * @since 2.6.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function wp_getPageTemplates( $args ) {
-		$this->escape( $args );
-
-		$username = $args[1];
-		$password = $args[2];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		if ( !current_user_can( 'edit_pages' ) )
-			return new IXR_Error( 403, __( 'You are not allowed access to details about this site.' ) );
-
-		$templates = get_page_templates();
-		$templates['Default'] = 'default';
-
-		return $templates;
-	}
-
-	/**
-	 * Retrieve blog options.
-	 *
-	 * @since 2.6.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type array  $options
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function wp_getOptions( $args ) {
-		$this->escape( $args );
-
-		$username	= $args[1];
-		$password	= $args[2];
-		$options	= isset( $args[3] ) ? (array) $args[3] : array();
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		// If no specific options where asked for, return all of them
-		if ( count( $options ) == 0 )
-			$options = array_keys($this->blog_options);
-
-		return $this->_getOptions($options);
-	}
-
-	/**
-	 * Retrieve blog options value from list.
-	 *
-	 * @since 2.6.0
-	 *
-	 * @param array $options Options to retrieve.
-	 * @return array
-	 */
-	public function _getOptions($options) {
-		$data = array();
-		$can_manage = current_user_can( 'manage_options' );
-		foreach ( $options as $option ) {
-			if ( array_key_exists( $option, $this->blog_options ) ) {
-				$data[$option] = $this->blog_options[$option];
-				//Is the value static or dynamic?
-				if ( isset( $data[$option]['option'] ) ) {
-					$data[$option]['value'] = get_option( $data[$option]['option'] );
-					unset($data[$option]['option']);
-				}
-
-				if ( ! $can_manage )
-					$data[$option]['readonly'] = true;
-			}
-		}
-
-		return $data;
-	}
-
-	/**
-	 * Update blog options.
-	 *
-	 * @since 2.6.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type array  $options
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function wp_setOptions( $args ) {
-		$this->escape( $args );
-
-		$username	= $args[1];
-		$password	= $args[2];
-		$options	= (array) $args[3];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		if ( !current_user_can( 'manage_options' ) )
-			return new IXR_Error( 403, __( 'You are not allowed to update options.' ) );
-
-		$option_names = array();
-		foreach ( $options as $o_name => $o_value ) {
-			$option_names[] = $o_name;
-			if ( !array_key_exists( $o_name, $this->blog_options ) )
-				continue;
-
-			if ( $this->blog_options[$o_name]['readonly'] == true )
-				continue;
-
-			update_option( $this->blog_options[$o_name]['option'], wp_unslash( $o_value ) );
-		}
-
-		//Now return the updated values
-		return $this->_getOptions($option_names);
-	}
-
-	/**
-	 * Retrieve a media item by ID
-	 *
-	 * @since 3.1.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type int    $attachment_id
-	 * }
-	 * @return array|IXR_Error Associative array contains:
-	 *  - 'date_created_gmt'
-	 *  - 'parent'
-	 *  - 'link'
-	 *  - 'thumbnail'
-	 *  - 'title'
-	 *  - 'caption'
-	 *  - 'description'
-	 *  - 'metadata'
-	 */
-	public function wp_getMediaItem( $args ) {
-		$this->escape( $args );
-
-		$username		= $args[1];
-		$password		= $args[2];
-		$attachment_id	= (int) $args[3];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		if ( !current_user_can( 'upload_files' ) )
-			return new IXR_Error( 403, __( 'You do not have permission to upload files.' ) );
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.getMediaItem' );
-
-		if ( ! $attachment = get_post($attachment_id) )
-			return new IXR_Error( 404, __( 'Invalid attachment ID.' ) );
-
-		return $this->_prepare_media_item( $attachment );
-	}
-
-	/**
-	 * Retrieves a collection of media library items (or attachments)
-	 *
-	 * Besides the common blog_id (unused), username, and password arguments, it takes a filter
-	 * array as last argument.
-	 *
-	 * Accepted 'filter' keys are 'parent_id', 'mime_type', 'offset', and 'number'.
-	 *
-	 * The defaults are as follows:
-	 * - 'number' - Default is 5. Total number of media items to retrieve.
-	 * - 'offset' - Default is 0. See WP_Query::query() for more.
-	 * - 'parent_id' - Default is ''. The post where the media item is attached. Empty string shows all media items. 0 shows unattached media items.
-	 * - 'mime_type' - Default is ''. Filter by mime type (e.g., 'image/jpeg', 'application/pdf')
-	 *
-	 * @since 3.1.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type array  $struct
-	 * }
-	 * @return array|IXR_Error Contains a collection of media items. See wp_xmlrpc_server::wp_getMediaItem() for a description of each item contents
-	 */
-	public function wp_getMediaLibrary($args) {
-		$this->escape($args);
-
-		$username	= $args[1];
-		$password	= $args[2];
-		$struct		= isset( $args[3] ) ? $args[3] : array() ;
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		if ( !current_user_can( 'upload_files' ) )
-			return new IXR_Error( 401, __( 'You do not have permission to upload files.' ) );
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.getMediaLibrary' );
-
-		$parent_id = ( isset($struct['parent_id']) ) ? absint($struct['parent_id']) : '' ;
-		$mime_type = ( isset($struct['mime_type']) ) ? $struct['mime_type'] : '' ;
-		$offset = ( isset($struct['offset']) ) ? absint($struct['offset']) : 0 ;
-		$number = ( isset($struct['number']) ) ? absint($struct['number']) : -1 ;
-
-		$attachments = get_posts( array('post_type' => 'attachment', 'post_parent' => $parent_id, 'offset' => $offset, 'numberposts' => $number, 'post_mime_type' => $mime_type ) );
-
-		$attachments_struct = array();
-
-		foreach ($attachments as $attachment )
-			$attachments_struct[] = $this->_prepare_media_item( $attachment );
-
-		return $attachments_struct;
-	}
-
-	/**
-	 * Retrieves a list of post formats used by the site.
-	 *
-	 * @since 3.1.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 * }
-	 * @return array|IXR_Error List of post formats, otherwise IXR_Error object.
-	 */
-	public function wp_getPostFormats( $args ) {
-		$this->escape( $args );
-
-		$username = $args[1];
-		$password = $args[2];
-
-		if ( !$user = $this->login( $username, $password ) )
-			return $this->error;
-
-		if ( !current_user_can( 'edit_posts' ) )
-			return new IXR_Error( 403, __( 'You are not allowed access to details about this site.' ) );
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.getPostFormats' );
-
-		$formats = get_post_format_strings();
-
-		// find out if they want a list of currently supports formats
-		if ( isset( $args[3] ) && is_array( $args[3] ) ) {
-			if ( $args[3]['show-supported'] ) {
-				if ( current_theme_supports( 'post-formats' ) ) {
-					$supported = get_theme_support( 'post-formats' );
-
-					$data = array();
-					$data['all'] = $formats;
-					$data['supported'] = $supported[0];
-
-					$formats = $data;
-				}
-			}
-		}
-
-		return $formats;
-	}
-
-	/* Blogger API functions.
-	 * specs on http://plant.blogger.com/api and http://groups.yahoo.com/group/bloggerDev/
-	 */
-
-	/**
-	 * Retrieves a post type
-	 *
-	 * @since 3.4.0
-	 *
-	 * @see get_post_type_object()
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type string $post_type_name
-	 *     @type array  $fields (optional)
-	 * }
-	 * @return array|IXR_Error Array contains:
-	 *  - 'labels'
-	 *  - 'description'
-	 *  - 'capability_type'
-	 *  - 'cap'
-	 *  - 'map_meta_cap'
-	 *  - 'hierarchical'
-	 *  - 'menu_position'
-	 *  - 'taxonomies'
-	 *  - 'supports'
-	 */
-	public function wp_getPostType( $args ) {
-		if ( ! $this->minimum_args( $args, 4 ) )
-			return $this->error;
-
-		$this->escape( $args );
-
-		$username       = $args[1];
-		$password       = $args[2];
-		$post_type_name = $args[3];
-
-		if ( isset( $args[4] ) ) {
-			$fields = $args[4];
-		} else {
-			/**
-			 * Filter the default query fields used by the given XML-RPC method.
-			 *
-			 * @since 3.4.0
-			 *
-			 * @param array  $fields An array of post type query fields for the given method.
-			 * @param string $method The method name.
-			 */
-			$fields = apply_filters( 'xmlrpc_default_posttype_fields', array( 'labels', 'cap', 'taxonomies' ), 'wp.getPostType' );
-		}
-
-		if ( !$user = $this->login( $username, $password ) )
-			return $this->error;
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.getPostType' );
-
-		if ( ! post_type_exists( $post_type_name ) )
-			return new IXR_Error( 403, __( 'Invalid post type' ) );
-
-		$post_type = get_post_type_object( $post_type_name );
-
-		if ( ! current_user_can( $post_type->cap->edit_posts ) )
-			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit this post type.' ) );
-
-		return $this->_prepare_post_type( $post_type, $fields );
-	}
-
-	/**
-	 * Prepares post data for return in an XML-RPC object.
-	 *
-	 * @access protected
-	 *
-	 * @param object $post_type Post type object.
-	 * @param array  $fields    The subset of post fields to return.
-	 * @return array The prepared post type data.
-	 */
-	protected function _prepare_post_type( $post_type, $fields ) {
-		$_post_type = array(
-			'name' => $post_type->name,
-			'label' => $post_type->label,
-			'hierarchical' => (bool) $post_type->hierarchical,
-			'public' => (bool) $post_type->public,
-			'show_ui' => (bool) $post_type->show_ui,
-			'_builtin' => (bool) $post_type->_builtin,
-			'has_archive' => (bool) $post_type->has_archive,
-			'supports' => get_all_post_type_supports( $post_type->name ),
-		);
-
-		if ( in_array( 'labels', $fields ) ) {
-			$_post_type['labels'] = (array) $post_type->labels;
-		}
-
-		if ( in_array( 'cap', $fields ) ) {
-			$_post_type['cap'] = (array) $post_type->cap;
-			$_post_type['map_meta_cap'] = (bool) $post_type->map_meta_cap;
-		}
-
-		if ( in_array( 'menu', $fields ) ) {
-			$_post_type['menu_position'] = (int) $post_type->menu_position;
-			$_post_type['menu_icon'] = $post_type->menu_icon;
-			$_post_type['show_in_menu'] = (bool) $post_type->show_in_menu;
-		}
-
-		if ( in_array( 'taxonomies', $fields ) )
-			$_post_type['taxonomies'] = get_object_taxonomies( $post_type->name, 'names' );
-
-		/**
-		 * Filter XML-RPC-prepared date for the given post type.
-		 *
-		 * @since 3.4.0
-		 *
-		 * @param array  $_post_type An array of post type data.
-		 * @param object $post_type  Post type object.
-		 */
-		return apply_filters( 'xmlrpc_prepare_post_type', $_post_type, $post_type );
-	}
-
-	/**
-	 * Retrieves a post types
-	 *
-	 * @since 3.4.0
-	 *
-	 * @see get_post_types()
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type array  $filter (optional)
-	 *     @type array  $fields (optional)
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function wp_getPostTypes( $args ) {
-		if ( ! $this->minimum_args( $args, 3 ) )
-			return $this->error;
-
-		$this->escape( $args );
-
-		$username = $args[1];
-		$password = $args[2];
-		$filter   = isset( $args[3] ) ? $args[3] : array( 'public' => true );
-
-		if ( isset( $args[4] ) ) {
-			$fields = $args[4];
-		} else {
-			/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-			$fields = apply_filters( 'xmlrpc_default_posttype_fields', array( 'labels', 'cap', 'taxonomies' ), 'wp.getPostTypes' );
-		}
-
-		if ( ! $user = $this->login( $username, $password ) )
-			return $this->error;
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.getPostTypes' );
-
-		$post_types = get_post_types( $filter, 'objects' );
-
-		$struct = array();
-
-		foreach ( $post_types as $post_type ) {
-			if ( ! current_user_can( $post_type->cap->edit_posts ) )
-				continue;
-
-			$struct[$post_type->name] = $this->_prepare_post_type( $post_type, $fields );
-		}
-
-		return $struct;
-	}
-
-	/**
-	 * Retrieve revisions for a specific post.
-	 *
-	 * @since 3.5.0
-	 *
-	 * The optional $fields parameter specifies what fields will be included
-	 * in the response array.
-	 *
-	 * @uses wp_get_post_revisions()
-	 * @see wp_getPost() for more on $fields
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type int    $post_id
-	 *     @type array  $fields (optional)
-	 * }
-	 * @return array|IXR_Error contains a collection of posts.
-	 */
-	public function wp_getRevisions( $args ) {
-		if ( ! $this->minimum_args( $args, 4 ) )
-			return $this->error;
-
-		$this->escape( $args );
-
-		$username = $args[1];
-		$password = $args[2];
-		$post_id  = (int) $args[3];
-
-		if ( isset( $args[4] ) ) {
-			$fields = $args[4];
-		} else {
-			/**
-			 * Filter the default revision query fields used by the given XML-RPC method.
-			 *
-			 * @since 3.5.0
-			 *
-			 * @param array  $field  An array of revision query fields.
-			 * @param string $method The method name.
-			 */
-			$fields = apply_filters( 'xmlrpc_default_revision_fields', array( 'post_date', 'post_date_gmt' ), 'wp.getRevisions' );
-		}
-
-		if ( ! $user = $this->login( $username, $password ) )
-			return $this->error;
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.getRevisions' );
-
-		if ( ! $post = get_post( $post_id ) )
-			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
-
-		if ( ! current_user_can( 'edit_post', $post_id ) )
-			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit posts.' ) );
-
-		// Check if revisions are enabled.
-		if ( ! wp_revisions_enabled( $post ) )
-			return new IXR_Error( 401, __( 'Sorry, revisions are disabled.' ) );
-
-		$revisions = wp_get_post_revisions( $post_id );
-
-		if ( ! $revisions )
-			return array();
-
-		$struct = array();
-
-		foreach ( $revisions as $revision ) {
-			if ( ! current_user_can( 'read_post', $revision->ID ) )
-				continue;
-
-			// Skip autosaves
-			if ( wp_is_post_autosave( $revision ) )
-				continue;
-
-			$struct[] = $this->_prepare_post( get_object_vars( $revision ), $fields );
-		}
-
-		return $struct;
-	}
-
-	/**
-	 * Restore a post revision
-	 *
-	 * @since 3.5.0
-	 *
-	 * @uses wp_restore_post_revision()
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type int    $revision_id
-	 * }
-	 * @return bool|IXR_Error false if there was an error restoring, true if success.
-	 */
-	public function wp_restoreRevision( $args ) {
-		if ( ! $this->minimum_args( $args, 3 ) )
-			return $this->error;
-
-		$this->escape( $args );
-
-		$username    = $args[1];
-		$password    = $args[2];
-		$revision_id = (int) $args[3];
-
-		if ( ! $user = $this->login( $username, $password ) )
-			return $this->error;
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'wp.restoreRevision' );
-
-		if ( ! $revision = wp_get_post_revision( $revision_id ) )
-			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
-
-		if ( wp_is_post_autosave( $revision ) )
-			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
-
-		if ( ! $post = get_post( $revision->post_parent ) )
-			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
-
-		if ( ! current_user_can( 'edit_post', $revision->post_parent ) )
-			return new IXR_Error( 401, __( 'Sorry, you cannot edit this post.' ) );
-
-		// Check if revisions are disabled.
-		if ( ! wp_revisions_enabled( $post ) )
-			return new IXR_Error( 401, __( 'Sorry, revisions are disabled.' ) );
-
-		$post = wp_restore_post_revision( $revision_id );
-
-		return (bool) $post;
-	}
-
-	/**
-	 * Retrieve user's data.
-	 *
-	 * Gives your client some info about you, so you don't have to.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function blogger_getUserInfo( $args ) {
-		$this->escape( $args );
-
-		$username = $args[1];
-		$password = $args[2];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		if ( !current_user_can( 'edit_posts' ) )
-			return new IXR_Error( 401, __( 'Sorry, you do not have access to user data on this site.' ) );
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'blogger.getUserInfo' );
-
-		$struct = array(
-			'nickname'  => $user->nickname,
-			'userid'    => $user->ID,
-			'url'       => $user->user_url,
-			'lastname'  => $user->last_name,
-			'firstname' => $user->first_name
-		);
-
-		return $struct;
-	}
-
-	/**
-	 * Retrieve post.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type int    $post_ID
-	 *     @type string $username
-	 *     @type string $password
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function blogger_getPost( $args ) {
-		$this->escape( $args );
-
-		$post_ID  = (int) $args[1];
-		$username = $args[2];
-		$password = $args[3];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		$post_data = get_post($post_ID, ARRAY_A);
-		if ( ! $post_data )
-			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
-
-		if ( !current_user_can( 'edit_post', $post_ID ) )
-			return new IXR_Error( 401, __( 'Sorry, you cannot edit this post.' ) );
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'blogger.getPost' );
-
-		$categories = implode(',', wp_get_post_categories($post_ID));
-
-		$content  = '<title>'.wp_unslash($post_data['post_title']).'</title>';
-		$content .= '<category>'.$categories.'</category>';
-		$content .= wp_unslash($post_data['post_content']);
-
-		$struct = array(
-			'userid'    => $post_data['post_author'],
-			'dateCreated' => $this->_convert_date( $post_data['post_date'] ),
-			'content'     => $content,
-			'postid'  => (string) $post_data['ID']
-		);
-
-		return $struct;
-	}
-
-	/**
-	 * Retrieve list of recent posts.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type string $appkey (unused)
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type int    $numberposts (optional)
-	 * }
-	 * @return array|IXR_Error
-	 */
-	public function blogger_getRecentPosts( $args ) {
-
-		$this->escape($args);
-
-		// $args[0] = appkey - ignored
-		$username = $args[2];
-		$password = $args[3];
-		if ( isset( $args[4] ) )
-			$query = array( 'numberposts' => absint( $args[4] ) );
-		else
-			$query = array();
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		if ( ! current_user_can( 'edit_posts' ) )
-			return new IXR_Error( 401, __( 'Sorry, you cannot edit posts on this site.' ) );
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'blogger.getRecentPosts' );
-
-		$posts_list = wp_get_recent_posts( $query );
-
-		if ( !$posts_list ) {
-			$this->error = new IXR_Error(500, __('Either there are no posts, or something went wrong.'));
-			return $this->error;
-		}
-
-		$recent_posts = array();
-		foreach ($posts_list as $entry) {
-			if ( !current_user_can( 'edit_post', $entry['ID'] ) )
-				continue;
-
-			$post_date  = $this->_convert_date( $entry['post_date'] );
-			$categories = implode(',', wp_get_post_categories($entry['ID']));
-
-			$content  = '<title>'.wp_unslash($entry['post_title']).'</title>';
-			$content .= '<category>'.$categories.'</category>';
-			$content .= wp_unslash($entry['post_content']);
-
-			$recent_posts[] = array(
-				'userid' => $entry['post_author'],
-				'dateCreated' => $post_date,
-				'content' => $content,
-				'postid' => (string) $entry['ID'],
-			);
-		}
-
-		return $recent_posts;
-	}
-
-	/**
-	 * Deprecated.
-	 *
-	 * @since 1.5.0
-	 * @deprecated 3.5.0
-	 *
-	 * @param array $args Unused.
-	 * @return IXR_Error Error object.
-	 */
-	public function blogger_getTemplate($args) {
-		return new IXR_Error( 403, __('Sorry, that file cannot be edited.' ) );
-	}
-
-	/**
-	 * Deprecated.
-	 *
-	 * @since 1.5.0
-	 * @deprecated 3.5.0
-	 *
-	 * @param array $args Unused.
-	 * @return IXR_Error Error object.
-	 */
-	public function blogger_setTemplate($args) {
-		return new IXR_Error( 403, __('Sorry, that file cannot be edited.' ) );
-	}
-
-	/* MetaWeblog API functions
-	 * specs on wherever Dave Winer wants them to be
-	 */
-
-	/**
-	 * Creates new post.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param array $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type string $appkey (unused)
-	 *     @type int    $blog_id (unused)
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type string $content
-	 *     @type string $publish
-	 * }
-	 * @return int|IXR_Error
-	 */
-	public function blogger_newPost( $args ) {
-		$this->escape( $args );
-
-		$username = $args[2];
-		$password = $args[3];
-		$content  = $args[4];
-		$publish  = $args[5];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'blogger.newPost' );
-
-		$cap = ($publish) ? 'publish_posts' : 'edit_posts';
-		if ( ! current_user_can( get_post_type_object( 'post' )->cap->create_posts ) || !current_user_can($cap) )
-			return new IXR_Error(401, __('Sorry, you are not allowed to post on this site.'));
-
-		$post_status = ($publish) ? 'publish' : 'draft';
-
-		$post_author = $user->ID;
-
-		$post_title = xmlrpc_getposttitle($content);
-		$post_category = xmlrpc_getpostcategory($content);
-		$post_content = xmlrpc_removepostdata($content);
-
-		$post_date = current_time('mysql');
-		$post_date_gmt = current_time('mysql', 1);
-
-		$post_data = compact('post_author', 'post_date', 'post_date_gmt', 'post_content', 'post_title', 'post_category', 'post_status');
-
-		$post_ID = wp_insert_post($post_data);
-		if ( is_wp_error( $post_ID ) )
-			return new IXR_Error(500, $post_ID->get_error_message());
-
-		if ( !$post_ID )
-			return new IXR_Error(500, __('Sorry, your entry could not be posted. Something wrong happened.'));
-
-		$this->attach_uploads( $post_ID, $post_content );
-
-		/**
-		 * Fires after a new post has been successfully created via the XML-RPC Blogger API.
-		 *
-		 * @since 3.4.0
-		 *
-		 * @param int   $post_ID ID of the new post.
-		 * @param array $args    An array of new post arguments.
-		 */
-		do_action( 'xmlrpc_call_success_blogger_newPost', $post_ID, $args );
-
-		return $post_ID;
-	}
-
-	/**
-	 * Edit a post.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type int    $post_ID
-	 *     @type string $username
-	 *     @type string $password
-	 *     @type string $content
-	 *     @type bool   $publish
-	 * }
-	 * @return true|IXR_Error true when done.
-	 */
-	public function blogger_editPost( $args ) {
-
-		$this->escape($args);
-
-		$post_ID  = (int) $args[1];
-		$username = $args[2];
-		$password = $args[3];
-		$content  = $args[4];
-		$publish  = $args[5];
-
-		if ( ! $user = $this->login( $username, $password ) ) {
-			return $this->error;
-		}
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'blogger.editPost' );
-
-		$actual_post = get_post( $post_ID, ARRAY_A );
-
-		if ( ! $actual_post || $actual_post['post_type'] != 'post' ) {
-			return new IXR_Error( 404, __( 'Sorry, no such post.' ) );
-		}
-
-		$this->escape($actual_post);
-
-		if ( ! current_user_can( 'edit_post', $post_ID ) ) {
-			return new IXR_Error(401, __('Sorry, you do not have the right to edit this post.'));
-		}
-		if ( 'publish' == $actual_post['post_status'] && ! current_user_can( 'publish_posts' ) ) {
-			return new IXR_Error( 401, __( 'Sorry, you do not have the right to publish this post.' ) );
-		}
-
-		$postdata = array();
-		$postdata['ID'] = $actual_post['ID'];
-		$postdata['post_content'] = xmlrpc_removepostdata( $content );
-		$postdata['post_title'] = xmlrpc_getposttitle( $content );
-		$postdata['post_category'] = xmlrpc_getpostcategory( $content );
-		$postdata['post_status'] = $actual_post['post_status'];
-		$postdata['post_excerpt'] = $actual_post['post_excerpt'];
-		$postdata['post_status'] = $publish ? 'publish' : 'draft';
-
-		$result = wp_update_post( $postdata );
-
-		if ( ! $result ) {
-			return new IXR_Error(500, __('For some strange yet very annoying reason, this post could not be edited.'));
-		}
-		$this->attach_uploads( $actual_post['ID'], $postdata['post_content'] );
-
-		/**
-		 * Fires after a post has been successfully updated via the XML-RPC Blogger API.
-		 *
-		 * @since 3.4.0
-		 *
-		 * @param int   $post_ID ID of the updated post.
-		 * @param array $args    An array of arguments for the post to edit.
-		 */
-		do_action( 'xmlrpc_call_success_blogger_editPost', $post_ID, $args );
-
-		return true;
-	}
-
-	/**
-	 * Remove a post.
-	 *
-	 * @since 1.5.0
-	 *
-	 * @param array  $args {
-	 *     Method arguments. Note: arguments must be ordered as documented.
-	 *
-	 *     @type int    $blog_id (unused)
-	 *     @type int    $post_ID
-	 *     @type string $username
-	 *     @type string $password
-	 * }
-	 * @return true|IXR_Error True when post is deleted.
-	 */
-	public function blogger_deletePost( $args ) {
-		$this->escape( $args );
-
-		$post_ID  = (int) $args[1];
-		$username = $args[2];
-		$password = $args[3];
-
-		if ( !$user = $this->login($username, $password) )
-			return $this->error;
-
-		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
-		do_action( 'xmlrpc_call', 'blogger.deletePost' );
-
-		$actual_post = get_post( $post_ID, ARRAY_A );
-
-		if ( ! $actual_post || $actual_post['post_type'] != 'post' ) {
-			return new IXR_Error( 404, __( 'Sorry, no such post.' ) );
-		}
-
-		if ( ! current_user_can( 'delete_post', $post_ID ) ) {
-			return new IXR_Error( 401, __( 'Sorry, you do not have the right to delete this post.' ) );
-		}
-
-		$result = wp_delete_post( $post_ID );
-
-		if ( ! $result ) {
-			return new IXR_Error( 500, __( 'The post cannot be deleted.' ) );
-		}
-
-		/**
-		 * Fires after a post has been successfully deleted via the XML-RPC Blogger API.
-		 *
-		 * @since 3.4.0
-		 *
-		 * @param int   $post_ID ID of the deleted post.
-		 * @param array $args    An array of arguments to delete the post.
-		 */
-		do_action( 'xmlrpc_call_success_blogger_deletePost', $post_ID, $args );
-
-		return true;
-	}
-
-	/**
 	 * Retrieve post.
 	 *
 	 * @since 1.5.0
@@ -5473,7 +5486,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
 
 		if ( !current_user_can( 'edit_post', $post_ID ) )
-			return new IXR_Error( 401, __( 'Sorry, you cannot edit this post.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit this post.' ) );
 
 		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
 		do_action( 'xmlrpc_call', 'metaWeblog.getPost' );
@@ -5603,7 +5616,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			return $this->error;
 
 		if ( ! current_user_can( 'edit_posts' ) )
-			return new IXR_Error( 401, __( 'Sorry, you cannot edit posts on this site.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit posts.' ) );
 
 		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
 		do_action( 'xmlrpc_call', 'metaWeblog.getRecentPosts' );
@@ -5780,7 +5793,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		do_action( 'xmlrpc_call', 'metaWeblog.newMediaObject' );
 
 		if ( !current_user_can('upload_files') ) {
-			$this->error = new IXR_Error( 401, __( 'You do not have permission to upload files.' ) );
+			$this->error = new IXR_Error( 401, __( 'Sorry, you are not allowed to upload files.' ) );
 			return $this->error;
 		}
 
@@ -5790,7 +5803,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		}
 
 		/**
-		 * Filter whether to preempt the XML-RPC media upload.
+		 * Filters whether to preempt the XML-RPC media upload.
 		 *
 		 * Passing a truthy value will effectively short-circuit the media upload,
 		 * returning that value as a 500 error instead.
@@ -5814,7 +5827,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			$post_id = (int) $data['post_id'];
 
 			if ( ! current_user_can( 'edit_post', $post_id ) )
-				return new IXR_Error( 401, __( 'Sorry, you cannot edit this post.' ) );
+				return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit this post.' ) );
 		}
 		$attachment = array(
 			'post_title' => $name,
@@ -5848,6 +5861,10 @@ class wp_xmlrpc_server extends IXR_Server {
 
 		return $struct;
 	}
+
+	/* MovableType API functions
+	 * specs on http://www.movabletype.org/docs/mtmanual_programmatic.html
+	 */
 
 	/**
 	 * Retrieve the post titles of recent posts.
@@ -5908,10 +5925,6 @@ class wp_xmlrpc_server extends IXR_Server {
 
 		return $recent_posts;
 	}
-
-	/* MovableType API functions
-	 * specs on http://www.movabletype.org/docs/mtmanual_programmatic.html
-	 */
 
 	/**
 	 * Retrieve list of all categories on blog.
@@ -5985,7 +5998,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
 
 		if ( !current_user_can( 'edit_post', $post_ID ) )
-			return new IXR_Error( 401, __( 'Sorry, you can not edit this post.' ) );
+			return new IXR_Error( 401, __( 'Sorry, you are not allowed to edit this post.' ) );
 
 		/** This action is documented in wp-includes/class-wp-xmlrpc-server.php */
 		do_action( 'xmlrpc_call', 'mt.getPostCategories' );
@@ -6039,7 +6052,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
 
 		if ( !current_user_can('edit_post', $post_ID) )
-			return new IXR_Error(401, __('Sorry, you cannot edit this post.'));
+			return new IXR_Error(401, __('Sorry, you are not allowed to edit this post.'));
 
 		$catids = array();
 		foreach ( $categories as $cat ) {
@@ -6075,7 +6088,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		do_action( 'xmlrpc_call', 'mt.supportedTextFilters' );
 
 		/**
-		 * Filter the MoveableType text filters list for XML-RPC.
+		 * Filters the MoveableType text filters list for XML-RPC.
 		 *
 		 * @since 2.2.0
 		 *
@@ -6158,7 +6171,7 @@ class wp_xmlrpc_server extends IXR_Server {
 			return new IXR_Error( 404, __( 'Invalid post ID.' ) );
 
 		if ( !current_user_can('publish_posts') || !current_user_can('edit_post', $post_ID) )
-			return new IXR_Error(401, __('Sorry, you cannot publish this post.'));
+			return new IXR_Error(401, __('Sorry, you are not allowed to publish this post.'));
 
 		$postdata['post_status'] = 'publish';
 
@@ -6169,6 +6182,10 @@ class wp_xmlrpc_server extends IXR_Server {
 
 		return wp_update_post( $postdata );
 	}
+
+	/* PingBack functions
+	 * specs on www.hixie.ch/specs/pingback/pingback
+	 */
 
 	/**
 	 * Retrieves a pingback and registers it.
@@ -6199,7 +6216,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		$pagelinkedto = str_replace( '&', '&amp;', $pagelinkedto );
 
 		/**
-		 * Filter the pingback source URI.
+		 * Filters the pingback source URI.
 		 *
 		 * @since 3.6.0
 		 *
@@ -6296,7 +6313,7 @@ class wp_xmlrpc_server extends IXR_Server {
 		}
 
 		/**
-		 * Filter the pingback remote source.
+		 * Filters the pingback remote source.
 		 *
 		 * @since 2.5.0
 		 *
@@ -6384,30 +6401,6 @@ class wp_xmlrpc_server extends IXR_Server {
 		return sprintf(__('Pingback from %1$s to %2$s registered. Keep the web talking! :-)'), $pagelinkedfrom, $pagelinkedto);
 	}
 
-	/* PingBack functions
-	 * specs on www.hixie.ch/specs/pingback/pingback
-	 */
-
-	/**
-	 * Sends a pingback error based on the given error code and message.
-	 *
-	 * @since 3.6.0
-	 *
-	 * @param int    $code    Error code.
-	 * @param string $message Error message.
-	 * @return IXR_Error Error object.
-	 */
-	protected function pingback_error( $code, $message ) {
-		/**
-		 * Filter the XML-RPC pingback error return.
-		 *
-		 * @since 3.5.1
-		 *
-		 * @param IXR_Error $error An IXR_Error object containing the error code and message.
-		 */
-		return apply_filters( 'xmlrpc_pingback_error', new IXR_Error( $code, $message ) );
-	}
-
 	/**
 	 * Retrieve array of URLs that pingbacked the given URL.
 	 *
@@ -6456,13 +6449,22 @@ class wp_xmlrpc_server extends IXR_Server {
 	}
 
 	/**
-	 * Helper method for filtering out elements from an array.
+	 * Sends a pingback error based on the given error code and message.
 	 *
-	 * @since 3.4.0
+	 * @since 3.6.0
 	 *
-	 * @param int $count Number to compare to one.
+	 * @param int    $code    Error code.
+	 * @param string $message Error message.
+	 * @return IXR_Error Error object.
 	 */
-	private function _is_greater_than_one( $count ) {
-		return $count > 1;
+	protected function pingback_error( $code, $message ) {
+		/**
+		 * Filters the XML-RPC pingback error return.
+		 *
+		 * @since 3.5.1
+		 *
+		 * @param IXR_Error $error An IXR_Error object containing the error code and message.
+		 */
+		return apply_filters( 'xmlrpc_pingback_error', new IXR_Error( $code, $message ) );
 	}
 }

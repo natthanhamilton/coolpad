@@ -68,8 +68,8 @@ class WC_Form_Handler {
 		}
 		$load_address = isset($wp->query_vars['edit-address'])
 			? wc_edit_address_i18n(sanitize_title($wp->query_vars['edit-address']), TRUE) : 'billing';
-		$address = WC()->countries->get_address_fields(esc_attr($_POST[ $load_address . '_country' ]),
-		                                               $load_address . '_');
+		$address      = WC()->countries->get_address_fields(esc_attr($_POST[ $load_address . '_country' ]),
+		                                                    $load_address . '_');
 		foreach ($address as $key => $field) {
 			if (!isset($field['type'])) {
 				$field['type'] = 'text';
@@ -147,8 +147,8 @@ class WC_Form_Handler {
 		) {
 			return;
 		}
-		$errors = new WP_Error();
-		$user   = new stdClass();
+		$errors       = new WP_Error();
+		$user         = new stdClass();
 		$user->ID     = (int)get_current_user_id();
 		$current_user = get_user_by('id', $user->ID);
 		if ($user->ID <= 0) {
@@ -161,8 +161,8 @@ class WC_Form_Handler {
 		$pass1              = !empty($_POST['password_1']) ? $_POST['password_1'] : '';
 		$pass2              = !empty($_POST['password_2']) ? $_POST['password_2'] : '';
 		$save_pass          = TRUE;
-		$user->first_name = $account_first_name;
-		$user->last_name  = $account_last_name;
+		$user->first_name   = $account_first_name;
+		$user->last_name    = $account_last_name;
 		// Prevent emails being displayed, or leave alone.
 		$user->display_name = is_email($current_user->display_name) ? $user->first_name : $current_user->display_name;
 		// Handle required fields
@@ -319,7 +319,7 @@ class WC_Form_Handler {
 		                                                                                                                     'woocommerce-add-payment-method')
 		) {
 			ob_start();
-			$payment_method = wc_clean($_POST['payment_method']);
+			$payment_method     = wc_clean($_POST['payment_method']);
 			$available_gateways = WC()->payment_gateways->get_available_payment_gateways();
 			// Validate
 			$available_gateways[ $payment_method ]->validate_fields();
@@ -413,7 +413,7 @@ class WC_Form_Handler {
 			$cart_item_key = sanitize_text_field($_GET['remove_item']);
 			if ($cart_item = WC()->cart->get_cart_item($cart_item_key)) {
 				WC()->cart->remove_cart_item($cart_item_key);
-				$product = wc_get_product($cart_item['product_id']);
+				$product            = wc_get_product($cart_item['product_id']);
 				$item_removed_title = apply_filters('woocommerce_cart_item_removed_title',
 				                                    $product ? $product->get_title() : __('Item', 'woocommerce'),
 				                                    $cart_item);
@@ -771,8 +771,8 @@ class WC_Form_Handler {
 		$nonce_value = isset($_POST['woocommerce-login-nonce']) ? $_POST['woocommerce-login-nonce'] : $nonce_value;
 		if (!empty($_POST['login']) && wp_verify_nonce($nonce_value, 'woocommerce-login')) {
 			try {
-				$creds    = [];
-				$username = trim($_POST['username']);
+				$creds            = [];
+				$username         = trim($_POST['username']);
 				$validation_error = new WP_Error();
 				$validation_error = apply_filters('woocommerce_process_login_errors', $validation_error,
 				                                  $_POST['username'], $_POST['password']);

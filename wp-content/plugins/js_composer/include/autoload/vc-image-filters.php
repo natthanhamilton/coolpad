@@ -1,42 +1,40 @@
 <?php
-if (! defined('ABSPATH'))
-{
-    die('-1');
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
 }
 
-add_filter('attachment_fields_to_edit', 'vc_attachment_filter_field', 10, 2);
-add_filter('media_meta', 'vc_attachment_filter_media_meta', 10, 2);
-add_action('wp_ajax_vc_media_editor_add_image', 'vc_media_editor_add_image');
-add_action('wp_ajax_vc_media_editor_preview_image', 'vc_media_editor_preview_image');
+add_filter( 'attachment_fields_to_edit', 'vc_attachment_filter_field', 10, 2 );
+add_filter( 'media_meta', 'vc_attachment_filter_media_meta', 10, 2 );
+add_action( 'wp_ajax_vc_media_editor_add_image', 'vc_media_editor_add_image' );
+add_action( 'wp_ajax_vc_media_editor_preview_image', 'vc_media_editor_preview_image' );
 
 /**
  * @return array
  */
-function vc_get_filters()
-{
-    return array(
-        'antique'     => __('Antique', 'js_composer'),
-        'blackwhite'  => __('Black & White', 'js_composer'),
-        'boost'       => __('Boost', 'js_composer'),
-        'concentrate' => __('Concentrate', 'js_composer'),
-        'country'     => __('Country', 'js_composer'),
-        'darken'      => __('Darken', 'js_composer'),
-        'dream'       => __('Dream', 'js_composer'),
-        'everglow'    => __('Everglow', 'js_composer'),
-        'forest'      => __('Forest', 'js_composer'),
-        'freshblue'   => __('Fresh Blue', 'js_composer'),
-        'frozen'      => __('Frozen', 'js_composer'),
-        'hermajesty'  => __('Her Majesty', 'js_composer'),
-        'light'       => __('Light', 'js_composer'),
-        'orangepeel'  => __('Orange Peel', 'js_composer'),
-        'rain'        => __('Rain', 'js_composer'),
-        'retro'       => __('Retro', 'js_composer'),
-        'sepia'       => __('Sepia', 'js_composer'),
-        'summer'      => __('Summer', 'js_composer'),
-        'tender'      => __('Tender', 'js_composer'),
-        'vintage'     => __('Vintage', 'js_composer'),
-        'washed'      => __('Washed', 'js_composer'),
-    );
+function vc_get_filters() {
+	return array(
+		'antique' => __( 'Antique', 'js_composer' ),
+		'blackwhite' => __( 'Black & White', 'js_composer' ),
+		'boost' => __( 'Boost', 'js_composer' ),
+		'concentrate' => __( 'Concentrate', 'js_composer' ),
+		'country' => __( 'Country', 'js_composer' ),
+		'darken' => __( 'Darken', 'js_composer' ),
+		'dream' => __( 'Dream', 'js_composer' ),
+		'everglow' => __( 'Everglow', 'js_composer' ),
+		'forest' => __( 'Forest', 'js_composer' ),
+		'freshblue' => __( 'Fresh Blue', 'js_composer' ),
+		'frozen' => __( 'Frozen', 'js_composer' ),
+		'hermajesty' => __( 'Her Majesty', 'js_composer' ),
+		'light' => __( 'Light', 'js_composer' ),
+		'orangepeel' => __( 'Orange Peel', 'js_composer' ),
+		'rain' => __( 'Rain', 'js_composer' ),
+		'retro' => __( 'Retro', 'js_composer' ),
+		'sepia' => __( 'Sepia', 'js_composer' ),
+		'summer' => __( 'Summer', 'js_composer' ),
+		'tender' => __( 'Tender', 'js_composer' ),
+		'vintage' => __( 'Vintage', 'js_composer' ),
+		'washed' => __( 'Washed', 'js_composer' ),
+	);
 }
 
 /**
@@ -47,37 +45,34 @@ function vc_get_filters()
  *
  * @return array $form_fields, modified form fields
  */
-function vc_attachment_filter_field($form_fields, $post)
-{
-    // don't add filter field, if image already has filter applied
-    if (get_post_meta($post->ID, 'vc-applied-image-filter', TRUE))
-    {
-        return $form_fields;
-    }
+function vc_attachment_filter_field( $form_fields, $post ) {
+	// don't add filter field, if image already has filter applied
+	if ( get_post_meta( $post->ID, 'vc-applied-image-filter', true ) ) {
+		return $form_fields;
+	}
 
-    $options = vc_get_filters();
+	$options = vc_get_filters();
 
-    $html_options = '<option value="">' . __('None', 'js_composer') . '</option>';
-    foreach ($options as $value => $title)
-    {
-        $html_options .= '<option value="' . $value . '">' . $title . '</option>';
-    }
+	$html_options = '<option value="">' . __( 'None', 'js_composer' ) . '</option>';
+	foreach ( $options as $value => $title ) {
+		$html_options .= '<option value="' . $value . '">' . $title . '</option>';
+	}
 
-    $form_fields['vc-image-filter'] = array(
-        'label' => '',
-        'input' => 'html',
-        'html'  => '
+	$form_fields['vc-image-filter'] = array(
+		'label' => '',
+		'input' => 'html',
+		'html' => '
 			<div style="display:none">
-				<span class="vc-filter-label">' . __('Image filter', 'js_composer') . '</span>
+				<span class="vc-filter-label">' . __( 'Image filter', 'js_composer' ) . '</span>
 				<select name="attachments[' . $post->ID . '][vc-image-filter]" id="attachments-' . $post->ID . '-vc-image-filter" data-vc-preview-image-filter="' . $post->ID . '">
 					' . $html_options . '
 				</select>
 			</div>',
-        'value' => get_post_meta($post->ID, 'vc_image_filter', TRUE),
-        'helps' => '',
-    );
+		'value' => get_post_meta( $post->ID, 'vc_image_filter', true ),
+		'helps' => '',
+	);
 
-    return $form_fields;
+	return $form_fields;
 }
 
 /**
@@ -96,129 +91,117 @@ function vc_attachment_filter_field($form_fields, $post)
  *
  * @return string json
  */
-function vc_media_editor_add_image()
-{
-    vc_user_access()
-        ->checkAdminNonce()
-        ->validateDie()
-        ->wpAny('upload_files')
-        ->validateDie();
+function vc_media_editor_add_image() {
+	vc_user_access()
+		->checkAdminNonce()
+		->validateDie()
+		->wpAny( 'upload_files' )
+		->validateDie();
 
-    require_once vc_path_dir('APP_ROOT', 'vendor/mmihey/PHP-Instagram-effects/src/Image/Filter.php');
-    $response = array(
-        'success' => TRUE,
-        'data'    => array(
-            'ids' => array(),
-        ),
-    );
+	require_once vc_path_dir( 'APP_ROOT', 'vendor/mmihey/PHP-Instagram-effects/src/Image/Filter.php' );
+	$response = array(
+		'success' => true,
+		'data' => array(
+			'ids' => array(),
+		),
+	);
 
-    $filters = (array)vc_post_param('filters', array());
+	$filters = (array) vc_post_param( 'filters', array() );
 
-    $ids = (array)vc_post_param('ids', array());
-    if (! $ids)
-    {
-        wp_send_json($response);
-    }
+	$ids = (array) vc_post_param( 'ids', array() );
+	if ( ! $ids ) {
+		wp_send_json( $response );
+	}
 
-    // default action is wp_handle_upload, which forces wp to check upload with is_uploaded_file()
-    // override action to anything else to skip security checks
-    $action = 'vc_handle_upload_imitation';
+	// default action is wp_handle_upload, which forces wp to check upload with is_uploaded_file()
+	// override action to anything else to skip security checks
+	$action = 'vc_handle_upload_imitation';
 
-    $file_key = 0;
-    $post_id = 0;
-    $post_data = array();
-    $overrides = array('action' => $action);
-    $_POST = array('action' => $action);
+	$file_key = 0;
+	$post_id = 0;
+	$post_data = array();
+	$overrides = array( 'action' => $action );
+	$_POST = array( 'action' => $action );
 
-    foreach ($ids as $key => $attachment_id)
-    {
-        if (! empty($filters[$attachment_id]))
-        {
-            $filter_name = $filters[$attachment_id];
-        }
-        else
-        {
-            continue;
-        }
+	foreach ( $ids as $key => $attachment_id ) {
+		if ( ! empty( $filters[ $attachment_id ] ) ) {
+			$filter_name = $filters[ $attachment_id ];
+		} else {
+			continue;
+		}
 
-        $source_path = get_attached_file($attachment_id);
+		$source_path = get_attached_file( $attachment_id );
 
-        if (empty($source_path))
-        {
-            continue;
-        }
+		if ( empty( $source_path ) ) {
+			continue;
+		}
 
-        $temp_path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . basename($source_path);
+		$temp_path = sys_get_temp_dir() . DIRECTORY_SEPARATOR . basename( $source_path );
 
-        if (! copy($source_path, $temp_path))
-        {
-            continue;
-        }
+		if ( ! copy( $source_path, $temp_path ) ) {
+			continue;
+		}
 
-        $extension = strtolower(pathinfo($temp_path, PATHINFO_EXTENSION));
-        $mime_type = '';
-        switch ($extension)
-        {
-            case 'jpeg':
-            case 'jpg':
-                $image = imagecreatefromjpeg($temp_path);
-                $mime_type = 'image/jpeg';
-                break;
+		$extension = strtolower( pathinfo( $temp_path, PATHINFO_EXTENSION ) );
+		$mime_type = '';
+		switch ( $extension ) {
+			case 'jpeg':
+			case 'jpg':
+				$image = imagecreatefromjpeg( $temp_path );
+				$mime_type = 'image/jpeg';
+				break;
 
-            case 'png':
-                $image = imagecreatefrompng($temp_path);
-                $mime_type = 'image/png';
-                break;
+			case 'png':
+				$image = imagecreatefrompng( $temp_path );
+				$mime_type = 'image/png';
+				break;
 
-            case 'gif':
-                $image = imagecreatefromgif($temp_path);
-                $mime_type = 'image/gif';
-                break;
+			case 'gif':
+				$image = imagecreatefromgif( $temp_path );
+				$mime_type = 'image/gif';
+				break;
 
-            default:
-                $image = FALSE;
-        }
+			default:
+				$image = false;
+		}
 
-        if (! $image)
-        {
-            continue;
-        }
+		if ( ! $image ) {
+			continue;
+		}
 
-        $Filter = new vcImageFilter($image);
-        $Filter->$filter_name();
+		$Filter = new vcImageFilter( $image );
+		$Filter->$filter_name();
 
-        if (! vc_save_gd_resource($Filter->getImage(), $temp_path))
-        {
-            continue;
-        }
+		if ( ! vc_save_gd_resource( $Filter->getImage(), $temp_path ) ) {
+			continue;
+		}
 
-        $new_filename = basename($temp_path, '.' . $extension) . '-' . $filter_name . '.' . $extension;
+		$new_filename = basename( $temp_path, '.' . $extension ) . '-' . $filter_name . '.' . $extension;
 
-        $_FILES = array(
-            array(
-                'name'     => $new_filename,
-                'type'     => $mime_type,
-                'tmp_name' => $temp_path,
-                'error'    => UPLOAD_ERR_OK,
-                'size'     => filesize($temp_path),
-            ),
-        );
+		$_FILES = array(
+			array(
+				'name' => $new_filename,
+				'type' => $mime_type,
+				'tmp_name' => $temp_path,
+				'error' => UPLOAD_ERR_OK,
+				'size' => filesize( $temp_path ),
+			),
+		);
 
-        $new_attachment_id = media_handle_upload($file_key, $post_id, $post_data, $overrides);
+		$new_attachment_id = media_handle_upload( $file_key, $post_id, $post_data, $overrides );
 
-        if (! $new_attachment_id || is_wp_error($new_attachment_id))
-        {
-            continue;
-        }
+		if ( ! $new_attachment_id || is_wp_error( $new_attachment_id ) ) {
+			continue;
+		}
 
-        update_post_meta($new_attachment_id, 'vc-applied-image-filter', $filter_name);
+		update_post_meta( $new_attachment_id, 'vc-applied-image-filter', $filter_name );
 
-        $ids[$key] = $new_attachment_id;
-    }
+		$ids[ $key ] = $new_attachment_id;
+	}
 
-    $response['data']['ids'] = $ids;
+	$response['data']['ids'] = $ids;
 
-    wp_send_json($response);
+	wp_send_json( $response );
 }
 
 /**
@@ -232,84 +215,78 @@ function vc_media_editor_add_image()
  *
  * @return void Results are sent out as json
  */
-function vc_media_editor_preview_image()
-{
-    vc_user_access()
-        ->checkAdminNonce()
-        ->validateDie()
-        ->wpAny('upload_files')
-        ->validateDie();
+function vc_media_editor_preview_image() {
+	vc_user_access()
+		->checkAdminNonce()
+		->validateDie()
+		->wpAny( 'upload_files' )
+		->validateDie();
 
-    require_once vc_path_dir('APP_ROOT', 'vendor/mmihey/PHP-Instagram-effects/src/Image/Filter.php');
+	require_once vc_path_dir( 'APP_ROOT', 'vendor/mmihey/PHP-Instagram-effects/src/Image/Filter.php' );
 
-    $response = array(
-        'success' => TRUE,
-        'data'    => array(
-            'src' => '',
-        ),
-    );
+	$response = array(
+		'success' => true,
+		'data' => array(
+			'src' => '',
+		),
+	);
 
-    $filter_name = vc_post_param('filter', '');
-    $attachment_id = vc_post_param('attachment_id', FALSE);
-    $preferred_size = vc_post_param('preferred_size', 'medium');
+	$filter_name = vc_post_param( 'filter', '' );
+	$attachment_id = vc_post_param( 'attachment_id', false );
+	$preferred_size = vc_post_param( 'preferred_size', 'medium' );
 
-    if (! $filter_name || ! $attachment_id)
-    {
-        wp_send_json($response);
-    }
+	if ( ! $filter_name || ! $attachment_id ) {
+		wp_send_json( $response );
+	}
 
-    $attachment_path = get_attached_file($attachment_id);
+	$attachment_path = get_attached_file( $attachment_id );
 
-    $attachment_details = wp_prepare_attachment_for_js($attachment_id);
+	$attachment_details = wp_prepare_attachment_for_js( $attachment_id );
 
-    if (! isset($attachment_details['sizes'][$preferred_size]))
-    {
-        $preferred_size = 'thumbnail';
-    }
+	if ( ! isset( $attachment_details['sizes'][ $preferred_size ] ) ) {
+		$preferred_size = 'thumbnail';
+	}
 
-    $attachment_url = wp_get_attachment_image_src($attachment_id, $preferred_size);
+	$attachment_url = wp_get_attachment_image_src( $attachment_id, $preferred_size );
 
-    if (empty($attachment_path) || empty($attachment_url[0]))
-    {
-        wp_send_json($response);
-    }
+	if ( empty( $attachment_path ) || empty( $attachment_url[0] ) ) {
+		wp_send_json( $response );
+	}
 
-    $source_path = dirname($attachment_path) . '/' . basename($attachment_url[0]);
+	$source_path = dirname( $attachment_path ) . '/' . basename( $attachment_url[0] );
 
-    $image = vc_get_gd_resource($source_path);
+	$image = vc_get_gd_resource( $source_path );
 
-    if (! $image)
-    {
-        wp_send_json($response);
-    }
+	if ( ! $image ) {
+		wp_send_json( $response );
+	}
 
-    $Filter = new vcImageFilter($image);
-    $Filter->$filter_name();
+	$Filter = new vcImageFilter( $image );
+	$Filter->$filter_name();
 
-    $extension = strtolower(pathinfo($source_path, PATHINFO_EXTENSION));
+	$extension = strtolower( pathinfo( $source_path, PATHINFO_EXTENSION ) );
 
-    ob_start();
-    switch ($extension)
-    {
-        case 'jpeg':
-        case 'jpg':
-            imagejpeg($Filter->getImage());
-            break;
+	ob_start();
+	switch ( $extension ) {
+		case 'jpeg':
+		case 'jpg':
+			imagejpeg( $Filter->getImage() );
+			break;
 
-        case 'png':
-            imagepng($Filter->getImage());
-            break;
+		case 'png':
+			imagepng( $Filter->getImage() );
+			break;
 
-        case 'gif':
-            imagegif($Filter->getImage());
-            break;
-    }
+		case 'gif':
+			imagegif( $Filter->getImage() );
+			break;
+	}
 
-    $data = ob_get_clean();
+	$data = ob_get_clean();
 
-    $response['data']['src'] = 'data:image/' . $extension . ';base64,' . base64_encode($data);
+	$response['data']['src'] = 'data:image/' . $extension . ';base64,' . base64_encode( $data );
 
-    wp_send_json($response);
+	wp_send_json( $response );
 }
 
 /**
@@ -319,24 +296,22 @@ function vc_media_editor_preview_image()
  *
  * @return bool|resource
  */
-function vc_get_gd_resource($file)
-{
-    $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+function vc_get_gd_resource( $file ) {
+	$extension = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 
-    switch ($extension)
-    {
-        case 'jpeg':
-        case 'jpg':
-            return imagecreatefromjpeg($file);
+	switch ( $extension ) {
+		case 'jpeg':
+		case 'jpg':
+			return imagecreatefromjpeg( $file );
 
-        case 'png':
-            return imagecreatefrompng($file);
+		case 'png':
+			return imagecreatefrompng( $file );
 
-        case 'gif':
-            return imagecreatefromgif($file);
-    }
+		case 'gif':
+			return imagecreatefromgif( $file );
+	}
 
-    return FALSE;
+	return false;
 }
 
 /**
@@ -347,24 +322,22 @@ function vc_get_gd_resource($file)
  *
  * @return bool
  */
-function vc_save_gd_resource($resource, $file)
-{
-    $extension = strtolower(pathinfo($file, PATHINFO_EXTENSION));
+function vc_save_gd_resource( $resource, $file ) {
+	$extension = strtolower( pathinfo( $file, PATHINFO_EXTENSION ) );
 
-    switch ($extension)
-    {
-        case 'jpeg':
-        case 'jpg':
-            return imagejpeg($resource, $file);
+	switch ( $extension ) {
+		case 'jpeg':
+		case 'jpg':
+			return imagejpeg( $resource, $file );
 
-        case 'png':
-            return imagepng($resource, $file);
+		case 'png':
+			return imagepng( $resource, $file );
 
-        case 'gif':
-            return imagegif($resource, $file);
-    }
+		case 'gif':
+			return imagegif( $resource, $file );
+	}
 
-    return FALSE;
+	return false;
 }
 
 /**
@@ -375,21 +348,18 @@ function vc_save_gd_resource($resource, $file)
  *
  * @return array $media_meta, modified meta fields
  */
-function vc_attachment_filter_media_meta($media_meta, $post)
-{
-    $filter_name = get_post_meta($post->ID, 'vc-applied-image-filter', TRUE);
-    if (! $filter_name)
-    {
-        return $media_meta;
-    }
+function vc_attachment_filter_media_meta( $media_meta, $post ) {
+	$filter_name = get_post_meta( $post->ID, 'vc-applied-image-filter', true );
+	if ( ! $filter_name ) {
+		return $media_meta;
+	}
 
-    $filters = vc_get_filters();
-    if (! isset($filters[$filter_name]))
-    {
-        return $media_meta;
-    }
+	$filters = vc_get_filters();
+	if ( ! isset( $filters[ $filter_name ] ) ) {
+		return $media_meta;
+	}
 
-    $media_meta .= __('Filter:', 'js_composer') . ' ' . $filters[$filter_name];
+	$media_meta .= __( 'Filter:', 'js_composer' ) . ' ' . $filters[ $filter_name ];
 
-    return $media_meta;
+	return $media_meta;
 }

@@ -1,50 +1,44 @@
 <?php
+require_once(get_theme_root() . '/assets/global-functions.php');
 // enables wigitized sidebars
-if (function_exists('register_sidebar'))
-
-
-    // post thumbnail support
-    add_theme_support('post-thumbnails');
-// adds the post thumbnail to the RSS feed
-function cwc_rss_post_thumbnail($content)
+if (function_exists('register_sidebar')) // post thumbnail support
 {
+    add_theme_support('post-thumbnails');
+}
+// adds the post thumbnail to the RSS feed
+function cwc_rss_post_thumbnail($content) {
     global $post;
-    if (has_post_thumbnail($post->ID))
-    {
+    if (has_post_thumbnail($post->ID)) {
         $content = '<p>' . get_the_post_thumbnail($post->ID) .
-            '</p>' . get_the_content();
+                   '</p>' . get_the_content();
     }
+
     return $content;
 }
 
 add_filter('the_excerpt_rss', 'cwc_rss_post_thumbnail');
 add_filter('the_content_feed', 'cwc_rss_post_thumbnail');
-
 // custom menu support
 add_theme_support('menus');
-if (function_exists('register_nav_menus'))
-{
+if (function_exists('register_nav_menus')) {
     register_nav_menus(
-        array(
+        [
             'header-menu'    => 'Header Menu',
             'sidebar-menu'   => 'Sidebar Menu',
             'footer-menu'    => 'Footer Menu',
             'logged-in-menu' => 'Logged In Menu'
-        )
+        ]
     );
 }
-
 // custom background support
 add_custom_background();
-
 // custom header image support
 define('NO_HEADER_TEXT', TRUE);
 define('HEADER_IMAGE', '%s/images/default-header.png'); // %s is the template dir uri
 define('HEADER_IMAGE_WIDTH', 1068); // use width and height appropriate for your theme
 define('HEADER_IMAGE_HEIGHT', 300);
 // gets included in the admin header
-function admin_header_style()
-{
+function admin_header_style() {
     ?>
     <style type="text/css">
     #headimg {
@@ -55,118 +49,96 @@ function admin_header_style()
 }
 
 add_custom_image_header('', 'admin_header_style');
-
 // adds Post Format support
 // learn more: http://codex.wordpress.org/Post_Formats
 // add_theme_support( 'post-formats', array( 'aside', 'gallery','link','image','quote','status','video','audio','chat' ) );
-
 // removes detailed login error information for security
 add_filter('login_errors', create_function('$a', "return null;"));
-
 // removes the WordPress version from your header for security
-function wb_remove_version()
-{
+function wb_remove_version() {
     return '<!--built on the Whiteboard Framework-->';
 }
 
 add_filter('the_generator', 'wb_remove_version');
-
-
 // Removes Trackbacks from the comment cout
 add_filter('get_comments_number', 'comment_count', 0);
-function comment_count($count)
-{
-    if (! is_admin())
-    {
+function comment_count($count) {
+    if (!is_admin()) {
         global $id;
         $comments_by_type = &separate_comments(get_comments('status=approve&post_id=' . $id));
+
         return count($comments_by_type['comment']);
-    }
-    else
-    {
+    } else {
         return $count;
     }
 }
 
 // invite rss subscribers to comment
-function rss_comment_footer($content)
-{
-    if (is_feed())
-    {
-        if (comments_open())
-        {
+function rss_comment_footer($content) {
+    if (is_feed()) {
+        if (comments_open()) {
             $content .= 'Comments are open! <a href="' . get_permalink() . '">Add yours!</a>';
         }
     }
+
     return $content;
 }
 
 // custom excerpt ellipses for 2.9+
-function custom_excerpt_more($more)
-{
+function custom_excerpt_more($more) {
     return 'Read More &raquo;';
 }
 
 add_filter('excerpt_more', 'custom_excerpt_more');
 // no more jumping for read more link
-function no_more_jumping($post)
-{
+function no_more_jumping($post) {
     return '<a href="' . get_permalink($post->ID) . '" class="read-more">' . '&nbsp; Continue Reading &raquo;' . '</a>';
 }
 
 add_filter('excerpt_more', 'no_more_jumping');
-
 // category id in body and post class
-function category_id_class($classes)
-{
+function category_id_class($classes) {
     global $post;
-    foreach ((get_the_category($post->ID)) as $category)
-    {
+    foreach ((get_the_category($post->ID)) as $category) {
         $classes [] = 'cat-' . $category->cat_ID . '-id';
     }
+
     return $classes;
 }
 
 add_filter('post_class', 'category_id_class');
 add_filter('body_class', 'category_id_class');
-
 // adds a class to the post if there is a thumbnail
-function has_thumb_class($classes)
-{
+function has_thumb_class($classes) {
     global $post;
-    if (has_post_thumbnail($post->ID))
-    {
+    if (has_post_thumbnail($post->ID)) {
         $classes[] = 'has_thumb';
     }
+
     return $classes;
 }
 
 add_filter('post_class', 'has_thumb_class');
-
 // add_action( 'admin_init', 'theme_options_init' );
 // add_action( 'admin_menu', 'theme_options_add_page' );
-
 // Init plugin options to white list our options
 // function theme_options_init(){
 // 	register_setting( 'tat_options', 'tat_theme_options', 'theme_options_validate' );
 // }
-
 // Load up the menu page
 // function theme_options_add_page() {
 // 	add_theme_page( __( 'Theme Options', 'tat_theme' ), __( 'Theme Options', 'tat_theme' ), 'edit_theme_options', 'theme_options', 'theme_options_do_page' );
 // }
-
 // begin LifeGuard Assistant
 // learn more about the LifeGuard Assistant: http://wplifeguard.com/lifeguard-plugin/
 // learn more about the affiliate program: http://wplifeguard.com/affiliates/
 add_action('admin_menu', 'lgap_add_pages');
-function lgap_add_pages()
-{
-    add_menu_page(__('Help', 'menu-test'), __('Help', 'menu-test'), 'read', 'lifeguard-assistant-plugin', 'lgap_main_page');
+function lgap_add_pages() {
+    add_menu_page(__('Help', 'menu-test'), __('Help', 'menu-test'), 'read', 'lifeguard-assistant-plugin',
+                  'lgap_main_page');
 }
 
-function lgap_main_page()
-{
+function lgap_main_page() {
     echo "<h2>" . __('Help', 'menu-test') . "</h2>";
     // place your affiliate ID between the " on the following line
     $lgap_aff = "";
@@ -203,46 +175,43 @@ function lgap_main_page()
 }
 
 // end LifeGuard Assistant
-
 /*
  *
  * Custom add ons
  *
  */
-
-
 //
 // NEWS & PR RECENT POSTS
 //
-function about_us_news_pr()
-{
+function about_us_news_pr() {
 // the query
-    $the_query = new WP_Query(array('category_name' => 'pr', 'posts_per_page' => 3));
-
+    $the_query = new WP_Query(['category_name' => 'pr', 'posts_per_page' => 3]);
 // The Loop
     $string = "";
-    if ($the_query->have_posts())
-    {
-        while ($the_query->have_posts())
-        {
+    if ($the_query->have_posts()) {
+        while ($the_query->have_posts()) {
             $the_query->the_post();
             $string .= '<a href="' . get_the_permalink() . '" rel="bookmark"><div class="item"><div class="date">' . get_the_time('m/d/y') . '</div><div class="news">' . get_the_title() . '</div></div></a>';
         }
-    }
-    else
-    {
+    } else {
         // no posts found
     }
 
     return $string;
-
     /* Restore original Post Data */
     wp_reset_postdata();
 }
 
 // Add a shortcode
 add_shortcode('about_us_news_pr', 'about_us_news_pr');
-
 // Enable shortcodes in text widgets
 add_filter('widget_text', 'do_shortcode');
-?>
+
+
+add_action('after_setup_theme', 'remove_admin_bar');
+function remove_admin_bar()
+{
+    if (!current_user_can('administrator') && !is_admin()) {
+        show_admin_bar(false);
+    }
+}

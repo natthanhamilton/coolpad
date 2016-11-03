@@ -3,13 +3,9 @@
 <?php
 // Get position and location of sidebar
 $st_kb_sidebar_location = of_get_option('st_kb_sidebar_location');
-
-if (($st_kb_sidebar_location['single'] == '1') && (is_active_sidebar('st_sidebar_kb')))
-{
+if (($st_kb_sidebar_location['single'] == '1') && (is_active_sidebar('st_sidebar_kb'))) {
     $st_kb_sidebar_position = of_get_option('st_kb_sidebar');
-}
-else
-{
+} else {
     $st_kb_sidebar_position = 'off';
 }
 ?>
@@ -40,12 +36,12 @@ else
                         <!-- .entry-content -->
                         <div class="entry-content clearfix">
                             <?php the_content(); ?>
-                            <?php wp_link_pages(array('before' => '<div class="page-links">' . __('Pages:', 'framework'), 'after' => '</div>')); ?>
+                            <?php wp_link_pages(['before' => '<div class="page-links">' . __('Pages:',
+                                                                                             'framework'), 'after' => '</div>']); ?>
                         </div>
                         <!-- ./entry-content -->
 
-                        <?php if (is_single() && has_term('', 'st_kb_tag'))
-                        { ?>
+                        <?php if (is_single() && has_term('', 'st_kb_tag')) { ?>
                             <div class="tags">
                                 <?php the_terms(get_the_ID(), 'st_kb_tag', _e('Tagged:', 'framework'), ''); ?>
                             </div>
@@ -55,8 +51,9 @@ else
 
                     <?php
 // If comments are open or we have at least one comment, load up the comment template
-                    if (comments_open() || '0' != get_comments_number())
+                    if (comments_open() || '0' != get_comments_number()) {
                         comments_template('', TRUE);
+                    }
                     ?>
 
                 <?php endwhile; // end of the loop. ?>
@@ -64,8 +61,7 @@ else
             </section>
             <!-- #content -->
 
-            <?php if ($st_kb_sidebar_position != 'off')
-            {
+            <?php if ($st_kb_sidebar_position != 'off') {
                 get_sidebar('kb');
             } ?>
 

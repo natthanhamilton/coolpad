@@ -175,64 +175,6 @@ class WP_Links_List_Table extends WP_List_Table {
 	}
 
 	/**
-	 * Handles the default column output.
-	 *
-	 * @since 4.3.0
-	 * @access public
-	 *
-	 * @param object $link        Link object.
-	 * @param string $column_name Current column name.
-	 */
-	public function column_default( $link, $column_name ) {
-		/**
-		 * Fires for each registered custom link column.
-		 *
-		 * @since 2.1.0
-		 *
-		 * @param string $column_name Name of the custom column.
-		 * @param int    $link_id     Link ID.
-		 */
-		do_action( 'manage_link_custom_column', $column_name, $link->link_id );
-	}
-
-	public function display_rows() {
-		foreach ( $this->items as $link ) {
-			$link = sanitize_bookmark( $link );
-			$link->link_name = esc_attr( $link->link_name );
-			$link->link_category = wp_get_link_cats( $link->link_id );
-?>
-		<tr id="link-<?php echo $link->link_id; ?>">
-			<?php $this->single_row_columns( $link ) ?>
-		</tr>
-<?php
-		}
-	}
-
-	/**
-	 * Generates and displays row action links.
-	 *
-	 * @since 4.3.0
-	 * @access protected
-	 *
-	 * @param object $link        Link being acted upon.
-	 * @param string $column_name Current column name.
-	 * @param string $primary     Primary column name.
-	 * @return string Row action output for links.
-	 */
-	protected function handle_row_actions( $link, $column_name, $primary ) {
-		if ( $primary !== $column_name ) {
-			return '';
-		}
-
-		$edit_link = get_edit_bookmark_link( $link );
-
-		$actions = array();
-		$actions['edit'] = '<a href="' . $edit_link . '">' . __('Edit') . '</a>';
-		$actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url("link.php?action=delete&amp;link_id=$link->link_id", 'delete-bookmark_' . $link->link_id) . "' onclick=\"if ( confirm( '" . esc_js(sprintf(__("You are about to delete this link '%s'\n  'Cancel' to stop, 'OK' to delete."), $link->link_name)) . "' ) ) { return true;}return false;\">" . __('Delete') . "</a>";
-		return $this->row_actions( $actions );
-	}
-
-	/**
 	 * Handles the link name column output.
 	 *
 	 * @since 4.3.0
@@ -329,5 +271,63 @@ class WP_Links_List_Table extends WP_List_Table {
 	 */
 	public function column_rating( $link ) {
 		echo $link->link_rating;
+	}
+
+	/**
+	 * Handles the default column output.
+	 *
+	 * @since 4.3.0
+	 * @access public
+	 *
+	 * @param object $link        Link object.
+	 * @param string $column_name Current column name.
+	 */
+	public function column_default( $link, $column_name ) {
+		/**
+		 * Fires for each registered custom link column.
+		 *
+		 * @since 2.1.0
+		 *
+		 * @param string $column_name Name of the custom column.
+		 * @param int    $link_id     Link ID.
+		 */
+		do_action( 'manage_link_custom_column', $column_name, $link->link_id );
+	}
+
+	public function display_rows() {
+		foreach ( $this->items as $link ) {
+			$link = sanitize_bookmark( $link );
+			$link->link_name = esc_attr( $link->link_name );
+			$link->link_category = wp_get_link_cats( $link->link_id );
+?>
+		<tr id="link-<?php echo $link->link_id; ?>">
+			<?php $this->single_row_columns( $link ) ?>
+		</tr>
+<?php
+		}
+	}
+
+	/**
+	 * Generates and displays row action links.
+	 *
+	 * @since 4.3.0
+	 * @access protected
+	 *
+	 * @param object $link        Link being acted upon.
+	 * @param string $column_name Current column name.
+	 * @param string $primary     Primary column name.
+	 * @return string Row action output for links.
+	 */
+	protected function handle_row_actions( $link, $column_name, $primary ) {
+		if ( $primary !== $column_name ) {
+			return '';
+		}
+
+		$edit_link = get_edit_bookmark_link( $link );
+
+		$actions = array();
+		$actions['edit'] = '<a href="' . $edit_link . '">' . __('Edit') . '</a>';
+		$actions['delete'] = "<a class='submitdelete' href='" . wp_nonce_url("link.php?action=delete&amp;link_id=$link->link_id", 'delete-bookmark_' . $link->link_id) . "' onclick=\"if ( confirm( '" . esc_js(sprintf(__("You are about to delete this link '%s'\n  'Cancel' to stop, 'OK' to delete."), $link->link_name)) . "' ) ) { return true;}return false;\">" . __('Delete') . "</a>";
+		return $this->row_actions( $actions );
 	}
 }

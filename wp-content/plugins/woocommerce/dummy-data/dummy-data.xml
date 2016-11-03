@@ -19,7 +19,6 @@
 <!-- generator="WordPress/3.5.1" created="2013-06-14 12:35" -->
 <rss xmlns:excerpt="https://wordpress.org/export/1.2/excerpt/"
      xmlns:content="http://purl.org/rss/1.0/modules/content/"
-     xmlns:wfw="http://wellformedweb.org/CommentAPI/"
      xmlns:dc="http://purl.org/dc/elements/1.1/"
      xmlns:wp="https://wordpress.org/export/1.2/"
      version="2.0"

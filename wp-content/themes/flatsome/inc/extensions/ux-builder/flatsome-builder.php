@@ -1,8 +1,6 @@
 <?php
-
 // Add editor button top top of page
-function flatsome_builder_top()
-{
+function flatsome_builder_top() {
     ?>
     <h2 id="uxbuilder-enable-disable" class="nav-tab-wrapper woo-nav-tab-wrapper">
         <a id="enable-uxbuilder" href="#" class="nav-tab"><strong
@@ -13,22 +11,15 @@ function flatsome_builder_top()
     <?php
 }
 
-
 // Flatsome Builder Metaboxes
-function ux_drag_drop_box()
-{
-
+function ux_drag_drop_box() {
     $current_screen = get_current_screen()->id;
-    $screens = array('page', 'blocks', 'product', 'featured_item', 'post');
-
-    foreach ($screens as $screen)
-    {
+    $screens        = ['page', 'blocks', 'product', 'featured_item', 'post'];
+    foreach ($screens as $screen) {
         // add content to top
-        if ($current_screen == $screen)
-        {
+        if ($current_screen == $screen) {
             add_action('edit_form_top', 'flatsome_builder_top');
         }
-
         add_meta_box(
             'ux_drag_and_drop',
             __('Page Builder', 'flatsome'),
@@ -39,18 +30,16 @@ function ux_drag_drop_box()
 }
 
 add_action('add_meta_boxes', 'ux_drag_drop_box');
-
-
 // Build layout
-function ux_drag_and_drop_box($post)
-{
+function ux_drag_and_drop_box($post) {
     // load scripts
-    wp_enqueue_script('ux_builder_app', get_template_directory_uri() . '/inc/extensions/ux-builder/app.js?v=2.2', array('wp-color-picker'), FALSE, TRUE);
-    wp_enqueue_script('ux_builder_editable', get_template_directory_uri() . '/inc/extensions/ux-builder/editable.js?v=2.2');
-
-    wp_enqueue_style('ux_builder_style', get_template_directory_uri() . '/inc/extensions/ux-builder/builder_style.css?v=2.2');
+    wp_enqueue_script('ux_builder_app', get_template_directory_uri() . '/inc/extensions/ux-builder/app.js?v=2.2',
+                      ['wp-color-picker'], FALSE, TRUE);
+    wp_enqueue_script('ux_builder_editable',
+                      get_template_directory_uri() . '/inc/extensions/ux-builder/editable.js?v=2.2');
+    wp_enqueue_style('ux_builder_style',
+                     get_template_directory_uri() . '/inc/extensions/ux-builder/builder_style.css?v=2.2');
     wp_enqueue_style('wp-color-picker');
-
     ?>
     <style>#ux_drag_and_drop, #postdivrich {
             display: none !important;
@@ -101,7 +90,7 @@ function ux_drag_and_drop_box($post)
             <?php
             $content = '';
             $editor_id = 'ux_edit_content';
-            $settings = array('wpautop' => 'false');
+            $settings = ['wpautop' => 'false'];
             wp_editor($content, $editor_id, $settings);
             ?>
 
@@ -124,17 +113,13 @@ function ux_drag_and_drop_box($post)
 }
 
 // tempoary text shortcode
-function add_ux_text_shortcode()
-{
+function add_ux_text_shortcode() {
 }
 
 add_shortcode('text', 'add_ux_text_shortcode');
-
 // Get shortcode editor ajax
 add_action('wp_ajax_get_shortcode_editor', 'get_shortcode_editor');
-
-function get_shortcode_editor()
-{
+function get_shortcode_editor() {
     $shortcode_id = $_POST["shortcode"];
     include_once('shortcodes_editor.php');
     die;
@@ -142,15 +127,10 @@ function get_shortcode_editor()
 
 // get content ajax
 add_action('wp_ajax_ux_get_content_shortcodes', 'ux_get_content_shortcodes');
-
 /** Get Shortcodes **/
-function ux_get_content_shortcodes()
-{
-
-    if (! isset($_POST["content"])) die;
-
+function ux_get_content_shortcodes() {
+    if (!isset($_POST["content"])) die;
     $new_content = stripslashes($_POST["content"]);
-
     // wrap [text] around texts
     $new_content = preg_replace('/(\[text\])/', "", $new_content);
     $new_content = preg_replace('/(\[\/text\])/', "", $new_content);
@@ -158,48 +138,50 @@ function ux_get_content_shortcodes()
     $new_content = '[text]' . $new_content . '[/text]';
     $new_content = preg_replace('/(\[text\])(^\s+|\s+)(\[\/text\])/', "", $new_content);
     $new_content = preg_replace('/(\[text\])(\[\/text\])/', "", $new_content);
-
     $new_content = preg_replace('/\[background/', "[section", $new_content);
     $new_content = preg_replace('/\[\/background\]/', "[/section]", $new_content);
-
     // remove spaces inside shortcodes
     $new_content = preg_replace('/\s+(?=[^[\]]*\])/', " ", $new_content);
-
-
     // shortcode tools
-    $tools = '<div class="ux-g-tools"><a data-action="edit" href="#" title="Edit">Edit</a><a data-action="duplicate" href="#" title="Duplicate">Duplicate</a><a data-action="delete" href="#" title="Delete">Delete</a></div>';
-
+    $tools
+        = '<div class="ux-g-tools"><a data-action="edit" href="#" title="Edit">Edit</a><a data-action="duplicate" href="#" title="Duplicate">Duplicate</a><a data-action="delete" href="#" title="Delete">Delete</a></div>';
     // build content
     global $shortcode_tags;
     $tagnames = array_keys($shortcode_tags);
-
     // create elements
-    foreach ($tagnames as $name)
-    {
-        preg_match('/\[(\[?)(' . $name . ')(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*(?:\[(?!\/\2\])[^\[]*)*)(\[\/\2\]))?)(\]?)/', $new_content, $matches);
-        if (isset($matches[6]) && $matches[6] && $matches[6] != '[/text]')
-        {
+    foreach ($tagnames as $name) {
+        preg_match('/\[(\[?)(' . $name . ')(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*(?:\[(?!\/\2\])[^\[]*)*)(\[\/\2\]))?)(\]?)/',
+                   $new_content, $matches);
+        if (isset($matches[6]) && $matches[6] && $matches[6] != '[/text]') {
             // shortcodes with ending
-            $new_content = preg_replace('/\[(\[?)(' . $name . ')(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*(?:\[(?!\/\2\])[^\[]*)*)(\[\/\2\]))?)(\]?)/', '<div class="ux-g  ux-g-' . $name . '" data-id="' . $name . '"><s>[${2} <em class="ux-edit">${3}</em>]</s><div class="ux-g-group" data-group="' . $name . '"><div class="drop-zone ux-g">Drop Zone</div>${5}</div> ' . $tools . '<div class="ux-g-add"></div><s>${6}</s></div>', $new_content);
-        }
-        else if ($name == 'embed' || $name == 'wp_caption' || $name == 'caption' || $name == 'gallery' || $name == 'playlist' || $name == 'audio' || $name == 'video')
-        {
-            // shortcodes as text
-            $new_content = preg_replace('/\[(\[?)(' . $name . ')(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*(?:\[(?!\/\2\])[^\[]*)*)(\[\/\2\]))?)(\]?)/', '<div class="ux-g ux-g-text" data-id="text"><div class="ux-g-text-inner">${0}</div>' . $tools . '</div>', $new_content);
-        }
-        else if (isset($matches[6]) && $matches[6] == '[/text]')
-        {
-            // text shortcodes
-            $new_content = preg_replace('/\[(\[?)(' . $name . ')(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*(?:\[(?!\/\2\])[^\[]*)*)(\[\/\2\]))?)(\]?)/', '<div class="ux-g ux-g-text" data-id="text"><div class="ux-g-text-inner">${5}</div>' . $tools . '</div>', $new_content);
-        }
-        else
-        {
-            // shortcodes with no ending
-            $new_content = preg_replace('/\[(\[?)(' . $name . ')(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*(?:\[(?!\/\2\])[^\[]*)*)(\[\/\2\]))?)(\]?)/', '<div class="ux-g ux-g-small ux-g-' . $name . '" data-id="' . $name . '"><s>[${2} <em class="ux-edit">${3}</em>]</s>' . $tools . '</div>', $new_content);
+            $new_content
+                = preg_replace('/\[(\[?)(' . $name . ')(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*(?:\[(?!\/\2\])[^\[]*)*)(\[\/\2\]))?)(\]?)/',
+                               '<div class="ux-g  ux-g-' . $name . '" data-id="' . $name . '"><s>[${2} <em class="ux-edit">${3}</em>]</s><div class="ux-g-group" data-group="' . $name . '"><div class="drop-zone ux-g">Drop Zone</div>${5}</div> ' . $tools . '<div class="ux-g-add"></div><s>${6}</s></div>',
+                               $new_content);
+        } else {
+            if ($name == 'embed' || $name == 'wp_caption' || $name == 'caption' || $name == 'gallery' || $name == 'playlist' || $name == 'audio' || $name == 'video') {
+                // shortcodes as text
+                $new_content
+                    = preg_replace('/\[(\[?)(' . $name . ')(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*(?:\[(?!\/\2\])[^\[]*)*)(\[\/\2\]))?)(\]?)/',
+                                   '<div class="ux-g ux-g-text" data-id="text"><div class="ux-g-text-inner">${0}</div>' . $tools . '</div>',
+                                   $new_content);
+            } else {
+                if (isset($matches[6]) && $matches[6] == '[/text]') {
+                    // text shortcodes
+                    $new_content
+                        = preg_replace('/\[(\[?)(' . $name . ')(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*(?:\[(?!\/\2\])[^\[]*)*)(\[\/\2\]))?)(\]?)/',
+                                       '<div class="ux-g ux-g-text" data-id="text"><div class="ux-g-text-inner">${5}</div>' . $tools . '</div>',
+                                       $new_content);
+                } else {
+                    // shortcodes with no ending
+                    $new_content
+                        = preg_replace('/\[(\[?)(' . $name . ')(?![\w-])([^\]\/]*(?:\/(?!\])[^\]\/]*)*?)(?:(\/)\]|\](?:([^\[]*(?:\[(?!\/\2\])[^\[]*)*)(\[\/\2\]))?)(\]?)/',
+                                       '<div class="ux-g ux-g-small ux-g-' . $name . '" data-id="' . $name . '"><s>[${2} <em class="ux-edit">${3}</em>]</s>' . $tools . '</div>',
+                                       $new_content);
+                }
+            }
         }
     }
-
-
     echo $new_content;
     die;
 } // End ajax content

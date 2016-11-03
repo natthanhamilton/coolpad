@@ -32,17 +32,17 @@ if (!class_exists('WC_Email_Customer_Invoice')) :
 		 * Constructor.
 		 */
 		public function __construct() {
-			$this->id    = 'customer_invoice';
-			$this->title = __('Customer invoice', 'woocommerce');
+			$this->id             = 'customer_invoice';
+			$this->title          = __('Customer invoice', 'woocommerce');
 			$this->description
-			             = __('Customer invoice emails can be sent to customers containing their order information and payment links.',
-			                  'woocommerce');
+			                      = __('Customer invoice emails can be sent to customers containing their order information and payment links.',
+			                           'woocommerce');
 			$this->template_html  = 'emails/customer-invoice.php';
 			$this->template_plain = 'emails/plain/customer-invoice.php';
-			$this->subject = __('Invoice for order {order_number} from {order_date}', 'woocommerce');
-			$this->heading = __('Invoice for order {order_number}', 'woocommerce');
-			$this->subject_paid = __('Your {site_title} order from {order_date}', 'woocommerce');
-			$this->heading_paid = __('Order {order_number} details', 'woocommerce');
+			$this->subject        = __('Invoice for order {order_number} from {order_date}', 'woocommerce');
+			$this->heading        = __('Invoice for order {order_number}', 'woocommerce');
+			$this->subject_paid   = __('Your {site_title} order from {order_date}', 'woocommerce');
+			$this->heading_paid   = __('Order {order_number} details', 'woocommerce');
 			// Call parent constructor
 			parent::__construct();
 			$this->customer_email = TRUE;
@@ -61,10 +61,10 @@ if (!class_exists('WC_Email_Customer_Invoice')) :
 				$order = wc_get_order(absint($order));
 			}
 			if ($order) {
-				$this->object    = $order;
-				$this->recipient = $this->object->billing_email;
-				$this->find['order-date']   = '{order_date}';
-				$this->find['order-number'] = '{order_number}';
+				$this->object                  = $order;
+				$this->recipient               = $this->object->billing_email;
+				$this->find['order-date']      = '{order_date}';
+				$this->find['order-number']    = '{order_number}';
 				$this->replace['order-date']   = date_i18n(wc_date_format(), strtotime($this->object->order_date));
 				$this->replace['order-number'] = $this->object->get_order_number();
 			}

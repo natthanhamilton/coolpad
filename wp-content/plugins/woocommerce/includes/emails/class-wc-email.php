@@ -1,10 +1,8 @@
 <?php
-
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit;
 }
-
-if ( class_exists( 'WC_Email' ) ) {
+if (class_exists('WC_Email')) {
 	return;
 }
 
@@ -20,99 +18,99 @@ if ( class_exists( 'WC_Email' ) ) {
  * @extends     WC_Settings_API
  */
 class WC_Email extends WC_Settings_API {
-
 	/**
 	 * Email method ID.
+	 *
 	 * @var String
 	 */
 	public $id;
-
 	/**
 	 * Email method title.
+	 *
 	 * @var string
 	 */
 	public $title;
-
 	/**
 	 * 'yes' if the method is enabled.
+	 *
 	 * @var string yes, no
 	 */
 	public $enabled;
-
 	/**
 	 * Description for the email.
+	 *
 	 * @var string
 	 */
 	public $description;
-
 	/**
 	 * Plain text template path.
+	 *
 	 * @var string
 	 */
 	public $template_plain;
-
 	/**
 	 * HTML template path.
+	 *
 	 * @var string
 	 */
 	public $template_html;
-
 	/**
 	 * Template path.
+	 *
 	 * @var string
 	 */
 	public $template_base;
-
 	/**
 	 * Recipients for the email.
+	 *
 	 * @var string
 	 */
 	public $recipient;
-
 	/**
 	 * Heading for the email content.
+	 *
 	 * @var string
 	 */
 	public $heading;
-
 	/**
 	 * Subject for the email.
+	 *
 	 * @var string
 	 */
 	public $subject;
-
 	/**
 	 * Object this email is for, for example a customer, product, or email.
+	 *
 	 * @var object|bool
 	 */
 	public $object;
-
 	/**
 	 * Strings to find in subjects/headings.
+	 *
 	 * @var array
 	 */
-	public $find = array();
-
+	public $find = [];
 	/**
 	 * Strings to replace in subjects/headings.
+	 *
 	 * @var array
 	 */
-	public $replace = array();
-
+	public $replace = [];
 	/**
 	 * Mime boundary (for multipart emails).
+	 *
 	 * @var string
 	 */
 	public $mime_boundary;
-
 	/**
 	 * Mime boundary header (for multipart emails).
+	 *
 	 * @var string
 	 */
 	public $mime_boundary_header;
-
 	/**
 	 * True when email is being sent.
+	 *
 	 * @var bool
 	 */
 	public $sending;
@@ -120,68 +118,74 @@ class WC_Email extends WC_Settings_API {
 	 *  List of preg* regular expression patterns to search for,
 	 *  used in conjunction with $plain_replace.
 	 *  https://raw.github.com/ushahidi/wp-silcc/master/class.html2text.inc
-	 *  @var array $plain_search
-	 *  @see $plain_replace
+	 *
+	 * @var array $plain_search
+	 * @see $plain_replace
 	 */
-	public $plain_search = array(
-		"/\r/",                                          // Non-legal carriage return
-		'/&(nbsp|#160);/i',                              // Non-breaking space
-		'/&(quot|rdquo|ldquo|#8220|#8221|#147|#148);/i', // Double quotes
-		'/&(apos|rsquo|lsquo|#8216|#8217);/i',           // Single quotes
-		'/&gt;/i',                                       // Greater-than
-		'/&lt;/i',                                       // Less-than
-		'/&#38;/i',                                      // Ampersand
-		'/&#038;/i',                                     // Ampersand
-		'/&amp;/i',                                      // Ampersand
-		'/&(copy|#169);/i',                              // Copyright
-		'/&(trade|#8482|#153);/i',                       // Trademark
-		'/&(reg|#174);/i',                               // Registered
-		'/&(mdash|#151|#8212);/i',                       // mdash
-		'/&(ndash|minus|#8211|#8722);/i',                // ndash
-		'/&(bull|#149|#8226);/i',                        // Bullet
-		'/&(pound|#163);/i',                             // Pound sign
-		'/&(euro|#8364);/i',                             // Euro sign
-		'/&#36;/',                                       // Dollar sign
-		'/&[^&\s;]+;/i',                                 // Unknown/unhandled entities
-		'/[ ]{2,}/'                                      // Runs of spaces, post-handling
-	);
+	public $plain_search
+		= [
+			"/\r/",                                          // Non-legal carriage return
+			'/&(nbsp|#160);/i',                              // Non-breaking space
+			'/&(quot|rdquo|ldquo|#8220|#8221|#147|#148);/i', // Double quotes
+			'/&(apos|rsquo|lsquo|#8216|#8217);/i',           // Single quotes
+			'/&gt;/i',                                       // Greater-than
+			'/&lt;/i',                                       // Less-than
+			'/&#38;/i',                                      // Ampersand
+			'/&#038;/i',                                     // Ampersand
+			'/&amp;/i',                                      // Ampersand
+			'/&(copy|#169);/i',                              // Copyright
+			'/&(trade|#8482|#153);/i',                       // Trademark
+			'/&(reg|#174);/i',                               // Registered
+			'/&(mdash|#151|#8212);/i',                       // mdash
+			'/&(ndash|minus|#8211|#8722);/i',                // ndash
+			'/&(bull|#149|#8226);/i',                        // Bullet
+			'/&(pound|#163);/i',                             // Pound sign
+			'/&(euro|#8364);/i',                             // Euro sign
+			'/&#36;/',                                       // Dollar sign
+			'/&[^&\s;]+;/i',                                 // Unknown/unhandled entities
+			'/[ ]{2,}/'                                      // Runs of spaces, post-handling
+		];
 	/**
 	 *  List of pattern replacements corresponding to patterns searched.
-	 *  @var array $plain_replace
-	 *  @see $plain_search
+	 *
+	 * @var array $plain_replace
+	 * @see $plain_search
 	 */
-	public $plain_replace = array(
-		'',                                             // Non-legal carriage return
-		' ',                                            // Non-breaking space
-		'"',                                            // Double quotes
-		"'",                                            // Single quotes
-		'>',                                            // Greater-than
-		'<',                                            // Less-than
-		'&',                                            // Ampersand
-		'&',                                            // Ampersand
-		'&',                                            // Ampersand
-		'(c)',                                          // Copyright
-		'(tm)',                                         // Trademark
-		'(R)',                                          // Registered
-		'--',                                           // mdash
-		'-',                                            // ndash
-		'*',                                            // Bullet
-		'£',                                            // Pound sign
-		'EUR',                                          // Euro sign. € ?
-		'$',                                            // Dollar sign
-		'',                                             // Unknown/unhandled entities
-		' '                                             // Runs of spaces, post-handling
-	);
+	public $plain_replace
+		= [
+			'',                                             // Non-legal carriage return
+			' ',                                            // Non-breaking space
+			'"',                                            // Double quotes
+			"'",                                            // Single quotes
+			'>',                                            // Greater-than
+			'<',                                            // Less-than
+			'&',                                            // Ampersand
+			'&',                                            // Ampersand
+			'&',                                            // Ampersand
+			'(c)',                                          // Copyright
+			'(tm)',                                         // Trademark
+			'(R)',                                          // Registered
+			'--',                                           // mdash
+			'-',                                            // ndash
+			'*',                                            // Bullet
+			'£',                                            // Pound sign
+			'EUR',                                          // Euro sign. € ?
+			'$',                                            // Dollar sign
+			'',                                             // Unknown/unhandled entities
+			' '                                             // Runs of spaces, post-handling
+		];
 	/**
 	 * True when the email notification is sent manually only.
+	 *
 	 * @var bool
 	 */
-	protected $manual = false;
+	protected $manual = FALSE;
 	/**
 	 * True when the email notification is sent to customers.
+	 *
 	 * @var bool
 	 */
-	protected $customer_email = false;
+	protected $customer_email = FALSE;
 
 	/**
 	 * Constructor.
@@ -190,80 +194,75 @@ class WC_Email extends WC_Settings_API {
 		// Init settings
 		$this->init_form_fields();
 		$this->init_settings();
-
 		// Save settings hook
-		add_action( 'woocommerce_update_options_email_' . $this->id, array( $this, 'process_admin_options' ) );
-
+		add_action('woocommerce_update_options_email_' . $this->id, [$this, 'process_admin_options']);
 		// Default template base if not declared in child constructor
-		if ( is_null( $this->template_base ) ) {
+		if (is_null($this->template_base)) {
 			$this->template_base = WC()->plugin_path() . '/templates/';
 		}
-
 		// Settings
-		$this->heading     = $this->get_option( 'heading', $this->heading );
-		$this->subject     = $this->get_option( 'subject', $this->subject );
-		$this->email_type  = $this->get_option( 'email_type' );
-		$this->enabled     = $this->get_option( 'enabled' );
-
+		$this->heading    = $this->get_option('heading', $this->heading);
+		$this->subject    = $this->get_option('subject', $this->subject);
+		$this->email_type = $this->get_option('email_type');
+		$this->enabled    = $this->get_option('enabled');
 		// Find/replace
 		$this->find['blogname']      = '{blogname}';
 		$this->find['site-title']    = '{site_title}';
 		$this->replace['blogname']   = $this->get_blogname();
 		$this->replace['site-title'] = $this->get_blogname();
-
 		// For multipart messages
-		add_action( 'phpmailer_init', array( $this, 'handle_multipart' ) );
+		add_action('phpmailer_init', [$this, 'handle_multipart']);
 	}
 
 	/**
 	 * Initialise Settings Form Fields - these are generic email options most will use.
 	 */
 	public function init_form_fields() {
-		$this->form_fields    = array(
-			'enabled'         => array(
-				'title'       => __( 'Enable/Disable', 'woocommerce' ),
-				'type'        => 'checkbox',
-				'label'       => __( 'Enable this email notification', 'woocommerce' ),
-				'default'     => 'yes'
-			),
-			'subject'         => array(
-				'title'       => __( 'Email Subject', 'woocommerce' ),
+		$this->form_fields = [
+			'enabled'    => [
+				'title'   => __('Enable/Disable', 'woocommerce'),
+				'type'    => 'checkbox',
+				'label'   => __('Enable this email notification', 'woocommerce'),
+				'default' => 'yes'
+			],
+			'subject'    => [
+				'title'       => __('Email Subject', 'woocommerce'),
 				'type'        => 'text',
-				'description' => sprintf( __( 'Defaults to <code>%s</code>', 'woocommerce' ), $this->subject ),
+				'description' => sprintf(__('Defaults to <code>%s</code>', 'woocommerce'), $this->subject),
 				'placeholder' => '',
 				'default'     => '',
-				'desc_tip'    => true
-			),
-			'heading'         => array(
-				'title'       => __( 'Email Heading', 'woocommerce' ),
+				'desc_tip'    => TRUE
+			],
+			'heading'    => [
+				'title'       => __('Email Heading', 'woocommerce'),
 				'type'        => 'text',
-				'description' => sprintf( __( 'Defaults to <code>%s</code>', 'woocommerce' ), $this->heading ),
+				'description' => sprintf(__('Defaults to <code>%s</code>', 'woocommerce'), $this->heading),
 				'placeholder' => '',
 				'default'     => '',
-				'desc_tip'    => true
-			),
-			'email_type'      => array(
-				'title'       => __( 'Email type', 'woocommerce' ),
+				'desc_tip'    => TRUE
+			],
+			'email_type' => [
+				'title'       => __('Email type', 'woocommerce'),
 				'type'        => 'select',
-				'description' => __( 'Choose which format of email to send.', 'woocommerce' ),
+				'description' => __('Choose which format of email to send.', 'woocommerce'),
 				'default'     => 'html',
 				'class'       => 'email_type wc-enhanced-select',
 				'options'     => $this->get_email_type_options(),
-				'desc_tip'    => true
-			)
-		);
+				'desc_tip'    => TRUE
+			]
+		];
 	}
 
 	/**
 	 * Email type options.
+	 *
 	 * @return array
 	 */
 	public function get_email_type_options() {
-		$types = array( 'plain' => __( 'Plain text', 'woocommerce' ) );
-
-		if ( class_exists( 'DOMDocument' ) ) {
-			$types['html']      = __( 'HTML', 'woocommerce' );
-			$types['multipart'] = __( 'Multipart', 'woocommerce' );
+		$types = ['plain' => __('Plain text', 'woocommerce')];
+		if (class_exists('DOMDocument')) {
+			$types['html']      = __('HTML', 'woocommerce');
+			$types['multipart'] = __('Multipart', 'woocommerce');
 		}
 
 		return $types;
@@ -274,11 +273,13 @@ class WC_Email extends WC_Settings_API {
 	 *
 	 * @param string $key
 	 * @param mixed  $empty_value
+	 *
 	 * @return string
 	 */
-	public function get_option( $key, $empty_value = null ) {
-		$value = parent::get_option( $key, $empty_value );
-		return apply_filters( 'woocommerce_email_get_option', $value, $this, $value, $key, $empty_value );
+	public function get_option($key, $empty_value = NULL) {
+		$value = parent::get_option($key, $empty_value);
+
+		return apply_filters('woocommerce_email_get_option', $value, $this, $value, $key, $empty_value);
 	}
 
 	/**
@@ -287,7 +288,7 @@ class WC_Email extends WC_Settings_API {
 	 * @return string
 	 */
 	public function get_blogname() {
-		return wp_specialchars_decode( get_option( 'blogname' ), ENT_QUOTES );
+		return wp_specialchars_decode(get_option('blogname'), ENT_QUOTES);
 	}
 
 	/**
@@ -296,15 +297,13 @@ class WC_Email extends WC_Settings_API {
 	public function process_admin_options() {
 		// Save regular options
 		parent::process_admin_options();
-
 		$post_data = $this->get_post_data();
-
 		// Save templates
-		if ( isset( $post_data['template_html_code'] ) ) {
-			$this->save_template( $post_data['template_html_code'], $this->template_html );
+		if (isset($post_data['template_html_code'])) {
+			$this->save_template($post_data['template_html_code'], $this->template_html);
 		}
-		if ( isset( $post_data['template_plain_code'] ) ) {
-			$this->save_template( $post_data['template_plain_code'], $this->template_plain );
+		if (isset($post_data['template_plain_code'])) {
+			$this->save_template($post_data['template_plain_code'], $this->template_plain);
 		}
 	}
 
@@ -312,28 +311,27 @@ class WC_Email extends WC_Settings_API {
 	 * Save the email templates.
 	 *
 	 * @since 2.4.0
+	 *
 	 * @param string $template_code
 	 * @param string $template_path
 	 */
-	protected function save_template( $template_code, $template_path ) {
-		if ( current_user_can( 'edit_themes' ) && ! empty( $template_code ) && ! empty( $template_path ) ) {
-			$saved  = false;
-			$file   = get_stylesheet_directory() . '/woocommerce/' . $template_path;
-			$code   = stripslashes( $template_code );
-
-			if ( is_writeable( $file ) ) {
-				$f = fopen( $file, 'w+' );
-
-				if ( $f !== false ) {
-					fwrite( $f, $code );
-					fclose( $f );
-					$saved = true;
+	protected function save_template($template_code, $template_path) {
+		if (current_user_can('edit_themes') && !empty($template_code) && !empty($template_path)) {
+			$saved = FALSE;
+			$file  = get_stylesheet_directory() . '/woocommerce/' . $template_path;
+			$code  = stripslashes($template_code);
+			if (is_writeable($file)) {
+				$f = fopen($file, 'w+');
+				if ($f !== FALSE) {
+					fwrite($f, $code);
+					fclose($f);
+					$saved = TRUE;
 				}
 			}
-
-			if ( ! $saved ) {
-				$redirect = add_query_arg( 'wc_error', urlencode( __( 'Could not write to template file.', 'woocommerce' ) ) );
-				wp_safe_redirect( $redirect );
+			if (!$saved) {
+				$redirect = add_query_arg('wc_error',
+				                          urlencode(__('Could not write to template file.', 'woocommerce')));
+				wp_safe_redirect($redirect);
 				exit;
 			}
 		}
@@ -351,16 +349,18 @@ class WC_Email extends WC_Settings_API {
 		// Do admin actions.
 		$this->admin_actions();
 		?>
-		<h2><?php echo esc_html( $this->get_title() ); ?> <?php wc_back_link( __( 'Return to Emails', 'woocommerce' ), admin_url( 'admin.php?page=wc-settings&tab=email' ) ); ?></h2>
+		<h2><?php echo esc_html($this->get_title()); ?><?php wc_back_link(__('Return to Emails', 'woocommerce'),
+		                                                                  admin_url('admin.php?page=wc-settings&tab=email')); ?></h2>
 
-		<?php echo wpautop( wp_kses_post( $this->get_description() ) ); ?>
+		<?php echo wpautop(wp_kses_post($this->get_description())); ?>
 
 		<?php
-			/**
-			 * woocommerce_email_settings_before action hook.
-			 * @param string $email The email object
-			 */
-			do_action( 'woocommerce_email_settings_before', $this );
+		/**
+		 * woocommerce_email_settings_before action hook.
+		 *
+		 * @param string $email The email object
+		 */
+		do_action('woocommerce_email_settings_before', $this);
 		?>
 
 		<table class="form-table">
@@ -368,82 +368,100 @@ class WC_Email extends WC_Settings_API {
 		</table>
 
 		<?php
-			/**
-			 * woocommerce_email_settings_after action hook.
-			 * @param string $email The email object
-			 */
-			do_action( 'woocommerce_email_settings_after', $this );
+		/**
+		 * woocommerce_email_settings_after action hook.
+		 *
+		 * @param string $email The email object
+		 */
+		do_action('woocommerce_email_settings_after', $this);
 		?>
 
-		<?php if ( current_user_can( 'edit_themes' ) && ( ! empty( $this->template_html ) || ! empty( $this->template_plain ) ) ) { ?>
+		<?php if (current_user_can('edit_themes') && (!empty($this->template_html) || !empty($this->template_plain))) { ?>
 			<div id="template">
-			<?php
-				$templates = array(
-					'template_html'  => __( 'HTML template', 'woocommerce' ),
-					'template_plain' => __( 'Plain text template', 'woocommerce' )
-				);
-
-				foreach ( $templates as $template_type => $title ) :
-					$template = $this->get_template( $template_type );
-
-					if ( empty( $template ) ) {
+				<?php
+				$templates = [
+					'template_html'  => __('HTML template', 'woocommerce'),
+					'template_plain' => __('Plain text template', 'woocommerce')
+				];
+				foreach ($templates as $template_type => $title) :
+					$template      = $this->get_template($template_type);
+					if (empty($template)) {
 						continue;
 					}
-
-					$local_file    = $this->get_theme_template_file( $template );
+					$local_file    = $this->get_theme_template_file($template);
 					$core_file     = $this->template_base . $template;
-					$template_file = apply_filters( 'woocommerce_locate_core_template', $core_file, $template, $this->template_base );
-					$template_dir  = apply_filters( 'woocommerce_template_directory', 'woocommerce', $template );
+					$template_file = apply_filters('woocommerce_locate_core_template', $core_file, $template,
+					                               $this->template_base);
+					$template_dir  = apply_filters('woocommerce_template_directory', 'woocommerce', $template);
 					?>
 					<div class="template <?php echo $template_type; ?>">
 
-						<h4><?php echo wp_kses_post( $title ); ?></h4>
+						<h4><?php echo wp_kses_post($title); ?></h4>
 
-						<?php if ( file_exists( $local_file ) ) { ?>
+						<?php if (file_exists($local_file)) { ?>
 
 							<p>
 								<a href="#" class="button toggle_editor"></a>
 
-								<?php if ( is_writable( $local_file ) ) : ?>
-									<a href="<?php echo esc_url( wp_nonce_url( remove_query_arg( array( 'move_template', 'saved' ), add_query_arg( 'delete_template', $template_type ) ), 'woocommerce_email_template_nonce', '_wc_email_nonce' ) ); ?>" class="delete_template button"><?php _e( 'Delete template file', 'woocommerce' ); ?></a>
+								<?php if (is_writable($local_file)) : ?>
+									<a href="<?php echo esc_url(wp_nonce_url(remove_query_arg(['move_template', 'saved'],
+									                                                          add_query_arg('delete_template',
+									                                                                        $template_type)),
+									                                         'woocommerce_email_template_nonce',
+									                                         '_wc_email_nonce')); ?>"
+									   class="delete_template button"><?php _e('Delete template file',
+									                                           'woocommerce'); ?></a>
 								<?php endif; ?>
 
-								<?php printf( __( 'This template has been overridden by your theme and can be found in: <code>%s</code>.', 'woocommerce' ), trailingslashit( basename( get_stylesheet_directory() ) ) . $template_dir . '/' . $template ); ?>
+								<?php printf(__('This template has been overridden by your theme and can be found in: <code>%s</code>.',
+								                'woocommerce'),
+								             trailingslashit(basename(get_stylesheet_directory())) . $template_dir . '/' . $template); ?>
 							</p>
 
 							<div class="editor" style="display:none">
-								<textarea class="code" cols="25" rows="20" <?php if ( ! is_writable( $local_file ) ) : ?>readonly="readonly" disabled="disabled"<?php else : ?>data-name="<?php echo $template_type . '_code'; ?>"<?php endif; ?>><?php echo file_get_contents( $local_file ); ?></textarea>
+								<textarea class="code" cols="25" rows="20"
+								          <?php if (!is_writable($local_file)) : ?>readonly="readonly"
+								          disabled="disabled"
+								          <?php else : ?>data-name="<?php echo $template_type . '_code'; ?>"<?php endif; ?>><?php echo file_get_contents($local_file); ?></textarea>
 							</div>
 
-						<?php } elseif ( file_exists( $template_file ) ) { ?>
+						<?php } elseif (file_exists($template_file)) { ?>
 
 							<p>
 								<a href="#" class="button toggle_editor"></a>
 
-								<?php if ( ( is_dir( get_stylesheet_directory() . '/' . $template_dir . '/emails/' ) && is_writable( get_stylesheet_directory() . '/' . $template_dir . '/emails/' ) ) || is_writable( get_stylesheet_directory() ) ) { ?>
-									<a href="<?php echo esc_url( wp_nonce_url( remove_query_arg( array( 'delete_template', 'saved' ), add_query_arg( 'move_template', $template_type ) ), 'woocommerce_email_template_nonce', '_wc_email_nonce' ) ); ?>" class="button"><?php _e( 'Copy file to theme', 'woocommerce' ); ?></a>
+								<?php if ((is_dir(get_stylesheet_directory() . '/' . $template_dir . '/emails/') && is_writable(get_stylesheet_directory() . '/' . $template_dir . '/emails/')) || is_writable(get_stylesheet_directory())) { ?>
+									<a href="<?php echo esc_url(wp_nonce_url(remove_query_arg(['delete_template', 'saved'],
+									                                                          add_query_arg('move_template',
+									                                                                        $template_type)),
+									                                         'woocommerce_email_template_nonce',
+									                                         '_wc_email_nonce')); ?>"
+									   class="button"><?php _e('Copy file to theme', 'woocommerce'); ?></a>
 								<?php } ?>
 
-								<?php printf( __( 'To override and edit this email template copy <code>%s</code> to your theme folder: <code>%s</code>.', 'woocommerce' ), plugin_basename( $template_file ) , trailingslashit( basename( get_stylesheet_directory() ) ) . $template_dir . '/' . $template ); ?>
+								<?php printf(__('To override and edit this email template copy <code>%s</code> to your theme folder: <code>%s</code>.',
+								                'woocommerce'), plugin_basename($template_file),
+								             trailingslashit(basename(get_stylesheet_directory())) . $template_dir . '/' . $template); ?>
 							</p>
 
 							<div class="editor" style="display:none">
-								<textarea class="code" readonly="readonly" disabled="disabled" cols="25" rows="20"><?php echo file_get_contents( $template_file ); ?></textarea>
+								<textarea class="code" readonly="readonly" disabled="disabled" cols="25"
+								          rows="20"><?php echo file_get_contents($template_file); ?></textarea>
 							</div>
 
 						<?php } else { ?>
 
-							<p><?php _e( 'File was not found.', 'woocommerce' ); ?></p>
+							<p><?php _e('File was not found.', 'woocommerce'); ?></p>
 
 						<?php } ?>
 
 					</div>
 					<?php
 				endforeach;
-			?>
+				?>
 			</div>
 			<?php
-			wc_enqueue_js( "
+			wc_enqueue_js("
 				jQuery( 'select.email_type' ).change( function() {
 
 					var val = jQuery( this ).val();
@@ -460,8 +478,8 @@ class WC_Email extends WC_Settings_API {
 
 				}).change();
 
-				var view = '" . esc_js( __( 'View template', 'woocommerce' ) ) . "';
-				var hide = '" . esc_js( __( 'Hide template', 'woocommerce' ) ) . "';
+				var view = '" . esc_js(__('View template', 'woocommerce')) . "';
+				var hide = '" . esc_js(__('Hide template', 'woocommerce')) . "';
 
 				jQuery( 'a.toggle_editor' ).text( view ).toggle( function() {
 					jQuery( this ).text( hide ).closest(' .template' ).find( '.editor' ).slideToggle();
@@ -472,7 +490,8 @@ class WC_Email extends WC_Settings_API {
 				} );
 
 				jQuery( 'a.delete_template' ).click( function() {
-					if ( window.confirm('" . esc_js( __( 'Are you sure you want to delete this template file?', 'woocommerce' ) ) . "') ) {
+					if ( window.confirm('" . esc_js(__('Are you sure you want to delete this template file?',
+			                                           'woocommerce')) . "') ) {
 						return true;
 					}
 
@@ -486,7 +505,7 @@ class WC_Email extends WC_Settings_API {
 						jQuery( this ).attr( 'name', name );
 					}
 				});
-			" );
+			");
 		}
 	}
 
@@ -496,24 +515,23 @@ class WC_Email extends WC_Settings_API {
 	protected function admin_actions() {
 		// Handle any actions
 		if (
-			( ! empty( $this->template_html ) || ! empty( $this->template_plain ) )
-			&& ( ! empty( $_GET['move_template'] ) || ! empty( $_GET['delete_template'] ) )
+			(!empty($this->template_html) || !empty($this->template_plain))
+			&& (!empty($_GET['move_template']) || !empty($_GET['delete_template']))
 			&& 'GET' === $_SERVER['REQUEST_METHOD']
 		) {
-			if ( empty( $_GET['_wc_email_nonce'] ) || ! wp_verify_nonce( $_GET['_wc_email_nonce'], 'woocommerce_email_template_nonce' ) ) {
-				wp_die( __( 'Action failed. Please refresh the page and retry.', 'woocommerce' ) );
+			if (empty($_GET['_wc_email_nonce']) || !wp_verify_nonce($_GET['_wc_email_nonce'],
+			                                                        'woocommerce_email_template_nonce')
+			) {
+				wp_die(__('Action failed. Please refresh the page and retry.', 'woocommerce'));
 			}
-
-			if ( ! current_user_can( 'edit_themes' ) ) {
-				wp_die( __( 'Cheatin&#8217; huh?', 'woocommerce' ) );
+			if (!current_user_can('edit_themes')) {
+				wp_die(__('Cheatin&#8217; huh?', 'woocommerce'));
 			}
-
-			if ( ! empty( $_GET['move_template'] ) ) {
-				$this->move_template_action( $_GET['move_template'] );
+			if (!empty($_GET['move_template'])) {
+				$this->move_template_action($_GET['move_template']);
 			}
-
-			if ( ! empty( $_GET['delete_template'] ) ) {
-				$this->delete_template_action( $_GET['delete_template'] );
+			if (!empty($_GET['delete_template'])) {
+				$this->delete_template_action($_GET['delete_template']);
 			}
 		}
 	}
@@ -523,30 +541,26 @@ class WC_Email extends WC_Settings_API {
 	 *
 	 * @param string $template_type
 	 */
-	protected function move_template_action( $template_type ) {
-		if ( $template = $this->get_template( $template_type ) ) {
-			if ( ! empty( $template ) ) {
-
-				$theme_file = $this->get_theme_template_file( $template );
-
-				if ( wp_mkdir_p( dirname( $theme_file ) ) && ! file_exists( $theme_file ) ) {
-
+	protected function move_template_action($template_type) {
+		if ($template = $this->get_template($template_type)) {
+			if (!empty($template)) {
+				$theme_file = $this->get_theme_template_file($template);
+				if (wp_mkdir_p(dirname($theme_file)) && !file_exists($theme_file)) {
 					// Locate template file
 					$core_file     = $this->template_base . $template;
-					$template_file = apply_filters( 'woocommerce_locate_core_template', $core_file, $template, $this->template_base );
-
+					$template_file = apply_filters('woocommerce_locate_core_template', $core_file, $template,
+					                               $this->template_base);
 					// Copy template file
-					copy( $template_file, $theme_file );
-
+					copy($template_file, $theme_file);
 					/**
 					 * woocommerce_copy_email_template action hook.
 					 *
 					 * @param string $template_type The copied template type
-					 * @param string $email The email object
+					 * @param string $email         The email object
 					 */
-					do_action( 'woocommerce_copy_email_template', $template_type, $this );
-
-					echo '<div class="updated"><p>' . __( 'Template file copied to theme.', 'woocommerce' ) . '</p></div>';
+					do_action('woocommerce_copy_email_template', $template_type, $this);
+					echo '<div class="updated"><p>' . __('Template file copied to theme.',
+					                                     'woocommerce') . '</p></div>';
 				}
 			}
 		}
@@ -556,16 +570,17 @@ class WC_Email extends WC_Settings_API {
 	 * Get template.
 	 *
 	 * @param  string $type
+	 *
 	 * @return string
 	 */
-	public function get_template( $type ) {
-		$type = basename( $type );
-
-		if ( 'template_html' === $type ) {
+	public function get_template($type) {
+		$type = basename($type);
+		if ('template_html' === $type) {
 			return $this->template_html;
-		} elseif ( 'template_plain' === $type ) {
+		} elseif ('template_plain' === $type) {
 			return $this->template_plain;
 		}
+
 		return '';
 	}
 
@@ -576,8 +591,9 @@ class WC_Email extends WC_Settings_API {
 	 *
 	 * @return string
 	 */
-	public function get_theme_template_file( $template ) {
-		return get_stylesheet_directory() . '/' . apply_filters( 'woocommerce_template_directory', 'woocommerce', $template ) . '/' . $template;
+	public function get_theme_template_file($template) {
+		return get_stylesheet_directory() . '/' . apply_filters('woocommerce_template_directory', 'woocommerce',
+		                                                        $template) . '/' . $template;
 	}
 
 	/**
@@ -585,25 +601,21 @@ class WC_Email extends WC_Settings_API {
 	 *
 	 * @param string $template_type
 	 */
-	protected function delete_template_action( $template_type ) {
-		if ( $template = $this->get_template( $template_type ) ) {
-
-			if ( ! empty( $template ) ) {
-
-				$theme_file = $this->get_theme_template_file( $template );
-
-				if ( file_exists( $theme_file ) ) {
-					unlink( $theme_file );
-
+	protected function delete_template_action($template_type) {
+		if ($template = $this->get_template($template_type)) {
+			if (!empty($template)) {
+				$theme_file = $this->get_theme_template_file($template);
+				if (file_exists($theme_file)) {
+					unlink($theme_file);
 					/**
 					 * woocommerce_delete_email_template action hook.
 					 *
 					 * @param string $template The deleted template type
-					 * @param string $email The email object
+					 * @param string $email    The email object
 					 */
-					do_action( 'woocommerce_delete_email_template', $template_type, $this );
-
-					echo '<div class="updated"><p>' . __( 'Template file deleted from theme.', 'woocommerce' ) . '</p></div>';
+					do_action('woocommerce_delete_email_template', $template_type, $this);
+					echo '<div class="updated"><p>' . __('Template file deleted from theme.',
+					                                     'woocommerce') . '</p></div>';
 				}
 			}
 		}
@@ -611,31 +623,36 @@ class WC_Email extends WC_Settings_API {
 
 	/**
 	 * Return the email's title
+	 *
 	 * @return string
 	 */
 	public function get_title() {
-		return apply_filters( 'woocommerce_email_title', $this->title, $this );
+		return apply_filters('woocommerce_email_title', $this->title, $this);
 	}
 
 	/**
 	 * Return the email's description
+	 *
 	 * @return string
 	 */
 	public function get_description() {
-		return apply_filters( 'woocommerce_email_description', $this->description, $this );
+		return apply_filters('woocommerce_email_description', $this->description, $this);
 	}
 
 	/**
 	 * Handle multipart mail.
 	 *
 	 * @param PHPMailer $mailer
+	 *
 	 * @return PHPMailer
 	 */
-	public function handle_multipart( $mailer )  {
-		if ( $this->sending && 'multipart' === $this->get_email_type() ) {
-			$mailer->AltBody = wordwrap( preg_replace( $this->plain_search, $this->plain_replace, strip_tags( $this->get_content_plain() ) ) );
-			$this->sending   = false;
+	public function handle_multipart($mailer) {
+		if ($this->sending && 'multipart' === $this->get_email_type()) {
+			$mailer->AltBody = wordwrap(preg_replace($this->plain_search, $this->plain_replace,
+			                                         strip_tags($this->get_content_plain())));
+			$this->sending   = FALSE;
 		}
+
 		return $mailer;
 	}
 
@@ -645,11 +662,12 @@ class WC_Email extends WC_Settings_API {
 	 * @return string
 	 */
 	public function get_email_type() {
-		return $this->email_type && class_exists( 'DOMDocument' ) ? $this->email_type : 'plain';
+		return $this->email_type && class_exists('DOMDocument') ? $this->email_type : 'plain';
 	}
 
 	/**
 	 * Get the email content in plain text format.
+	 *
 	 * @return string
 	 */
 	public function get_content_plain() { return ''; }
@@ -660,17 +678,21 @@ class WC_Email extends WC_Settings_API {
 	 * @return string
 	 */
 	public function get_subject() {
-		return apply_filters( 'woocommerce_email_subject_' . $this->id, $this->format_string( $this->subject ), $this->object );
+		return apply_filters('woocommerce_email_subject_' . $this->id, $this->format_string($this->subject),
+		                     $this->object);
 	}
 
 	/**
 	 * Format email string.
 	 *
 	 * @param mixed $string
+	 *
 	 * @return string
 	 */
-	public function format_string( $string ) {
-		return str_replace( apply_filters( 'woocommerce_email_format_string_find', $this->find, $this ), apply_filters( 'woocommerce_email_format_string_replace', $this->replace, $this ), __( $string ) );
+	public function format_string($string) {
+		return str_replace(apply_filters('woocommerce_email_format_string_find', $this->find, $this),
+		                   apply_filters('woocommerce_email_format_string_replace', $this->replace, $this),
+		                   __($string));
 	}
 
 	/**
@@ -679,18 +701,21 @@ class WC_Email extends WC_Settings_API {
 	 * @return string
 	 */
 	public function get_heading() {
-		return apply_filters( 'woocommerce_email_heading_' . $this->id, $this->format_string( $this->heading ), $this->object );
+		return apply_filters('woocommerce_email_heading_' . $this->id, $this->format_string($this->heading),
+		                     $this->object);
 	}
 
 	/**
 	 * Get valid recipients.
+	 *
 	 * @return string
 	 */
 	public function get_recipient() {
-		$recipient  = apply_filters( 'woocommerce_email_recipient_' . $this->id, $this->recipient, $this->object );
-		$recipients = array_map( 'trim', explode( ',', $recipient ) );
-		$recipients = array_filter( $recipients, 'is_email' );
-		return implode( ', ', $recipients );
+		$recipient  = apply_filters('woocommerce_email_recipient_' . $this->id, $this->recipient, $this->object);
+		$recipients = array_map('trim', explode(',', $recipient));
+		$recipients = array_filter($recipients, 'is_email');
+
+		return implode(', ', $recipients);
 	}
 
 	/**
@@ -699,7 +724,8 @@ class WC_Email extends WC_Settings_API {
 	 * @return string
 	 */
 	public function get_headers() {
-		return apply_filters( 'woocommerce_email_headers', "Content-Type: " . $this->get_content_type() . "\r\n", $this->id, $this->object );
+		return apply_filters('woocommerce_email_headers', "Content-Type: " . $this->get_content_type() . "\r\n",
+		                     $this->id, $this->object);
 	}
 
 	/**
@@ -708,7 +734,7 @@ class WC_Email extends WC_Settings_API {
 	 * @return string
 	 */
 	public function get_content_type() {
-		switch ( $this->get_email_type() ) {
+		switch ($this->get_email_type()) {
 			case 'html' :
 				return 'text/html';
 			case 'multipart' :
@@ -724,19 +750,21 @@ class WC_Email extends WC_Settings_API {
 	 * @return string
 	 */
 	public function get_attachments() {
-		return apply_filters( 'woocommerce_email_attachments', array(), $this->id, $this->object );
+		return apply_filters('woocommerce_email_attachments', [], $this->id, $this->object);
 	}
 
 	/**
 	 * Checks if this email is enabled and will be sent.
+	 *
 	 * @return bool
 	 */
 	public function is_enabled() {
-		return apply_filters( 'woocommerce_email_enabled_' . $this->id, 'yes' === $this->enabled, $this->object );
+		return apply_filters('woocommerce_email_enabled_' . $this->id, 'yes' === $this->enabled, $this->object);
 	}
 
 	/**
 	 * Checks if this email is manually sent
+	 *
 	 * @return bool
 	 */
 	public function is_manual() {
@@ -745,6 +773,7 @@ class WC_Email extends WC_Settings_API {
 
 	/**
 	 * Checks if this email is customer focussed.
+	 *
 	 * @return bool
 	 */
 	public function is_customer_email() {
@@ -757,61 +786,67 @@ class WC_Email extends WC_Settings_API {
 	 * @return string
 	 */
 	public function get_content() {
-		$this->sending = true;
-
-		if ( 'plain' === $this->get_email_type() ) {
-			$email_content = preg_replace( $this->plain_search, $this->plain_replace, strip_tags( $this->get_content_plain() ) );
+		$this->sending = TRUE;
+		if ('plain' === $this->get_email_type()) {
+			$email_content = preg_replace($this->plain_search, $this->plain_replace,
+			                              strip_tags($this->get_content_plain()));
 		} else {
 			$email_content = $this->get_content_html();
 		}
 
-		return wordwrap( $email_content, 70 );
+		return wordwrap($email_content, 70);
 	}
 
 	/**
 	 * Get the email content in HTML format.
+	 *
 	 * @return string
 	 */
 	public function get_content_html() { return ''; }
 
 	/**
 	 * Get the from name for outgoing emails.
+	 *
 	 * @return string
 	 */
 	public function get_from_name() {
-		$from_name = apply_filters( 'woocommerce_email_from_name', get_option( 'woocommerce_email_from_name' ), $this );
-		return wp_specialchars_decode( esc_html( $from_name ), ENT_QUOTES );
+		$from_name = apply_filters('woocommerce_email_from_name', get_option('woocommerce_email_from_name'), $this);
+
+		return wp_specialchars_decode(esc_html($from_name), ENT_QUOTES);
 	}
 
 	/**
 	 * Get the from address for outgoing emails.
+	 *
 	 * @return string
 	 */
 	public function get_from_address() {
-		$from_address = apply_filters( 'woocommerce_email_from_address', get_option( 'woocommerce_email_from_address' ), $this );
-		return sanitize_email( $from_address );
+		$from_address = apply_filters('woocommerce_email_from_address', get_option('woocommerce_email_from_address'),
+		                              $this);
+
+		return sanitize_email($from_address);
 	}
 
 	/**
 	 * Send an email.
+	 *
 	 * @param string $to
 	 * @param string $subject
 	 * @param string $message
 	 * @param string $headers
 	 * @param string $attachments
+	 *
 	 * @return bool success
 	 */
-	public function send( $to, $subject, $message, $headers, $attachments ) {
-		add_filter( 'wp_mail_from', array( $this, 'get_from_address' ) );
-		add_filter( 'wp_mail_from_name', array( $this, 'get_from_name' ) );
-		add_filter( 'wp_mail_content_type', array( $this, 'get_content_type' ) );
-
-		$message = apply_filters( 'woocommerce_mail_content', $this->style_inline( $message ) );
-		$return  = wp_mail( $to, $subject, $message, $headers, $attachments );
-
-		remove_filter( 'wp_mail_from', array( $this, 'get_from_address' ) );
-		remove_filter( 'wp_mail_from_name', array( $this, 'get_from_name' ) );
-		remove_filter( 'wp_mail_content_type', array( $this, 'get_content_type' ) );
+	public function send($to, $subject, $message, $headers, $attachments) {
+		add_filter('wp_mail_from', [$this, 'get_from_address']);
+		add_filter('wp_mail_from_name', [$this, 'get_from_name']);
+		add_filter('wp_mail_content_type', [$this, 'get_content_type']);
+		$message = apply_filters('woocommerce_mail_content', $this->style_inline($message));
+		$return  = wp_mail($to, $subject, $message, $headers, $attachments);
+		remove_filter('wp_mail_from', [$this, 'get_from_address']);
+		remove_filter('wp_mail_from_name', [$this, 'get_from_name']);
+		remove_filter('wp_mail_content_type', [$this, 'get_content_type']);
 
 		return $return;
 	}
@@ -820,24 +855,27 @@ class WC_Email extends WC_Settings_API {
 	 * Apply inline styles to dynamic content.
 	 *
 	 * @param string|null $content
+	 *
 	 * @return string
 	 */
-	public function style_inline( $content ) {
+	public function style_inline($content) {
 		// make sure we only inline CSS for html emails
-		if ( in_array( $this->get_content_type(), array( 'text/html', 'multipart/alternative' ) ) && class_exists( 'DOMDocument' ) ) {
+		if (in_array($this->get_content_type(),
+		             ['text/html', 'multipart/alternative']) && class_exists('DOMDocument')
+		) {
 			ob_start();
-			wc_get_template( 'emails/email-styles.php' );
-			$css = apply_filters( 'woocommerce_email_styles', ob_get_clean() );
-
+			wc_get_template('emails/email-styles.php');
+			$css = apply_filters('woocommerce_email_styles', ob_get_clean());
 			// apply CSS styles inline for picky email clients
 			try {
-				$emogrifier = new Emogrifier( $content, $css );
+				$emogrifier = new Emogrifier($content, $css);
 				$content    = $emogrifier->emogrify();
-			} catch ( Exception $e ) {
+			} catch (Exception $e) {
 				$logger = new WC_Logger();
-				$logger->add( 'emogrifier', $e->getMessage() );
+				$logger->add('emogrifier', $e->getMessage());
 			}
 		}
+
 		return $content;
 	}
 }

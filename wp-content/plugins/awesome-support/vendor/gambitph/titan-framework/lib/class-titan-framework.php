@@ -4,9 +4,7 @@
  *
  * @package Titan Framework
  */
-
-if (! defined('ABSPATH'))
-{
+if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly.
 }
 
@@ -16,67 +14,76 @@ if (! defined('ABSPATH'))
  * @since 1.0
  */
 class TitanFramework {
-
     /**
      * All TitanFramework instances
+     *
      * @var array
      */
-    private static $instances = array();
-
+    private static $instances = [];
     /**
      * The current option namespace.
      * Options will be prefixed with this in the database
+     *
      * @var string
      */
     public $optionNamespace;
     /**
      * The CSS class instance used
+     *
      * @var TitanFrameworkCSS
      */
     public $cssInstance;
     /**
      * We store the options (with IDs) here, used for ensuring our serialized option
      * value doesn't get cluttered with unused options
+     *
      * @var array
      */
-    public $optionsUsed = array();
+    public $optionsUsed = [];
     /**
      * The current list of settings
+     *
      * @var array
      */
-    public $settings = array();
+    public $settings = [];
     /**
      * All main containers (admin pages, meta boxes, customizer section)
+     *
      * @var array of TitanFrameworkAdminPage, TitanFrameworkMetaBox, & TitanFrameworkCustomizer
      */
-    private $mainContainers = array();
+    private $mainContainers = [];
     /**
      * All Google Font options used. This is for enqueuing Google Fonts for the frontend
      * TODO Move this to the TitanFrameworkOptionSelectGooglefont class and let it enqueue from there
+     *
      * @var array TitanFrameworkOptionSelectGooglefont
      */
-    private $googleFontsOptions = array();
+    private $googleFontsOptions = [];
     /**
      * We store option ids which should not be created here
+     *
      * @var array
      * @see removeOption()
      */
-    private $optionsToRemove = array();
+    private $optionsToRemove = [];
     /**
      * Holds the values of all admin (page & tab) options. We need this since
+     *
      * @var array of TitanFrameworkOption
      */
     private $adminOptions;
     /**
      * Default settings
+     *
      * @var array
      */
-    private $defaultSettings = array(
-        'css' => 'generate',    // If 'generate', Titan will try and generate a cacheable
-        // CSS file (or inline if it can't).
-        // If 'inline', CSS will be printed out in the head tag,
-        // If false, CSS will not be generated nor printed.
-    );
+    private $defaultSettings
+        = [
+            'css' => 'generate',    // If 'generate', Titan will try and generate a cacheable
+            // CSS file (or inline if it can't).
+            // If 'inline', CSS will be printed out in the head tag,
+            // If false, CSS will not be generated nor printed.
+        ];
 
     /**
      * Creates a new TitanFramework object
@@ -85,26 +92,19 @@ class TitanFramework {
      *
      * @param string $optionNamespace The namespace to get options from.
      */
-    function __construct($optionNamespace)
-    {
-
+    function __construct($optionNamespace) {
         // Clean namespace.
         $optionNamespace = str_replace(' ', '-', trim(strtolower($optionNamespace)));
-
         $this->optionNamespace = $optionNamespace;
-        $this->settings = $this->defaultSettings;
-
+        $this->settings        = $this->defaultSettings;
         do_action('tf_init', $this);
         do_action('tf_init_' . $this->optionNamespace, $this);
-
         $this->cssInstance = new TitanFrameworkCSS($this);
-
-        add_action('admin_enqueue_scripts', array($this, 'loadAdminScripts'));
-        add_action('tf_create_option_' . $this->optionNamespace, array($this, 'rememberAllOptions'));
-        add_filter('tf_create_option_continue_' . $this->optionNamespace, array($this, 'removeChildThemeOptions'), 10, 2);
-
+        add_action('admin_enqueue_scripts', [$this, 'loadAdminScripts']);
+        add_action('tf_create_option_' . $this->optionNamespace, [$this, 'rememberAllOptions']);
+        add_filter('tf_create_option_continue_' . $this->optionNamespace, [$this, 'removeChildThemeOptions'], 10, 2);
         // Create a save option filter for customizer options.
-        add_filter('pre_update_option', array($this, 'addCustomizerSaveFilter'), 10, 3);
+        add_filter('pre_update_option', [$this, 'addCustomizerSaveFilter'], 10, 3);
     }
 
     /**
@@ -116,22 +116,17 @@ class TitanFramework {
      *
      * @return TitanFramework
      */
-    public static function getInstance($optionNamespace)
-    {
-
+    public static function getInstance($optionNamespace) {
         // Clean namespace.
         $optionNamespace = str_replace(' ', '-', trim(strtolower($optionNamespace)));
-
-        foreach (self::$instances as $instance)
-        {
-            if ($instance->optionNamespace == $optionNamespace)
-            {
+        foreach (self::$instances as $instance) {
+            if ($instance->optionNamespace == $optionNamespace) {
                 return $instance;
             }
         }
-
-        $newInstance = new TitanFramework($optionNamespace);
+        $newInstance       = new TitanFramework($optionNamespace);
         self::$instances[] = $newInstance;
+
         return $newInstance;
     }
 
@@ -142,8 +137,7 @@ class TitanFramework {
      *
      * @return array An array of TitanFramework objects
      */
-    public static function getAllInstances()
-    {
+    public static function getAllInstances() {
         return self::$instances;
     }
 
@@ -157,21 +151,17 @@ class TitanFramework {
      *
      * @return void
      */
-    public function rememberAllOptions($option)
-    {
-        if (! empty($option->settings['id']))
-        {
-
-            if (is_admin() && isset($this->optionsUsed[$option->settings['id']]))
-            {
+    public function rememberAllOptions($option) {
+        if (!empty($option->settings['id'])) {
+            if (is_admin() && isset($this->optionsUsed[ $option->settings['id'] ])) {
                 self::displayFrameworkError(
-                    sprintf(__('All option IDs per namespace must be unique. The id %s has been used multiple times.', TF_I18NDOMAIN),
-                        '<code>' . $option->settings['id'] . '</code>'
+                    sprintf(__('All option IDs per namespace must be unique. The id %s has been used multiple times.',
+                               TF_I18NDOMAIN),
+                            '<code>' . $option->settings['id'] . '</code>'
                     )
                 );
             }
-
-            $this->optionsUsed[$option->settings['id']] = $option;
+            $this->optionsUsed[ $option->settings['id'] ] = $option;
         }
     }
 
@@ -180,31 +170,26 @@ class TitanFramework {
      *
      * @since 1.0
      *
-     * @param string $message The error message to display.
+     * @param string       $message     The error message to display.
      * @param array|object $errorObject The object to dump inside the error message.
      *
      * @return void
      */
-    public static function displayFrameworkError($message, $errorObject = NULL)
-    {
+    public static function displayFrameworkError($message, $errorObject = NULL) {
         // Clean up the debug object for display. e.g. If this is a setting, we can have lots of blank values.
-        if (is_array($errorObject))
-        {
-            foreach ($errorObject as $key => $val)
-            {
-                if ('' === $val)
-                {
-                    unset($errorObject[$key]);
+        if (is_array($errorObject)) {
+            foreach ($errorObject as $key => $val) {
+                if ('' === $val) {
+                    unset($errorObject[ $key ]);
                 }
             }
         }
-
         // Display an error message.
         ?>
         <div style='margin: 20px; text-align: center;'><strong><?php echo TF_NAME ?> Error:</strong>
             <?php echo $message ?>
             <?php
-            if (! empty($errorObject)) :
+            if (!empty($errorObject)) :
                 ?>
                 <pre><code style="display: inline-block; padding: 10px"><?php echo print_r($errorObject, TRUE) ?></code></pre>
                 <?php
@@ -223,22 +208,16 @@ class TitanFramework {
      *
      * @return void
      */
-    public function loadAdminScripts($hook)
-    {
-
+    public function loadAdminScripts($hook) {
         // Get all options panel IDs.
-        $panel_ids = array();
-        if (! empty($this->mainContainers['admin-page']))
-        {
-            foreach ($this->mainContainers['admin-page'] as $admin_panel)
-            {
+        $panel_ids = [];
+        if (!empty($this->mainContainers['admin-page'])) {
+            foreach ($this->mainContainers['admin-page'] as $admin_panel) {
                 $panel_ids[] = $admin_panel->panelID;
             }
         }
-
         // Only enqueue scripts if we're on a Titan options page.
-        if (in_array($hook, $panel_ids) || ! empty($this->mainContainers['meta-box']))
-        {
+        if (in_array($hook, $panel_ids) || !empty($this->mainContainers['meta-box'])) {
             wp_enqueue_media();
             wp_enqueue_script('tf-serialize', TitanFramework::getURL('../js/min/serialize-min.js', __FILE__));
             wp_enqueue_script('tf-styling', TitanFramework::getURL('../js/min/admin-styling-min.js', __FILE__));
@@ -253,51 +232,39 @@ class TitanFramework {
      * @since 1.1.2
      *
      * @param string $script the script to get the url to, relative to $file.
-     * @param string $file the current file, should be __FILE__.
+     * @param string $file   the current file, should be __FILE__.
      *
      * @return string the url to $script
      */
-    public static function getURL($script, $file)
-    {
+    public static function getURL($script, $file) {
         $parentTheme = trailingslashit(get_template_directory());
-        $childTheme = trailingslashit(get_stylesheet_directory());
-        $plugin = trailingslashit(dirname($file));
-
+        $childTheme  = trailingslashit(get_stylesheet_directory());
+        $plugin      = trailingslashit(dirname($file));
         // Windows sometimes mixes up forward and back slashes, ensure forward slash for correct URL output.
         $parentTheme = str_replace('\\', '/', $parentTheme);
-        $childTheme = str_replace('\\', '/', $childTheme);
-        $file = str_replace('\\', '/', $file);
-
+        $childTheme  = str_replace('\\', '/', $childTheme);
+        $file        = str_replace('\\', '/', $file);
         $url = '';
-
         // Framework is in a parent theme.
-        if (stripos($file, $parentTheme) !== FALSE)
-        {
+        if (stripos($file, $parentTheme) !== FALSE) {
             $dir = trailingslashit(dirname(str_replace($parentTheme, '', $file)));
-            if ('./' == $dir)
-            {
+            if ('./' == $dir) {
                 $dir = '';
             }
             $url = trailingslashit(get_template_directory_uri()) . $dir . $script;
-
-        }
-        else if (stripos($file, $childTheme) !== FALSE)
-        {
-            // Framework is in a child theme.
-            $dir = trailingslashit(dirname(str_replace($childTheme, '', $file)));
-            if ('./' == $dir)
-            {
-                $dir = '';
+        } else {
+            if (stripos($file, $childTheme) !== FALSE) {
+                // Framework is in a child theme.
+                $dir = trailingslashit(dirname(str_replace($childTheme, '', $file)));
+                if ('./' == $dir) {
+                    $dir = '';
+                }
+                $url = trailingslashit(get_stylesheet_directory_uri()) . $dir . $script;
+            } else {
+                // Framework is a or in a plugin.
+                $url = plugins_url($script, $file);
             }
-            $url = trailingslashit(get_stylesheet_directory_uri()) . $dir . $script;
-
         }
-        else
-        {
-            // Framework is a or in a plugin.
-            $url = plugins_url($script, $file);
-        }
-
         // Replace /foo/../ with '/'.
         $url = preg_replace('/\/(?!\.\.)[^\/]+\/\.\.\//', '/', $url);
 
@@ -309,25 +276,19 @@ class TitanFramework {
      *
      * @since 1.9
      *
-     * @param string $optionName The ID of the option (not namespaced).
-     * @param mixed $defaultValue The default value to return if the option isn't available yet.
+     * @param string $optionName   The ID of the option (not namespaced).
+     * @param mixed  $defaultValue The default value to return if the option isn't available yet.
      *
      * @return mixed The option value
      *
-     * @see TitanFrameworkOption->getValue()
+     * @see   TitanFrameworkOption->getValue()
      */
-    public function getInternalAdminPageOption($optionName, $defaultValue = FALSE)
-    {
-
+    public function getInternalAdminPageOption($optionName, $defaultValue = FALSE) {
         // Run this first to ensure that adminOptions carries all our admin page options.
         $this->getInternalAdminOptions();
-
-        if (array_key_exists($optionName, $this->adminOptions))
-        {
-            return $this->adminOptions[$optionName];
-        }
-        else
-        {
+        if (array_key_exists($optionName, $this->adminOptions)) {
+            return $this->adminOptions[ $optionName ];
+        } else {
             return $defaultValue;
         }
     }
@@ -340,36 +301,25 @@ class TitanFramework {
      *
      * @return array All admin options currently in the instance
      */
-    protected function getInternalAdminOptions()
-    {
-        if (empty($this->adminOptions))
-        {
-            $this->adminOptions = array();
+    protected function getInternalAdminOptions() {
+        if (empty($this->adminOptions)) {
+            $this->adminOptions = [];
         }
-
-        if (! empty($this->adminOptions))
-        {
+        if (!empty($this->adminOptions)) {
             return $this->adminOptions;
         }
-
         // Check if we have options saved already.
         $currentOptions = get_option($this->optionNamespace . '_options');
-
         // First time run, this action hook can be used to trigger something.
-        if (FALSE === $currentOptions)
-        {
+        if (FALSE === $currentOptions) {
             do_action('tf_init_no_options_' . $this->optionNamespace);
         }
-
         // Put all the available options in our global variable for future checking.
-        if (! empty($currentOptions) && ! count($this->adminOptions))
-        {
+        if (!empty($currentOptions) && !count($this->adminOptions)) {
             $this->adminOptions = unserialize($currentOptions);
         }
-
-        if (empty($this->adminOptions))
-        {
-            $this->adminOptions = array();
+        if (empty($this->adminOptions)) {
+            $this->adminOptions = [];
         }
 
         return $this->adminOptions;
@@ -382,19 +332,17 @@ class TitanFramework {
      * @since 1.9
      *
      * @param string $optionName The ID of the option (not namespaced).
-     * @param mixed $value The value to set.
+     * @param mixed  $value      The value to set.
      *
      * @return bool Always returns true
      *
-     * @see TitanFrameworkOption->setValue()
+     * @see   TitanFrameworkOption->setValue()
      */
-    public function setInternalAdminPageOption($optionName, $value)
-    {
-
+    public function setInternalAdminPageOption($optionName, $value) {
         // Run this first to ensure that adminOptions carries all our admin page options.
         $this->getInternalAdminOptions();
+        $this->adminOptions[ $optionName ] = $value;
 
-        $this->adminOptions[$optionName] = $value;
         return TRUE;
     }
 
@@ -405,14 +353,12 @@ class TitanFramework {
      *
      * @return array All admin options currently in the instance
      */
-    public function saveInternalAdminPageOptions()
-    {
-
+    public function saveInternalAdminPageOptions() {
         // Run this first to ensure that adminOptions carries all our admin page options.
         $this->getInternalAdminOptions();
-
         update_option($this->optionNamespace . '_options', serialize($this->adminOptions));
         do_action('tf_save_options_' . $this->optionNamespace);
+
         return $this->adminOptions;
     }
 
@@ -420,14 +366,13 @@ class TitanFramework {
      * Create a admin page
      *
      * @deprecated 1.9 Use createContainer() with 'type' => 'admin-page' or createAdminPanel() instead.
-     * @since 1.0
+     * @since      1.0
      *
      * @param array $settings The arguments for creating the admin page.
      *
      * @return TitanFrameworkAdminPage The created admin page
      */
-    public function createAdminPanel($settings)
-    {
+    public function createAdminPanel($settings) {
         // _deprecated_function( __FUNCTION__, '1.9', 'createAdminPage' );
         return $this->createAdminPage($settings);
     }
@@ -441,11 +386,11 @@ class TitanFramework {
      *
      * @return TitanFrameworkAdminPage The created admin page
      */
-    public function createAdminPage($settings)
-    {
+    public function createAdminPage($settings) {
         $settings['type'] = 'admin-page';
-        $container = $this->createContainer($settings);
+        $container        = $this->createContainer($settings);
         do_action('tf_admin_panel_created_' . $this->optionNamespace, $container);
+
         return $container;
     }
 
@@ -459,34 +404,29 @@ class TitanFramework {
      *
      * @return TitanFrameworkCustomizer|TitanFrameworkAdminPage|TitanFrameworkMetaBox The created container
      */
-    public function createContainer($settings)
-    {
-        if (empty($settings['type']))
-        {
-            self::displayFrameworkError(sprintf(__('%s needs a %s parameter.', TF_I18NDOMAIN), '<code>' . __FUNCTION__ . '</code>', '<code>type</code>'));
+    public function createContainer($settings) {
+        if (empty($settings['type'])) {
+            self::displayFrameworkError(sprintf(__('%s needs a %s parameter.', TF_I18NDOMAIN),
+                                                '<code>' . __FUNCTION__ . '</code>', '<code>type</code>'));
+
             return;
         }
-
-        $type = strtolower($settings['type']);
-        $class = 'TitanFramework' . str_replace(' ', '', ucfirst(str_replace('-', ' ', $settings['type'])));
-        $action = str_replace('-', '_', $type);
+        $type      = strtolower($settings['type']);
+        $class     = 'TitanFramework' . str_replace(' ', '', ucfirst(str_replace('-', ' ', $settings['type'])));
+        $action    = str_replace('-', '_', $type);
         $container = FALSE;
+        if (!class_exists($class)) {
+            self::displayFrameworkError(sprintf(__('Container of type %s, does not exist.', TF_I18NDOMAIN),
+                                                '<code>' . $settings['type'] . '</code>'));
 
-        if (! class_exists($class))
-        {
-            self::displayFrameworkError(sprintf(__('Container of type %s, does not exist.', TF_I18NDOMAIN), '<code>' . $settings['type'] . '</code>'));
             return;
         }
-
         // Create the container object.
         $container = new $class($settings, $this);
-        if (empty($this->mainContainers[$type]))
-        {
-            $this->mainContainers[$type] = array();
+        if (empty($this->mainContainers[ $type ])) {
+            $this->mainContainers[ $type ] = [];
         }
-
-        $this->mainContainers[$type][] = $container;
-
+        $this->mainContainers[ $type ][] = $container;
         do_action('tf_' . $action . '_created_' . $this->optionNamespace, $container);
 
         return $container;
@@ -501,9 +441,9 @@ class TitanFramework {
      *
      * @return TitanFrameworkMetaBox The created meta box
      */
-    public function createMetaBox($settings)
-    {
+    public function createMetaBox($settings) {
         $settings['type'] = 'meta-box';
+
         return $this->createContainer($settings);
     }
 
@@ -511,14 +451,13 @@ class TitanFramework {
      * Create a customizer section
      *
      * @deprecated 1.9 Use createContainer() with 'type' => 'customizer' or createCustomizer instead.
-     * @since 1.0
+     * @since      1.0
      *
      * @param array $settings The arguments for creating a customizer section.
      *
      * @return TitanFrameworkCustomizer The created section
      */
-    public function createThemeCustomizerSection($settings)
-    {
+    public function createThemeCustomizerSection($settings) {
         // _deprecated_function( __FUNCTION__, '1.9', 'createContainer' );
         return $this->createCustomizer($settings);
     }
@@ -532,11 +471,11 @@ class TitanFramework {
      *
      * @return TitanFrameworkCustomizer The created section
      */
-    public function createCustomizer($settings)
-    {
+    public function createCustomizer($settings) {
         $settings['type'] = 'customizer';
-        $container = $this->createContainer($settings);
+        $container        = $this->createContainer($settings);
         do_action('tf_theme_customizer_created_' . $this->optionNamespace, $container);
+
         return $container;
     }
 
@@ -544,15 +483,14 @@ class TitanFramework {
      * A function available ONLY to CHILD themes to stop the creation of options
      * created by the PARENT theme.
      *
-     * @since 1.2.1
+     * @since  1.2.1
      * @access public
      *
      * @param string $optionName The id of the option to remove / stop from being created.
      *
      * @return void
      */
-    public function removeOption($optionName)
-    {
+    public function removeOption($optionName) {
         $this->optionsToRemove[] = $optionName;
     }
 
@@ -560,28 +498,25 @@ class TitanFramework {
      * Hook to the tf_create_option_continue filter, to check whether or not to continue
      * adding an option (if the option id was used in $titan->removeOption).
      *
-     * @since 1.2.1
+     * @since  1.2.1
      * @access public
      *
      * @param boolean $continueCreating If true, the option will be created.
-     * @param array $optionSettings The settings for the option to be created.
+     * @param array   $optionSettings   The settings for the option to be created.
      *
      * @return boolean If true, continue with creating the option. False to stop it..
      */
-    public function removeChildThemeOptions($continueCreating, $optionSettings)
-    {
-        if (! count($this->optionsToRemove))
-        {
+    public function removeChildThemeOptions($continueCreating, $optionSettings) {
+        if (!count($this->optionsToRemove)) {
             return $continueCreating;
         }
-        if (empty($optionSettings['id']))
-        {
+        if (empty($optionSettings['id'])) {
             return $continueCreating;
         }
-        if (in_array($optionSettings['id'], $this->optionsToRemove))
-        {
+        if (in_array($optionSettings['id'], $this->optionsToRemove)) {
             return FALSE;
         }
+
         return $continueCreating;
     }
 
@@ -592,21 +527,19 @@ class TitanFramework {
      * @since 1.9
      *
      * @param array $optionArray An associative array containing option names as keys.
-     * @param int $postID The post ID if this is a meta option.
+     * @param int   $postID      The post ID if this is a meta option.
      *
      * @return array An array containing the values saved.
      *
-     * @see $this->getOption()
+     * @see   $this->getOption()
      */
-    public function getOptions($optionArray, $postID = NULL)
-    {
-        foreach ($optionArray as $optionName => $originalValue)
-        {
-            if (array_key_exists($optionName, $this->optionsUsed))
-            {
-                $optionArray[$optionName] = $this->getOption($optionName, $postID);
+    public function getOptions($optionArray, $postID = NULL) {
+        foreach ($optionArray as $optionName => $originalValue) {
+            if (array_key_exists($optionName, $this->optionsUsed)) {
+                $optionArray[ $optionName ] = $this->getOption($optionName, $postID);
             }
         }
+
         return apply_filters('tf_get_options_' . $this->optionNamespace, $optionArray, $postID);
     }
 
@@ -616,19 +549,16 @@ class TitanFramework {
      * @since 1.0
      *
      * @param string $optionName The name of the option.
-     * @param int $postID The post ID if this is a meta option.
+     * @param int    $postID     The post ID if this is a meta option.
      *
      * @return mixed The option value
      */
-    public function getOption($optionName, $postID = NULL)
-    {
+    public function getOption($optionName, $postID = NULL) {
         $value = FALSE;
-
         // Get the option value.
-        if (array_key_exists($optionName, $this->optionsUsed))
-        {
-            $option = $this->optionsUsed[$optionName];
-            $value = $option->getValue($postID);
+        if (array_key_exists($optionName, $this->optionsUsed)) {
+            $option = $this->optionsUsed[ $optionName ];
+            $value  = $option->getValue($postID);
         }
 
         return apply_filters('tf_get_option_' . $this->optionNamespace, $value, $optionName, $postID);
@@ -640,21 +570,17 @@ class TitanFramework {
      * @since 1.0
      *
      * @param string $optionName The name of the option to save.
-     * @param mixed $value The value of the option.
-     * @param int $postID The ID of the parent post if this is a meta box option.
+     * @param mixed  $value      The value of the option.
+     * @param int    $postID     The ID of the parent post if this is a meta box option.
      *
      * @return boolean Always returns true
      */
-    public function setOption($optionName, $value, $postID = NULL)
-    {
-
+    public function setOption($optionName, $value, $postID = NULL) {
         // Get the option value.
-        if (array_key_exists($optionName, $this->optionsUsed))
-        {
-            $option = $this->optionsUsed[$optionName];
+        if (array_key_exists($optionName, $this->optionsUsed)) {
+            $option = $this->optionsUsed[ $optionName ];
             $option->setValue($value, $postID);
         }
-
         do_action('tf_set_option_' . $this->optionNamespace, $optionName, $value, $postID);
 
         return TRUE;
@@ -668,43 +594,30 @@ class TitanFramework {
      *
      * @return void
      */
-    public function deleteAllOptions()
-    {
-
+    public function deleteAllOptions() {
         // Delete all admin options.
         delete_option($this->optionNamespace . '_options');
-        $this->adminOptions = array();
-
+        $this->adminOptions = [];
         // Delete all meta options.
         global $wpdb;
         $allPosts = $wpdb->get_results('SELECT ID FROM ' . $wpdb->posts, ARRAY_A);
-        if (! empty($allPosts))
-        {
-            foreach ($allPosts as $row)
-            {
+        if (!empty($allPosts)) {
+            foreach ($allPosts as $row) {
                 $allMeta = get_post_meta($row['ID']);
-
                 // Only remove meta data that the framework created.
-                foreach ($allMeta as $metaName => $dummy)
-                {
-                    if (stripos($metaName, $this->optionNamespace . '_') === 0)
-                    {
+                foreach ($allMeta as $metaName => $dummy) {
+                    if (stripos($metaName, $this->optionNamespace . '_') === 0) {
                         delete_post_meta($row['ID'], $metaName);
                     }
                 }
             }
         }
-
         // Delete all theme mods.
         $allThemeMods = get_theme_mods();
-        if (! empty($allThemeMods) && is_array($allThemeMods))
-        {
-            foreach ($allThemeMods as $optionName => $dummy)
-            {
-
+        if (!empty($allThemeMods) && is_array($allThemeMods)) {
+            foreach ($allThemeMods as $optionName => $dummy) {
                 // Only remove theme mods that the framework created.
-                if (stripos($optionName, $this->optionNamespace . '_') === 0)
-                {
+                if (stripos($optionName, $this->optionNamespace . '_') === 0) {
                     remove_theme_mod($optionName);
                 }
             }
@@ -720,8 +633,7 @@ class TitanFramework {
      *
      * @return void
      */
-    public function createCSS($CSSString)
-    {
+    public function createCSS($CSSString) {
         $this->cssInstance->addCSS($CSSString);
     }
 
@@ -731,18 +643,15 @@ class TitanFramework {
      * @since 1.6
      *
      * @param string $setting The name of the setting.
-     * @param string $value The value to set.
+     * @param string $value   The value to set.
      *
      * @return void
      */
-    public function set($setting, $value)
-    {
-        $oldValue = $this->settings[$setting];
-        $this->settings[$setting] = $value;
-
+    public function set($setting, $value) {
+        $oldValue                   = $this->settings[ $setting ];
+        $this->settings[ $setting ] = $value;
         do_action('tf_setting_' . $setting . '_changed_' . $this->optionNamespace, $value, $oldValue);
     }
-
 
     /**
      * Gets the CSS generated
@@ -751,11 +660,9 @@ class TitanFramework {
      *
      * @return string The generated CSS
      */
-    public function generateCSS()
-    {
+    public function generateCSS() {
         return $this->cssInstance->generateCSS();
     }
-
 
     /**
      * Adds a 'tf_save_option_{namespace}_{optionID}' filter to all Customizer options
@@ -767,84 +674,60 @@ class TitanFramework {
      *
      * @since 1.8
      *
-     * @param mixed $value The value to be saved in the options.
+     * @param mixed  $value      The value to be saved in the options.
      * @param string $optionName The option name.
-     * @param mixed $oldValue The previously stored value.
+     * @param mixed  $oldValue   The previously stored value.
      *
      * @return mixed The modified value to save
      *
-     * @see pre_update_option filter
+     * @see   pre_update_option filter
      */
-    public function addCustomizerSaveFilter($value, $optionName, $oldValue)
-    {
-
+    public function addCustomizerSaveFilter($value, $optionName, $oldValue) {
         $theme = get_option('stylesheet');
-
         // Intercept theme mods only.
-        if (strpos($optionName, 'theme_mods_' . $theme) !== 0)
-        {
+        if (strpos($optionName, 'theme_mods_' . $theme) !== 0) {
             return $value;
         }
-
         // We expect theme mods to be an array.
-        if (! is_array($value))
-        {
+        if (!is_array($value)) {
             return $value;
         }
-
         // Checks whether a Titan customizer is in place.
         $customizerUsed = FALSE;
-
         // Go through all our customizer options and filter them for saving.
-        $optionIDs = array();
-        if (! empty($this->mainContainers['customizer']))
-        {
-            foreach ($this->mainContainers['customizer'] as $customizer)
-            {
-                foreach ($customizer->options as $option)
-                {
-                    if (! empty($option->settings['id']))
-                    {
-                        $optionID = $option->settings['id'];
+        $optionIDs = [];
+        if (!empty($this->mainContainers['customizer'])) {
+            foreach ($this->mainContainers['customizer'] as $customizer) {
+                foreach ($customizer->options as $option) {
+                    if (!empty($option->settings['id'])) {
+                        $optionID     = $option->settings['id'];
                         $themeModName = $this->optionNamespace . '_' . $option->settings['id'];
-
-                        if (! array_key_exists($themeModName, $value))
-                        {
+                        if (!array_key_exists($themeModName, $value)) {
                             continue;
                         }
-
                         $customizerUsed = TRUE;
-
                         // Try and unserialize if possible.
-                        $tempValue = $value[$themeModName];
-                        if (is_serialized($tempValue))
-                        {
+                        $tempValue = $value[ $themeModName ];
+                        if (is_serialized($tempValue)) {
                             $tempValue = unserialize($tempValue);
                         }
-
                         // Hook 'tf_save_option_{namespace}'.
-                        $newValue = apply_filters('tf_save_option_' . $this->optionNamespace, $tempValue, $option->settings['id']);
-
+                        $newValue = apply_filters('tf_save_option_' . $this->optionNamespace, $tempValue,
+                                                  $option->settings['id']);
                         // Hook 'tf_save_option_{namespace}_{optionID}'.
                         $newValue = apply_filters('tf_save_option_' . $themeModName, $tempValue);
-
                         // We mainly check for equality here so that we won't have to serialize IF the value wasn't touched anyway.
-                        if ($newValue != $tempValue)
-                        {
-                            if (is_array($newValue))
-                            {
+                        if ($newValue != $tempValue) {
+                            if (is_array($newValue)) {
                                 $newValue = serialize($newValue);
                             }
-
-                            $value[$themeModName] = $newValue;
+                            $value[ $themeModName ] = $newValue;
                         }
                     }
                 }
             }
         }
-
-        if ($customizerUsed)
-        {
+        if ($customizerUsed) {
             /** This action is documented in class-admin-page.php */
             $namespace = $this->optionNamespace;
             do_action("tf_pre_save_options_{$namespace}", $this->mainContainers['customizer']);

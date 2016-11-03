@@ -1,0 +1,255 @@
+.fp-section,
+.fp-table,
+.fp-tableCell {
+  height: initial !important;
+}
+
+#fingerprint-list {
+  list-style: none;
+  padding: 0;
+  width: 230px;
+  li {
+    display: inline-block;
+    &:not(:first-child) {
+      padding-left: 5px;
+      border-left: 1px #c3c3c3 solid;
+      margin-left: 5px;
+    }
+  }
+}
+
+h1 {
+  font-size: 5rem;
+}
+
+.container {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+}
+
+h3 {
+  color: #3b3fb6;
+}
+
+.background {
+  background-position: center center !important;
+  background-repeat: no-repeat !important;
+  -webkit-background-size: cover !important;
+  background-size: cover !important;
+}
+
+#cover-bg {
+  height: 100vh;
+  background: url('../../rfp/shared/background.jpg') center center no-repeat;
+  background-size: cover;
+  opacity: 1;
+  #cover {
+    height: 100vh;
+    background: url('../../rfp/octane/cover.png') center center no-repeat;
+    background-size: cover;
+    p {
+      font-size: 2.5rem;
+      color: #fff;
+    }
+  }
+}
+
+#frame {
+  z-index: 10;
+  position: fixed;
+  margin: auto;
+  display: block;
+  height:450px;
+  width: 225px;
+  top: 105%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#phone-frame {
+  height: 450px;
+  background-size: cover;
+  transition: none;
+}
+
+#default,
+#video,
+#screen,
+#print1,
+#print2,
+#print3{
+  height: 370px;
+  position: absolute;
+  top: 38px;
+  left: 9px;
+}
+
+#screen {
+  display: block;
+}
+
+#print1,
+#print2,
+#print3{
+  z-index: -1;
+  display: none;
+}
+
+.fullvh {
+  height: 100vh !important;
+}
+
+.full-line-break {
+  width: 100%;
+  background-color: #d2d2d2;
+  height: 2px;
+  margin: 20px 0;
+}
+
+.full-height {
+  height: 100%;
+}
+
+.half-height {
+  height: 50% !important;
+}
+
+.scrollmagic-pin-spacer {
+  height: 0 !important;
+  min-height: 0 !important;
+}
+
+.vertical-center(@horizontal: center, @vertical: center) {
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-pack: @horizontal;
+  -ms-flex-align: @vertical;
+
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-pack: @horizontal;
+  -moz-box-align: @vertical;
+
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-pack: @horizontal;
+  -webkit-box-align: @vertical;
+
+  /* W3C */
+  display: box;
+  box-pack: @horizontal;
+  box-align: @vertical;
+}
+
+
+.vertical(@alignment: center) {
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-align: @alignment;
+
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-align: @alignment;
+
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-align: @alignment;
+
+  /* W3C */
+  display: box;
+  box-align: @alignment;
+}
+
+.vertical {
+  .vertical();
+  .full-height;
+}
+.vertical-center {
+  .vertical-center();
+}
+
+.bottom {
+  .vertical(end);
+  .full-height;
+}
+
+wrapper {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+
+@-webkit-keyframes pulse
+{
+  0% {-webkit-transform: scale(0); opacity: 0;}
+  8% {-webkit-transform: scale(0); opacity: 0;}
+  15% {-webkit-transform: scale(0.1); opacity: 1;}
+  30% {-webkit-transform: scale(0.5); opacity: 1;}
+  100% {opacity: 0; -webkit-transform: scale(1);}
+}
+
+@-moz-keyframes pulse
+{
+  0% {-moz-transform: scale(0); opacity: 0;}
+  8% {-moz-transform: scale(0); opacity: 0;}
+  15% {-moz-transform: scale(0.1); opacity: 1;}
+  30% {-moz-transform: scale(0.5); opacity: 1;}
+  100% {opacity: 0; -moz-transform: scale(1);}
+}
+
+.pulse_holder
+{
+  position: relative;
+}
+
+#touchPrint {
+  top: 103px;
+  left: 93px;
+}
+
+.pulse_holder .pulse_marker
+{
+  width: 16px;
+  height: 16px;
+  background: #fff;
+  border-radius: 28px;
+  margin: auto;
+}
+.pulse_holder .pulse_finger
+{
+  width: 40px;
+  height: 40px;
+  background: url(../../rfp/shared/fingerprint.png) center center no-repeat;
+  border-radius: 28px;
+  background-size: cover;
+}
+
+.pulse_holder .pulse_rays
+{
+  margin: 0 auto;
+  position: relative;
+  left: -30px;
+  top: -30px;
+  z-index: 10;
+  background-color: transparent;
+  opacity: 0.1;
+  width: 100px;
+  height: 100px;
+  border: 6px solid #F0CF1C;
+  -webkit-border-radius: 100px;
+  -moz-border-radius: 100px;
+  -o-border-radius: 100px;
+  -ms-border-radius: 100px;
+  border-radius: 100px;
+  -webkit-animation: pulse 2s linear infinite;
+  -moz-animation: pulse 2s linear infinite;
+  border-image: initial;
+}
+.pulse_holder .pulse_marker .pulse_rays {
+  top: -42px;
+  left: -42px;
+}

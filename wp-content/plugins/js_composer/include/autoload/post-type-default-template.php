@@ -59,10 +59,36 @@ Class Vc_Setting_Post_Type_Default_Template_Field {
 		) );
 	}
 
-	public function getTemplateByPostType( $type ) {
-		$value = $this->get();
+	protected function getFieldName() {
+		return __( 'Default template for post types', 'js_composer' );
+	}
 
-		return isset( $value[ $type ] ) ? $this->getTemplate( $value[ $type ] ) : null;
+	protected function getFieldKey() {
+		require_once vc_path_dir( 'SETTINGS_DIR', 'class-vc-settings.php' );
+
+		return Vc_Settings::getFieldPrefix() . $this->key;
+	}
+
+	protected function isValidPostType( $type ) {
+		return post_type_exists( $type );
+	}
+
+	protected function getPostTypes() {
+		if ( false === $this->post_types ) {
+			require_once vc_path_dir( 'SETTINGS_DIR', 'class-vc-roles.php' );
+			$vc_roles = new Vc_Roles();
+			$this->post_types = $vc_roles->getPostTypes();
+		}
+
+		return $this->post_types;
+	}
+
+	protected function getTemplates() {
+		return $this->getTemplatesEditor()->getAllTemplates();
+	}
+
+	protected function getTemplatesEditor() {
+		return visual_composer()->templatesPanelEditor();
 	}
 
 	/**
@@ -119,8 +145,10 @@ Class Vc_Setting_Post_Type_Default_Template_Field {
 		return $template;
 	}
 
-	protected function getTemplatesEditor() {
-		return visual_composer()->templatesPanelEditor();
+	public function getTemplateByPostType( $type ) {
+		$value = $this->get();
+
+		return isset( $value[ $type ] ) ? $this->getTemplate( $value[ $type ] ) : null;
 	}
 
 	public function sanitize( $settings ) {
@@ -137,16 +165,6 @@ Class Vc_Setting_Post_Type_Default_Template_Field {
 		return $settings;
 	}
 
-	protected function isValidPostType( $type ) {
-		return post_type_exists( $type );
-	}
-
-	protected function getFieldKey() {
-		require_once vc_path_dir( 'SETTINGS_DIR', 'class-vc-settings.php' );
-
-		return Vc_Settings::getFieldPrefix() . $this->key;
-	}
-
 	public function render() {
 		vc_include_template( 'pages/vc-settings/default-template-post-type.tpl.php', array(
 			'post_types' => $this->getPostTypes(),
@@ -155,24 +173,6 @@ Class Vc_Setting_Post_Type_Default_Template_Field {
 			'value' => $this->get(),
 			'field_key' => $this->getFieldKey(),
 		) );
-	}
-
-	protected function getPostTypes() {
-		if ( false === $this->post_types ) {
-			require_once vc_path_dir( 'SETTINGS_DIR', 'class-vc-roles.php' );
-			$vc_roles = new Vc_Roles();
-			$this->post_types = $vc_roles->getPostTypes();
-		}
-
-		return $this->post_types;
-	}
-
-	protected function getTemplates() {
-		return $this->getTemplatesEditor()->getAllTemplates();
-	}
-
-	protected function getFieldName() {
-		return __( 'Default template for post types', 'js_composer' );
 	}
 
 	/**

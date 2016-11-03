@@ -41,6 +41,7 @@ class WP_Filesystem_Base {
 
 	/**
 	 * @access public
+	 * @var WP_Error
 	 */
 	public $errors = null;
 
@@ -48,6 +49,22 @@ class WP_Filesystem_Base {
 	 * @access public
 	 */
 	public $options = array();
+
+	/**
+	 * Return the path on the remote filesystem of ABSPATH.
+	 *
+	 * @access public
+	 * @since 2.7.0
+	 *
+	 * @return string The location of the remote path.
+	 */
+	public function abspath() {
+		$folder = $this->find_folder(ABSPATH);
+		// Perhaps the FTP folder is rooted at the WordPress install, Check for wp-includes folder in root, Could have some false positives, but rare.
+		if ( ! $folder && $this->is_dir( '/' . WPINC ) )
+			$folder = '/';
+		return $folder;
+	}
 
 	/**
 	 * Return the path on the remote filesystem of WP_CONTENT_DIR.
@@ -59,6 +76,94 @@ class WP_Filesystem_Base {
 	 */
 	public function wp_content_dir() {
 		return $this->find_folder(WP_CONTENT_DIR);
+	}
+
+	/**
+	 * Return the path on the remote filesystem of WP_PLUGIN_DIR.
+	 *
+	 * @access public
+	 * @since 2.7.0
+	 *
+	 * @return string The location of the remote path.
+	 */
+	public function wp_plugins_dir() {
+		return $this->find_folder(WP_PLUGIN_DIR);
+	}
+
+	/**
+	 * Return the path on the remote filesystem of the Themes Directory.
+	 *
+	 * @access public
+	 * @since 2.7.0
+	 *
+	 * @param string $theme The Theme stylesheet or template for the directory.
+	 * @return string The location of the remote path.
+	 */
+	public function wp_themes_dir( $theme = false ) {
+		$theme_root = get_theme_root( $theme );
+
+		// Account for relative theme roots
+		if ( '/themes' == $theme_root || ! is_dir( $theme_root ) )
+			$theme_root = WP_CONTENT_DIR . $theme_root;
+
+		return $this->find_folder( $theme_root );
+	}
+
+	/**
+	 * Return the path on the remote filesystem of WP_LANG_DIR.
+	 *
+	 * @access public
+	 * @since 3.2.0
+	 *
+	 * @return string The location of the remote path.
+	 */
+	public function wp_lang_dir() {
+		return $this->find_folder(WP_LANG_DIR);
+	}
+
+	/**
+	 * Locate a folder on the remote filesystem.
+	 *
+	 * @access public
+	 * @since 2.5.0
+	 * @deprecated 2.7.0 use WP_Filesystem::abspath() or WP_Filesystem::wp_*_dir() instead.
+	 * @see WP_Filesystem::abspath()
+	 * @see WP_Filesystem::wp_content_dir()
+	 * @see WP_Filesystem::wp_plugins_dir()
+	 * @see WP_Filesystem::wp_themes_dir()
+	 * @see WP_Filesystem::wp_lang_dir()
+	 *
+	 * @param string $base The folder to start searching from.
+	 * @param bool   $echo True to display debug information.
+	 *                     Default false.
+	 * @return string The location of the remote path.
+	 */
+	public function find_base_dir( $base = '.', $echo = false ) {
+		_deprecated_function(__FUNCTION__, '2.7.0', 'WP_Filesystem::abspath() or WP_Filesystem::wp_*_dir()' );
+		$this->verbose = $echo;
+		return $this->abspath();
+	}
+
+	/**
+	 * Locate a folder on the remote filesystem.
+	 *
+	 * @access public
+	 * @since 2.5.0
+	 * @deprecated 2.7.0 use WP_Filesystem::abspath() or WP_Filesystem::wp_*_dir() methods instead.
+	 * @see WP_Filesystem::abspath()
+	 * @see WP_Filesystem::wp_content_dir()
+	 * @see WP_Filesystem::wp_plugins_dir()
+	 * @see WP_Filesystem::wp_themes_dir()
+	 * @see WP_Filesystem::wp_lang_dir()
+	 *
+	 * @param string $base The folder to start searching from.
+	 * @param bool   $echo True to display debug information.
+	 * @return string The location of the remote path.
+	 */
+	public function get_base_dir( $base = '.', $echo = false ) {
+		_deprecated_function(__FUNCTION__, '2.7.0', 'WP_Filesystem::abspath() or WP_Filesystem::wp_*_dir()' );
+		$this->verbose = $echo;
+		return $this->abspath();
 	}
 
 	/**
@@ -126,34 +231,6 @@ class WP_Filesystem_Base {
 		if ( $return = $this->search_for_folder($folder) )
 			$this->cache[ $folder ] = $return;
 		return $return;
-	}
-
-	/**
-	 * Check if resource is a directory.
-	 *
-	 * @access public
-	 * @since 2.5.0
-	 * @abstract
-	 *
-	 * @param string $path Directory path.
-	 * @return bool Whether $path is a directory.
-	 */
-	public function is_dir( $path ) {
-		return false;
-	}
-
-	/**
-	 * Check if a file or directory exists.
-	 *
-	 * @access public
-	 * @since 2.5.0
-	 * @abstract
-	 *
-	 * @param string $file Path to file/directory.
-	 * @return bool Whether $file exists or not.
-	 */
-	public function exists( $file ) {
-		return false;
 	}
 
 	/**
@@ -236,159 +313,11 @@ class WP_Filesystem_Base {
 	}
 
 	/**
-	 * Get the current working directory.
-	 *
-	 * @access public
-	 * @since 2.5.0
-	 * @abstract
-	 *
-	 * @return string|bool The current working directory on success, or false on failure.
-	 */
-	public function cwd() {
-		return false;
-	}
-
-	/**
-	 * Get details for files in a directory or a specific file.
-	 *
-	 * @access public
-	 * @since 2.5.0
-	 * @abstract
-	 *
-	 * @param string $path           Path to directory or file.
-	 * @param bool   $include_hidden Optional. Whether to include details of hidden ("." prefixed) files.
-	 *                               Default true.
-	 * @param bool   $recursive      Optional. Whether to recursively include file details in nested directories.
-	 *                               Default false.
-	 * @return array|bool {
-	 *     Array of files. False if unable to list directory contents.
-	 *
-	 *     @type string $name        Name of the file/directory.
-	 *     @type string $perms       *nix representation of permissions.
-	 *     @type int    $permsn      Octal representation of permissions.
-	 *     @type string $owner       Owner name or ID.
-	 *     @type int    $size        Size of file in bytes.
-	 *     @type int    $lastmodunix Last modified unix timestamp.
-	 *     @type mixed  $lastmod     Last modified month (3 letter) and day (without leading 0).
-	 *     @type int    $time        Last modified time.
-	 *     @type string $type        Type of resource. 'f' for file, 'd' for directory.
-	 *     @type mixed  $files       If a directory and $recursive is true, contains another array of files.
-	 * }
-	 */
-	public function dirlist( $path, $include_hidden = true, $recursive = false ) {
-		return false;
-	}
-
-	/**
-	 * Return the path on the remote filesystem of WP_PLUGIN_DIR.
-	 *
-	 * @access public
-	 * @since 2.7.0
-	 *
-	 * @return string The location of the remote path.
-	 */
-	public function wp_plugins_dir() {
-		return $this->find_folder(WP_PLUGIN_DIR);
-	}
-
-	/**
-	 * Return the path on the remote filesystem of the Themes Directory.
-	 *
-	 * @access public
-	 * @since 2.7.0
-	 *
-	 * @param string $theme The Theme stylesheet or template for the directory.
-	 * @return string The location of the remote path.
-	 */
-	public function wp_themes_dir( $theme = false ) {
-		$theme_root = get_theme_root( $theme );
-
-		// Account for relative theme roots
-		if ( '/themes' == $theme_root || ! is_dir( $theme_root ) )
-			$theme_root = WP_CONTENT_DIR . $theme_root;
-
-		return $this->find_folder( $theme_root );
-	}
-
-	/**
-	 * Return the path on the remote filesystem of WP_LANG_DIR.
-	 *
-	 * @access public
-	 * @since 3.2.0
-	 *
-	 * @return string The location of the remote path.
-	 */
-	public function wp_lang_dir() {
-		return $this->find_folder(WP_LANG_DIR);
-	}
-
-	/**
-	 * Locate a folder on the remote filesystem.
-	 *
-	 * @access public
-	 * @since 2.5.0
-	 * @deprecated 2.7.0 use WP_Filesystem::abspath() or WP_Filesystem::wp_*_dir() instead.
-	 * @see WP_Filesystem::abspath()
-	 * @see WP_Filesystem::wp_content_dir()
-	 * @see WP_Filesystem::wp_plugins_dir()
-	 * @see WP_Filesystem::wp_themes_dir()
-	 * @see WP_Filesystem::wp_lang_dir()
-	 *
-	 * @param string $base The folder to start searching from.
-	 * @param bool   $echo True to display debug information.
-	 *                     Default false.
-	 * @return string The location of the remote path.
-	 */
-	public function find_base_dir( $base = '.', $echo = false ) {
-		_deprecated_function(__FUNCTION__, '2.7', 'WP_Filesystem::abspath() or WP_Filesystem::wp_*_dir()' );
-		$this->verbose = $echo;
-		return $this->abspath();
-	}
-
-	/**
-	 * Return the path on the remote filesystem of ABSPATH.
-	 *
-	 * @access public
-	 * @since 2.7.0
-	 *
-	 * @return string The location of the remote path.
-	 */
-	public function abspath() {
-		$folder = $this->find_folder(ABSPATH);
-		// Perhaps the FTP folder is rooted at the WordPress install, Check for wp-includes folder in root, Could have some false positives, but rare.
-		if ( ! $folder && $this->is_dir( '/' . WPINC ) )
-			$folder = '/';
-		return $folder;
-	}
-
-	/**
-	 * Locate a folder on the remote filesystem.
-	 *
-	 * @access public
-	 * @since 2.5.0
-	 * @deprecated 2.7.0 use WP_Filesystem::abspath() or WP_Filesystem::wp_*_dir() methods instead.
-	 * @see WP_Filesystem::abspath()
-	 * @see WP_Filesystem::wp_content_dir()
-	 * @see WP_Filesystem::wp_plugins_dir()
-	 * @see WP_Filesystem::wp_themes_dir()
-	 * @see WP_Filesystem::wp_lang_dir()
-	 *
-	 * @param string $base The folder to start searching from.
-	 * @param bool   $echo True to display debug information.
-	 * @return string The location of the remote path.
-	 */
-	public function get_base_dir( $base = '.', $echo = false ) {
-		_deprecated_function(__FUNCTION__, '2.7', 'WP_Filesystem::abspath() or WP_Filesystem::wp_*_dir()' );
-		$this->verbose = $echo;
-		return $this->abspath();
-	}
-
-	/**
 	 * Return the *nix-style file permissions for a file.
 	 *
 	 * From the PHP documentation page for fileperms().
 	 *
-	 * @link http://docs.php.net/fileperms
+	 * @link https://secure.php.net/manual/en/function.fileperms.php
 	 *
 	 * @access public
 	 * @since 2.5.0
@@ -456,7 +385,7 @@ class WP_Filesystem_Base {
 	 * Converts '-rw-r--r--' to 0644
 	 * From "info at rvgate dot nl"'s comment on the PHP documentation for chmod()
  	 *
-	 * @link http://docs.php.net/manual/en/function.chmod.php#49614
+	 * @link https://secure.php.net/manual/en/function.chmod.php#49614
 	 *
 	 * @access public
 	 * @since 2.5.0
@@ -574,6 +503,19 @@ class WP_Filesystem_Base {
 	}
 
 	/**
+	 * Get the current working directory.
+	 *
+	 * @access public
+	 * @since 2.5.0
+	 * @abstract
+	 *
+	 * @return string|bool The current working directory on success, or false on failure.
+	 */
+	public function cwd() {
+		return false;
+	}
+
+	/**
 	 * Change current directory.
 	 *
 	 * @access public
@@ -625,7 +567,7 @@ class WP_Filesystem_Base {
 	 * @access public
 	 * @since 2.5.0
 	 * @abstract
-	 *
+	 * 
 	 * @param string $file Path to the file.
 	 * @return string|bool Username of the user or false on error.
 	 */
@@ -702,6 +644,20 @@ class WP_Filesystem_Base {
 	}
 
 	/**
+	 * Check if a file or directory exists.
+	 *
+	 * @access public
+	 * @since 2.5.0
+	 * @abstract
+	 *
+	 * @param string $file Path to file/directory.
+	 * @return bool Whether $file exists or not.
+	 */
+	public function exists( $file ) {
+		return false;
+	}
+
+	/**
 	 * Check if resource is a file.
 	 *
 	 * @access public
@@ -712,6 +668,20 @@ class WP_Filesystem_Base {
 	 * @return bool Whether $file is a file.
 	 */
 	public function is_file( $file ) {
+		return false;
+	}
+
+	/**
+	 * Check if resource is a directory.
+	 *
+	 * @access public
+	 * @since 2.5.0
+	 * @abstract
+	 *
+	 * @param string $path Directory path.
+	 * @return bool Whether $path is a directory.
+	 */
+	public function is_dir( $path ) {
 		return false;
 	}
 
@@ -838,6 +808,37 @@ class WP_Filesystem_Base {
 	 * @return bool Whether directory is deleted successfully or not.
 	 */
 	public function rmdir( $path, $recursive = false ) {
+		return false;
+	}
+
+	/**
+	 * Get details for files in a directory or a specific file.
+	 *
+	 * @access public
+	 * @since 2.5.0
+	 * @abstract
+	 *
+	 * @param string $path           Path to directory or file.
+	 * @param bool   $include_hidden Optional. Whether to include details of hidden ("." prefixed) files.
+	 *                               Default true.
+	 * @param bool   $recursive      Optional. Whether to recursively include file details in nested directories.
+	 *                               Default false.
+	 * @return array|bool {
+	 *     Array of files. False if unable to list directory contents.
+	 *
+	 *     @type string $name        Name of the file/directory.
+	 *     @type string $perms       *nix representation of permissions.
+	 *     @type int    $permsn      Octal representation of permissions.
+	 *     @type string $owner       Owner name or ID.
+	 *     @type int    $size        Size of file in bytes.
+	 *     @type int    $lastmodunix Last modified unix timestamp.
+	 *     @type mixed  $lastmod     Last modified month (3 letter) and day (without leading 0).
+	 *     @type int    $time        Last modified time.
+	 *     @type string $type        Type of resource. 'f' for file, 'd' for directory.
+	 *     @type mixed  $files       If a directory and $recursive is true, contains another array of files.
+	 * }
+	 */
+	public function dirlist( $path, $include_hidden = true, $recursive = false ) {
 		return false;
 	}
 

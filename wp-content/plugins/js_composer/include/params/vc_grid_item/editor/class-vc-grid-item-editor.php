@@ -16,44 +16,6 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 	protected $templates_editor = false;
 
 	/**
-	 * Create post type and new item in the admin menu.
-	 * @return void
-	 */
-	public static function createPostType() {
-		register_post_type( self::$post_type, array(
-				'labels' => self::getPostTypesLabels(),
-				'public' => false,
-				'has_archive' => false,
-				'show_in_nav_menus' => false,
-				'exclude_from_search' => true,
-				'publicly_queryable' => false,
-				'show_ui' => true,
-				'show_in_menu' => false,
-				'query_var' => true,
-				'capability_type' => 'post',
-				'hierarchical' => false,
-				'menu_position' => null,
-				'supports' => array(
-					'title',
-					'editor',
-				),
-			) );
-	}
-
-	public static function getPostTypesLabels() {
-		return array(
-			'add_new_item' => __( 'Add Grid template', 'js_composer' ),
-			'name' => __( 'Grid Builder', 'js_composer' ),
-			'singular_name' => __( 'Grid template', 'js_composer' ),
-			'edit_item' => __( 'Edit Grid template', 'js_composer' ),
-			'view_item' => __( 'View Grid template', 'js_composer' ),
-			'search_items' => __( 'Search Grid templates', 'js_composer' ),
-			'not_found' => __( 'No Grid templates found', 'js_composer' ),
-			'not_found_in_trash' => __( 'No Grid templates found in Trash', 'js_composer' ),
-		);
-	}
-
-	/**
 	 * This method is called to add hooks.
 	 *
 	 * @since  4.8
@@ -96,6 +58,53 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 		}
 	}
 
+	public function editorEnabled() {
+		return vc_user_access()->part( 'grid_builder' )->can()->get();
+	}
+
+	public function replaceTemplatesPanelEditorJsAction() {
+		wp_dequeue_script( 'vc-template-preview-script' );
+		$this->templatesEditor()->addScriptsToTemplatePreview();
+	}
+
+	/**
+	 * Create post type and new item in the admin menu.
+	 * @return void
+	 */
+	public static function createPostType() {
+		register_post_type( self::$post_type, array(
+				'labels' => self::getPostTypesLabels(),
+				'public' => false,
+				'has_archive' => false,
+				'show_in_nav_menus' => false,
+				'exclude_from_search' => true,
+				'publicly_queryable' => false,
+				'show_ui' => true,
+				'show_in_menu' => false,
+				'query_var' => true,
+				'capability_type' => 'post',
+				'hierarchical' => false,
+				'menu_position' => null,
+				'supports' => array(
+					'title',
+					'editor',
+				),
+			) );
+	}
+
+	public static function getPostTypesLabels() {
+		return array(
+			'add_new_item' => __( 'Add Grid template', 'js_composer' ),
+			'name' => __( 'Grid Builder', 'js_composer' ),
+			'singular_name' => __( 'Grid template', 'js_composer' ),
+			'edit_item' => __( 'Edit Grid template', 'js_composer' ),
+			'view_item' => __( 'View Grid template', 'js_composer' ),
+			'search_items' => __( 'Search Grid templates', 'js_composer' ),
+			'not_found' => __( 'No Grid templates found', 'js_composer' ),
+			'not_found_in_trash' => __( 'No Grid templates found in Trash', 'js_composer' ),
+		);
+	}
+
 	/**
 	 * Rewrites validation for correct post_type of th post.
 	 *
@@ -105,10 +114,6 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 		$type = ! empty( $type ) ? $type : get_post_type();
 
 		return $this->editorEnabled() && $this->postType() === $type;
-	}
-
-	public function editorEnabled() {
-		return vc_user_access()->part( 'grid_builder' )->can()->get();
 	}
 
 	/**
@@ -121,14 +126,28 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 		return self::$post_type;
 	}
 
-	public function registerBackendJavascript() {
-		parent::registerBackendJavascript();
-		wp_register_script( 'vc_grid_item_editor', vc_asset_url( 'js/dist/grid-builder.min.js' ), array( 'vc-backend-min-js' ), WPB_VC_VERSION, true );
-		wp_localize_script( 'vc_grid_item_editor', 'i18nLocaleGItem', array(
-			'preview' => __( 'Preview', 'js_composer' ),
-			'builder' => __( 'Builder', 'js_composer' ),
-			'add_template_message' => __( 'If you add this template, all your current changes will be removed. Are you sure you want to add template?', 'js_composer' ),
-		) );
+	/**
+	 * Calls add_meta_box to create Editor block.
+	 *
+	 * @access public
+	 */
+	public function addMetaBox() {
+		add_meta_box( 'wpb_visual_composer', __( 'Grid Builder', 'js_composer' ), array(
+				&$this,
+				'renderEditor',
+			), $this->postType(), 'normal', 'high' );
+	}
+
+	/**
+	 * Change order of the controls for shortcodes admin block.
+	 *
+	 * @return array
+	 */
+	public function shortcodesControls() {
+		return array(
+			'delete',
+			'edit',
+		);
 	}
 
 	/**
@@ -169,6 +188,14 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 		), 10, 2 );
 	}
 
+	public function accessCheckShortcodeEdit( $null, $shortcode ) {
+		return vc_user_access()->part( 'grid_builder' )->can()->get();
+	}
+
+	public function accessCheckShortcodeAll( $null, $shortcode ) {
+		return vc_user_access()->part( 'grid_builder' )->can()->get();
+	}
+
 	/**
 	 * Output required html and js content for VC editor.
 	 *
@@ -182,14 +209,19 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 		do_action( 'vc_backend_editor_footer_render' );
 	}
 
+	public function registerBackendJavascript() {
+		parent::registerBackendJavascript();
+		wp_register_script( 'vc_grid_item_editor', vc_asset_url( 'js/dist/grid-builder.min.js' ), array( 'vc-backend-min-js' ), WPB_VC_VERSION, true );
+		wp_localize_script( 'vc_grid_item_editor', 'i18nLocaleGItem', array(
+			'preview' => __( 'Preview', 'js_composer' ),
+			'builder' => __( 'Builder', 'js_composer' ),
+			'add_template_message' => __( 'If you add this template, all your current changes will be removed. Are you sure you want to add template?', 'js_composer' ),
+		) );
+	}
+
 	public function enqueueJs() {
 		parent::enqueueJs();
 		wp_enqueue_script( 'vc_grid_item_editor' );
-	}
-
-	public function replaceTemplatesPanelEditorJsAction() {
-		wp_dequeue_script( 'vc-template-preview-script' );
-		$this->templatesEditor()->addScriptsToTemplatePreview();
 	}
 
 	public function templatesEditor() {
@@ -201,38 +233,13 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 		return $this->templates_editor;
 	}
 
-	/**
-	 * Calls add_meta_box to create Editor block.
-	 *
-	 * @access public
-	 */
-	public function addMetaBox() {
-		add_meta_box( 'wpb_visual_composer', __( 'Grid Builder', 'js_composer' ), array(
-				&$this,
-				'renderEditor',
-			), $this->postType(), 'normal', 'high' );
-	}
+	public function loadPredefinedTemplate( $template_id, $template_type ) {
+		ob_start();
+		$this->templatesEditor()->load( $template_id );
 
-	/**
-	 * Change order of the controls for shortcodes admin block.
-	 *
-	 * @return array
-	 */
-	public function shortcodesControls() {
-		return array(
-			'delete',
-			'edit',
-		);
-	}
+		return ob_get_clean();
 
-	public function accessCheckShortcodeEdit( $null, $shortcode ) {
-		return vc_user_access()->part( 'grid_builder' )->can()->get();
 	}
-
-	public function accessCheckShortcodeAll( $null, $shortcode ) {
-		return vc_user_access()->part( 'grid_builder' )->can()->get();
-	}
-
 	public function loadTemplate( $template_id, $template_type ) {
 		if ( 'grid_templates' === $template_type ) {
 			return $this->loadPredefinedTemplate($template_id, $template_type);
@@ -241,14 +248,6 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 		}
 
 		return $template_id;
-	}
-
-	public function loadPredefinedTemplate( $template_id, $template_type ) {
-		ob_start();
-		$this->templatesEditor()->load( $template_id );
-
-		return ob_get_clean();
-
 	}
 
 	public function templatePreviewPath( $path ) {

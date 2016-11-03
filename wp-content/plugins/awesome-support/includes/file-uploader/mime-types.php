@@ -10,12 +10,9 @@
  *
  * @return string
  */
-function wpas_get_mime_type($extension)
-{
-
+function wpas_get_mime_type($extension) {
     $mime = $extension;
-
-    $mime_types_map = array(
+    $mime_types_map = [
         '123'          => 'application/vnd.lotus-1-2-3',
         '3dml'         => 'text/vnd.in3d.3dml',
         '3ds'          => 'image/x-3ds',
@@ -1012,13 +1009,10 @@ function wpas_get_mime_type($extension)
         'zir'          => 'application/vnd.zul',
         'zirz'         => 'application/vnd.zul',
         'zmm'          => 'application/vnd.handheld-entertainment+xml'
-    );
-
-    if (array_key_exists($extension, $mime_types_map))
-    {
-        $mime = $mime_types_map[$extension];
+    ];
+    if (array_key_exists($extension, $mime_types_map)) {
+        $mime = $mime_types_map[ $extension ];
     }
 
     return $mime;
-
 }

@@ -1,9 +1,6 @@
 <?php
-
 // This adds quick access to Flatsome docs and Support.
-
-function flatsome_support_helper()
-{
+function flatsome_support_helper() {
     ?>
     <script>!function (e, o, n) {
             window.HSCW = o, window.HS = n, n.beacon = n.beacon || {};
@@ -69,32 +66,27 @@ function flatsome_support_helper()
 }
 
 add_action('wp_footer', 'flatsome_support_helper', 100);
-
-
-function flatsome_admin_bar_beacon()
-{
+function flatsome_admin_bar_beacon() {
     global $wp_admin_bar, $flatsome_opt;
     // top menu
-    $wp_admin_bar->add_menu(array(
-        'parent' => 'theme_options',
-        'id'     => 'flatsome-beacon',
-        'title'  => '-- Documentation --',
-        'href'   => '#',
-    ));
-
-    $wp_admin_bar->add_menu(array(
-        'parent' => 'flatsome-beacon',
-        'id'     => 'flatsome-docs-search',
-        'title'  => 'Search Documentations',
-        'href'   => '#',
-    ));
-
-    $wp_admin_bar->add_menu(array(
-        'parent' => 'flatsome-beacon',
-        'id'     => 'flatsome-docs',
-        'title'  => 'Open Documentations',
-        'href'   => 'http://uxthemes.helpscoutdocs.com',
-    ));
+    $wp_admin_bar->add_menu([
+                                'parent' => 'theme_options',
+                                'id'     => 'flatsome-beacon',
+                                'title'  => '-- Documentation --',
+                                'href'   => '#',
+                            ]);
+    $wp_admin_bar->add_menu([
+                                'parent' => 'flatsome-beacon',
+                                'id'     => 'flatsome-docs-search',
+                                'title'  => 'Search Documentations',
+                                'href'   => '#',
+                            ]);
+    $wp_admin_bar->add_menu([
+                                'parent' => 'flatsome-beacon',
+                                'id'     => 'flatsome-docs',
+                                'title'  => 'Open Documentations',
+                                'href'   => 'http://uxthemes.helpscoutdocs.com',
+                            ]);
 }
 
 add_action('wp_before_admin_bar_render', 'flatsome_admin_bar_beacon', 1);

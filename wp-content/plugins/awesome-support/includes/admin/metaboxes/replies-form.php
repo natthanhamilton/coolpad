@@ -6,10 +6,8 @@
  * @link      http://themeavenue.net
  * @copyright 2014 ThemeAvenue
  */
-
 // If this file is called directly, abort.
-if (! defined('WPINC'))
-{
+if (!defined('WPINC')) {
     die;
 }
 ?>
@@ -24,16 +22,19 @@ if (! defined('WPINC'))
      * @param  string  Title to display
      * @param  WP_Post Current post object
      */
-    echo apply_filters('wpas_write_reply_title_admin', sprintf(esc_html_x('Write a reply to %s', 'Title of the reply editor in the back-end', 'awesome-support'), '&laquo;' . esc_attr(get_the_title($post->ID)) . '&raquo;'), $post); ?>
+    echo apply_filters('wpas_write_reply_title_admin',
+                       sprintf(esc_html_x('Write a reply to %s', 'Title of the reply editor in the back-end',
+                                          'awesome-support'),
+                               '&laquo;' . esc_attr(get_the_title($post->ID)) . '&raquo;'), $post); ?>
 </h2>
 <div>
     <?php
     // Load the WordPress WYSIWYG with minimal options
-    wp_editor('', 'wpas_reply', apply_filters('wpas_admin_reply_form_args', array(
-            'media_buttons' => FALSE,
-            'teeny'         => TRUE,
-            'quicktags'     => TRUE,
-        )
+    wp_editor('', 'wpas_reply', apply_filters('wpas_admin_reply_form_args', [
+                                                                              'media_buttons' => FALSE,
+                                                                              'teeny'         => TRUE,
+                                                                              'quicktags'     => TRUE,
+                                                                          ]
     ));
     ?>
 </div>
@@ -45,7 +46,6 @@ if (! defined('WPINC'))
  * @WPAS_Quick_Replies::echoMarkup()
  */
 do_action('wpas_admin_after_wysiwyg');
-
 /**
  * Add a nonce for the reply
  */
@@ -61,9 +61,7 @@ wp_nonce_field('reply_ticket', 'wpas_reply_ticket', FALSE, TRUE);
      */
     global $current_user;
     $where = get_user_meta($current_user->ID, 'wpas_after_reply', TRUE);
-
     switch ($where):
-
         case FALSE:
         case '':
         case 'back': ?>
@@ -71,15 +69,12 @@ wp_nonce_field('reply_ticket', 'wpas_reply_ticket', FALSE, TRUE);
             <button type="submit" name="wpas_do" class="button-primary wpas_btn_reply"
                     value="reply"><?php _e('Reply', 'awesome-support'); ?></button>
             <?php break;
-
             break;
-
         case 'stay':
             ?>
             <button type="submit" name="wpas_do" class="button-primary wpas_btn_reply"
                     value="reply"><?php _e('Reply', 'awesome-support'); ?></button><?php
             break;
-
         case 'ask': ?>
             <fieldset>
                 <strong><?php _e('After Replying', 'awesome-support'); ?></strong><br>
@@ -87,13 +82,13 @@ wp_nonce_field('reply_ticket', 'wpas_reply_ticket', FALSE, TRUE);
                                                  checked="checked"> <?php _e('Back to list', 'awesome-support'); ?>
                 </label>
                 <label for="stay_here"><input type="radio" id="stay_here" name="where_after"
-                                              value="stay_here"> <?php _e('Stay on ticket screen', 'awesome-support'); ?>
+                                              value="stay_here"> <?php _e('Stay on ticket screen',
+                                                                          'awesome-support'); ?>
                 </label>
             </fieldset>
             <button type="submit" name="wpas_do" class="button-primary wpas_btn_reply"
                     value="reply"><?php _e('Reply', 'awesome-support'); ?></button>
             <?php break;
-
     endswitch;
     ?>
 
@@ -101,7 +96,6 @@ wp_nonce_field('reply_ticket', 'wpas_reply_ticket', FALSE, TRUE);
         <button type="submit" name="wpas_do" class="button-secondary wpas_btn_reply_close"
                 value="reply_close"><?php _e('Reply & Close', 'awesome-support'); ?></button>
     <?php endif;
-
     /**
      * Fired after all the submission form buttons were output
      *
@@ -110,10 +104,10 @@ wp_nonce_field('reply_ticket', 'wpas_reply_ticket', FALSE, TRUE);
      * @param int $post_id Ticket ID
      */
     do_action('wpas_post_reply_buttons_after', $post->ID);
-
     // Link to close the ticket
     if ('open' === get_post_meta(get_the_ID(), '_wpas_status', TRUE)) : ?>
         <a class="wpas_btn_close_bottom"
-           href="<?php echo wpas_get_close_ticket_url($post->ID); ?>"><?php echo esc_html_x('Close', 'Close the ticket', 'awesome-support'); ?></a>
+           href="<?php echo wpas_get_close_ticket_url($post->ID); ?>"><?php echo esc_html_x('Close', 'Close the ticket',
+                                                                                            'awesome-support'); ?></a>
     <?php endif; ?>
 </div>

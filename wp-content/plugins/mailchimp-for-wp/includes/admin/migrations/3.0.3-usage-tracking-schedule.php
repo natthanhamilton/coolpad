@@ -1,28 +1,24 @@
 <?php
-defined( 'ABSPATH' ) or exit;
-
-$options = (array) get_option( 'mc4wp', array() );
-if( empty( $options['allow_usage_tracking'] ) ) {
+defined('ABSPATH') or exit;
+$options = (array)get_option('mc4wp', []);
+if (empty($options['allow_usage_tracking'])) {
 	return;
 }
-
 // usage tracking is enabled, reschedule it so it uses new cron schedule.
-
 // make sure 'monthly' cron schedule is registered
 /**
  * @ignore
  */
-function __mc4wp_303_add_monthly_cron_schedule( $schedules ) {
-	$schedules['monthly'] = array(
+function __mc4wp_303_add_monthly_cron_schedule($schedules) {
+	$schedules['monthly'] = [
 		'interval' => 30 * DAY_IN_SECONDS,
-		'display' => 'Once a month'
-	);
+		'display'  => 'Once a month'
+	];
 
 	return $schedules;
 }
 
-add_filter( 'cron_schedules', '__mc4wp_303_add_monthly_cron_schedule', 1 );
-
+add_filter('cron_schedules', '__mc4wp_303_add_monthly_cron_schedule', 1);
 // reschedule usage tracking event
-wp_clear_scheduled_hook( 'mc4wp_usage_tracking' );
-wp_schedule_event( time(), 'monthly', 'mc4wp_usage_tracking' );
+wp_clear_scheduled_hook('mc4wp_usage_tracking');
+wp_schedule_event(time(), 'monthly', 'mc4wp_usage_tracking');

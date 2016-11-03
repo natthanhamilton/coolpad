@@ -6,46 +6,38 @@
  * and change it in one click.
  *
  * For more details on how the ticket status is changed,
- * @see Awesome_Support_Admin::custom_actions()
+ *
+ * @see   Awesome_Support_Admin::custom_actions()
  *
  * @since 3.0.0
  */
-
 // If this file is called directly, abort.
-if (! defined('WPINC'))
-{
+if (!defined('WPINC')) {
     die;
 }
-
 global $pagenow, $post;
-
 /* Current status */
 $ticket_status = get_post_meta(get_the_ID(), '_wpas_status', TRUE);
-
 /**
  * Status action link
  *
  * @var string
  * @see admin/class-awesome-support-admin.php
  */
-$base_url = add_query_arg(array('action' => 'edit', 'post' => $post->ID), admin_url('post.php'));
-$action = (in_array($ticket_status, array('closed', ''))) ? wpas_do_url($base_url, 'admin_open_ticket') : wpas_do_url($base_url, 'admin_close_ticket');
-
+$base_url = add_query_arg(['action' => 'edit', 'post' => $post->ID], admin_url('post.php'));
+$action   = (in_array($ticket_status, ['closed', ''])) ? wpas_do_url($base_url, 'admin_open_ticket')
+    : wpas_do_url($base_url, 'admin_close_ticket');
 /**
  * Get available statuses.
  */
 $statuses = wpas_get_post_status();
-
 /* Get post status */
 $post_status = isset($post) ? $post->post_status : '';
-
 /* Get the date */
 $date_format = get_option('date_format') . ' ' . get_option('time_format');
-$date = get_the_date($date_format);
-
+$date        = get_the_date($date_format);
 /* Get time */
-if (isset($post))
-{
+if (isset($post)) {
     $dateago = human_time_diff(get_the_time('U', $post->ID), current_time('timestamp'));
 }
 ?>
@@ -74,8 +66,7 @@ if (isset($post))
             <select id="wpas-post-status" name="post_status_override" style="width: 100%">
                 <?php foreach ($statuses as $status => $label):
                     $selected = ($post_status === $status) ? 'selected="selected"' : '';
-                    if ('auto-draft' === $post_status && 'processing' === $status)
-                    {
+                    if ('auto-draft' === $post_status && 'processing' === $status) {
                         $selected = 'selected="selected"';
                     } ?>
                     <option value="<?php echo $status; ?>" <?php echo $selected; ?>><?php echo $label; ?></option>
@@ -92,16 +83,11 @@ if (isset($post))
             <div id="delete-action">
                 <a class="submitdelete deletion" href="<?php echo $action; ?>">
                     <?php
-                    if ('closed' === $ticket_status)
-                    {
+                    if ('closed' === $ticket_status) {
                         _e('Re-open', 'awesome-support');
-                    }
-                    elseif ('' === $ticket_status)
-                    {
+                    } elseif ('' === $ticket_status) {
                         _e('Open', 'awesome-support');
-                    }
-                    else
-                    {
+                    } else {
                         _e('Close', 'awesome-support');
                     }
                     ?>
@@ -115,12 +101,14 @@ if (isset($post))
                 <?php if (isset($_GET['action']) && 'edit' === $_GET['action']) : ?>
                     <input name="original_publish" type="hidden" id="original_publish"
                            value="<?php esc_attr_e('Updating', 'awesome-support') ?>"/>
-                    <?php submit_button(__('Update Ticket'), 'primary button-large', 'publish', FALSE, array('accesskey' => 'u')); ?>
+                    <?php submit_button(__('Update Ticket'), 'primary button-large', 'publish', FALSE,
+                                        ['accesskey' => 'u']); ?>
                 <?php else:
                     if (current_user_can('create_ticket')): ?>
                         <input name="original_publish" type="hidden" id="original_publish"
                                value="<?php esc_attr_e('Creating', 'awesome-support') ?>"/>
-                        <?php submit_button(__('Open Ticket'), 'primary button-large', 'publish', FALSE, array('accesskey' => 'o')); ?>
+                        <?php submit_button(__('Open Ticket'), 'primary button-large', 'publish', FALSE,
+                                            ['accesskey' => 'o']); ?>
                     <?php endif;
                 endif; ?>
             </div>

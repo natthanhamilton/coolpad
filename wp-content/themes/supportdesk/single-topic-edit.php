@@ -1,53 +1,51 @@
 <?php
-
 /**
  * Edit handler for topics
  *
- * @package bbPress
+ * @package    bbPress
  * @subpackage Theme
  */
-
 get_header(); ?>
 
-<?php 
+<?php
 // Get position of sidebar
 $st_forum_sidebar_position = of_get_option('st_forum_sidebar');
 ?>
 
-<?php get_template_part( 'page-header', 'forums' ); 	?>
+<?php get_template_part('page-header', 'forums'); ?>
 
-<!-- #primary -->
-<div id="primary" class="sidebar-<?php echo $st_forum_sidebar_position; ?> clearfix"> 
-<div class="ht-container">
-  <!-- #content -->
-  <section id="content" role="main">
+	<!-- #primary -->
+	<div id="primary" class="sidebar-<?php echo $st_forum_sidebar_position; ?> clearfix">
+		<div class="ht-container">
+			<!-- #content -->
+			<section id="content" role="main">
 
-	<?php do_action( 'bbp_before_main_content' ); ?>
+				<?php do_action('bbp_before_main_content'); ?>
 
-	<?php while ( have_posts() ) : the_post(); ?>
+				<?php while (have_posts()) : the_post(); ?>
 
-		<div id="bbp-edit-page" class="bbp-edit-page">
-			
-			<div class="entry-content">
+					<div id="bbp-edit-page" class="bbp-edit-page">
 
-				<?php bbp_get_template_part( 'form', 'topic' ); ?>
+						<div class="entry-content">
 
-			</div>
-		</div><!-- #bbp-edit-page -->
+							<?php bbp_get_template_part('form', 'topic'); ?>
 
-	<?php endwhile; ?>
+						</div>
+					</div><!-- #bbp-edit-page -->
 
-	<?php do_action( 'bbp_after_main_content' ); ?>
+				<?php endwhile; ?>
 
-</section>
-<!-- /#content -->
+				<?php do_action('bbp_after_main_content'); ?>
 
-<?php if ($st_forum_sidebar_position != 'off') {
-  get_sidebar('bbpress');
-  } ?>
+			</section>
+			<!-- /#content -->
 
-</div>
-</div>
-<!-- /#primary -->
+			<?php if ($st_forum_sidebar_position != 'off') {
+				get_sidebar('bbpress');
+			} ?>
+
+		</div>
+	</div>
+	<!-- /#primary -->
 
 <?php get_footer(); ?>

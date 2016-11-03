@@ -6,13 +6,10 @@
  * @link      http://themeavenue.net
  * @copyright 2015 ThemeAvenue
  */
-
 // If this file is called directly, abort.
-if (! defined('WPINC'))
-{
+if (!defined('WPINC')) {
     die;
 }
-
 add_action('admin_bar_menu', 'wpas_toolbar_tickets_link', 999, 1);
 /**
  * Add link to agent's tickets.
@@ -23,52 +20,37 @@ add_action('admin_bar_menu', 'wpas_toolbar_tickets_link', 999, 1);
  *
  * @return void
  */
-function wpas_toolbar_tickets_link($wp_admin_bar)
-{
-
-    if (! current_user_can('edit_ticket'))
-    {
+function wpas_toolbar_tickets_link($wp_admin_bar) {
+    if (!current_user_can('edit_ticket')) {
         return;
     }
-
-    $hide = (bool)wpas_get_option('hide_closed');
+    $hide          = (bool)wpas_get_option('hide_closed');
     $agent_see_all = (bool)wpas_get_option('agent_see_all');
     $admin_see_all = (bool)wpas_get_option('admin_see_all');
-    $args = array('post_type' => 'ticket');
-
+    $args          = ['post_type' => 'ticket'];
     // In case the current user can only see his own tickets
-    if (current_user_can('administrator') && FALSE === $admin_see_all || ! current_user_can('administrator') && FALSE === $agent_see_all)
-    {
-
+    if (current_user_can('administrator') && FALSE === $admin_see_all || !current_user_can('administrator') && FALSE === $agent_see_all) {
         global $current_user;
-
-        $agent = new WPAS_Member_Agent($current_user->ID);
+        $agent         = new WPAS_Member_Agent($current_user->ID);
         $tickets_count = $agent->open_tickets();
-
-    }
-    else
-    {
+    } else {
         $tickets_count = count(wpas_get_tickets('open', $args));
     }
-
-    if (TRUE === $hide)
-    {
+    if (TRUE === $hide) {
         $args['wpas_status'] = 'open';
     }
-
-    $node = array(
+    $node = [
         'id'     => 'wpas_tickets',
         'parent' => NULL,
         'group'  => NULL,
         'title'  => '<span class="ab-icon"></span> ' . $tickets_count,
         'href'   => add_query_arg($args, admin_url('edit.php')),
-        'meta'   => array(
+        'meta'   => [
             'target' => '_self',
             'title'  => esc_html__('Open tickets assigned to you', 'awesome-support'),
             'class'  => 'wpas-my-tickets',
-        ),
-    );
-
+        ],
+    ];
     $wp_admin_bar->add_node($node);
 }
 
@@ -80,14 +62,9 @@ add_action('admin_head', 'wpas_load_admin_bar_style');
  * @since 3.2.6
  * @return void
  */
-function wpas_load_admin_bar_style()
-{
-
-    if (! is_user_logged_in() || ! current_user_can('edit_ticket'))
-    {
+function wpas_load_admin_bar_style() {
+    if (!is_user_logged_in() || !current_user_can('edit_ticket')) {
         return;
     }
-
     echo '<style>#wpadminbar #wp-admin-bar-wpas_tickets .ab-icon:before { content: \'\\f468\'; top: 2px; }</style>';
-
 }

@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Class used internally by Diff to actually compute the diffs.
  *
@@ -40,25 +39,22 @@ class Text_Diff_Engine_xdiff {
          * instances to the $edits array.  The result is still perfectly
          * valid, albeit a little less descriptive and efficient. */
         $edits = array();
-        foreach ($diff as $line)
-        {
-            if (! strlen($line))
-            {
+        foreach ($diff as $line) {
+            if (!strlen($line)) {
                 continue;
             }
-            switch ($line[0])
-            {
-                case ' ':
-                    $edits[] = new Text_Diff_Op_copy(array(substr($line, 1)));
-                    break;
+            switch ($line[0]) {
+            case ' ':
+                $edits[] = new Text_Diff_Op_copy(array(substr($line, 1)));
+                break;
 
-                case '+':
-                    $edits[] = new Text_Diff_Op_add(array(substr($line, 1)));
-                    break;
+            case '+':
+                $edits[] = new Text_Diff_Op_add(array(substr($line, 1)));
+                break;
 
-                case '-':
-                    $edits[] = new Text_Diff_Op_delete(array(substr($line, 1)));
-                    break;
+            case '-':
+                $edits[] = new Text_Diff_Op_delete(array(substr($line, 1)));
+                break;
             }
         }
 

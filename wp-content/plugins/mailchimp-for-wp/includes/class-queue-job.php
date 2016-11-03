@@ -6,12 +6,10 @@
  * @ignore
  */
 class MC4WP_Queue_Job {
-
 	/**
 	 * @var string
 	 */
 	public $id;
-
 	/**
 	 * @var mixed
 	 */
@@ -22,8 +20,8 @@ class MC4WP_Queue_Job {
 	 *
 	 * @param $data
 	 */
-	public function __construct( $data ) {
-		$this->id = (string) microtime( true ) . rand( 1, 10000 );
+	public function __construct($data) {
+		$this->id   = (string)microtime(TRUE) . rand(1, 10000);
 		$this->data = $data;
 	}
 }

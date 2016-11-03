@@ -1,0 +1,38 @@
+@import "../variables";
+
+@height: 260px;
+
+#tiles,
+.tiles {
+  @media only screen and (max-width: @break-sm) {
+    margin: 0 !important;
+  }
+  .wpb_wrapper {
+    .col-sm-4 {
+      float: left;
+      @media only screen and (min-width: @break-middle) {
+        margin-bottom: 30px;
+      }
+      @media only screen and (min-width: @break-middle) and (max-width: @break-sm) {
+        width: 50% !important;
+      }
+    }
+    a {
+      .tile-title {
+        width: 100%;
+        height: @height;
+        background-position: 50% 50% !important;
+        background-size: cover !important;
+
+        .font-family-light;
+        font-weight: 400;
+        line-height: 20px;
+        color: #ffffff;
+        padding: 30px 20px;
+        overflow: hidden;
+
+        .vertical(end);
+      }
+    }
+  }
+}

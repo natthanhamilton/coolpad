@@ -13,36 +13,30 @@
  * * Database table prefix
  * * ABSPATH
  *
- * @link https://codex.wordpress.org/Editing_wp-config.php
+ * @link    https://codex.wordpress.org/Editing_wp-config.php
  *
  * @package WordPress
  */
-
 // ** MySQL settings - You can get this info from your web host ** //
 /** The name of the database for WordPress */
 define('DB_NAME', 'wp_coolpad');
-
 /** MySQL database username */
 define('DB_USER', 'root');
-
 /** MySQL database password */
-define('DB_PASSWORD', 'root');
-
+define('DB_PASSWORD', '');
 /** MySQL hostname */
 define('DB_HOST', 'localhost');
-
 /** Database Charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8mb4');
-
 /** The Database Collate type. Don't change this if in doubt. */
 define('DB_COLLATE', '');
-
 /**#@+
  * Authentication Unique Keys and Salts.
  *
  * Change these to different unique phrases!
- * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key service}
- * You can change these at any point in time to invalidate all existing cookies. This will force all users to have to log in again.
+ * You can generate these using the {@link https://api.wordpress.org/secret-key/1.1/salt/ WordPress.org secret-key
+ * service} You can change these at any point in time to invalidate all existing cookies. This will force all users to
+ * have to log in again.
  *
  * @since 2.6.0
  */
@@ -54,9 +48,7 @@ define('AUTH_SALT', '_=UY #gJk,*@L,Gp|.LpUeNvY}F48+WSwpEEUEUpb/xSarr5/?iP~LK&L +
 define('SECURE_AUTH_SALT', '#Kk:Z5CcSRxbczF7pEAT< |@ScH_o#h8EC_m1@#z~Y]7c7)}]2[}xr$v[u|,+p7/');
 define('LOGGED_IN_SALT', 'm3i{#>+;@S@g[sfh$J3J:bY7YTp=ynX/]Y5+rZR0l0ytz}TmrF@;fdoVB:04-!!!');
 define('NONCE_SALT', 'q3,/Vc7Xa=QT&&N{7pKP}dV!quQG9lAdu-BD4)Oa;)A`c4(q{bKJ}ixmE$@IQ!4C');
-
 /**#@-*/
-
 /**
  * WordPress Database Table prefix.
  *
@@ -64,7 +56,6 @@ define('NONCE_SALT', 'q3,/Vc7Xa=QT&&N{7pKP}dV!quQG9lAdu-BD4)Oa;)A`c4(q{bKJ}ixmE$
  * a unique prefix. Only numbers, letters, and underscores please!
  */
 $table_prefix = 'wp_';
-
 /**
  * For developers: WordPress debugging mode.
  *
@@ -78,22 +69,18 @@ $table_prefix = 'wp_';
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
 define('WP_DEBUG', FALSE);
-
 /* Multisite */
 define('WP_ALLOW_MULTISITE', TRUE);
-
 define('MULTISITE', TRUE);
 define('SUBDOMAIN_INSTALL', FALSE);
 define('DOMAIN_CURRENT_SITE', 'localhost');
 define('PATH_CURRENT_SITE', '/coolpad/');
 define('SITE_ID_CURRENT_SITE', 1);
 define('BLOG_ID_CURRENT_SITE', 1);
-
 /* That's all, stop editing! Happy blogging. */
-
 /** Absolute path to the WordPress directory. */
-if (! defined('ABSPATH'))
-    define('ABSPATH', dirname(__FILE__) . '/');
-
+if (!defined('ABSPATH')) {
+	define('ABSPATH', dirname(__FILE__) . '/');
+}
 /** Sets up WordPress vars and included files. */
 require_once(ABSPATH . 'wp-settings.php');

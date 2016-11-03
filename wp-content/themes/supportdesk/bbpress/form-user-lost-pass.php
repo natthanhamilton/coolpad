@@ -1,15 +1,13 @@
 <?php
-
 /**
  * User Lost Password Form
  *
- * @package bbPress
+ * @package    bbPress
  * @subpackage Theme
  */
-
 ?>
 
-<form method="post" action="<?php bbp_wp_login_action(array('action' => 'lostpassword', 'context' => 'login_post')); ?>"
+<form method="post" action="<?php bbp_wp_login_action(['action' => 'lostpassword', 'context' => 'login_post']); ?>"
       class="bbp-login-form">
     <fieldset class="bbp-form">
         <legend><?php _e('Lost Password', 'bbpress'); ?></legend>

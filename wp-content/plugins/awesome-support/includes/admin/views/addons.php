@@ -6,28 +6,19 @@
  */
 $items = get_transient('wpas_addons');
 setlocale(LC_MONETARY, get_locale());
-
-if (FALSE === $items)
-{
-
-    $route = esc_url('http://getawesomesupport.com/edd-api/products/');
-    $api_key = trim('d83df1849d3204ed6641faa92ed55eb2');
-    $token = trim('39e17c3737d608900e2f403b55dda68d');
-    $endpoint = add_query_arg(array('key' => $api_key, 'token' => $token), $route);
+if (FALSE === $items) {
+    $route    = esc_url('http://getawesomesupport.com/edd-api/products/');
+    $api_key  = trim('d83df1849d3204ed6641faa92ed55eb2');
+    $token    = trim('39e17c3737d608900e2f403b55dda68d');
+    $endpoint = add_query_arg(['key' => $api_key, 'token' => $token], $route);
     $response = wp_remote_get($endpoint);
-
-    if (200 === wp_remote_retrieve_response_code($response))
-    {
-
-        $body = wp_remote_retrieve_body($response);
+    if (200 === wp_remote_retrieve_response_code($response)) {
+        $body    = wp_remote_retrieve_body($response);
         $content = json_decode($body);
-
-        if (is_object($content) && isset($content->products))
-        {
+        if (is_object($content) && isset($content->products)) {
             set_transient('wpas_addons', $content->products, 60 * 60 * 24); // Cache for 24 hours
             $items = $content->products;
         }
-
     }
 }
 ?>
@@ -82,29 +73,22 @@ if (FALSE === $items)
         else:
             // wpas_debug_display( $items );
             foreach ($items as $key => $item):
-
                 /* Get the item price */
                 $price = FALSE;
-
                 /* This item has a fixed price */
-                if (isset($item->pricing->amount))
-                {
+                if (isset($item->pricing->amount)) {
                     $price = number_format($item->pricing->amount, 0);
-                }
-
-                /* This item has variable pricing */
-                else
-                {
-                    if (isset($item->pricing->singlesite))
-                    {
+                } /* This item has variable pricing */
+                else {
+                    if (isset($item->pricing->singlesite)) {
                         $price = number_format($item->pricing->singlesite, 0);
                     }
                 } ?>
 
                 <div class="row wpas-addon-item" id="wpas-addon-item-<?php echo intval($item->info->id); ?>">
                     <div class="col-xs-12 col-sm-6 col-md-5 col-lg-5 wpas-addon-img-wrap">
-                        <?php if (! empty($item->info->thumbnail)): ?><img class="wpas-addon-img"
-                                                                           src="<?php echo esc_url($item->info->thumbnail); ?>"><?php endif; ?>
+                        <?php if (!empty($item->info->thumbnail)): ?><img class="wpas-addon-img"
+                                                                          src="<?php echo esc_url($item->info->thumbnail); ?>"><?php endif; ?>
                     </div>
                     <div class="col-xs-12 col-sm-6 col-md-7 col-lg-7">
                         <div class="inside">
@@ -112,7 +96,7 @@ if (FALSE === $items)
                                 <small class="wpas-addon-item-pricing">from <?php if (FALSE !== $price): ?><strong>
                                         $<?php echo $price; ?></strong><?php endif; ?></small>
                             </h3>
-                            <p><?php if (! empty($item->info->excerpt)): echo wpautop($item->info->excerpt); endif; ?></p>
+                            <p><?php if (!empty($item->info->excerpt)): echo wpautop($item->info->excerpt); endif; ?></p>
                             <div class="wpas-btn-group">
                                 <span
                                     class="button-secondary"><?php if (FALSE !== $price): ?>$<?php echo $price; ?><?php endif; ?></span><a
@@ -124,7 +108,6 @@ if (FALSE === $items)
                     </div>
                 </div>
             <?php endforeach;
-
         endif; ?>
     </div>
 </div>

@@ -7,23 +7,21 @@
  * @since 3.0
  */
 class MC4WP_Admin_Messages {
-
 	/**
 	 * @var array
 	 */
 	protected $bag;
-
 	/**
 	 * @var bool
 	 */
-	protected $dirty = false;
+	protected $dirty = FALSE;
 
 	/**
 	 * Add hooks
 	 */
 	public function add_hooks() {
-		add_action( 'admin_notices', array( $this, 'show' ) );
-		register_shutdown_function( array( $this, 'save' ) );
+		add_action('admin_notices', [$this, 'show']);
+		register_shutdown_function([$this, 'save']);
 	}
 
 	/**
@@ -32,20 +30,19 @@ class MC4WP_Admin_Messages {
 	 * @param        $message
 	 * @param string $type
 	 */
-	public function flash( $message, $type = 'success' ) {
+	public function flash($message, $type = 'success') {
 		$this->load();
-		$this->bag[] = array(
+		$this->bag[] = [
 			'text' => $message,
 			'type' => $type
-		);
-		$this->dirty = true;
+		];
+		$this->dirty = TRUE;
 	}
 
 	// empty flash bag
-
 	private function load() {
-		if( is_null( $this->bag ) ) {
-			$this->bag = get_option( 'mc4wp_flash_messages', array() );
+		if (is_null($this->bag)) {
+			$this->bag = get_option('mc4wp_flash_messages', []);
 		}
 	}
 
@@ -54,17 +51,16 @@ class MC4WP_Admin_Messages {
 	 */
 	public function show() {
 		$this->load();
-
-		foreach( $this->bag as $message ) {
-			echo sprintf( '<div class="notice notice-%s is-dismissible"><p>%s</p></div>', $message['type'], $message['text'] );
+		foreach ($this->bag as $message) {
+			echo sprintf('<div class="notice notice-%s is-dismissible"><p>%s</p></div>', $message['type'],
+			             $message['text']);
 		}
-
 		$this->reset();
 	}
 
 	private function reset() {
-		$this->bag = array();
-		$this->dirty = true;
+		$this->bag   = [];
+		$this->dirty = TRUE;
 	}
 
 	/**
@@ -73,8 +69,8 @@ class MC4WP_Admin_Messages {
 	 * @hooked `shutdown`
 	 */
 	public function save() {
-		if( $this->dirty ) {
-			update_option( 'mc4wp_flash_messages', $this->bag, false );
+		if ($this->dirty) {
+			update_option('mc4wp_flash_messages', $this->bag, FALSE);
 		}
 	}
 }

@@ -8,10 +8,8 @@
  * @link      http://themeavenue.net
  * @copyright 2014 ThemeAvenue
  */
-
 // If this file is called directly, abort.
-if (! defined('WPINC'))
-{
+if (!defined('WPINC')) {
     die;
 }
 
@@ -26,21 +24,20 @@ if (! defined('WPINC'))
  * @since 3.3
  */
 class WPAS_Member_Query {
-
     /**
      * Array of WPAS_Member (or its sub-classes) objects, result of the SQL query
      *
      * @since 3.3
      * @var array
      */
-    public $members = array();
+    public $members = [];
     /**
      * List of roles to include in the query
      *
      * @since 3.3
      * @var array
      */
-    public $roles = array();
+    public $roles = [];
     /**
      * User fields to return
      *
@@ -63,35 +60,35 @@ class WPAS_Member_Query {
      * @since 3.3
      * @var array
      */
-    public $search = array();
+    public $search = [];
     /**
      * Capabilities to query users by
      *
      * @since 3.3
      * @var array
      */
-    protected $cap = array();
+    protected $cap = [];
     /**
      * Capabilities to exclude from the query
      *
      * @since 3.3
      * @var array
      */
-    protected $cap_exclude = array();
+    protected $cap_exclude = [];
     /**
      * Array of user IDs to exclude from the query
      *
      * @since 3.3
      * @var array
      */
-    protected $exclude = array();
+    protected $exclude = [];
     /**
      * Array of user IDs to query
      *
      * @since 3.3
      * @var array
      */
-    protected $ids = array();
+    protected $ids = [];
     /**
      * Whether or not to convert the results into WPAS_Member (sub)objects
      *
@@ -107,21 +104,17 @@ class WPAS_Member_Query {
      *
      * @param array $args Query args
      */
-    public function __construct($args = array())
-    {
-
-        $this->cap = isset($args['cap']) ? (array)$args['cap'] : array();
-        $this->cap_exclude = isset($args['cap_exclude']) ? (array)$args['cap_exclude'] : array();
-        $this->exclude = isset($args['exclude']) ? (array)$args['exclude'] : array();
-        $this->ids = isset($args['ids']) ? (array)$args['ids'] : array();
-        $this->fields = isset($args['fields']) ? $this->sanitize_fields((array)$args['fields']) : '*';
-        $this->output = isset($args['output']) ? $this->sanitize_output_format($args['output']) : 'stdClass';
-        $this->search = isset($args['search']) ? $args['search'] : array();
-        $this->hash = md5(serialize($args));
-
+    public function __construct($args = []) {
+        $this->cap         = isset($args['cap']) ? (array)$args['cap'] : [];
+        $this->cap_exclude = isset($args['cap_exclude']) ? (array)$args['cap_exclude'] : [];
+        $this->exclude     = isset($args['exclude']) ? (array)$args['exclude'] : [];
+        $this->ids         = isset($args['ids']) ? (array)$args['ids'] : [];
+        $this->fields      = isset($args['fields']) ? $this->sanitize_fields((array)$args['fields']) : '*';
+        $this->output      = isset($args['output']) ? $this->sanitize_output_format($args['output']) : 'stdClass';
+        $this->search      = isset($args['search']) ? $args['search'] : [];
+        $this->hash        = md5(serialize($args));
         // Run the whole process
         $this->get_members();
-
     }
 
     /**
@@ -133,25 +126,19 @@ class WPAS_Member_Query {
      *
      * @return array
      */
-    protected function sanitize_fields($fields)
-    {
-
-        $allowed = array(
+    protected function sanitize_fields($fields) {
+        $allowed = [
             '*',
             'ID',
             'display_name'
-        );
-
-        foreach ($fields as $key => $field)
-        {
-            if (! in_array($field, $allowed))
-            {
-                unset($fields[$key]);
+        ];
+        foreach ($fields as $key => $field) {
+            if (!in_array($field, $allowed)) {
+                unset($fields[ $key ]);
             }
         }
 
-        return ! empty($fields) ? implode(',', $fields) : '*';
-
+        return !empty($fields) ? implode(',', $fields) : '*';
     }
 
     /**
@@ -163,18 +150,12 @@ class WPAS_Member_Query {
      *
      * @return string
      */
-    protected function sanitize_output_format($format)
-    {
-
-        if (in_array($format, array('wpas_member')))
-        {
+    protected function sanitize_output_format($format) {
+        if (in_array($format, ['wpas_member'])) {
             return $format;
-        }
-        else
-        {
+        } else {
             return 'stdClass';
         }
-
     }
 
     /**
@@ -183,21 +164,14 @@ class WPAS_Member_Query {
      * @since 3.3
      * @return void
      */
-    public function get_members()
-    {
-
+    public function get_members() {
         $this->members = wp_cache_get('users_' . $this->hash, 'wpas');
-
-        if (FALSE === $this->members)
-        {
+        if (FALSE === $this->members) {
             $this->query();
         }
-
-        if ('wpas_member' === $this->output)
-        {
+        if ('wpas_member' === $this->output) {
             $this->convert_sql_result();
         }
-
     }
 
     /**
@@ -206,93 +180,58 @@ class WPAS_Member_Query {
      * @since 3.3
      * @return array
      */
-    protected function query()
-    {
-
+    protected function query() {
         global $wpdb;
-
         $prefix = $wpdb->get_blog_prefix();
-        $roles = $this->get_roles();
-
+        $roles  = $this->get_roles();
         // Set the base SQL query
         $sql = "SELECT $this->fields FROM $wpdb->users";
-
-        if (! empty($roles))
-        {
-
-            $like = array();
-
-            foreach ($roles as $role)
-            {
+        if (!empty($roles)) {
+            $like = [];
+            foreach ($roles as $role) {
                 $like[] = sprintf('CAST(%1$s AS CHAR) LIKE "%2$s"', "$wpdb->usermeta.meta_value", "%$role%");
             }
-
             $like = implode(' OR ', $like);
-
-            $sql .= " INNER JOIN $wpdb->usermeta ON ( $wpdb->users.ID = $wpdb->usermeta.user_id )
+            $sql
+                .= " INNER JOIN $wpdb->usermeta ON ( $wpdb->users.ID = $wpdb->usermeta.user_id )
 			WHERE 1=1
 			AND ( ( ( $wpdb->usermeta.meta_key = '{$prefix}capabilities'
 			AND ( $like ) ) ) )";
-
         }
-
         // Exclude user IDs
-        if (! empty($this->exclude))
-        {
-
+        if (!empty($this->exclude)) {
             // Prepare the IDs query var
             $ids = implode(',', $this->exclude);
-
             // Exclude users by ID
             $sql .= " AND ID NOT IN ('$ids')";
-
         }
-
         // Include user IDs
-        if (! empty($this->ids))
-        {
-
+        if (!empty($this->ids)) {
             // Prepare the IDs query var
             $ids = implode(',', $this->ids);
-
             // Exclude users by ID
             $sql .= " AND ID IN ('$ids')";
-
         }
-
         // Include search parameter
-        if (! empty($this->search) && isset($this->search['query']) && isset($this->search['fields']))
-        {
-
-            if (! isset($this->search['relation']))
-            {
+        if (!empty($this->search) && isset($this->search['query']) && isset($this->search['fields'])) {
+            if (!isset($this->search['relation'])) {
                 $this->search['relation'] = 'OR';
             }
-
-            $search_query = array();
-            $operator = empty($search_query) ? 'OR' : $this->search['relation'];
-
-            foreach ($this->search['fields'] as $field)
-            {
+            $search_query = [];
+            $operator     = empty($search_query) ? 'OR' : $this->search['relation'];
+            foreach ($this->search['fields'] as $field) {
                 $search_query[] = "{$wpdb->users}.{$field} LIKE '%{$this->search['query']}%'";
             }
-
             $search_query = implode(" $operator ", $search_query);
-
             $sql .= " AND ($search_query)";
-
         }
-
         // Order users by login
         $sql .= " ORDER BY {$wpdb->users}.ID ASC";
-
         $this->members = $wpdb->get_results($sql);
-
         // Cache the results
         wp_cache_add('users_' . $this->hash, $this->members, 'wpas');
 
         return $this->members;
-
     }
 
     /**
@@ -304,43 +243,27 @@ class WPAS_Member_Query {
      *
      * @return array
      */
-    protected function get_roles()
-    {
-
+    protected function get_roles() {
         global $wp_roles;
-
-        $roles = array();
-
-        foreach ($wp_roles->roles as $role_id => $role)
-        {
-
+        $roles = [];
+        foreach ($wp_roles->roles as $role_id => $role) {
             $has = FALSE; // Whether the current role has the capabilities
-
-            foreach ($this->cap as $capability)
-            {
+            foreach ($this->cap as $capability) {
                 $has = array_key_exists($capability, $role['capabilities']) ? TRUE : FALSE;
             }
-
-            if (TRUE === $has)
-            {
-                foreach ($this->cap_exclude as $capability)
-                {
-                    if (array_key_exists($capability, $role['capabilities']))
-                    {
+            if (TRUE === $has) {
+                foreach ($this->cap_exclude as $capability) {
+                    if (array_key_exists($capability, $role['capabilities'])) {
                         $has = FALSE;
                     }
                 }
             }
-
-            if (TRUE === $has)
-            {
+            if (TRUE === $has) {
                 array_push($roles, $role_id);
             }
-
         }
 
         return $this->roles = $roles;
-
     }
 
     /**
@@ -350,25 +273,15 @@ class WPAS_Member_Query {
      *
      * @return void
      */
-    protected function convert_sql_result()
-    {
-
-        $users = array();
-
-        foreach ($this->members as $user)
-        {
-
+    protected function convert_sql_result() {
+        $users = [];
+        foreach ($this->members as $user) {
             $usr = $this->create_member_object($user);
-
-            if (! empty($usr))
-            {
+            if (!empty($usr)) {
                 $users[] = $usr;
             }
-
         }
-
         $this->members = $users;
-
     }
 
     /**
@@ -380,54 +293,33 @@ class WPAS_Member_Query {
      *
      * @return WPAS_Member|WPAS_Member_Agent|WPAS_Member_User|array
      */
-    protected function create_member_object($user)
-    {
-
+    protected function create_member_object($user) {
         global $wp_roles;
-
-        $r = unserialize($user->meta_value);
-        $roles = array();
+        $r     = unserialize($user->meta_value);
+        $roles = [];
         $class = '';
-
-        foreach ($r as $the_role => $val)
-        {
+        foreach ($r as $the_role => $val) {
             $roles[] = $the_role;
         }
-
-        foreach ($roles as $role)
-        {
-
-            if (! array_key_exists($role, $wp_roles->roles))
-            {
+        foreach ($roles as $role) {
+            if (!array_key_exists($role, $wp_roles->roles)) {
                 continue;
             }
-
-            if (array_key_exists('edit_ticket', $wp_roles->roles[$role]['capabilities']))
-            {
+            if (array_key_exists('edit_ticket', $wp_roles->roles[ $role ]['capabilities'])) {
                 $class = 'WPAS_Member_Agent';
                 break;
-            }
-            elseif (array_key_exists('create_ticket', $wp_roles->roles[$role]['capabilities']))
-            {
+            } elseif (array_key_exists('create_ticket', $wp_roles->roles[ $role ]['capabilities'])) {
                 $class = 'WPAS_Member_User';
                 break;
-            }
-            else
-            {
+            } else {
                 continue;
             }
-
         }
-
-        if (empty($class))
-        {
-            return array();
+        if (empty($class)) {
+            return [];
         }
-
         $member = new $class($user);
 
         return $member;
-
     }
-
 }

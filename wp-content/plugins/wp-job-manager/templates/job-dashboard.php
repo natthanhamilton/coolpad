@@ -9,7 +9,7 @@
         </tr>
         </thead>
         <tbody>
-        <?php if (! $jobs) : ?>
+        <?php if (!$jobs) : ?>
             <tr>
                 <td colspan="6"><?php _e('You do not have any active listings.', 'wp-job-manager'); ?></td>
             </tr>
@@ -27,47 +27,40 @@
                                 <?php endif; ?>
                                 <ul class="job-dashboard-actions">
                                     <?php
-                                    $actions = array();
-
-                                    switch ($job->post_status)
-                                    {
+                                    $actions = [];
+                                    switch ($job->post_status) {
                                         case 'publish' :
-                                            $actions['edit'] = array('label' => __('Edit', 'wp-job-manager'), 'nonce' => FALSE);
-
-                                            if (is_position_filled($job))
-                                            {
-                                                $actions['mark_not_filled'] = array('label' => __('Mark not filled', 'wp-job-manager'), 'nonce' => TRUE);
+                                            $actions['edit'] = ['label' => __('Edit',
+                                                                              'wp-job-manager'), 'nonce' => FALSE];
+                                            if (is_position_filled($job)) {
+                                                $actions['mark_not_filled'] = ['label' => __('Mark not filled',
+                                                                                             'wp-job-manager'), 'nonce' => TRUE];
+                                            } else {
+                                                $actions['mark_filled'] = ['label' => __('Mark filled',
+                                                                                         'wp-job-manager'), 'nonce' => TRUE];
                                             }
-                                            else
-                                            {
-                                                $actions['mark_filled'] = array('label' => __('Mark filled', 'wp-job-manager'), 'nonce' => TRUE);
-                                            }
-
-                                            $actions['duplicate'] = array('label' => __('Duplicate', 'wp-job-manager'), 'nonce' => TRUE);
+                                            $actions['duplicate'] = ['label' => __('Duplicate',
+                                                                                   'wp-job-manager'), 'nonce' => TRUE];
                                             break;
                                         case 'expired' :
-                                            if (job_manager_get_permalink('submit_job_form'))
-                                            {
-                                                $actions['relist'] = array('label' => __('Relist', 'wp-job-manager'), 'nonce' => TRUE);
+                                            if (job_manager_get_permalink('submit_job_form')) {
+                                                $actions['relist'] = ['label' => __('Relist',
+                                                                                    'wp-job-manager'), 'nonce' => TRUE];
                                             }
                                             break;
                                         case 'pending_payment' :
                                         case 'pending' :
-                                            if (job_manager_user_can_edit_pending_submissions())
-                                            {
-                                                $actions['edit'] = array('label' => __('Edit', 'wp-job-manager'), 'nonce' => FALSE);
+                                            if (job_manager_user_can_edit_pending_submissions()) {
+                                                $actions['edit'] = ['label' => __('Edit',
+                                                                                  'wp-job-manager'), 'nonce' => FALSE];
                                             }
                                             break;
                                     }
-
-                                    $actions['delete'] = array('label' => __('Delete', 'wp-job-manager'), 'nonce' => TRUE);
-                                    $actions = apply_filters('job_manager_my_job_actions', $actions, $job);
-
-                                    foreach ($actions as $action => $value)
-                                    {
-                                        $action_url = add_query_arg(array('action' => $action, 'job_id' => $job->ID));
-                                        if ($value['nonce'])
-                                        {
+                                    $actions['delete'] = ['label' => __('Delete', 'wp-job-manager'), 'nonce' => TRUE];
+                                    $actions           = apply_filters('job_manager_my_job_actions', $actions, $job);
+                                    foreach ($actions as $action => $value) {
+                                        $action_url = add_query_arg(['action' => $action, 'job_id' => $job->ID]);
+                                        if ($value['nonce']) {
                                             $action_url = wp_nonce_url($action_url, 'job_manager_my_job_actions');
                                         }
                                         echo '<li><a href="' . esc_url($action_url) . '" class="job-dashboard-action-' . esc_attr($action) . '">' . esc_html($value['label']) . '</a></li>';
@@ -77,7 +70,8 @@
                             <?php elseif ('date' === $key) : ?>
                                 <?php echo date_i18n(get_option('date_format'), strtotime($job->post_date)); ?>
                             <?php elseif ('expires' === $key) : ?>
-                                <?php echo $job->_job_expires ? date_i18n(get_option('date_format'), strtotime($job->_job_expires)) : '&ndash;'; ?>
+                                <?php echo $job->_job_expires ? date_i18n(get_option('date_format'),
+                                                                          strtotime($job->_job_expires)) : '&ndash;'; ?>
                             <?php elseif ('filled' === $key) : ?>
                                 <?php echo is_position_filled($job) ? '&#10004;' : '&ndash;'; ?>
                             <?php else : ?>
@@ -90,5 +84,5 @@
         <?php endif; ?>
         </tbody>
     </table>
-    <?php get_job_manager_template('pagination.php', array('max_num_pages' => $max_num_pages)); ?>
+    <?php get_job_manager_template('pagination.php', ['max_num_pages' => $max_num_pages]); ?>
 </div>

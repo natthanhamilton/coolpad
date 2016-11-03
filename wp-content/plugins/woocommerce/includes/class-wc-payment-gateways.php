@@ -1,6 +1,5 @@
 <?php
-
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly
 }
 
@@ -9,19 +8,18 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Loads payment gateways via hooks for use in the store.
  *
- * @class 		WC_Payment_Gateways
- * @version		2.2.0
- * @package		WooCommerce/Classes/Payment
- * @category	Class
- * @author 		WooThemes
+ * @class          WC_Payment_Gateways
+ * @version        2.2.0
+ * @package        WooCommerce/Classes/Payment
+ * @category       Class
+ * @author         WooThemes
  */
 class WC_Payment_Gateways {
-
 	/**
 	 * @var WC_Payment_Gateways The single instance of the class
 	 * @since 2.1
 	 */
-	protected static $_instance = null;
+	protected static $_instance = NULL;
 	/** @var array Array of payment gateway classes. */
 	public $payment_gateways;
 
@@ -36,40 +34,37 @@ class WC_Payment_Gateways {
 	 * Load gateways and hook in functions.
 	 */
 	public function init() {
-		$load_gateways = array(
+		$load_gateways = [
 			'WC_Gateway_BACS',
 			'WC_Gateway_Cheque',
 			'WC_Gateway_COD',
 			'WC_Gateway_Paypal',
-		);
-
+		];
 		/**
 		 * Simplify Commerce is @deprecated in 2.6.0. Only load when enabled.
 		 */
-		if ( ! class_exists( 'WC_Gateway_Simplify_Commerce_Loader' ) && in_array( WC()->countries->get_base_country(), apply_filters( 'woocommerce_gateway_simplify_commerce_supported_countries', array( 'US', 'IE' ) ) ) ) {
-			$simplify_options = get_option( 'woocommerce_simplify_commerce_settings', array() );
-
-			if ( ! empty( $simplify_options['enabled'] ) && 'yes' === $simplify_options['enabled'] ) {
-				if ( function_exists( 'wcs_create_renewal_order' ) ) {
+		if (!class_exists('WC_Gateway_Simplify_Commerce_Loader') && in_array(WC()->countries->get_base_country(),
+		                                                                     apply_filters('woocommerce_gateway_simplify_commerce_supported_countries',
+		                                                                                   ['US', 'IE']))
+		) {
+			$simplify_options = get_option('woocommerce_simplify_commerce_settings', []);
+			if (!empty($simplify_options['enabled']) && 'yes' === $simplify_options['enabled']) {
+				if (function_exists('wcs_create_renewal_order')) {
 					$load_gateways[] = 'WC_Addons_Gateway_Simplify_Commerce';
 				} else {
 					$load_gateways[] = 'WC_Gateway_Simplify_Commerce';
 				}
 			}
 		}
-
 		// Filter
-		$load_gateways = apply_filters( 'woocommerce_payment_gateways', $load_gateways );
-
+		$load_gateways = apply_filters('woocommerce_payment_gateways', $load_gateways);
 		// Get sort order option
-		$ordering  = (array) get_option( 'woocommerce_gateway_order' );
+		$ordering  = (array)get_option('woocommerce_gateway_order');
 		$order_end = 999;
-
 		// Load gateways in order
-		foreach ( $load_gateways as $gateway ) {
-			$load_gateway = is_string( $gateway ) ? new $gateway() : $gateway;
-
-			if ( isset( $ordering[ $load_gateway->id ] ) && is_numeric( $ordering[ $load_gateway->id ] ) ) {
+		foreach ($load_gateways as $gateway) {
+			$load_gateway = is_string($gateway) ? new $gateway() : $gateway;
+			if (isset($ordering[ $load_gateway->id ]) && is_numeric($ordering[ $load_gateway->id ])) {
 				// Add in position
 				$this->payment_gateways[ $ordering[ $load_gateway->id ] ] = $load_gateway;
 			} else {
@@ -78,8 +73,7 @@ class WC_Payment_Gateways {
 				$order_end++;
 			}
 		}
-
-		ksort( $this->payment_gateways );
+		ksort($this->payment_gateways);
 	}
 
 	/**
@@ -92,9 +86,10 @@ class WC_Payment_Gateways {
 	 * @return WC_Payment_Gateways Main instance
 	 */
 	public static function instance() {
-		if ( is_null( self::$_instance ) ) {
+		if (is_null(self::$_instance)) {
 			self::$_instance = new self();
 		}
+
 		return self::$_instance;
 	}
 
@@ -104,7 +99,7 @@ class WC_Payment_Gateways {
 	 * @since 2.1
 	 */
 	public function __clone() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce' ), '2.1' );
+		_doing_it_wrong(__FUNCTION__, __('Cheatin&#8217; huh?', 'woocommerce'), '2.1');
 	}
 
 	/**
@@ -113,18 +108,18 @@ class WC_Payment_Gateways {
 	 * @since 2.1
 	 */
 	public function __wakeup() {
-		_doing_it_wrong( __FUNCTION__, __( 'Cheatin&#8217; huh?', 'woocommerce' ), '2.1' );
+		_doing_it_wrong(__FUNCTION__, __('Cheatin&#8217; huh?', 'woocommerce'), '2.1');
 	}
 
 	/**
 	 * Get gateways.
+	 *
 	 * @return array
 	 */
 	public function payment_gateways() {
-		$_available_gateways = array();
-
-		if ( sizeof( $this->payment_gateways ) > 0 ) {
-			foreach ( $this->payment_gateways as $gateway ) {
+		$_available_gateways = [];
+		if (sizeof($this->payment_gateways) > 0) {
+			foreach ($this->payment_gateways as $gateway) {
 				$_available_gateways[ $gateway->id ] = $gateway;
 			}
 		}
@@ -134,11 +129,12 @@ class WC_Payment_Gateways {
 
 	/**
 	 * Get array of registered gateway ids
+	 *
 	 * @since 2.6.0
 	 * @return array of strings
 	 */
 	public function get_payment_gateway_ids() {
-		return wp_list_pluck( $this->payment_gateways, 'id' );
+		return wp_list_pluck($this->payment_gateways, 'id');
 	}
 
 	/**
@@ -147,21 +143,24 @@ class WC_Payment_Gateways {
 	 * @return array
 	 */
 	public function get_available_payment_gateways() {
-		$_available_gateways = array();
-
-		foreach ( $this->payment_gateways as $gateway ) {
-			if ( $gateway->is_available() ) {
-				if ( ! is_add_payment_method_page() ) {
+		$_available_gateways = [];
+		foreach ($this->payment_gateways as $gateway) {
+			if ($gateway->is_available()) {
+				if (!is_add_payment_method_page()) {
 					$_available_gateways[ $gateway->id ] = $gateway;
-				} else if( $gateway->supports( 'add_payment_method' ) ) {
-					$_available_gateways[ $gateway->id ] = $gateway;
-				} else if ( $gateway->supports( 'tokenization' ) ) {
-					$_available_gateways[ $gateway->id ] = $gateway;
+				} else {
+					if ($gateway->supports('add_payment_method')) {
+						$_available_gateways[ $gateway->id ] = $gateway;
+					} else {
+						if ($gateway->supports('tokenization')) {
+							$_available_gateways[ $gateway->id ] = $gateway;
+						}
+					}
 				}
 			}
 		}
 
-		return apply_filters( 'woocommerce_available_payment_gateways', $_available_gateways );
+		return apply_filters('woocommerce_available_payment_gateways', $_available_gateways);
 	}
 
 	/**
@@ -169,30 +168,26 @@ class WC_Payment_Gateways {
 	 *
 	 * @param array $gateway Available payment gateways.
 	 */
-	public function set_current_gateway( $gateways ) {
+	public function set_current_gateway($gateways) {
 		// Be on the defensive
-		if ( ! is_array( $gateways ) || empty( $gateways ) ) {
+		if (!is_array($gateways) || empty($gateways)) {
 			return;
 		}
-
-		if ( is_user_logged_in() ) {
-			$default_token = WC_Payment_Tokens::get_customer_default_token( get_current_user_id() );
-			if ( ! is_null( $default_token ) ) {
+		if (is_user_logged_in()) {
+			$default_token = WC_Payment_Tokens::get_customer_default_token(get_current_user_id());
+			if (!is_null($default_token)) {
 				$default_token_gateway = $default_token->get_gateway_id();
 			}
 		}
-
-		$current = ( isset( $default_token_gateway ) ? $default_token_gateway : WC()->session->get( 'chosen_payment_method' ) );
-
-		if ( $current && isset( $gateways[ $current ] ) ) {
+		$current = (isset($default_token_gateway) ? $default_token_gateway
+			: WC()->session->get('chosen_payment_method'));
+		if ($current && isset($gateways[ $current ])) {
 			$current_gateway = $gateways[ $current ];
-
 		} else {
-			$current_gateway = current( $gateways );
+			$current_gateway = current($gateways);
 		}
-
 		// Ensure we can make a call to set_current() without triggering an error
-		if ( $current_gateway && is_callable( array( $current_gateway, 'set_current' ) ) ) {
+		if ($current_gateway && is_callable([$current_gateway, 'set_current'])) {
 			$current_gateway->set_current();
 		}
 	}
@@ -201,17 +196,15 @@ class WC_Payment_Gateways {
 	 * Save options in admin.
 	 */
 	public function process_admin_options() {
-		$gateway_order = isset( $_POST['gateway_order'] ) ? $_POST['gateway_order'] : '';
-		$order         = array();
-
-		if ( is_array( $gateway_order ) && sizeof( $gateway_order ) > 0 ) {
+		$gateway_order = isset($_POST['gateway_order']) ? $_POST['gateway_order'] : '';
+		$order         = [];
+		if (is_array($gateway_order) && sizeof($gateway_order) > 0) {
 			$loop = 0;
-			foreach ( $gateway_order as $gateway_id ) {
-				$order[ esc_attr( $gateway_id ) ] = $loop;
+			foreach ($gateway_order as $gateway_id) {
+				$order[ esc_attr($gateway_id) ] = $loop;
 				$loop++;
 			}
 		}
-
-		update_option( 'woocommerce_gateway_order', $order );
+		update_option('woocommerce_gateway_order', $order);
 	}
 }

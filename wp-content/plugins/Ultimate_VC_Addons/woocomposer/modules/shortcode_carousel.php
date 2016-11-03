@@ -4,33 +4,27 @@
 @Since: 1.0
 @Package: WooComposer
 */
-if (! class_exists('WooComposer_ViewCarousel'))
-{
+if (!class_exists('WooComposer_ViewCarousel')) {
     class WooComposer_ViewCarousel {
-        function __construct()
-        {
-            add_action('admin_init', array($this, 'WooComposer_Init_Carousel'));
-            add_shortcode('woocomposer_carousel', array($this, 'WooComposer_Carousel'));
+        function __construct() {
+            add_action('admin_init', [$this, 'WooComposer_Init_Carousel']);
+            add_shortcode('woocomposer_carousel', [$this, 'WooComposer_Carousel']);
         } // end constructor
 
-        function WooComposer_Init_Carousel()
-        {
-            if (function_exists('vc_map'))
-            {
-                $categories = get_terms('product_cat', array(
+        function WooComposer_Init_Carousel() {
+            if (function_exists('vc_map')) {
+                $categories = get_terms('product_cat', [
                     'orderby'    => 'count',
                     'hide_empty' => 0,
-                ));
-                $cat_arr = array();
-                if (is_array($categories))
-                {
-                    foreach ($categories as $cats)
-                    {
-                        $cat_arr[$cats->name] = $cats->slug;
+                ]);
+                $cat_arr    = [];
+                if (is_array($categories)) {
+                    foreach ($categories as $cats) {
+                        $cat_arr[ $cats->name ] = $cats->slug;
                     }
                 }
                 vc_map(
-                    array(
+                    [
                         "name"                    => __("Products Carousel", "ultimate_vc"),
                         "base"                    => "woocomposer_carousel",
                         "icon"                    => "woo_carousel",
@@ -40,84 +34,84 @@ if (! class_exists('WooComposer_ViewCarousel'))
                         "controls"                => "full",
                         "show_settings_on_create" => TRUE,
                         "deprecated"              => "3.13.5",
-                        "params"                  => array(
-                            array(
+                        "params"                  => [
+                            [
                                 "type"       => "woocomposer",
                                 "class"      => "",
                                 "heading"    => __("Query Builder", "ultimate_vc"),
                                 "param_name" => "shortcode",
                                 "value"      => "",
                                 "module"     => "grid",
-                                "labels"     => array(
+                                "labels"     => [
                                     "products_from" => __("Display:", "ultimate_vc"),
                                     "per_page"      => __("How Many:", "ultimate_vc"),
                                     "columns"       => __("Columns:", "ultimate_vc"),
                                     "order_by"      => __("Order By:", "ultimate_vc"),
                                     "order"         => __("Display Order:", "ultimate_vc"),
                                     "category"      => __("Category:", "ultimate_vc"),
-                                ),
+                                ],
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Initial Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"        => "dropdown",
                                 "class"       => "",
                                 "heading"     => __("Display Style", "ultimate_vc"),
                                 "param_name"  => "product_style",
                                 "admin_label" => TRUE,
-                                "value"       => array(
+                                "value"       => [
                                     __("Style 01", "ultimate_vc") => "style01",
                                     __("Style 02", "ultimate_vc") => "style02",
                                     __("Style 03", "ultimate_vc") => "style03",
-                                ),
+                                ],
                                 //"description" => __("", "woocomposer"),
                                 "group"       => "Initial Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "ult_switch",
                                 "class"      => "",
                                 "heading"    => __("Select options to display", "ultimate_vc"),
                                 "param_name" => "display_elements",
                                 "value"      => "",
-                                "options"    => array(
-                                    "category"    => array(
+                                "options"    => [
+                                    "category"    => [
                                         "label" => __("Category", "ultimate_vc"),
                                         "on"    => __("Yes", "ultimate_vc"),
                                         "off"   => __("No", "ultimate_vc"),
-                                    ),
-                                    "reviews"     => array(
+                                    ],
+                                    "reviews"     => [
                                         "label" => __("Reviews", "ultimate_vc"),
                                         "on"    => __("Yes", "ultimate_vc"),
                                         "off"   => __("No", "ultimate_vc"),
-                                    ),
-                                    "quick"       => array(
+                                    ],
+                                    "quick"       => [
                                         "label" => __("Quick View", "ultimate_vc"),
                                         "on"    => __("Yes", "ultimate_vc"),
                                         "off"   => __("No", "ultimate_vc"),
-                                    ),
-                                    "description" => array(
+                                    ],
+                                    "description" => [
                                         "label" => __("Description", "ultimate_vc"),
                                         "on"    => __("Yes", "ultimate_vc"),
                                         "off"   => __("No", "ultimate_vc"),
-                                    ),
-                                ),
+                                    ],
+                                ],
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Initial Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "dropdown",
                                 "class"      => "",
                                 "heading"    => __("Product Text Alignment", "ultimate_vc"),
                                 "param_name" => "text_align",
-                                "value"      => array(
+                                "value"      => [
                                     __("Left", "ultimate_vc")   => "left",
                                     __("Center", "ultimate_vc") => "center",
                                     __("Right", "ultimate_vc")  => "right",
-                                ),
+                                ],
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Initial Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "textfield",
                                 "class"      => "",
                                 "heading"    => __("Sale Notification Label", "ultimate_vc"),
@@ -125,51 +119,51 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "value"      => "",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Initial Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"        => "dropdown",
                                 "class"       => "",
                                 "heading"     => __("Sale Notification Style", "ultimate_vc"),
                                 "param_name"  => "on_sale_style",
                                 "admin_label" => TRUE,
-                                "value"       => array(
+                                "value"       => [
                                     __("Circle", "ultimate_vc") => "wcmp-sale-circle",
                                     __("Square", "ultimate_vc") => "wcmp-sale-rectangle",
-                                ),
+                                ],
                                 //"description" => __("", "woocomposer"),
                                 "group"       => "Initial Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"        => "dropdown",
                                 "class"       => "",
                                 "heading"     => __("Sale Notification Alignment", "ultimate_vc"),
                                 "param_name"  => "on_sale_alignment",
                                 "admin_label" => TRUE,
-                                "value"       => array(
+                                "value"       => [
                                     __("Right", "ultimate_vc") => "wcmp-sale-right",
                                     __("Left", "ultimate_vc")  => "wcmp-sale-left",
-                                ),
+                                ],
                                 //"description" => __("", "woocomposer"),
                                 "group"       => "Initial Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "dropdown",
                                 "class"      => "",
                                 "heading"    => __("Product Image Setting", "ultimate_vc"),
                                 "param_name" => "product_img_disp",
-                                "value"      => array(
+                                "value"      => [
                                     __("Display product featured image", "ultimate_vc")             => "single",
                                     __("Display product gallery in carousel slider", "ultimate_vc") => "carousel",
-                                ),
+                                ],
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Initial Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "dropdown",
                                 "class"      => "",
                                 "heading"    => __("Image Hover Animation", "ultimate_vc"),
                                 "param_name" => "img_animate",
-                                "value"      => array(
+                                "value"      => [
                                     __("Rotate Clock", "ultimate_vc")      => "rotate-clock",
                                     __("Rotate Anti-clock", "ultimate_vc") => "rotate-anticlock",
                                     __("Zoom-In", "ultimate_vc")           => "zoomin",
@@ -179,16 +173,16 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                     __("Shadow", "ultimate_vc")            => "imgshadow",
                                     __("Blur", "ultimate_vc")              => "blur",
                                     __("Anti Grayscale", "ultimate_vc")    => "antigrayscale",
-                                ),
+                                ],
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Initial Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "dropdown",
                                 "class"      => "",
                                 "heading"    => __("Animation", "ultimate_vc"),
                                 "param_name" => "product_animation",
-                                "value"      => array(
+                                "value"      => [
                                     __("No Animation", "ultimate_vc")       => "",
                                     __("Swing", "ultimate_vc")              => "swing",
                                     __("Pulse", "ultimate_vc")              => "pulse",
@@ -212,11 +206,11 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                     __("Rotate In", "ultimate_vc")          => "rotateIn",
                                     __("Light Speed In", "ultimate_vc")     => "lightSpeedIn",
                                     __("Roll In", "ultimate_vc")            => "rollIn",
-                                ),
+                                ],
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Initial Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "colorpicker",
                                 "class"      => "",
                                 "heading"    => __("Product Title Color", "ultimate_vc"),
@@ -224,8 +218,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "value"      => "",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Style Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "colorpicker",
                                 "class"      => "",
                                 "heading"    => __("Categories Color", "ultimate_vc"),
@@ -233,8 +227,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "value"      => "",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Style Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "colorpicker",
                                 "class"      => "",
                                 "heading"    => __("Price Color", "ultimate_vc"),
@@ -242,8 +236,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "value"      => "",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Style Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "colorpicker",
                                 "class"      => "",
                                 "heading"    => __("Star Ratings Color", "ultimate_vc"),
@@ -251,8 +245,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "value"      => "",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Style Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "colorpicker",
                                 "class"      => "",
                                 "heading"    => __("Star Rating Background Color", "ultimate_vc"),
@@ -260,8 +254,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "value"      => "",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Style Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "colorpicker",
                                 "class"      => "",
                                 "heading"    => __("Quick View Icon Color", "ultimate_vc"),
@@ -269,8 +263,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "value"      => "",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Style Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "colorpicker",
                                 "class"      => "",
                                 "heading"    => __("Quick View Icon Background Color", "ultimate_vc"),
@@ -278,8 +272,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "value"      => "",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Style Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "colorpicker",
                                 "class"      => "",
                                 "heading"    => __("Cart Icon Color", "ultimate_vc"),
@@ -287,8 +281,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "value"      => "",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Style Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "colorpicker",
                                 "class"      => "",
                                 "heading"    => __("Cart Icon Background Color", "ultimate_vc"),
@@ -296,8 +290,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "value"      => "",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Style Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "colorpicker",
                                 "class"      => "",
                                 "heading"    => __("Sale Notification Label Color", "ultimate_vc"),
@@ -305,8 +299,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "value"      => "",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Style Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "colorpicker",
                                 "class"      => "",
                                 "heading"    => __("Sale Notification Background Color", "ultimate_vc"),
@@ -314,8 +308,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "value"      => "",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Style Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "colorpicker",
                                 "class"      => "",
                                 "heading"    => __("Product Description Text Color", "ultimate_vc"),
@@ -323,8 +317,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "value"      => "",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Style Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "colorpicker",
                                 "class"      => "",
                                 "heading"    => __("Product Description Background Color", "ultimate_vc"),
@@ -332,8 +326,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "value"      => "",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Style Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "number",
                                 "class"      => "",
                                 "heading"    => __("Product Title", "ultimate_vc"),
@@ -344,8 +338,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "suffix"     => "px",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Size Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "number",
                                 "class"      => "",
                                 "heading"    => __("Categories", "ultimate_vc"),
@@ -356,8 +350,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "suffix"     => "px",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Size Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "number",
                                 "class"      => "",
                                 "heading"    => __("Price", "ultimate_vc"),
@@ -368,8 +362,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "suffix"     => "px",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Size Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "number",
                                 "class"      => "",
                                 "heading"    => __("Sale Notifications", "ultimate_vc"),
@@ -380,20 +374,20 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "suffix"     => "px",
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Size Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "dropdown",
                                 "class"      => "",
                                 "heading"    => __("Slide to Scroll Setting ", "ultimate_vc"),
                                 "param_name" => "scroll_opts",
-                                "value"      => array(
+                                "value"      => [
                                     __("Auto", "ultimate_vc")   => "auto",
                                     __("Custom", "ultimate_vc") => "custom",
-                                ),
+                                ],
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Carousel Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"        => "number",
                                 "class"       => "",
                                 "heading"     => __("Number of Slides to Scroll", "ultimate_vc"),
@@ -403,10 +397,10 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "max"         => 10,
                                 "suffix"      => "",
                                 "description" => __("The number of slides to move on transition", "ultimate_vc"),
-                                "dependency"  => Array("element" => "scroll_opts", "value" => array("custom")),
+                                "dependency"  => ["element" => "scroll_opts", "value" => ["custom"]],
                                 "group"       => "Carousel Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"        => "number",
                                 "class"       => "",
                                 "heading"     => __("Slide Scrolling Speed", "ultimate_vc"),
@@ -417,21 +411,21 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "suffix"      => "ms",
                                 "description" => __("Slide transition duration (in ms)", "ultimate_vc"),
                                 "group"       => "Carousel Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"       => "checkbox",
                                 "class"      => "",
                                 "heading"    => __("Advanced settings -", "ultimate_vc"),
                                 "param_name" => "advanced_opts",
-                                "value"      => array(
+                                "value"      => [
                                     __("Enable infinite scroll", "ultimate_vc") . "<br>" => "infinite",
                                     __("Enable navigation dots", "ultimate_vc") . "<br>" => "dots",
                                     __("Enable auto play", "ultimate_vc")                => "autoplay",
-                                ),
+                                ],
                                 //"description" => __("", "woocomposer"),
                                 "group"      => "Carousel Settings",
-                            ),
-                            array(
+                            ],
+                            [
                                 "type"        => "number",
                                 "class"       => "",
                                 "heading"     => __("Autoplay Speed", "ultimate_vc"),
@@ -440,57 +434,55 @@ if (! class_exists('WooComposer_ViewCarousel'))
                                 "min"         => 100,
                                 "max"         => 10000,
                                 "suffix"      => "ms",
-                                "description" => __("The amount of time (in ms) between each auto transition", "ultimate_vc"),
+                                "description" => __("The amount of time (in ms) between each auto transition",
+                                                    "ultimate_vc"),
                                 "group"       => "Carousel Settings",
-                                "dependency"  => Array("element" => "advanced_opts", "value" => array("autoplay")),
-                            ),
-                        )
-                    )
+                                "dependency"  => ["element" => "advanced_opts", "value" => ["autoplay"]],
+                            ],
+                        ]
+                    ]
                 );
             }
         } // end WooComposer_Init_Carousel
 
-        function WooComposer_Carousel($atts)
-        {
-            $product_style = $slides_to_scroll = $scroll_speed = $advanced_opts = $output = $autoplay_speed = $scroll_opts = '';
-            extract(shortcode_atts(array(
-                "product_style"    => "style01",
-                "slides_to_scroll" => "1",
-                "scroll_speed"     => "1000",
-                "advanced_opts"    => "infinite",
-                "autoplay_speed"   => "500",
-                "scroll_opts"      => "auto",
-            ), $atts));
-
-            $infinite = $autoplay = $dots = 'false';
+        function WooComposer_Carousel($atts) {
+            $product_style
+                = $slides_to_scroll = $scroll_speed = $advanced_opts = $output = $autoplay_speed = $scroll_opts = '';
+            extract(shortcode_atts([
+                                       "product_style"    => "style01",
+                                       "slides_to_scroll" => "1",
+                                       "scroll_speed"     => "1000",
+                                       "advanced_opts"    => "infinite",
+                                       "autoplay_speed"   => "500",
+                                       "scroll_opts"      => "auto",
+                                   ], $atts));
+            $infinite      = $autoplay = $dots = 'false';
             $advanced_opts = explode(",", $advanced_opts);
-            if (in_array("infinite", $advanced_opts))
-            {
+            if (in_array("infinite", $advanced_opts)) {
                 $infinite = 'true';
             }
-            if (in_array("autoplay", $advanced_opts))
-            {
+            if (in_array("autoplay", $advanced_opts)) {
                 $autoplay = 'true';
             }
-            if (in_array("dots", $advanced_opts))
-            {
+            if (in_array("dots", $advanced_opts)) {
                 $dots = 'true';
             }
             ob_start();
             $output .= '<div class="woocommerce">';
-            if (function_exists('wc_print_notices'))
+            if (function_exists('wc_print_notices')) {
                 wc_print_notices();
+            }
             $output .= ob_get_clean();
             $output .= '</div>';
             $uid = uniqid();
-
             $output .= '<div id="woo-carousel-' . $uid . '" class="woocomposer_carousel">';
             $template = 'design-loop-' . $product_style . '.php';
             require_once($template);
             $function = 'WooComposer_Loop_' . $product_style;
             $output .= $function($atts, 'carousel');
             $output .= '</div>';
-            $output .= '<script>
+            $output
+                .= '<script>
 						jQuery(document).ready(function(){
 							var columns = jQuery("#woo-carousel-' . $uid . ' > .woocomposer").data("columns");
 							var slides_scroll_opt = "' . $scroll_opts . '";
@@ -570,8 +562,8 @@ if (! class_exists('WooComposer_ViewCarousel'))
 							//jQuery("[data-save=true]").trigger("click");
 						});
 				</script>';
-            return $output;
 
+            return $output;
         } // end WooComposer_Carousel
     }
 

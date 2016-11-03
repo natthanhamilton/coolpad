@@ -361,7 +361,7 @@ class WC_Query {
 			// Get the actual WP page to avoid errors and let us use is_front_page()
 			// This is hacky but works. Awaiting https://core.trac.wordpress.org/ticket/21096
 			global $wp_post_types;
-			$shop_page = get_post(wc_get_page_id('shop'));
+			$shop_page                            = get_post(wc_get_page_id('shop'));
 			$wp_post_types['product']->ID         = $shop_page->ID;
 			$wp_post_types['product']->post_title = $shop_page->post_title;
 			$wp_post_types['product']->post_name  = $shop_page->post_name;
@@ -424,7 +424,8 @@ class WC_Query {
 	public function get_catalog_ordering_args($orderby = '', $order = '') {
 		// Get ordering from query string unless defined
 		if (!$orderby) {
-			$orderby_value = isset($_GET['orderby']) ? wc_clean($_GET['orderby'])
+			$orderby_value = isset($_GET['orderby'])
+				? wc_clean($_GET['orderby'])
 				: apply_filters('woocommerce_default_catalog_orderby',
 				                get_option('woocommerce_default_catalog_orderby'));
 			// Get order + orderby args from string

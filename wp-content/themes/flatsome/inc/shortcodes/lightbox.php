@@ -1,17 +1,16 @@
 <?php
 // [lightbox]
-function uxLightboxShortcode($atts, $content = NULL)
-{
+function uxLightboxShortcode($atts, $content = NULL) {
     $sliderrandomid = rand();
     ob_start();
-    extract(shortcode_atts(array(
-        'id'         => 'enter-id-here',
-        'width'      => '600px',
-        'padding'    => '20px',
-        'auto_open'  => FALSE,
-        'auto_timer' => '2500',
-        'auto_show'  => 'always'
-    ), $atts));
+    extract(shortcode_atts([
+                               'id'         => 'enter-id-here',
+                               'width'      => '600px',
+                               'padding'    => '20px',
+                               'auto_open'  => FALSE,
+                               'auto_timer' => '2500',
+                               'auto_show'  => 'always'
+                           ], $atts));
     ?>
 
     <div id="<?php echo $id; ?>" class="mfp-hide mfp-content-inner lightbox-white"
@@ -69,6 +68,7 @@ function uxLightboxShortcode($atts, $content = NULL)
     <?php
     $content = ob_get_contents();
     ob_end_clean();
+
     return $content;
 }
 

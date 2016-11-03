@@ -139,7 +139,7 @@ function wpas_get_theme() {
  *
  * @return boolean True if a template is loaded, false otherwise
  */
-function wpas_get_template( $name, $args = array() ) {
+function wpas_get_template( $name, $args = [] ) {
 
 	if ( $args && is_array( $args ) ) {
 		extract( $args );
@@ -183,9 +183,9 @@ function wpas_locate_template( $name ) {
 	$filename = "$name.php";
 
 	$template = locate_template(
-		array(
+		[
 			WPAS_TEMPLATE_PATH . $filename
-		)
+		]
 	);
 
 	if ( ! $template ) {
@@ -207,10 +207,10 @@ function wpas_get_theme_stylesheet() {
 	$theme = wpas_get_theme();
 
 	$template = locate_template(
-		array(
+		[
 			WPAS_TEMPLATE_PATH . 'style.css',
 			WPAS_TEMPLATE_PATH . 'css/style.css',
-		)
+		]
 	);
 
 	if ( ! $template ) {
@@ -250,36 +250,38 @@ function wpas_get_theme_stylesheet_uri() {
  * Get the ticket header.
  *
  * @since  3.0.0
- * @param  array  $args Additional parameters
- * @return void
+ *
+*@param  array  $args Additional parameters
+ *
+*@return void
  */
-function wpas_ticket_header( $args = array() ) {
+function wpas_ticket_header( $args = [] ) {
 
 	global $post;
 
-	$default = array(
+	$default = [
 		'container'       => '',
 		'container_id'    => '',
 		'container_class' => '',
 		'table_id'        => "header-ticket-$post->ID",
 		'table_class'     => 'wpas-table wpas-ticket-details-header',
-	);
+	];
 
 	$args = wp_parse_args( $args, $default );
 
 	$custom_fields = WPAS()->custom_fields->get_custom_fields();
 
-	$columns = array(
+	$columns = [
 		'id'     => __( 'ID', 'awesome-support' ),
 		'status' => __( 'Status', 'awesome-support' ),
 		'date'   => __( 'Date', 'awesome-support' )
-	);
+	];
 
-	$columns_callbacks = array(
+	$columns_callbacks = [
 		'id'     => 'id',
 		'status' => 'wpas_cf_display_status',
 		'date'   => 'date',
-	);
+	];
 
 	foreach ( $custom_fields as $field ) {
 
@@ -314,7 +316,7 @@ function wpas_ticket_header( $args = array() ) {
 				<tr>
 					<?php foreach ( $columns_callbacks as $column => $callback ): ?>
 						<td>
-							<?php wpas_get_tickets_list_column_content( $column, array( 'callback' => $callback ) ); ?>
+							<?php wpas_get_tickets_list_column_content( $column, [ 'callback' => $callback ] ); ?>
 						</td>
 					<?php endforeach; ?>
 				</tr>
@@ -329,17 +331,19 @@ function wpas_ticket_header( $args = array() ) {
  * Display the reply form.
  *
  * @since  3.0.0
- * @param  array  $args Additional arguments
- * @return void
+ *
+*@param  array  $args Additional arguments
+ *
+*@return void
  */
-function wpas_get_reply_form( $args = array() ) {
+function wpas_get_reply_form( $args = [] ) {
 
 	global $wp_query;
 
 	$post_id = $wp_query->post->ID;
 	$status  = wpas_get_ticket_status( $post_id );
 
-	$defaults = array(
+	$defaults = [
 		'form_id'         => 'wpas-new-reply',
 		'form_class'      => 'wpas-form',
 		'container'       => 'div',
@@ -348,7 +352,7 @@ function wpas_get_reply_form( $args = array() ) {
 		'textarea_before' => '',
 		'textarea_after'  => '',
 		'textarea_class'  => 'wpas-form-control wpas-wysiwyg',
-	);
+	];
 
 	$args = wp_parse_args( $args, $defaults );
 
@@ -398,18 +402,18 @@ function wpas_get_reply_form( $args = array() ) {
 					 */
 					if( TRUE === boolval( wpas_get_option( 'frontend_wysiwyg_editor' ) ) ) {
 
-						$editor_defaults = apply_filters( 'wpas_ticket_editor_args', array(
+						$editor_defaults = apply_filters( 'wpas_ticket_editor_args', [
 							'media_buttons' => FALSE,
 							'textarea_name' => 'wpas_user_reply',
 							'textarea_rows' => 10,
 							'tabindex'      => 2,
 							'editor_class'  => $args['textarea_class'],
 							'quicktags'     => FALSE,
-							'tinymce'       => array(
+							'tinymce'       => [
 								'toolbar1' => 'bold,italic,underline,strikethrough,hr,|,bullist,numlist,|,link,unlink',
 								'toolbar2' => ''
-							),
-						) );
+							],
+						] );
 
 						wp_editor( '', 'wpas-reply-wysiwyg', apply_filters( 'wpas_reply_wysiwyg_args', $editor_defaults ) );
 
@@ -464,7 +468,7 @@ function wpas_get_reply_form( $args = array() ) {
 			<?php
 			wp_nonce_field( 'send_reply', 'client_reply', FALSE, TRUE );
 			wpas_do_field( 'submit_new_reply' );
-			wpas_make_button( __( 'Reply', 'awesome-support' ), array( 'name' => 'wpas-submit', 'onsubmit' => __( 'Please Wait...', 'awesome-support' ) ) );
+			wpas_make_button( __( 'Reply', 'awesome-support' ), [ 'name' => 'wpas-submit', 'onsubmit' => __( 'Please Wait...', 'awesome-support' ) ] );
 
 			/**
 			 * wpas_ticket_details_reply_close_checkbox_after hook
@@ -481,7 +485,7 @@ function wpas_get_reply_form( $args = array() ) {
 	 * This case is an agent viewing the ticket from the front-end. All actions are tracked in the back-end only, that's why we prevent agents from replying through the front-end.
 	 */
 	elseif( 'open' === $status && FALSE === wpas_can_reply_ticket() ):
-		echo wpas_get_notification_markup( 'info', sprintf( __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'awesome-support' ), add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) ) );
+		echo wpas_get_notification_markup( 'info', sprintf( __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'awesome-support' ), add_query_arg( [ 'post' => $post_id, 'action' => 'edit' ], admin_url( 'post.php' ) ) ) );
 	else:
 		echo wpas_get_notification_markup( 'info', __( 'You are not allowed to reply to this ticket.', 'awesome-support' ) );
 	endif;
@@ -512,7 +516,7 @@ function wpas_get_reopen_url( $ticket_id = NULL ) {
 		$ticket_id = intval( $wp_query->post->ID );
 	}
 
-	$url = wpas_do_url( get_permalink( $ticket_id ), 'reopen_ticket', array( 'ticket_id' => $ticket_id ) );
+	$url = wpas_do_url( get_permalink( $ticket_id ), 'reopen_ticket', [ 'ticket_id' => $ticket_id ] );
 
 	return apply_filters( 'wpas_reopen_url', esc_url( $url ), $ticket_id );
 
@@ -551,22 +555,22 @@ function wpas_get_tickets_list_columns() {
 
 	$custom_fields = WPAS()->custom_fields->get_custom_fields();
 
-	$columns = array(
-		'status' => array(
+	$columns = [
+		'status' => [
 			'title'             => __( 'Status', 'awesome-support' ),
 			'callback'          => 'wpas_cf_display_status',
-			'column_attributes' => array( 'head' => array( 'sort-ignore' => TRUE ) )
-		),
-		'title'  => array( 'title' => __( 'Title', 'awesome-support' ), 'callback' => 'title' ),
-		'date'   => array(
+			'column_attributes' => [ 'head' => [ 'sort-ignore' => TRUE ] ]
+		],
+		'title'  => [ 'title' => __( 'Title', 'awesome-support' ), 'callback' => 'title' ],
+		'date'   => [
 			'title'             => __( 'Date', 'awesome-support' ),
 			'callback'          => 'date',
-			'column_attributes' => array(
-				'head' => array( 'type' => 'numeric', 'sort-initial' => 'descending' ),
-				'body' => array( 'value' => 'wpas_get_the_time_timestamp' )
-			)
-		),
-	);
+			'column_attributes' => [
+				'head' => [ 'type' => 'numeric', 'sort-initial' => 'descending' ],
+				'body' => [ 'value' => 'wpas_get_the_time_timestamp' ]
+			]
+		],
+	];
 
 	foreach ( $custom_fields as $field ) {
 
@@ -580,7 +584,7 @@ function wpas_get_tickets_list_columns() {
 
 			$column_title              = apply_filters( 'wpas_custom_column_title', wpas_get_field_title( $field ), $field );
 			$column_callback           = ( 'taxonomy' === $field['args']['field_type'] && TRUE === $field['args']['taxo_std'] ) ? 'taxonomy' : $field['args']['column_callback'];
-			$columns[ $field['name'] ] = array( 'title' => $column_title, 'callback' => $column_callback );
+			$columns[ $field['name'] ] = [ 'title' => $column_title, 'callback' => $column_callback ];
 
 			if ( ! empty( $field['args']['column_attributes'] ) && is_array( $field['args']['column_attributes'] ) ) {
 				$columns[ $field['name'] ] = $field['args']['column_attributes'];
@@ -627,7 +631,7 @@ function wpas_get_tickets_list_column_content( $column_id, $column ) {
 
 			// If the replies are displayed from the oldest to the newest we want to link directly to the latest reply in case there are multiple reply pages
 			if ( 'ASC' === wpas_get_option( 'replies_order', 'ASC' ) ) {
-				$last_reply = wpas_get_replies( get_the_ID(), array( 'read', 'unread' ), array( 'posts_per_page' => 1, 'order' => 'DESC' ) );
+				$last_reply = wpas_get_replies( get_the_ID(), [ 'read', 'unread' ], [ 'posts_per_page' => 1, 'order' => 'DESC' ] );
 				$link       = ! empty( $last_reply ) ? wpas_get_reply_link( $last_reply[0]->ID ) : get_permalink( get_the_ID() );
 			} else {
 				$link = get_permalink( get_the_ID() );
@@ -643,7 +647,7 @@ function wpas_get_tickets_list_column_content( $column_id, $column ) {
 		case 'taxonomy':
 
 			$terms = get_the_terms( get_the_ID(), $column_id );
-			$list  = array();
+			$list  = [];
 
 			if ( empty( $terms ) ) {
 				continue;
@@ -724,7 +728,7 @@ function wpas_get_offset_html5() {
 function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
 
 	$terms = get_the_terms( $post_id, $field );
-	$list  = array();
+	$list  = [];
 
 	if ( ! is_array( $terms ) ) {
 		echo '';
@@ -785,11 +789,11 @@ function wpas_cf_display_status( $name, $post_id ) {
 			$color = wpas_get_option( "color_$status", '#169baa' );
 			$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
 		} else {
-			$defaults = array(
+			$defaults = [
 				'queued'     => '#1e73be',
 				'processing' => '#a01497',
 				'hold'       => '#b56629'
-			);
+			];
 			$label    = $custom_status[ $post_status ];
 			$color    = wpas_get_option( "color_$post_status", FALSE );
 
@@ -825,11 +829,11 @@ function wpas_get_notification_markup( $type = 'info', $message = '' ) {
 		return '';
 	}
 
-	$classes = apply_filters( 'wpas_notification_classes', array(
+	$classes = apply_filters( 'wpas_notification_classes', [
 		'success' => 'wpas-alert wpas-alert-success',
 		'failure' => 'wpas-alert wpas-alert-danger',
 		'info'    => 'wpas-alert wpas-alert-info',
-	) );
+	] );
 
 	if ( ! array_key_exists( $type, $classes ) ) {
 		$type = 'info';
@@ -1018,15 +1022,15 @@ function wpas_terms_and_conditions_checkbox() {
 		return;
 	}
 
-	$terms = new WPAS_Custom_Field( 'terms', array(
+	$terms = new WPAS_Custom_Field( 'terms', [
 		'name' => 'terms',
-		'args' => array(
+		'args' => [
 			'required'   => TRUE,
 			'field_type' => 'checkbox',
 			'sanitize'   => 'sanitize_text_field',
-			'options'    => array( '1' => sprintf( __( 'I accept the %sterms and conditions%s', 'awesome-support' ), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ) ),
-		)
-	) );
+			'options'    => [ '1' => sprintf( __( 'I accept the %sterms and conditions%s', 'awesome-support' ), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ) ],
+		]
+	] );
 
 	echo $terms->get_output();
 

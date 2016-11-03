@@ -1,7 +1,6 @@
 <?php
-if (! defined('ABSPATH'))
-{
-    die('-1');
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
 }
 
 /**
@@ -10,80 +9,73 @@ if (! defined('ABSPATH'))
  * @since 4.5
  */
 class Vc_Pages_Group extends Vc_Page {
-    protected $activePage;
-    protected $pages;
-    protected $templatePath;
+	protected $activePage;
+	protected $pages;
+	protected $templatePath;
 
-    /**
-     * @return mixed
-     */
-    public function getActivePage()
-    {
-        return $this->activePage;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getActivePage() {
+		return $this->activePage;
+	}
 
-    /**
-     * @param Vc_Page $activePage
-     *
-     * @return $this
-     */
-    public function setActivePage(Vc_Page $activePage)
-    {
-        $this->activePage = $activePage;
+	/**
+	 * @param Vc_Page $activePage
+	 *
+	 * @return $this
+	 */
+	public function setActivePage( Vc_Page $activePage ) {
+		$this->activePage = $activePage;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getPages()
-    {
-        return $this->pages;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getPages() {
+		return $this->pages;
+	}
 
-    /**
-     * @param mixed $pages
-     *
-     * @return $this
-     */
-    public function setPages($pages)
-    {
-        $this->pages = $pages;
+	/**
+	 * @param mixed $pages
+	 *
+	 * @return $this
+	 */
+	public function setPages( $pages ) {
+		$this->pages = $pages;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * @return mixed
-     */
-    public function getTemplatePath()
-    {
-        return $this->templatePath;
-    }
+	/**
+	 * @return mixed
+	 */
+	public function getTemplatePath() {
+		return $this->templatePath;
+	}
 
-    /**
-     * @param mixed $templatePath
-     *
-     * @return $this
-     */
-    public function setTemplatePath($templatePath)
-    {
-        $this->templatePath = $templatePath;
+	/**
+	 * @param mixed $templatePath
+	 *
+	 * @return $this
+	 */
+	public function setTemplatePath( $templatePath ) {
+		$this->templatePath = $templatePath;
 
-        return $this;
-    }
+		return $this;
+	}
 
-    /**
-     * Render html output for current page.
-     */
-    public function render()
-    {
-        vc_include_template($this->getTemplatePath(),
-            array(
-                'pages'       => $this->getPages(),
-                'active_page' => $this->activePage,
-                'page'        => $this,
-            ));
-    }
+	/**
+	 * Render html output for current page.
+	 */
+	public function render() {
+		vc_include_template( $this->getTemplatePath(),
+			array(
+				'pages' => $this->getPages(),
+				'active_page' => $this->activePage,
+				'page' => $this,
+			) );
+	}
 }

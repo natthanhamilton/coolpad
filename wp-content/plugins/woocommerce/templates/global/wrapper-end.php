@@ -10,22 +10,19 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see 	    https://docs.woocommerce.com/document/template-structure/
- * @author 		WooThemes
- * @package 	WooCommerce/Templates
- * @version     1.6.4
+ * @see           https://docs.woocommerce.com/document/template-structure/
+ * @author        WooThemes
+ * @package       WooCommerce/Templates
+ * @version       1.6.4
  */
-
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly
 }
-
-$template = get_option( 'template' );
-
-switch( $template ) {
+$template = get_option('template');
+switch ($template) {
 	case 'twentyeleven' :
 		echo '</div>';
-		get_sidebar( 'shop' );
+		get_sidebar('shop');
 		echo '</div>';
 		break;
 	case 'twentytwelve' :
@@ -36,7 +33,7 @@ switch( $template ) {
 		break;
 	case 'twentyfourteen' :
 		echo '</div></div></div>';
-		get_sidebar( 'content' );
+		get_sidebar('content');
 		break;
 	case 'twentyfifteen' :
 		echo '</div></div>';

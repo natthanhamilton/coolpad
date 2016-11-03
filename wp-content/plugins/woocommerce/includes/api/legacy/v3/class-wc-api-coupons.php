@@ -71,8 +71,8 @@ class WC_API_Coupons extends WC_API_Resource {
 	 */
 	public function get_coupons($fields = NULL, $filter = [], $page = 1) {
 		$filter['page'] = $page;
-		$query = $this->query_coupons($filter);
-		$coupons = [];
+		$query          = $this->query_coupons($filter);
+		$coupons        = [];
 		foreach ($query->posts as $coupon_id) {
 			if (!$this->is_readable($coupon_id)) {
 				continue;
@@ -319,7 +319,7 @@ class WC_API_Coupons extends WC_API_Resource {
 				                           400);
 			}
 			$data = $data['coupon'];
-			$id = $this->validate_request($id, 'shop_coupon', 'edit');
+			$id   = $this->validate_request($id, 'shop_coupon', 'edit');
 			if (is_wp_error($id)) {
 				return $id;
 			}
@@ -483,7 +483,7 @@ class WC_API_Coupons extends WC_API_Resource {
 				throw new WC_API_Exception('woocommerce_api_coupon_code_already_exists',
 				                           __('The coupon code already exists', 'woocommerce'), 400);
 			}
-			$defaults = [
+			$defaults    = [
 				'type'                         => 'fixed_cart',
 				'amount'                       => 0,
 				'individual_use'               => FALSE,
@@ -519,7 +519,7 @@ class WC_API_Coupons extends WC_API_Resource {
 				'post_type'    => 'shop_coupon',
 				'post_excerpt' => $coupon_data['description']
 			];
-			$id = wp_insert_post($new_coupon, TRUE);
+			$id         = wp_insert_post($new_coupon, TRUE);
 			if (is_wp_error($id)) {
 				throw new WC_API_Exception('woocommerce_api_cannot_create_coupon', $id->get_error_message(), 400);
 			}

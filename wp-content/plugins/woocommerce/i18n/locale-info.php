@@ -1,6 +1,6 @@
 <?php
-return array(
-	'AU' => array(
+return [
+	'AU' => [
 		'currency_code'  => 'AUD',
 		'currency_pos'   => 'left',
 		'thousand_sep'   => ',',
@@ -8,19 +8,19 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'' => array(
-				array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'AU',
 					'state'    => '',
 					'rate'     => '10.0000',
 					'name'     => 'GST',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'BD' => array(
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'BD' => [
 		'currency_code'  => 'BDT',
 		'currency_pos'   => 'left',
 		'thousand_sep'   => ',',
@@ -28,19 +28,19 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'in',
-		'tax_rates'      => array(
-			'' => array(
-				array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'BD',
 					'state'    => '',
 					'rate'     => '15.0000',
 					'name'     => 'VAT',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'BE' => array(
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'BE' => [
 		'currency_code'  => 'EUR',
 		'currency_pos'   => 'left',
 		'thousand_sep'   => ' ',
@@ -48,19 +48,19 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'' => array(
-			  array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'BE',
 					'state'    => '',
 					'rate'     => '20.0000',
 					'name'     => 'BTW',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'BR' => array(
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'BR' => [
 		'currency_code'  => 'BRL',
 		'currency_pos'   => 'left',
 		'thousand_sep'   => '.',
@@ -68,9 +68,9 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array()
-	),
-	'CA' => array(
+		'tax_rates'      => []
+	],
+	'CA' => [
 		'currency_code'  => 'CAD',
 		'currency_pos'   => 'left',
 		'thousand_sep'   => ',',
@@ -78,143 +78,143 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'BC' => array(
-				array(
+		'tax_rates'      => [
+			'BC' => [
+				[
 					'country'  => 'CA',
 					'state'    => 'BC',
 					'rate'     => '7.0000',
-					'name'     => _x( 'PST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => false,
+					'name'     => _x('PST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => FALSE,
 					'priority' => 2
-				)
-			),
-			'SK' => array(
-				array(
+				]
+			],
+			'SK' => [
+				[
 					'country'  => 'CA',
 					'state'    => 'SK',
 					'rate'     => '5.0000',
-					'name'     => _x( 'PST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => false,
+					'name'     => _x('PST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => FALSE,
 					'priority' => 2
-				)
-			),
-			'MB' => array(
-				array(
+				]
+			],
+			'MB' => [
+				[
 					'country'  => 'CA',
 					'state'    => 'MB',
 					'rate'     => '8.0000',
-					'name'     => _x( 'PST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => false,
+					'name'     => _x('PST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => FALSE,
 					'priority' => 2
-				)
-			),
-			'QC' => array(
-				array(
+				]
+			],
+			'QC' => [
+				[
 					'country'  => 'CA',
 					'state'    => 'QC',
 					'rate'     => '9.975',
-					'name'     => _x( 'QST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => false,
+					'name'     => _x('QST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => FALSE,
 					'priority' => 2
-				)
-			),
-			'*' => array(
-				array(
+				]
+			],
+			'*'  => [
+				[
 					'country'  => 'CA',
 					'state'    => 'ON',
 					'rate'     => '13.0000',
-					'name'     => _x( 'HST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => true
-				),
-				array(
+					'name'     => _x('HST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => TRUE
+				],
+				[
 					'country'  => 'CA',
 					'state'    => 'NL',
 					'rate'     => '13.0000',
-					'name'     => _x( 'HST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => true
-				),
-				array(
+					'name'     => _x('HST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => TRUE
+				],
+				[
 					'country'  => 'CA',
 					'state'    => 'NB',
 					'rate'     => '13.0000',
-					'name'     => _x( 'HST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => true
-				),
-				array(
+					'name'     => _x('HST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => TRUE
+				],
+				[
 					'country'  => 'CA',
 					'state'    => 'PE',
 					'rate'     => '14.0000',
-					'name'     => _x( 'HST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => true
-				),
-				array(
+					'name'     => _x('HST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => TRUE
+				],
+				[
 					'country'  => 'CA',
 					'state'    => 'NS',
 					'rate'     => '15.0000',
-					'name'     => _x( 'HST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => true
-				),
-				array(
+					'name'     => _x('HST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => TRUE
+				],
+				[
 					'country'  => 'CA',
 					'state'    => 'AB',
 					'rate'     => '5.0000',
-					'name'     => _x( 'GST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => true
-				),
-				array(
+					'name'     => _x('GST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => TRUE
+				],
+				[
 					'country'  => 'CA',
 					'state'    => 'BC',
 					'rate'     => '5.0000',
-					'name'     => _x( 'GST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => true
-				),
-				array(
+					'name'     => _x('GST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => TRUE
+				],
+				[
 					'country'  => 'CA',
 					'state'    => 'NT',
 					'rate'     => '5.0000',
-					'name'     => _x( 'GST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => true
-				),
-				array(
+					'name'     => _x('GST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => TRUE
+				],
+				[
 					'country'  => 'CA',
 					'state'    => 'NU',
 					'rate'     => '5.0000',
-					'name'     => _x( 'GST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => true
-				),
-				array(
+					'name'     => _x('GST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => TRUE
+				],
+				[
 					'country'  => 'CA',
 					'state'    => 'YT',
 					'rate'     => '5.0000',
-					'name'     => _x( 'GST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => true
-				),
-				array(
+					'name'     => _x('GST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => TRUE
+				],
+				[
 					'country'  => 'CA',
 					'state'    => 'SK',
 					'rate'     => '5.0000',
-					'name'     => _x( 'GST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => true
-				),
-				array(
+					'name'     => _x('GST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => TRUE
+				],
+				[
 					'country'  => 'CA',
 					'state'    => 'MB',
 					'rate'     => '5.0000',
-					'name'     => _x( 'GST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => true
-				),
-				array(
+					'name'     => _x('GST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => TRUE
+				],
+				[
 					'country'  => 'CA',
 					'state'    => 'QC',
 					'rate'     => '5.0000',
-					'name'     => _x( 'GST', 'Canadian Tax Rates', 'woocommerce' ),
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'DE' => array(
+					'name'     => _x('GST', 'Canadian Tax Rates', 'woocommerce'),
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'DE' => [
 		'currency_code'  => 'EUR',
 		'currency_pos'   => 'left',
 		'thousand_sep'   => '.',
@@ -222,19 +222,19 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'' => array(
-				array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'DE',
 					'state'    => '',
 					'rate'     => '19.0000',
 					'name'     => 'Mwst.',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'ES' => array(
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'ES' => [
 		'currency_code'  => 'EUR',
 		'currency_pos'   => 'right',
 		'thousand_sep'   => '.',
@@ -242,19 +242,19 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'' => array(
-				array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'ES',
 					'state'    => '',
 					'rate'     => '21.0000',
 					'name'     => 'VAT',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'FR' => array(
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'FR' => [
 		'currency_code'  => 'EUR',
 		'currency_pos'   => 'right',
 		'thousand_sep'   => ' ',
@@ -262,39 +262,39 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'' => array(
-				array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'FR',
 					'state'    => '',
 					'rate'     => '20.0000',
 					'name'     => 'VAT',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'GB' => array(
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'GB' => [
 		'currency_code'  => 'GBP',
-		'currency_pos'	=> 'left',
-		'thousand_sep'	=> ',',
-		'decimal_sep'	 => '.',
-		'num_decimals'	=> 2,
-		'weight_unit'	 => 'kg',
+		'currency_pos'   => 'left',
+		'thousand_sep'   => ',',
+		'decimal_sep'    => '.',
+		'num_decimals'   => 2,
+		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'		=> array(
-			'' => array(
-				array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'GB',
-					'state'	 => '',
-					'rate'	  => '20.0000',
-					'name'	  => 'VAT',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'HU' => array(
+					'state'    => '',
+					'rate'     => '20.0000',
+					'name'     => 'VAT',
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'HU' => [
 		'currency_code'  => 'HUF',
 		'currency_pos'   => 'right_space',
 		'thousand_sep'   => ' ',
@@ -302,19 +302,19 @@ return array(
 		'num_decimals'   => 0,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'' => array(
-				array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'HU',
 					'state'    => '',
 					'rate'     => '27.0000',
 					'name'     => 'ÁFA',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'IT' => array(
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'IT' => [
 		'currency_code'  => 'EUR',
 		'currency_pos'   => 'right',
 		'thousand_sep'   => '.',
@@ -322,19 +322,19 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'' => array(
-				array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'IT',
 					'state'    => '',
 					'rate'     => '22.0000',
 					'name'     => 'IVA',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'JP' => array(
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'JP' => [
 		'currency_code'  => 'JPY',
 		'currency_pos'   => 'left',
 		'thousand_sep'   => ',',
@@ -342,19 +342,19 @@ return array(
 		'num_decimals'   => 0,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'' => array(
-				array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'JP',
 					'state'    => '',
 					'rate'     => '8.0000',
-					'name'     => __( 'Consumption tax', 'woocommerce' ),
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'NL' => array(
+					'name'     => __('Consumption tax', 'woocommerce'),
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'NL' => [
 		'currency_code'  => 'EUR',
 		'currency_pos'   => 'left',
 		'thousand_sep'   => ',',
@@ -362,19 +362,19 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'' => array(
-				array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'NL',
 					'state'    => '',
 					'rate'     => '21.0000',
 					'name'     => 'VAT',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'NO' => array(
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'NO' => [
 		'currency_code'  => 'Kr',
 		'currency_pos'   => 'left_space',
 		'thousand_sep'   => '.',
@@ -382,19 +382,19 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'' => array(
-				array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'NO',
 					'state'    => '',
 					'rate'     => '25.0000',
 					'name'     => 'MVA',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'NP' => array(
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'NP' => [
 		'currency_code'  => 'NPR',
 		'currency_pos'   => 'left_space',
 		'thousand_sep'   => ',',
@@ -402,19 +402,19 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'' => array(
-				array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'NP',
 					'state'    => '',
 					'rate'     => '13.0000',
 					'name'     => 'VAT',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'PL' => array(
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'PL' => [
 		'currency_code'  => 'PLN',
 		'currency_pos'   => 'right',
 		'thousand_sep'   => ',',
@@ -422,19 +422,19 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'' => array(
-			 	array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'PL',
 					'state'    => '',
 					'rate'     => '23.0000',
 					'name'     => 'VAT',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'TH' => array(
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'TH' => [
 		'currency_code'  => 'THB',
 		'currency_pos'   => 'left',
 		'thousand_sep'   => ',',
@@ -442,19 +442,19 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'' => array(
-				array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'TH',
 					'state'    => '',
 					'rate'     => '7.0000',
 					'name'     => 'VAT',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'TR' => array(
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'TR' => [
 		'currency_code'  => 'TRY',
 		'currency_pos'   => 'left_space',
 		'thousand_sep'   => '.',
@@ -462,462 +462,462 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'' => array(
-				array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'TR',
 					'state'    => '',
 					'rate'     => '18.0000',
 					'name'     => 'KDV',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'US' => array(
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'US' => [
 		'currency_code'  => 'USD',
-		'currency_pos'	=> 'left',
-		'thousand_sep'	=> ',',
-		'decimal_sep'	 => '.',
-		'num_decimals'	=> 2,
-		'weight_unit'	 => 'lbs',
+		'currency_pos'   => 'left',
+		'thousand_sep'   => ',',
+		'decimal_sep'    => '.',
+		'num_decimals'   => 2,
+		'weight_unit'    => 'lbs',
 		'dimension_unit' => 'in',
-		'tax_rates'		=> array(
-			'AL' => array(
-				array(
+		'tax_rates'      => [
+			'AL' => [
+				[
 					'country'  => 'US',
 					'state'    => 'AL',
 					'rate'     => '4.0000',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'AZ' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'AZ' => [
+				[
 					'country'  => 'US',
 					'state'    => 'AZ',
 					'rate'     => '5.6000',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'AR' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'AR' => [
+				[
 					'country'  => 'US',
 					'state'    => 'AR',
 					'rate'     => '6.5000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'CA' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'CA' => [
+				[
 					'country'  => 'US',
 					'state'    => 'CA',
 					'rate'     => '7.5000',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'CO' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'CO' => [
+				[
 					'country'  => 'US',
 					'state'    => 'CO',
 					'rate'     => '2.9000',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'CT' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'CT' => [
+				[
 					'country'  => 'US',
 					'state'    => 'CT',
 					'rate'     => '6.3500',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'DC' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'DC' => [
+				[
 					'country'  => 'US',
 					'state'    => 'DC',
 					'rate'     => '5.7500',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'FL' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'FL' => [
+				[
 					'country'  => 'US',
 					'state'    => 'FL',
 					'rate'     => '6.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'GA' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'GA' => [
+				[
 					'country'  => 'US',
 					'state'    => 'GA',
 					'rate'     => '4.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'GU' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'GU' => [
+				[
 					'country'  => 'US',
 					'state'    => 'GU',
 					'rate'     => '4.0000',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'HI' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'HI' => [
+				[
 					'country'  => 'US',
 					'state'    => 'HI',
 					'rate'     => '4.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'ID' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'ID' => [
+				[
 					'country'  => 'US',
 					'state'    => 'ID',
 					'rate'     => '6.0000',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'IL' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'IL' => [
+				[
 					'country'  => 'US',
 					'state'    => 'IL',
 					'rate'     => '6.2500',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'IN' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'IN' => [
+				[
 					'country'  => 'US',
 					'state'    => 'IN',
 					'rate'     => '7.0000',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'IA' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'IA' => [
+				[
 					'country'  => 'US',
 					'state'    => 'IA',
 					'rate'     => '6.0000',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'KS' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'KS' => [
+				[
 					'country'  => 'US',
 					'state'    => 'KS',
 					'rate'     => '6.1500',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'KY' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'KY' => [
+				[
 					'country'  => 'US',
 					'state'    => 'KY',
 					'rate'     => '6.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'LA' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'LA' => [
+				[
 					'country'  => 'US',
 					'state'    => 'LA',
 					'rate'     => '4.0000',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'ME' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'ME' => [
+				[
 					'country'  => 'US',
 					'state'    => 'ME',
 					'rate'     => '5.5000',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'MD' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'MD' => [
+				[
 					'country'  => 'US',
 					'state'    => 'MD',
 					'rate'     => '6.0000',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'MA' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'MA' => [
+				[
 					'country'  => 'US',
 					'state'    => 'MA',
 					'rate'     => '6.2500',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'MI' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'MI' => [
+				[
 					'country'  => 'US',
 					'state'    => 'MI',
 					'rate'     => '6.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'MN' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'MN' => [
+				[
 					'country'  => 'US',
 					'state'    => 'MN',
 					'rate'     => '6.8750',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'MS' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'MS' => [
+				[
 					'country'  => 'US',
 					'state'    => 'MS',
 					'rate'     => '7.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'MO' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'MO' => [
+				[
 					'country'  => 'US',
 					'state'    => 'MO',
 					'rate'     => '4.225',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'NE' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'NE' => [
+				[
 					'country'  => 'US',
 					'state'    => 'NE',
 					'rate'     => '5.5000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'NV' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'NV' => [
+				[
 					'country'  => 'US',
 					'state'    => 'NV',
 					'rate'     => '6.8500',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'NJ' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'NJ' => [
+				[
 					'country'  => 'US',
 					'state'    => 'NJ',
 					'rate'     => '7.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'NM' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'NM' => [
+				[
 					'country'  => 'US',
 					'state'    => 'NM',
 					'rate'     => '5.1250',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'NY' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'NY' => [
+				[
 					'country'  => 'US',
 					'state'    => 'NY',
 					'rate'     => '4.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'NC' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'NC' => [
+				[
 					'country'  => 'US',
 					'state'    => 'NC',
 					'rate'     => '4.7500',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'ND' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'ND' => [
+				[
 					'country'  => 'US',
 					'state'    => 'ND',
 					'rate'     => '5.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'OH' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'OH' => [
+				[
 					'country'  => 'US',
 					'state'    => 'OH',
 					'rate'     => '5.7500',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'OK' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'OK' => [
+				[
 					'country'  => 'US',
 					'state'    => 'OK',
 					'rate'     => '4.5000',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'PA' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'PA' => [
+				[
 					'country'  => 'US',
 					'state'    => 'PA',
 					'rate'     => '6.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'PR' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'PR' => [
+				[
 					'country'  => 'US',
 					'state'    => 'PR',
 					'rate'     => '6.0000',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'RI' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'RI' => [
+				[
 					'country'  => 'US',
 					'state'    => 'RI',
 					'rate'     => '7.0000',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'SC' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'SC' => [
+				[
 					'country'  => 'US',
 					'state'    => 'SC',
 					'rate'     => '6.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'SD' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'SD' => [
+				[
 					'country'  => 'US',
 					'state'    => 'SD',
 					'rate'     => '4.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'TN' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'TN' => [
+				[
 					'country'  => 'US',
 					'state'    => 'TN',
 					'rate'     => '7.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'TX' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'TX' => [
+				[
 					'country'  => 'US',
 					'state'    => 'TX',
 					'rate'     => '6.2500',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'UT' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'UT' => [
+				[
 					'country'  => 'US',
 					'state'    => 'UT',
 					'rate'     => '5.9500',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'VT' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'VT' => [
+				[
 					'country'  => 'US',
 					'state'    => 'VT',
 					'rate'     => '6.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'VA' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'VA' => [
+				[
 					'country'  => 'US',
 					'state'    => 'VA',
 					'rate'     => '5.3000',
 					'name'     => 'State Tax',
-					'shipping' => false
-				)
-			),
-			'WA' => array(
-				array(
+					'shipping' => FALSE
+				]
+			],
+			'WA' => [
+				[
 					'country'  => 'US',
 					'state'    => 'WA',
 					'rate'     => '6.5000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'WV' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'WV' => [
+				[
 					'country'  => 'US',
 					'state'    => 'WV',
 					'rate'     => '6.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'WI' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'WI' => [
+				[
 					'country'  => 'US',
 					'state'    => 'WI',
 					'rate'     => '5.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			),
-			'WY' => array(
-				array(
+					'shipping' => TRUE
+				]
+			],
+			'WY' => [
+				[
 					'country'  => 'US',
 					'state'    => 'WY',
 					'rate'     => '4.0000',
 					'name'     => 'State Tax',
-					'shipping' => true
-				)
-			)
-		)
-	),
-	'ZA' => array(
+					'shipping' => TRUE
+				]
+			]
+		]
+	],
+	'ZA' => [
 		'currency_code'  => 'ZAR',
 		'currency_pos'   => 'left',
 		'thousand_sep'   => ',',
@@ -925,16 +925,16 @@ return array(
 		'num_decimals'   => 2,
 		'weight_unit'    => 'kg',
 		'dimension_unit' => 'cm',
-		'tax_rates'      => array(
-			'' => array(
-				array(
+		'tax_rates'      => [
+			'' => [
+				[
 					'country'  => 'ZA',
 					'state'    => '',
 					'rate'     => '14.0000',
 					'name'     => 'VAT',
-					'shipping' => true
-				)
-			)
-		)
-	)
-);
+					'shipping' => TRUE
+				]
+			]
+		]
+	]
+];

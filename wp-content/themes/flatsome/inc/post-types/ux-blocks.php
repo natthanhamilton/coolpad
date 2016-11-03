@@ -1,65 +1,54 @@
 <?php
 /* Registrer post menu */
 register_post_type('blocks',
-    array(
-        'labels'              => array(
-            'add_new_item'       => __('Add block', "blocks"),
-            'name'               => __('Blocks', "blocks"),
-            'singular_name'      => __('Block', "blocks"),
-            'edit_item'          => __('Edit Block', "blocks"),
-            'view_item'          => __('View Block', "blocks"),
-            'search_items'       => __('Search Blocks', "blocks"),
-            'not_found'          => __('No Blocks found', "blocks"),
-            'not_found_in_trash' => __('No Blocks found in Trash', "blocks"),
-        ),
-        'public'              => TRUE,
-        'has_archive'         => TRUE,
-        'show_in_menu'        => TRUE,
-        'supports'            => array('thumbnail', 'editor', 'title', 'revisions', 'custom-fields'),
-        'show_in_nav_menus'   => TRUE,
-        'exclude_from_search' => TRUE,
-        'rewrite'             => array('slug' => ''),
-        'exclude_from_search' => TRUE,
-        'publicly_queryable'  => TRUE,
-        'show_ui'             => TRUE,
-        'query_var'           => TRUE,
-        'capability_type'     => 'page',
-        'hierarchical'        => TRUE,
-        'menu_position'       => NULL,
-        'menu_icon'           => 'dashicons-tagcloud',
-    )
+                   [
+                       'labels'              => [
+                           'add_new_item'       => __('Add block', "blocks"),
+                           'name'               => __('Blocks', "blocks"),
+                           'singular_name'      => __('Block', "blocks"),
+                           'edit_item'          => __('Edit Block', "blocks"),
+                           'view_item'          => __('View Block', "blocks"),
+                           'search_items'       => __('Search Blocks', "blocks"),
+                           'not_found'          => __('No Blocks found', "blocks"),
+                           'not_found_in_trash' => __('No Blocks found in Trash', "blocks"),
+                       ],
+                       'public'              => TRUE,
+                       'has_archive'         => TRUE,
+                       'show_in_menu'        => TRUE,
+                       'supports'            => ['thumbnail', 'editor', 'title', 'revisions', 'custom-fields'],
+                       'show_in_nav_menus'   => TRUE,
+                       'exclude_from_search' => TRUE,
+                       'rewrite'             => ['slug' => ''],
+                       'exclude_from_search' => TRUE,
+                       'publicly_queryable'  => TRUE,
+                       'show_ui'             => TRUE,
+                       'query_var'           => TRUE,
+                       'capability_type'     => 'page',
+                       'hierarchical'        => TRUE,
+                       'menu_position'       => NULL,
+                       'menu_icon'           => 'dashicons-tagcloud',
+                   ]
 );
-
-
 add_filter('manage_edit-blocks_columns', 'my_edit_blocks_columns');
-
-function my_edit_blocks_columns($columns)
-{
-
-    $columns = array(
+function my_edit_blocks_columns($columns) {
+    $columns = [
         'cb' => '<input type="checkbox" />',
-
         'title'         => __('Title', 'blocks'),
         'quick_preview' => __('Preview', 'blocks'),
-
         'shortcode' => __('Shortcode', 'blocks'),
-
         'date' => __('Date', 'blocks'),
-    );
+    ];
 
     return $columns;
 }
 
-
 add_action('manage_blocks_posts_custom_column', 'my_manage_blocks_columns', 10, 2);
-function my_manage_blocks_columns($column, $post_id)
-{
+function my_manage_blocks_columns($column, $post_id) {
     global $post;
     $post_data = get_post($post_id, ARRAY_A);
-    $slug = $post_data['post_name'];
+    $slug      = $post_data['post_name'];
     add_thickbox();
-    switch ($column)
-    {
+    switch ($column) {
         case 'shortcode' :
             echo '<textarea style="min-width:100%; max-height:30px; background:#eee;">[block id="' . $slug . '"]</textarea>';
             break;
@@ -70,11 +59,9 @@ function my_manage_blocks_columns($column, $post_id)
 }
 
 // UPDATE BLOCK PREVIEW URL
-function ux_block_scripts()
-{
+function ux_block_scripts() {
     global $typenow;
-    if ('blocks' == $typenow && isset($_GET["post"]))
-    {
+    if ('blocks' == $typenow && isset($_GET["post"])) {
         ?>
         <script>
             jQuery(document).ready(function ($) {
@@ -94,22 +81,20 @@ function ux_block_scripts()
         </script>
         <?php
     }
-    if (isset($_GET["preview_url"]))
-    {
-        $permalink = get_the_permalink($_GET["preview_url"]);
+    if (isset($_GET["preview_url"])) {
+        $permalink     = get_the_permalink($_GET["preview_url"]);
         $preview_title = get_the_title($_GET["preview_url"]);
-        add_post_meta($_GET["post"], 'preview_url', $permalink, TRUE) || update_post_meta($_GET["post"], 'preview_url', $permalink);
-        add_post_meta($_GET["post"], 'preview_title', $preview_title, TRUE) || update_post_meta($_GET["post"], 'preview_title', $preview_title);
+        add_post_meta($_GET["post"], 'preview_url', $permalink, TRUE) || update_post_meta($_GET["post"], 'preview_url',
+                                                                                          $permalink);
+        add_post_meta($_GET["post"], 'preview_title', $preview_title, TRUE) || update_post_meta($_GET["post"],
+                                                                                                'preview_title',
+                                                                                                $preview_title);
     }
-
 }
 
 add_action('admin_head', 'ux_block_scripts');
-
-function ux_block_frontend()
-{
-    if (isset($_GET["block"]))
-    {
+function ux_block_frontend() {
+    if (isset($_GET["block"])) {
         ?>
         <script>
             jQuery(document).ready(function ($) {
@@ -121,79 +106,52 @@ function ux_block_frontend()
 }
 
 add_action('wp_footer', 'ux_block_frontend');
-
-
-function block_shortcode($atts, $content = NULL)
-{
-    extract(shortcode_atts(array(
-        'id' => ''
-    ), $atts));
-
-
+function block_shortcode($atts, $content = NULL) {
+    extract(shortcode_atts([
+                               'id' => ''
+                           ], $atts));
     // get Page ID by slug
     global $wpdb, $post;
     $post_id = $wpdb->get_var("SELECT ID FROM $wpdb->posts WHERE post_name = '$id'");
-
-
     // Polylang support
-    if (function_exists('pll_get_post') && pll_get_post($post_id))
-    {
+    if (function_exists('pll_get_post') && pll_get_post($post_id)) {
         $lang_id = pll_get_post($post_id);
         if ($lang_id) $post_id = $lang_id;
     }
-
     // WPML Support
-    if (function_exists('icl_object_id'))
-    {
+    if (function_exists('icl_object_id')) {
         $lang_id = icl_object_id($post_id, 'blocks', FALSE, ICL_LANGUAGE_CODE);
         if ($lang_id) $post_id = $lang_id;
     }
-
-
     $permalink = get_permalink($post_id);
-
-    if ($post_id)
-    {
-
+    if ($post_id) {
         $html = apply_filters('the_content', get_post_field('post_content', $post_id), $atts);
-
         // add edit link for admins
-        if (current_user_can('edit_pages'))
-        {
+        if (current_user_can('edit_pages')) {
             $edit_link = get_edit_post_link($post_id);
-            $html = '<div id="block-' . $id . '" class="ux_block"><a class="edit-link" href="' . $edit_link . '&preview_url=' . $post->ID . '">Edit Block</a>' . $html . '</div>';
+            $html
+                       = '<div id="block-' . $id . '" class="ux_block"><a class="edit-link" href="' . $edit_link . '&preview_url=' . $post->ID . '">Edit Block</a>' . $html . '</div>';
         }
-
         $html = do_shortcode($html);
-
-    }
-    else
-    {
-
+    } else {
         $html = '<p><mark>Block <b>"' . $id . '"</b> not found!</mark></p>';
-
     }
+
     return $html;
 }
 
 add_shortcode('block', 'block_shortcode');
-
-
 /* ADD CATEGOIRES SUPPORT */
-if (! function_exists('blocks_categories'))
-{
-
+if (!function_exists('blocks_categories')) {
 // Register Custom Taxonomy
-    function blocks_categories()
-    {
-        $args = array(
+    function blocks_categories() {
+        $args = [
             'hierarchical'      => TRUE,
             'public'            => FALSE,
             'show_ui'           => TRUE,
             'show_in_nav_menus' => TRUE,
-        );
-        register_taxonomy('block_categories', array('blocks'), $args);
-
+        ];
+        register_taxonomy('block_categories', ['blocks'], $args);
     }
 
 // Hook into the 'init' action

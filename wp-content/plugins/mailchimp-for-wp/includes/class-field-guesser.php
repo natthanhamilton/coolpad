@@ -7,7 +7,6 @@
  * @ignore
  */
 class MC4WP_Field_Guesser {
-
 	/**
 	 * @var MC4WP_Array_Bag
 	 */
@@ -16,9 +15,9 @@ class MC4WP_Field_Guesser {
 	/**
 	 * @param array $fields
 	 */
-	public function __construct( array $fields ) {
-		$fields = array_change_key_case( $fields, CASE_UPPER );
-		$this->fields = new MC4WP_Array_Bag( $fields );
+	public function __construct(array $fields) {
+		$fields       = array_change_key_case($fields, CASE_UPPER);
+		$this->fields = new MC4WP_Array_Bag($fields);
 	}
 
 	/**
@@ -28,9 +27,10 @@ class MC4WP_Field_Guesser {
 	 *
 	 * @return array
 	 */
-	public function namespaced( $namespace = 'mc4wp-' ) {
-		$namespace = strtoupper( $namespace );
-		return $this->fields->all_with_prefix( $namespace );
+	public function namespaced($namespace = 'mc4wp-') {
+		$namespace = strtoupper($namespace);
+
+		return $this->fields->all_with_prefix($namespace);
 	}
 
 	/**
@@ -43,32 +43,30 @@ class MC4WP_Field_Guesser {
 	 * @return array
 	 */
 	public function guessed() {
-		$guessed = array();
-
+		$guessed = [];
 		$fields = $this->fields->all();
-
-		foreach( $fields as $field => $value ) {
-
+		foreach ($fields as $field => $value) {
 			// is this an email value? assume email field
-			if( empty( $guessed['EMAIL'] ) && is_string( $value ) && is_email( $value ) ) {
+			if (empty($guessed['EMAIL']) && is_string($value) && is_email($value)) {
 				$guessed['EMAIL'] = $value;
 				continue;
 			}
-
 			// remove special characters from field name
-			$simple_key = str_replace( array( '-', '_', ' ' ), '', $field );
-
-			if( empty( $guessed['FNAME'] ) && $this->string_contains( $simple_key, array( 'FIRSTNAME', 'FNAME', 'GIVENNAME', 'FORENAME' ) ) ) {
+			$simple_key = str_replace(['-', '_', ' '], '', $field);
+			if (empty($guessed['FNAME']) && $this->string_contains($simple_key,
+			                                                       ['FIRSTNAME', 'FNAME', 'GIVENNAME', 'FORENAME'])
+			) {
 				// find first name field
 				$guessed['FNAME'] = $value;
-			} elseif( empty( $guessed['LNAME'] ) && $this->string_contains( $simple_key, array( 'LASTNAME', 'LNAME', 'SURNAME', 'FAMILYNAME' ) ) ) {
+			} elseif (empty($guessed['LNAME']) && $this->string_contains($simple_key,
+			                                                             ['LASTNAME', 'LNAME', 'SURNAME', 'FAMILYNAME'])
+			) {
 				// find last name field
 				$guessed['LNAME'] = $value;
-			} elseif( empty( $guessed['NAME'] ) && $this->string_contains( $simple_key, 'NAME' ) ){
+			} elseif (empty($guessed['NAME']) && $this->string_contains($simple_key, 'NAME')) {
 				// find name field
 				$guessed['NAME'] = $value;
 			}
-
 		}
 
 		return $guessed;
@@ -80,20 +78,17 @@ class MC4WP_Field_Guesser {
 	 *
 	 * @return bool
 	 */
-	private function string_contains( $haystack, $needles ) {
-
-		if( ! is_array( $needles ) ) {
-			$needles = array( $needles );
+	private function string_contains($haystack, $needles) {
+		if (!is_array($needles)) {
+			$needles = [$needles];
 		}
-
-		foreach( $needles as $needle ) {
-
-			if( strpos( $haystack, $needle ) !== false ) {
-				return true;
+		foreach ($needles as $needle) {
+			if (strpos($haystack, $needle) !== FALSE) {
+				return TRUE;
 			}
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -101,12 +96,11 @@ class MC4WP_Field_Guesser {
 	 *
 	 * @return array
 	 */
-	public function combine( $methods ) {
-		$combined = array();
-
-		foreach( $methods as $method ) {
-			if( method_exists( $this, $method ) ) {
-				$combined = array_merge( $combined, call_user_func( array( $this, $method ) ) );
+	public function combine($methods) {
+		$combined = [];
+		foreach ($methods as $method) {
+			if (method_exists($this, $method)) {
+				$combined = array_merge($combined, call_user_func([$this, $method]));
 			}
 		}
 

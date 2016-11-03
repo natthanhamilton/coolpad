@@ -1,0 +1,21 @@
+@import '../variables';
+
+video {
+  width: 100%;
+  display: none;
+
+  @media only screen and (min-width: @break-sm) {
+    display: block;
+  }
+}
+
+.video-alternate {
+  height: 100%;
+  background-size: cover;
+  background-position: 50% 50%;
+  display: none !important;
+
+  @media only screen and (max-width: @break-sm) {
+    display: block !important;
+  }
+}

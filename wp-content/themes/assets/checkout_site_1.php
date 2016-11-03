@@ -1,5 +1,4 @@
 <?php
-/*
 switch_to_blog('3');
 global $woo_options, $woocommerce;
 $cart     = get_user_meta(get_current_user_id(), '_woocommerce_persistent_cart', TRUE);
@@ -31,5 +30,3 @@ if (empty($quantity)) $quantity = '0';
 	</li>
 <?php
 switch_to_blog('1');
-*/
-?>

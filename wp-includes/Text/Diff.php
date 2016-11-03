@@ -25,25 +25,6 @@ class Text_Diff {
     var $_edits;
 
     /**
-     * Removes trailing newlines from a line of text. This is meant to be used
-     * with array_walk().
-     *
-     * @param string $line  The line to trim.
-     * @param integer $key  The index of the line in the array. Not used.
-     */
-    static function trimNewlines(&$line, $key)
-    {
-        $line = str_replace(array("\n", "\r"), '', $line);
-    }
-
-	/**
-	 * PHP4 constructor.
-	 */
-	public function Text_Diff( $engine, $params ) {
-		self::__construct( $engine, $params );
-	}
-
-    /**
      * Computes diffs between sequences of strings.
      *
      * @param string $engine     Name of the diffing engine to use.  'auto'
@@ -73,6 +54,13 @@ class Text_Diff {
 
         $this->_edits = call_user_func_array(array($diff_engine, 'diff'), $params);
     }
+
+	/**
+	 * PHP4 constructor.
+	 */
+	public function Text_Diff( $engine, $params ) {
+		self::__construct( $engine, $params );
+	}
 
     /**
      * Returns the array of differences.
@@ -121,6 +109,34 @@ class Text_Diff {
     }
 
     /**
+     * Computes a reversed diff.
+     *
+     * Example:
+     * <code>
+     * $diff = new Text_Diff($lines1, $lines2);
+     * $rev = $diff->reverse();
+     * </code>
+     *
+     * @return Text_Diff  A Diff object representing the inverse of the
+     *                    original diff.  Note that we purposely don't return a
+     *                    reference here, since this essentially is a clone()
+     *                    method.
+     */
+    function reverse()
+    {
+        if (version_compare(zend_version(), '2', '>')) {
+            $rev = clone($this);
+        } else {
+            $rev = $this;
+        }
+        $rev->_edits = array();
+        foreach ($this->_edits as $edit) {
+            $rev->_edits[] = $edit->reverse();
+        }
+        return $rev;
+    }
+
+    /**
      * Checks for an empty diff.
      *
      * @return boolean  True if two sequences were identical.
@@ -151,6 +167,54 @@ class Text_Diff {
             }
         }
         return $lcs;
+    }
+
+    /**
+     * Gets the original set of lines.
+     *
+     * This reconstructs the $from_lines parameter passed to the constructor.
+     *
+     * @return array  The original sequence of strings.
+     */
+    function getOriginal()
+    {
+        $lines = array();
+        foreach ($this->_edits as $edit) {
+            if ($edit->orig) {
+                array_splice($lines, count($lines), 0, $edit->orig);
+            }
+        }
+        return $lines;
+    }
+
+    /**
+     * Gets the final set of lines.
+     *
+     * This reconstructs the $to_lines parameter passed to the constructor.
+     *
+     * @return array  The sequence of strings.
+     */
+    function getFinal()
+    {
+        $lines = array();
+        foreach ($this->_edits as $edit) {
+            if ($edit->final) {
+                array_splice($lines, count($lines), 0, $edit->final);
+            }
+        }
+        return $lines;
+    }
+
+    /**
+     * Removes trailing newlines from a line of text. This is meant to be used
+     * with array_walk().
+     *
+     * @param string $line  The line to trim.
+     * @param integer $key  The index of the line in the array. Not used.
+     */
+    static function trimNewlines(&$line, $key)
+    {
+        $line = str_replace(array("\n", "\r"), '', $line);
     }
 
     /**
@@ -223,70 +287,6 @@ class Text_Diff {
         return true;
     }
 
-    /**
-     * Gets the original set of lines.
-     *
-     * This reconstructs the $from_lines parameter passed to the constructor.
-     *
-     * @return array  The original sequence of strings.
-     */
-    function getOriginal()
-    {
-        $lines = array();
-        foreach ($this->_edits as $edit) {
-            if ($edit->orig) {
-                array_splice($lines, count($lines), 0, $edit->orig);
-            }
-        }
-        return $lines;
-    }
-
-    /**
-     * Gets the final set of lines.
-     *
-     * This reconstructs the $to_lines parameter passed to the constructor.
-     *
-     * @return array  The sequence of strings.
-     */
-    function getFinal()
-    {
-        $lines = array();
-        foreach ($this->_edits as $edit) {
-            if ($edit->final) {
-                array_splice($lines, count($lines), 0, $edit->final);
-            }
-        }
-        return $lines;
-    }
-
-    /**
-     * Computes a reversed diff.
-     *
-     * Example:
-     * <code>
-     * $diff = new Text_Diff($lines1, $lines2);
-     * $rev = $diff->reverse();
-     * </code>
-     *
-     * @return Text_Diff  A Diff object representing the inverse of the
-     *                    original diff.  Note that we purposely don't return a
-     *                    reference here, since this essentially is a clone()
-     *                    method.
-     */
-    function reverse()
-    {
-        if (version_compare(zend_version(), '2', '>')) {
-            $rev = clone($this);
-        } else {
-            $rev = $this;
-        }
-        $rev->_edits = array();
-        foreach ($this->_edits as $edit) {
-            $rev->_edits[] = $edit->reverse();
-        }
-        return $rev;
-    }
-
 }
 
 /**
@@ -294,15 +294,6 @@ class Text_Diff {
  * @author  Geoffrey T. Dairiki <dairiki@dairiki.org>
  */
 class Text_MappedDiff extends Text_Diff {
-
-	/**
-	 * PHP4 constructor.
-	 */
-	public function Text_MappedDiff( $from_lines, $to_lines,
-                             $mapped_from_lines, $mapped_to_lines ) {
-		self::__construct( $from_lines, $to_lines,
-                             $mapped_from_lines, $mapped_to_lines );
-	}
 
     /**
      * Computes a diff between sequences of strings.
@@ -344,6 +335,15 @@ class Text_MappedDiff extends Text_Diff {
         }
     }
 
+	/**
+	 * PHP4 constructor.
+	 */
+	public function Text_MappedDiff( $from_lines, $to_lines,
+                             $mapped_from_lines, $mapped_to_lines ) {
+		self::__construct( $from_lines, $to_lines,
+                             $mapped_from_lines, $mapped_to_lines );
+	}
+
 }
 
 /**
@@ -383,13 +383,6 @@ class Text_Diff_Op {
 class Text_Diff_Op_copy extends Text_Diff_Op {
 
 	/**
-	 * PHP4 constructor.
-	 */
-	public function Text_Diff_Op_copy( $orig, $final = false ) {
-		self::__construct( $orig, $final );
-	}
-
-	/**
 	 * PHP5 constructor.
 	 */
     function __construct( $orig, $final = false )
@@ -400,6 +393,13 @@ class Text_Diff_Op_copy extends Text_Diff_Op {
         $this->orig = $orig;
         $this->final = $final;
     }
+
+	/**
+	 * PHP4 constructor.
+	 */
+	public function Text_Diff_Op_copy( $orig, $final = false ) {
+		self::__construct( $orig, $final );
+	}
 
     function &reverse()
     {
@@ -418,13 +418,6 @@ class Text_Diff_Op_copy extends Text_Diff_Op {
 class Text_Diff_Op_delete extends Text_Diff_Op {
 
 	/**
-	 * PHP4 constructor.
-	 */
-	public function Text_Diff_Op_delete( $lines ) {
-		self::__construct( $lines );
-	}
-
-	/**
 	 * PHP5 constructor.
 	 */
 	function __construct( $lines )
@@ -432,6 +425,13 @@ class Text_Diff_Op_delete extends Text_Diff_Op {
         $this->orig = $lines;
         $this->final = false;
     }
+
+	/**
+	 * PHP4 constructor.
+	 */
+	public function Text_Diff_Op_delete( $lines ) {
+		self::__construct( $lines );
+	}
 
     function &reverse()
     {
@@ -450,13 +450,6 @@ class Text_Diff_Op_delete extends Text_Diff_Op {
 class Text_Diff_Op_add extends Text_Diff_Op {
 
 	/**
-	 * PHP4 constructor.
-	 */
-	public function Text_Diff_Op_add( $lines ) {
-		self::__construct( $lines );
-	}
-
-	/**
 	 * PHP5 constructor.
 	 */
     function __construct( $lines )
@@ -464,6 +457,13 @@ class Text_Diff_Op_add extends Text_Diff_Op {
         $this->final = $lines;
         $this->orig = false;
     }
+
+	/**
+	 * PHP4 constructor.
+	 */
+	public function Text_Diff_Op_add( $lines ) {
+		self::__construct( $lines );
+	}
 
     function &reverse()
     {
@@ -482,13 +482,6 @@ class Text_Diff_Op_add extends Text_Diff_Op {
 class Text_Diff_Op_change extends Text_Diff_Op {
 
 	/**
-	 * PHP4 constructor.
-	 */
-	public function Text_Diff_Op_change( $orig, $final ) {
-		self::__construct( $orig, $final );
-	}
-
-	/**
 	 * PHP5 constructor.
 	 */
     function __construct( $orig, $final )
@@ -496,6 +489,13 @@ class Text_Diff_Op_change extends Text_Diff_Op {
         $this->orig = $orig;
         $this->final = $final;
     }
+
+	/**
+	 * PHP4 constructor.
+	 */
+	public function Text_Diff_Op_change( $orig, $final ) {
+		self::__construct( $orig, $final );
+	}
 
     function &reverse()
     {

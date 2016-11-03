@@ -99,7 +99,7 @@ class WC_REST_Report_Top_Sellers_Controller extends WC_REST_Report_Sales_Control
 	 * @return WP_REST_Response $response Response data.
 	 */
 	public function prepare_item_for_response($top_seller, $request) {
-		$data = [
+		$data    = [
 			'name'       => $top_seller->name,
 			'product_id' => $top_seller->product_id,
 			'quantity'   => $top_seller->quantity,

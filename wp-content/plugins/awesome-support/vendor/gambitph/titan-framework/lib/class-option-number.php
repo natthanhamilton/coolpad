@@ -1,14 +1,11 @@
 <?php
-
 /**
  * Number Option Class
  *
- * @author Benjamin Intal
+ * @author  Benjamin Intal
  * @package Titan Framework Core
  **/
-
-if (! defined('ABSPATH'))
-{
+if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
@@ -18,31 +15,28 @@ if (! defined('ABSPATH'))
  * @since    1.0
  **/
 class TitanFrameworkOptionNumber extends TitanFrameworkOption {
-
     // Default settings specific to this option
-    public $defaultSecondarySettings = array(
-        'size'        => 'small', // or medium or large
-        'placeholder' => '', // show this when blank
-        'min'         => 0,
-        'max'         => 1000,
-        'step'        => 1,
-        'default'     => 0,
-        'unit'        => '',
-    );
-
+    public $defaultSecondarySettings
+        = [
+            'size'        => 'small', // or medium or large
+            'placeholder' => '', // show this when blank
+            'min'         => 0,
+            'max'         => 1000,
+            'step'        => 1,
+            'default'     => 0,
+            'unit'        => '',
+        ];
 
     /**
      * Constructor
      *
      * @since    1.4
      */
-    function __construct($settings, $owner)
-    {
+    function __construct($settings, $owner) {
         parent::__construct($settings, $owner);
-
-        tf_add_action_once('admin_enqueue_scripts', array($this, 'enqueueSlider'));
-        tf_add_action_once('customize_controls_enqueue_scripts', array($this, 'enqueueSlider'));
-        add_action('admin_head', array(__CLASS__, 'createSliderScript'));
+        tf_add_action_once('admin_enqueue_scripts', [$this, 'enqueueSlider']);
+        tf_add_action_once('customize_controls_enqueue_scripts', [$this, 'enqueueSlider']);
+        add_action('admin_head', [__CLASS__, 'createSliderScript']);
     }
 
     /**
@@ -51,8 +45,7 @@ class TitanFrameworkOptionNumber extends TitanFrameworkOption {
      * @return    void
      * @since    1.4
      */
-    public static function createSliderScript()
-    {
+    public static function createSliderScript() {
         ?>
         <script>
             jQuery(document).ready(function ($) {
@@ -88,15 +81,15 @@ class TitanFrameworkOptionNumber extends TitanFrameworkOption {
      * Cleans up the serialized value before saving
      *
      * @param    string $value The serialized value
+     *
      * @return    string The cleaned value
      * @since    1.4
      */
-    public function cleanValueForSaving($value)
-    {
-        if ($value == '')
-        {
+    public function cleanValueForSaving($value) {
+        if ($value == '') {
             return 0;
         }
+
         return $value;
     }
 
@@ -104,15 +97,15 @@ class TitanFrameworkOptionNumber extends TitanFrameworkOption {
      * Cleans the value for getOption
      *
      * @param    string $value The raw value of the option
+     *
      * @return    mixes The cleaned value
      * @since    1.4
      */
-    public function cleanValueForGetting($value)
-    {
-        if ($value == '')
-        {
+    public function cleanValueForGetting($value) {
+        if ($value == '') {
             return 0;
         }
+
         return $value;
     }
 
@@ -122,21 +115,20 @@ class TitanFrameworkOptionNumber extends TitanFrameworkOption {
      * @return    void
      * @since    1.0
      */
-    public function display()
-    {
+    public function display() {
         $this->echoOptionHeader();
         echo "<div class='number-slider'></div>";
         printf('<input class="%s-text" name="%s" placeholder="%s" id="%s" type="number" value="%s" min="%s" max="%s" step="%s" /> %s <p class="description">%s</p>',
-            $this->settings['size'],
-            $this->getID(),
-            $this->settings['placeholder'],
-            $this->getID(),
-            esc_attr($this->getValue()),
-            $this->settings['min'],
-            $this->settings['max'],
-            $this->settings['step'],
-            $this->settings['unit'],
-            $this->settings['desc']
+               $this->settings['size'],
+               $this->getID(),
+               $this->settings['placeholder'],
+               $this->getID(),
+               esc_attr($this->getValue()),
+               $this->settings['min'],
+               $this->settings['max'],
+               $this->settings['step'],
+               $this->settings['unit'],
+               $this->settings['desc']
         );
         $this->echoOptionFooter(FALSE);
     }
@@ -144,15 +136,15 @@ class TitanFrameworkOptionNumber extends TitanFrameworkOption {
     /**
      * Registers the theme customizer control, for displaying the option
      *
-     * @param    WP_Customize $wp_enqueue_script The customize object
-     * @param    TitanFrameworkCustomizerSection $section The section where this option will be placed
-     * @param    int $priority The order of this control in the section
+     * @param    WP_Customize                    $wp_enqueue_script The customize object
+     * @param    TitanFrameworkCustomizerSection $section           The section where this option will be placed
+     * @param    int                             $priority          The order of this control in the section
+     *
      * @return    void
      * @since    1.0
      */
-    public function registerCustomizerControl($wp_customize, $section, $priority = 1)
-    {
-        $wp_customize->add_control(new TitanFrameworkOptionNumberControl($wp_customize, $this->getID(), array(
+    public function registerCustomizerControl($wp_customize, $section, $priority = 1) {
+        $wp_customize->add_control(new TitanFrameworkOptionNumberControl($wp_customize, $this->getID(), [
             'label'       => $this->settings['name'],
             'section'     => $section->getID(),
             'settings'    => $this->getID(),
@@ -163,7 +155,7 @@ class TitanFrameworkOptionNumber extends TitanFrameworkOption {
             'max'         => $this->settings['max'],
             'step'        => $this->settings['step'],
             'unit'        => $this->settings['unit'],
-        )));
+        ]));
     }
 
     /**
@@ -172,28 +164,23 @@ class TitanFrameworkOptionNumber extends TitanFrameworkOption {
      * @return    void
      * @since    1.4
      */
-    public function enqueueSlider()
-    {
+    public function enqueueSlider() {
         wp_enqueue_script('jquery-ui-core');
         wp_enqueue_script('jquery-ui-slider');
     }
 }
 
-
 /*
  * We create a new control for the theme customizer
  */
 add_action('customize_register', 'registerTitanFrameworkOptionNumberControl', 1);
-
-
 /**
  * Creates the option for the theme customizer
  *
  * @return    void
  * @since    1.0
  */
-function registerTitanFrameworkOptionNumberControl()
-{
+function registerTitanFrameworkOptionNumberControl() {
     class TitanFrameworkOptionNumberControl extends WP_Customize_Control {
         public $description;
         public $size;
@@ -201,18 +188,14 @@ function registerTitanFrameworkOptionNumberControl()
         public $max;
         public $step;
         public $unit;
-
         private static $firstLoad = TRUE;
 
-        public function render_content()
-        {
+        public function render_content() {
             // Print out the jQuery slider initializer
-            if (self::$firstLoad)
-            {
+            if (self::$firstLoad) {
                 TitanFrameworkOptionNumber::createSliderScript();
             }
             self::$firstLoad = FALSE;
-
             ?>
             <label class='tf-number'>
                 <span class="customize-control-title"><?php echo esc_html($this->label); ?></span>
@@ -223,8 +206,7 @@ function registerTitanFrameworkOptionNumberControl()
                 <?php echo esc_html($this->unit) ?>
             </label>
             <?php
-            if (! empty($this->description))
-            {
+            if (!empty($this->description)) {
                 echo "<p class='description'>{$this->description}</p>";
             }
         }

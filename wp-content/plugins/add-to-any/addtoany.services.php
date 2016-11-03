@@ -1,504 +1,498 @@
 <?php
-
-$A2A_SHARE_SAVE_services = array(
-
-    "facebook"            => array(
+$A2A_SHARE_SAVE_services = [
+    "facebook"            => [
         "name" => "Facebook",
         "icon" => "facebook",
-    ),
-    "twitter"             => array(
+    ],
+    "twitter"             => [
         "name" => "Twitter",
         "icon" => "twitter",
-    ),
-    "google_plus"         => array(
+    ],
+    "google_plus"         => [
         "name" => "Google+",
         "icon" => "google_plus",
-    ),
-    "pinterest"           => array(
+    ],
+    "pinterest"           => [
         "name" => "Pinterest",
         "icon" => "pinterest",
-    ),
-    "tumblr"              => array(
+    ],
+    "tumblr"              => [
         "name" => "Tumblr",
         "icon" => "tumblr",
-    ),
-    "stumbleupon"         => array(
+    ],
+    "stumbleupon"         => [
         "name" => "StumbleUpon",
         "icon" => "stumbleupon",
-    ),
-    "reddit"              => array(
+    ],
+    "reddit"              => [
         "name" => "Reddit",
         "icon" => "reddit",
-    ),
-    "linkedin"            => array(
+    ],
+    "linkedin"            => [
         "name" => "LinkedIn",
         "icon" => "linkedin",
-    ),
-    "whatsapp"            => array(
+    ],
+    "whatsapp"            => [
         "name" => "WhatsApp",
         "icon" => "whatsapp",
-    ),
-    "aim"                 => array(
+    ],
+    "aim"                 => [
         "name" => "AIM",
         "icon" => "aim",
-    ),
-    "amazon_wish_list"    => array(
+    ],
+    "amazon_wish_list"    => [
         "name" => "Amazon Wish List",
         "icon" => "amazon",
-    ),
-    "aol_mail"            => array(
+    ],
+    "aol_mail"            => [
         "name" => "AOL Mail",
         "icon" => "aol",
-    ),
-    "app_net"             => array(
+    ],
+    "app_net"             => [
         "name" => "App.net",
         "icon" => "app_net",
-    ),
-    "baidu"               => array(
+    ],
+    "baidu"               => [
         "name" => "Baidu",
         "icon" => "baidu",
-    ),
-    "balatarin"           => array(
+    ],
+    "balatarin"           => [
         "name" => "Balatarin",
         "icon" => "balatarin",
-    ),
-    "bibsonomy"           => array(
+    ],
+    "bibsonomy"           => [
         "name" => "BibSonomy",
         "icon" => "bibsonomy",
-    ),
-    "bitty_browser"       => array(
+    ],
+    "bitty_browser"       => [
         "name" => "Bitty Browser",
         "icon" => "bitty",
-    ),
-    "blinklist"           => array(
+    ],
+    "blinklist"           => [
         "name" => "Blinklist",
         "icon" => "blinklist",
-    ),
-    "blogger_post"        => array(
+    ],
+    "blogger_post"        => [
         "name" => "Blogger Post",
         "icon" => "blogger",
-    ),
-    "blogmarks"           => array(
+    ],
+    "blogmarks"           => [
         "name" => "BlogMarks",
         "icon" => "blogmarks",
-    ),
-    "bookmarks_fr"        => array(
+    ],
+    "bookmarks_fr"        => [
         "name" => "Bookmarks.fr",
         "icon" => "bookmarks_fr",
-    ),
-    "box_net"             => array(
+    ],
+    "box_net"             => [
         "name" => "Box.net",
         "icon" => "box",
-    ),
-    "buddymarks"          => array(
+    ],
+    "buddymarks"          => [
         "name" => "BuddyMarks",
         "icon" => "buddymarks",
-    ),
-    "buffer"              => array(
+    ],
+    "buffer"              => [
         "name" => "Buffer",
         "icon" => "buffer",
-    ),
-    "care2_news"          => array(
+    ],
+    "care2_news"          => [
         "name" => "Care2 News",
         "icon" => "care2",
-    ),
-    "citeulike"           => array(
+    ],
+    "citeulike"           => [
         "name" => "CiteULike",
         "icon" => "citeulike",
-    ),
-    "delicious"           => array(
+    ],
+    "delicious"           => [
         "name" => "Delicious",
         "icon" => "delicious",
-    ),
-    "design_float"        => array(
+    ],
+    "design_float"        => [
         "name" => "Design Float",
         "icon" => "designfloat",
-    ),
-    "diary_ru"            => array(
+    ],
+    "diary_ru"            => [
         "name" => "Diary.Ru",
         "icon" => "diary_ru",
-    ),
-    "diaspora"            => array(
+    ],
+    "diaspora"            => [
         "name" => "Diaspora",
         "icon" => "diaspora",
-    ),
-    "digg"                => array(
+    ],
+    "digg"                => [
         "name" => "Digg",
         "icon" => "digg",
-    ),
-    "dihitt"              => array(
+    ],
+    "dihitt"              => [
         "name" => "diHITT",
         "icon" => "dihitt",
-    ),
-    "diigo"               => array(
+    ],
+    "diigo"               => [
         "name" => "Diigo",
         "icon" => "diigo",
-    ),
-    "dzone"               => array(
+    ],
+    "dzone"               => [
         "name" => "DZone",
         "icon" => "dzone",
-    ),
-    "email"               => array(
+    ],
+    "email"               => [
         "name" => "Email",
         "icon" => "email",
-    ),
-    "evernote"            => array(
+    ],
+    "evernote"            => [
         "name" => "Evernote",
         "icon" => "evernote",
-    ),
-    "fark"                => array(
+    ],
+    "fark"                => [
         "name" => "Fark",
         "icon" => "fark",
-    ),
-    "flipboard"           => array(
+    ],
+    "flipboard"           => [
         "name" => "Flipboard",
         "icon" => "flipboard",
-    ),
-    "folkd"               => array(
+    ],
+    "folkd"               => [
         "name" => "Folkd",
         "icon" => "folkd",
-    ),
-    "google_bookmarks"    => array(
+    ],
+    "google_bookmarks"    => [
         "name" => "Google Bookmarks",
         "icon" => "google",
-    ),
-    "google_classroom"    => array(
+    ],
+    "google_classroom"    => [
         "name" => "Google Classroom",
         "icon" => "google_classroom",
-    ),
-    "google_gmail"        => array(
+    ],
+    "google_gmail"        => [
         "name" => "Google Gmail",
         "icon" => "gmail",
-    ),
-    "hacker_news"         => array(
+    ],
+    "hacker_news"         => [
         "name" => "Hacker News",
         "icon" => "y18",
-    ),
-    "hatena"              => array(
+    ],
+    "hatena"              => [
         "name" => "Hatena",
         "icon" => "hatena",
-    ),
-    "instapaper"          => array(
+    ],
+    "instapaper"          => [
         "name" => "Instapaper",
         "icon" => "instapaper",
-    ),
-    "jamespot"            => array(
+    ],
+    "jamespot"            => [
         "name" => "Jamespot",
         "icon" => "jamespot",
-    ),
-    "kakao"               => array(
+    ],
+    "kakao"               => [
         "name" => "Kakao",
         "icon" => "kakao",
-    ),
-    "kik"                 => array(
+    ],
+    "kik"                 => [
         "name" => "Kik",
         "icon" => "kik",
-    ),
-    "kindle_it"           => array(
+    ],
+    "kindle_it"           => [
         "name" => "Kindle It",
         "icon" => "kindle",
-    ),
-    "known"               => array(
+    ],
+    "known"               => [
         "name" => "Known",
         "icon" => "known",
-    ),
-    "line"                => array(
+    ],
+    "line"                => [
         "name" => "Line",
         "icon" => "line",
-    ),
-    "livejournal"         => array(
+    ],
+    "livejournal"         => [
         "name" => "LiveJournal",
         "icon" => "livejournal",
-    ),
-    "mail_ru"             => array(
+    ],
+    "mail_ru"             => [
         "name" => "Mail.Ru",
         "icon" => "mail_ru",
-    ),
-    "mendeley"            => array(
+    ],
+    "mendeley"            => [
         "name" => "Mendeley",
         "icon" => "mendeley",
-    ),
-    "meneame"             => array(
+    ],
+    "meneame"             => [
         "name" => "Meneame",
         "icon" => "meneame",
-    ),
-    "mixi"                => array(
+    ],
+    "mixi"                => [
         "name" => "Mixi",
         "icon" => "mixi",
-    ),
-    "myspace"             => array(
+    ],
+    "myspace"             => [
         "name" => "MySpace",
         "icon" => "myspace",
-    ),
-    "netlog"              => array(
+    ],
+    "netlog"              => [
         "name" => "Netlog",
         "icon" => "netlog",
-    ),
-    "netvouz"             => array(
+    ],
+    "netvouz"             => [
         "name" => "Netvouz",
         "icon" => "netvouz",
-    ),
-    "newsvine"            => array(
+    ],
+    "newsvine"            => [
         "name" => "NewsVine",
         "icon" => "newsvine",
-    ),
-    "nujij"               => array(
+    ],
+    "nujij"               => [
         "name" => "NUjij",
         "icon" => "nujij",
-    ),
-    "odnoklassniki"       => array(
+    ],
+    "odnoklassniki"       => [
         "name" => "Odnoklassniki",
         "icon" => "odnoklassniki",
-    ),
-    "oknotizie"           => array(
+    ],
+    "oknotizie"           => [
         "name" => "Oknotizie",
         "icon" => "oknotizie",
-    ),
-    "outlook_com"         => array(
+    ],
+    "outlook_com"         => [
         "name" => "Outlook.com",
         "icon" => "outlook_com",
-    ),
-    "pinboard"            => array(
+    ],
+    "pinboard"            => [
         "name" => "Pinboard",
         "icon" => "pinboard",
-    ),
-    "plurk"               => array(
+    ],
+    "plurk"               => [
         "name" => "Plurk",
         "icon" => "plurk",
-    ),
-    "pocket"              => array(
+    ],
+    "pocket"              => [
         "name" => "Pocket",
         "icon" => "pocket",
-    ),
-    "print"               => array(
+    ],
+    "print"               => [
         "name" => "Print",
         "icon" => "print",
-    ),
-    "printfriendly"       => array(
+    ],
+    "printfriendly"       => [
         "name" => "PrintFriendly",
         "icon" => "printfriendly",
-    ),
-    "protopage_bookmarks" => array(
+    ],
+    "protopage_bookmarks" => [
         "name" => "Protopage Bookmarks",
         "icon" => "protopage",
-    ),
-    "pusha"               => array(
+    ],
+    "pusha"               => [
         "name" => "Pusha",
         "icon" => "pusha",
-    ),
-    "qzone"               => array(
+    ],
+    "qzone"               => [
         "name" => "Qzone",
         "icon" => "qzone",
-    ),
-    "rediff"              => array(
+    ],
+    "rediff"              => [
         "name" => "Rediff MyPage",
         "icon" => "rediff",
-    ),
-    "renren"              => array(
+    ],
+    "renren"              => [
         "name" => "Renren",
         "icon" => "renren",
-    ),
-    "segnalo"             => array(
+    ],
+    "segnalo"             => [
         "name" => "Segnalo",
         "icon" => "segnalo",
-    ),
-    "sina_weibo"          => array(
+    ],
+    "sina_weibo"          => [
         "name" => "Sina Weibo",
         "icon" => "sina_weibo",
-    ),
-    "sitejot"             => array(
+    ],
+    "sitejot"             => [
         "name" => "SiteJot",
         "icon" => "sitejot",
-    ),
-    "skype"               => array(
+    ],
+    "skype"               => [
         "name" => "Skype",
         "icon" => "skype",
-    ),
-    "slashdot"            => array(
+    ],
+    "slashdot"            => [
         "name" => "Slashdot",
         "icon" => "slashdot",
-    ),
-    "sms"                 => array(
+    ],
+    "sms"                 => [
         "name" => "SMS",
         "icon" => "sms",
-    ),
-    "stumpedia"           => array(
+    ],
+    "stumpedia"           => [
         "name" => "Stumpedia",
         "icon" => "stumpedia",
-    ),
-    "svejo"               => array(
+    ],
+    "svejo"               => [
         "name" => "Svejo",
         "icon" => "svejo",
-    ),
-    "symbaloo_feeds"      => array(
+    ],
+    "symbaloo_feeds"      => [
         "name" => "Symbaloo Feeds",
         "icon" => "symbaloo",
-    ),
-    "telegram"            => array(
+    ],
+    "telegram"            => [
         "name" => "Telegram",
         "icon" => "telegram",
-    ),
-    "tuenti"              => array(
+    ],
+    "tuenti"              => [
         "name" => "Tuenti",
         "icon" => "tuenti",
-    ),
-    "twiddla"             => array(
+    ],
+    "twiddla"             => [
         "name" => "Twiddla",
         "icon" => "twiddla",
-    ),
-    "typepad_post"        => array(
+    ],
+    "typepad_post"        => [
         "name" => "TypePad Post",
         "icon" => "typepad",
-    ),
-    "viadeo"              => array(
+    ],
+    "viadeo"              => [
         "name" => "Viadeo",
         "icon" => "viadeo",
-    ),
-    "viber"               => array(
+    ],
+    "viber"               => [
         "name" => "Viber",
         "icon" => "viber",
-    ),
-    "vk"                  => array(
+    ],
+    "vk"                  => [
         "name" => "VK",
         "icon" => "vk",
-    ),
-    "wanelo"              => array(
+    ],
+    "wanelo"              => [
         "name" => "Wanelo",
         "icon" => "wanelo",
-    ),
-    "webnews"             => array(
+    ],
+    "webnews"             => [
         "name" => "Webnews",
         "icon" => "webnews",
-    ),
-    "wechat"              => array(
+    ],
+    "wechat"              => [
         "name" => "WeChat",
         "icon" => "wechat",
-    ),
-    "wordpress"           => array(
+    ],
+    "wordpress"           => [
         "name" => "WordPress",
         "icon" => "wordpress",
-    ),
-    "wykop"               => array(
+    ],
+    "wykop"               => [
         "name" => "Wykop",
         "icon" => "wykop",
-    ),
-    "xing"                => array(
+    ],
+    "xing"                => [
         "name" => "XING",
         "icon" => "xing",
-    ),
-    "yahoo_bookmarks"     => array(
+    ],
+    "yahoo_bookmarks"     => [
         "name" => "Yahoo Bookmarks",
         "icon" => "yahoo",
-    ),
-    "yahoo_mail"          => array(
+    ],
+    "yahoo_mail"          => [
         "name" => "Yahoo Mail",
         "icon" => "yahoo",
-    ),
-    "yahoo_messenger"     => array(
+    ],
+    "yahoo_messenger"     => [
         "name" => "Yahoo Messenger",
         "icon" => "yim",
-    ),
-    "yoolink"             => array(
+    ],
+    "yoolink"             => [
         "name" => "Yoolink",
         "icon" => "yoolink",
-    ),
-    "youmob"              => array(
+    ],
+    "youmob"              => [
         "name" => "YouMob",
         "icon" => "youmob",
-    ),
-    "yummly"              => array(
+    ],
+    "yummly"              => [
         "name" => "Yummly",
         "icon" => "yummly",
-    ),
-
-);
-
-$A2A_FOLLOW_services = array(
-
-    'facebook'         => array(
+    ],
+];
+$A2A_FOLLOW_services = [
+    'facebook'         => [
         'name' => 'Facebook',
         'href' => 'https://www.facebook.com/${id}',
         'icon' => 'facebook',
-    ),
-    'twitter'          => array(
+    ],
+    'twitter'          => [
         'name' => 'Twitter',
         'href' => 'https://twitter.com/${id}',
         'icon' => 'twitter',
-    ),
-    'instagram'        => array(
+    ],
+    'instagram'        => [
         'name' => 'Instagram',
         'href' => 'https://www.instagram.com/${id}',
         'icon' => 'instagram',
-    ),
-    'pinterest'        => array(
+    ],
+    'pinterest'        => [
         'name' => 'Pinterest',
         'href' => 'https://www.pinterest.com/${id}',
         'icon' => 'pinterest',
-    ),
-    'behance'          => array(
+    ],
+    'behance'          => [
         'name' => 'Behance',
         'href' => 'https://www.behance.net/${id}',
         'icon' => 'behance',
-    ),
-    'flickr'           => array(
+    ],
+    'flickr'           => [
         'name' => 'Flickr',
         'href' => 'https://www.flickr.com/photos/${id}',
         'icon' => 'flickr',
-    ),
-    'foursquare'       => array(
+    ],
+    'foursquare'       => [
         'name' => 'Foursquare',
         'href' => 'https://foursquare.com/${id}',
         'icon' => 'foursquare',
-    ),
-    'github'           => array(
+    ],
+    'github'           => [
         'name' => 'GitHub',
         'href' => 'https://github.com/${id}',
         'icon' => 'github',
-    ),
-    'google_plus'      => array(
+    ],
+    'google_plus'      => [
         'name' => 'Google+',
         'href' => 'https://plus.google.com/${id}',
         'icon' => 'google_plus',
-    ),
-    'linkedin'         => array(
+    ],
+    'linkedin'         => [
         'name' => 'LinkedIn',
         'href' => 'https://www.linkedin.com/in/${id}',
         'icon' => 'linkedin',
-    ),
-    'linkedin_company' => array(
+    ],
+    'linkedin_company' => [
         'name' => 'LinkedIn Company',
         'href' => 'https://www.linkedin.com/company/${id}',
         'icon' => 'linkedin',
-    ),
-    'snapchat'         => array(
+    ],
+    'snapchat'         => [
         'name' => 'Snapchat',
         'href' => 'https://www.snapchat.com/add/${id}',
         'icon' => 'snapchat',
-    ),
-    'tumblr'           => array(
+    ],
+    'tumblr'           => [
         'name' => 'Tumblr',
         'href' => 'http://${id}.tumblr.com',
         'icon' => 'tumblr',
-    ),
-    'vimeo'            => array(
+    ],
+    'vimeo'            => [
         'name' => 'Vimeo',
         'href' => 'https://vimeo.com/${id}',
         'icon' => 'vimeo',
-    ),
-    'youtube'          => array(
+    ],
+    'youtube'          => [
         'name' => 'YouTube',
         'href' => 'https://www.youtube.com/user/${id}',
         'icon' => 'youtube',
-    ),
-    'youtube_channel'  => array(
+    ],
+    'youtube_channel'  => [
         'name' => 'YouTube Channel',
         'href' => 'https://www.youtube.com/channel/${id}',
         'icon' => 'youtube',
-    ),
-    'feed'             => array(
+    ],
+    'feed'             => [
         'name' => 'RSS Feed',
         'href' => 'http://www.example.com/feed/',
         'icon' => 'feed',
-    ),
-
-);
+    ],
+];

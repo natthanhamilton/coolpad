@@ -1,7 +1,6 @@
 <?php
-if (! defined('ABSPATH'))
-{
-    die('-1');
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
 }
 
 /**
@@ -17,163 +16,141 @@ if (! defined('ABSPATH'))
  * @since 4.3
  */
 class Vc_Add_Element_Box implements Vc_Render {
-    /**
-     * Enable show empty message
-     *
-     * @since 4.8
-     * @var bool
-     */
-    protected $show_empty_message = FALSE;
+	/**
+	 * Enable show empty message
+	 *
+	 * @since 4.8
+	 * @var bool
+	 */
+	protected $show_empty_message = false;
 
-    /**
-     * Render list of buttons for each mapped and allowed VC shortcodes.
-     * vc_filter: vc_add_element_box_buttons - hook to override output of getControls method
-     * @see WPBMap::getSortedUserShortCodes
-     * @return mixed|void
-     */
-    public function getControls()
-    {
-        $output = '<ul class="wpb-content-layouts">';
-        /** @var array $element */
-        $buttons_count = 0;
-        foreach ($this->shortcodes() as $element)
-        {
-            if (isset($element['content_element']) && FALSE === $element['content_element'])
-            {
-                continue;
-            }
-            $button = $this->renderButton($element);
-            if (! empty($button))
-            {
-                $buttons_count++;
-            }
-            $output .= $button;
-        }
-        $output .= '</ul>';
-        if (0 === $buttons_count)
-        {
-            $this->show_empty_message = TRUE;
-        }
+	/**
+	 * @param $params
+	 *
+	 * @return string
+	 */
+	protected function getIcon( $params ) {
+		$data = '';
+		if ( isset( $params['is_container'] ) && true === $params['is_container'] ) {
+			$data = ' data-is-container="true"';
+		}
 
-        return apply_filters('vc_add_element_box_buttons', $output);
-    }
+		return '<i class="vc_general vc_element-icon' . ( ! empty( $params['icon'] ) ? ' ' . sanitize_text_field( $params['icon'] ) : '' ) . '"' . $data . '></i> ';
+	}
 
-    /**
-     * Get mapped shortcodes list.
-     *
-     * @since 4.4
-     * @return array
-     */
-    public function shortcodes()
-    {
-        return WPBMap::getSortedUserShortCodes();
-    }
+	/**
+	 * Single button html template
+	 *
+	 * @param $params
+	 *
+	 * @return string
+	 */
+	public function renderButton( $params ) {
+		if ( ! is_array( $params ) || empty( $params ) ) {
+			return '';
+		}
+		$output = $class = $class_out = $data = $category_css_classes = '';
+		if ( ! empty( $params['class'] ) ) {
+			$class_ar = $class_at_out = explode( ' ', $params['class'] );
+			for ( $n = 0; $n < count( $class_ar ); $n ++ ) {
+				$class_ar[ $n ] .= '_nav';
+				$class_at_out[ $n ] .= '_o';
+			}
+			$class = ' ' . implode( ' ', $class_ar );
+			$class_out = ' ' . implode( ' ', $class_at_out );
+		}
+		if ( isset( $params['_category_ids'] ) ) {
+			foreach ( $params['_category_ids'] as $id ) {
+				$category_css_classes .= ' js-category-' . $id;
+			}
+		}
+		if ( isset( $params['is_container'] ) && true === $params['is_container'] ) {
+			$data .= ' data-is-container="true"';
+		}
+		$data .= ' data-vc-ui-element="add-element-button"';
+		$description = ! empty( $params['description'] ) ? '<i class="vc_element-description">' . htmlspecialchars( $params['description'] ) . '</i>' : '';
+		$output .= '<li data-element="' . $params['base'] . '" class="wpb-layout-element-button vc_col-xs-12 vc_col-sm-4 vc_col-md-3 vc_col-lg-2' . ( isset( $params['deprecated'] ) ? ' vc_element-deprecated' : '' ) . $category_css_classes . $class_out . '"' . $data . '><div class="vc_el-container"><a id="' . $params['base'] . '" data-tag="' . $params['base'] . '" class="dropable_el vc_shortcode-link' . $class . '" href="#" data-vc-clickable>' . $this->getIcon( $params ) . htmlspecialchars( stripslashes( $params['name'] ) ) . $description . '</a></div></li>';
 
-    /**
-     * Single button html template
-     *
-     * @param $params
-     *
-     * @return string
-     */
-    public function renderButton($params)
-    {
-        if (! is_array($params) || empty($params))
-        {
-            return '';
-        }
-        $output = $class = $class_out = $data = $category_css_classes = '';
-        if (! empty($params['class']))
-        {
-            $class_ar = $class_at_out = explode(' ', $params['class']);
-            for ($n = 0; $n < count($class_ar); $n++)
-            {
-                $class_ar[$n] .= '_nav';
-                $class_at_out[$n] .= '_o';
-            }
-            $class = ' ' . implode(' ', $class_ar);
-            $class_out = ' ' . implode(' ', $class_at_out);
-        }
-        if (isset($params['_category_ids']))
-        {
-            foreach ($params['_category_ids'] as $id)
-            {
-                $category_css_classes .= ' js-category-' . $id;
-            }
-        }
-        if (isset($params['is_container']) && TRUE === $params['is_container'])
-        {
-            $data .= ' data-is-container="true"';
-        }
-        $data .= ' data-vc-ui-element="add-element-button"';
-        $description = ! empty($params['description']) ? '<i class="vc_element-description">' . htmlspecialchars($params['description']) . '</i>' : '';
-        $output .= '<li data-element="' . $params['base'] . '" class="wpb-layout-element-button vc_col-xs-12 vc_col-sm-4 vc_col-md-3 vc_col-lg-2' . (isset($params['deprecated']) ? ' vc_element-deprecated' : '') . $category_css_classes . $class_out . '"' . $data . '><div class="vc_el-container"><a id="' . $params['base'] . '" data-tag="' . $params['base'] . '" class="dropable_el vc_shortcode-link' . $class . '" href="#" data-vc-clickable>' . $this->getIcon($params) . htmlspecialchars(stripslashes($params['name'])) . $description . '</a></div></li>';
+		return $output;
+	}
 
-        return $output;
-    }
+	/**
+	 * Get mapped shortcodes list.
+	 *
+	 * @since 4.4
+	 * @return array
+	 */
+	public function shortcodes() {
+		return WPBMap::getSortedUserShortCodes();
+	}
 
-    /**
-     * @param $params
-     *
-     * @return string
-     */
-    protected function getIcon($params)
-    {
-        $data = '';
-        if (isset($params['is_container']) && TRUE === $params['is_container'])
-        {
-            $data = ' data-is-container="true"';
-        }
+	/**
+	 * Render list of buttons for each mapped and allowed VC shortcodes.
+	 * vc_filter: vc_add_element_box_buttons - hook to override output of getControls method
+	 * @see WPBMap::getSortedUserShortCodes
+	 * @return mixed|void
+	 */
+	public function getControls() {
+		$output = '<ul class="wpb-content-layouts">';
+		/** @var array $element */
+		$buttons_count = 0;
+		foreach ( $this->shortcodes() as $element ) {
+			if ( isset( $element['content_element'] ) && false === $element['content_element'] ) {
+				continue;
+			}
+			$button = $this->renderButton( $element );
+			if ( ! empty( $button ) ) {
+				$buttons_count ++;
+			}
+			$output .= $button;
+		}
+		$output .= '</ul>';
+		if ( 0 === $buttons_count ) {
+			$this->show_empty_message = true;
+		}
 
-        return '<i class="vc_general vc_element-icon' . (! empty($params['icon']) ? ' ' . sanitize_text_field($params['icon']) : '') . '"' . $data . '></i> ';
-    }
+		return apply_filters( 'vc_add_element_box_buttons', $output );
+	}
 
-    public function render()
-    {
-        vc_include_template('editors/popups/vc_ui-panel-add-element.tpl.php', array(
-            'box'                => $this,
-            'template_variables' => array(
-                'categories' => $this->getCategories(),
-            ),
-        ));
-    }
+	/**
+	 * Get categories list from mapping data.
+	 * @since 4.5
+	 *
+	 * @return array
+	 */
+	public function getCategories() {
+		return WPBMap::getUserCategories();
+	}
 
-    /**
-     * Get categories list from mapping data.
-     * @since 4.5
-     *
-     * @return array
-     */
-    public function getCategories()
-    {
-        return WPBMap::getUserCategories();
-    }
+	public function render() {
+		vc_include_template( 'editors/popups/vc_ui-panel-add-element.tpl.php', array(
+			'box' => $this,
+			'template_variables' => array(
+				'categories' => $this->getCategories(),
+			),
+		) );
+	}
 
-    /**
-     * Render icon for shortcode
-     *
-     * @param $params
-     *
-     * @since 4.8
-     * @return string
-     */
-    public function renderIcon($params)
-    {
-        return $this->getIcon($params);
-    }
+	/**
+	 * Render icon for shortcode
+	 *
+	 * @param $params
+	 *
+	 * @since 4.8
+	 * @return string
+	 */
+	public function renderIcon( $params ) {
+		return $this->getIcon( $params );
+	}
 
-    /**
-     * @return boolean
-     */
-    public function isShowEmptyMessage()
-    {
-        return $this->show_empty_message;
-    }
+	/**
+	 * @return boolean
+	 */
+	public function isShowEmptyMessage() {
+		return $this->show_empty_message;
+	}
 
-    public function getPartState()
-    {
-        return vc_user_access()
-            ->part('shortcodes')
-            ->getState();
-    }
+	public function getPartState() {
+		return vc_user_access()->part( 'shortcodes' )->getState();
+	}
 }

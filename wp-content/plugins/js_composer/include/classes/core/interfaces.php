@@ -1,7 +1,6 @@
 <?php
-if (! defined('ABSPATH'))
-{
-    die('-1');
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
 }
 
 /**
@@ -9,11 +8,11 @@ if (! defined('ABSPATH'))
  * Interface for editors
  */
 interface Vc_Editor_Interface {
-    /**
-     * @since 4.3
-     * @return mixed
-     */
-    public function renderEditor();
+	/**
+	 * @since 4.3
+	 * @return mixed
+	 */
+	public function renderEditor();
 }
 
 /**
@@ -21,11 +20,11 @@ interface Vc_Editor_Interface {
  * Default render interface
  */
 interface Vc_Render {
-    /**
-     * @since 4.3
-     * @return mixed
-     */
-    public function render();
+	/**
+	 * @since 4.3
+	 * @return mixed
+	 */
+	public function render();
 }
 
 /**
@@ -33,9 +32,9 @@ interface Vc_Render {
  * Interface for third-party plugins classes loader.
  */
 interface Vc_Vendor_Interface {
-    /**
-     * @since 4.3
-     * @return mixed
-     */
-    public function load();
+	/**
+	 * @since 4.3
+	 * @return mixed
+	 */
+	public function load();
 }

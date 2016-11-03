@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2013, Christoph Mewes, http://www.xrstf.de
  *
@@ -17,18 +18,18 @@
  */
 
 class xrstf_Composer52_ClassLoader {
-	private $prefixes              = array();
-	private $fallbackDirs          = array();
-	private $useIncludePath        = false;
-	private $classMap              = array();
-	private $classMapAuthoratative = false;
-	private $allowUnderscore       = false;
+	private $prefixes              = [];
+	private $fallbackDirs          = [];
+	private $useIncludePath        = FALSE;
+	private $classMap              = [];
+	private $classMapAuthoratative = FALSE;
+	private $allowUnderscore       = FALSE;
 
 	/**
-	 * @param boolean $flag  true to allow class names with a leading underscore, false to disable
+	 * @param boolean $flag true to allow class names with a leading underscore, false to disable
 	 */
 	public function setAllowUnderscore($flag) {
-		$this->allowUnderscore = (boolean) $flag;
+		$this->allowUnderscore = (boolean)$flag;
 	}
 
 	/**
@@ -72,13 +73,12 @@ class xrstf_Composer52_ClassLoader {
 	}
 
 	/**
-	 * @param array $classMap  class to filename map
+	 * @param array $classMap class to filename map
 	 */
 	public function addClassMap(array $classMap) {
 		if ($this->classMap) {
 			$this->classMap = array_merge($this->classMap, $classMap);
-		}
-		else {
+		} else {
 			$this->classMap = $classMap;
 		}
 	}
@@ -86,43 +86,40 @@ class xrstf_Composer52_ClassLoader {
 	/**
 	 * Registers a set of classes, merging with any others previously set.
 	 *
-	 * @param string       $prefix   the classes prefix
-	 * @param array|string $paths    the location(s) of the classes
-	 * @param bool         $prepend  prepend the location(s)
+	 * @param string       $prefix  the classes prefix
+	 * @param array|string $paths   the location(s) of the classes
+	 * @param bool         $prepend prepend the location(s)
 	 */
-	public function add($prefix, $paths, $prepend = false) {
+	public function add($prefix, $paths, $prepend = FALSE) {
 		if (!$prefix) {
 			if ($prepend) {
 				$this->fallbackDirs = array_merge(
-					(array) $paths,
+					(array)$paths,
 					$this->fallbackDirs
 				);
-			}
-			else {
+			} else {
 				$this->fallbackDirs = array_merge(
 					$this->fallbackDirs,
-					(array) $paths
+					(array)$paths
 				);
 			}
 
 			return;
 		}
+		if (!isset($this->prefixes[ $prefix ])) {
+			$this->prefixes[ $prefix ] = (array)$paths;
 
-		if (!isset($this->prefixes[$prefix])) {
-			$this->prefixes[$prefix] = (array) $paths;
 			return;
 		}
-
 		if ($prepend) {
-			$this->prefixes[$prefix] = array_merge(
-				(array) $paths,
-				$this->prefixes[$prefix]
+			$this->prefixes[ $prefix ] = array_merge(
+				(array)$paths,
+				$this->prefixes[ $prefix ]
 			);
-		}
-		else {
-			$this->prefixes[$prefix] = array_merge(
-				$this->prefixes[$prefix],
-				(array) $paths
+		} else {
+			$this->prefixes[ $prefix ] = array_merge(
+				$this->prefixes[ $prefix ],
+				(array)$paths
 			);
 		}
 	}
@@ -130,16 +127,16 @@ class xrstf_Composer52_ClassLoader {
 	/**
 	 * Registers a set of classes, replacing any others previously set.
 	 *
-	 * @param string       $prefix  the classes prefix
-	 * @param array|string $paths   the location(s) of the classes
+	 * @param string       $prefix the classes prefix
+	 * @param array|string $paths  the location(s) of the classes
 	 */
 	public function set($prefix, $paths) {
 		if (!$prefix) {
-			$this->fallbackDirs = (array) $paths;
+			$this->fallbackDirs = (array)$paths;
+
 			return;
 		}
-
-		$this->prefixes[$prefix] = (array) $paths;
+		$this->prefixes[ $prefix ] = (array)$paths;
 	}
 
 	/**
@@ -165,107 +162,98 @@ class xrstf_Composer52_ClassLoader {
 	 * Registers this instance as an autoloader.
 	 */
 	public function register() {
-		spl_autoload_register(array($this, 'loadClass'), true);
+		spl_autoload_register([$this, 'loadClass'], TRUE);
 	}
 
 	/**
 	 * Unregisters this instance as an autoloader.
 	 */
 	public function unregister() {
-		spl_autoload_unregister(array($this, 'loadClass'));
+		spl_autoload_unregister([$this, 'loadClass']);
 	}
 
 	/**
 	 * Loads the given class or interface.
 	 *
-	 * @param  string $class  the name of the class
+	 * @param  string $class the name of the class
+	 *
 	 * @return bool|null      true, if loaded
 	 */
 	public function loadClass($class) {
 		if ($file = $this->findFile($class)) {
 			include $file;
-			return true;
+
+			return TRUE;
 		}
 	}
 
 	/**
 	 * Finds the path to the file where the class is defined.
 	 *
-	 * @param  string $class  the name of the class
+	 * @param  string $class the name of the class
+	 *
 	 * @return string|null    the path, if found
 	 */
 	public function findFile($class) {
 		if ('\\' === $class[0]) {
 			$class = substr($class, 1);
 		}
-
-		if (isset($this->classMap[$class])) {
-			return $this->classMap[$class];
+		if (isset($this->classMap[ $class ])) {
+			return $this->classMap[ $class ];
+		} elseif ($this->classMapAuthoratative) {
+			return FALSE;
 		}
-		elseif ($this->classMapAuthoratative) {
-			return false;
-		}
-
 		$classPath = $this->getClassPath($class);
-
 		foreach ($this->prefixes as $prefix => $dirs) {
 			if (0 === strpos($class, $prefix)) {
 				foreach ($dirs as $dir) {
-					if (file_exists($dir.DIRECTORY_SEPARATOR.$classPath)) {
-						return $dir.DIRECTORY_SEPARATOR.$classPath;
+					if (file_exists($dir . DIRECTORY_SEPARATOR . $classPath)) {
+						return $dir . DIRECTORY_SEPARATOR . $classPath;
 					}
 				}
 			}
 		}
-
 		foreach ($this->fallbackDirs as $dir) {
-			if (file_exists($dir.DIRECTORY_SEPARATOR.$classPath)) {
-				return $dir.DIRECTORY_SEPARATOR.$classPath;
+			if (file_exists($dir . DIRECTORY_SEPARATOR . $classPath)) {
+				return $dir . DIRECTORY_SEPARATOR . $classPath;
 			}
 		}
-
 		if ($this->useIncludePath && $file = self::resolveIncludePath($classPath)) {
 			return $file;
 		}
 
-		return $this->classMap[$class] = false;
+		return $this->classMap[ $class ] = FALSE;
 	}
 
 	private function getClassPath($class) {
-		if (false !== $pos = strrpos($class, '\\')) {
+		if (FALSE !== $pos = strrpos($class, '\\')) {
 			// namespaced class name
-			$classPath = str_replace('\\', DIRECTORY_SEPARATOR, substr($class, 0, $pos)).DIRECTORY_SEPARATOR;
+			$classPath = str_replace('\\', DIRECTORY_SEPARATOR, substr($class, 0, $pos)) . DIRECTORY_SEPARATOR;
 			$className = substr($class, $pos + 1);
-		}
-		else {
+		} else {
 			// PEAR-like class name
-			$classPath = null;
+			$classPath = NULL;
 			$className = $class;
 		}
-
 		$className = str_replace('_', DIRECTORY_SEPARATOR, $className);
-
 		// restore the prefix
 		if ($this->allowUnderscore && DIRECTORY_SEPARATOR === $className[0]) {
 			$className[0] = '_';
 		}
-
-		$classPath .= $className.'.php';
+		$classPath .= $className . '.php';
 
 		return $classPath;
 	}
 
 	public static function resolveIncludePath($classPath) {
 		$paths = explode(PATH_SEPARATOR, get_include_path());
-
 		foreach ($paths as $path) {
 			$path = rtrim($path, '/\\');
-
-			if ($file = file_exists($path.DIRECTORY_SEPARATOR.$file)) {
+			if ($file = file_exists($path . DIRECTORY_SEPARATOR . $file)) {
 				return $file;
 			}
 		}
 
-		return false;
+		return FALSE;
 	}
 }

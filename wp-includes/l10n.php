@@ -27,63 +27,52 @@
  *
  * @return string The locale of the blog or from the {@see 'locale'} hook.
  */
-function get_locale()
-{
-    global $locale, $wp_local_package;
+function get_locale() {
+	global $locale, $wp_local_package;
 
-    if (isset($locale))
-    {
-        /**
-         * Filter WordPress install's locale ID.
-         *
-         * @since 1.5.0
-         *
-         * @param string $locale The locale ID.
-         */
-        return apply_filters('locale', $locale);
-    }
+	if ( isset( $locale ) ) {
+		/**
+		 * Filters WordPress install's locale ID.
+		 *
+		 * @since 1.5.0
+		 *
+		 * @param string $locale The locale ID.
+		 */
+		return apply_filters( 'locale', $locale );
+	}
 
-    if (isset($wp_local_package))
-    {
-        $locale = $wp_local_package;
-    }
+	if ( isset( $wp_local_package ) ) {
+		$locale = $wp_local_package;
+	}
 
-    // WPLANG was defined in wp-config.
-    if (defined('WPLANG'))
-    {
-        $locale = WPLANG;
-    }
+	// WPLANG was defined in wp-config.
+	if ( defined( 'WPLANG' ) ) {
+		$locale = WPLANG;
+	}
 
-    // If multisite, check options.
-    if (is_multisite())
-    {
-        // Don't check blog option when installing.
-        if (wp_installing() || (FALSE === $ms_locale = get_option('WPLANG')))
-        {
-            $ms_locale = get_site_option('WPLANG');
-        }
+	// If multisite, check options.
+	if ( is_multisite() ) {
+		// Don't check blog option when installing.
+		if ( wp_installing() || ( false === $ms_locale = get_option( 'WPLANG' ) ) ) {
+			$ms_locale = get_site_option( 'WPLANG' );
+		}
 
-        if ($ms_locale !== FALSE)
-        {
-            $locale = $ms_locale;
-        }
-    }
-    else
-    {
-        $db_locale = get_option('WPLANG');
-        if ($db_locale !== FALSE)
-        {
-            $locale = $db_locale;
-        }
-    }
+		if ( $ms_locale !== false ) {
+			$locale = $ms_locale;
+		}
+	} else {
+		$db_locale = get_option( 'WPLANG' );
+		if ( $db_locale !== false ) {
+			$locale = $db_locale;
+		}
+	}
 
-    if (empty($locale))
-    {
-        $locale = 'en_US';
-    }
+	if ( empty( $locale ) ) {
+		$locale = 'en_US';
+	}
 
-    /** This filter is documented in wp-includes/l10n.php */
-    return apply_filters('locale', $locale);
+	/** This filter is documented in wp-includes/l10n.php */
+	return apply_filters( 'locale', $locale );
 }
 
 /**
@@ -95,26 +84,25 @@ function get_locale()
  *
  * @since 2.2.0
  *
- * @param string $text Text to translate.
+ * @param string $text   Text to translate.
  * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
  *                       Default 'default'.
  * @return string Translated text
  */
-function translate($text, $domain = 'default')
-{
-    $translations = get_translations_for_domain($domain);
-    $translations = $translations->translate($text);
+function translate( $text, $domain = 'default' ) {
+	$translations = get_translations_for_domain( $domain );
+	$translations = $translations->translate( $text );
 
-    /**
-     * Filter text with its translation.
-     *
-     * @since 2.0.11
-     *
-     * @param string $translations Translated text.
-     * @param string $text Text to translate.
-     * @param string $domain Text domain. Unique identifier for retrieving translated strings.
-     */
-    return apply_filters('gettext', $translations, $text, $domain);
+	/**
+	 * Filters text with its translation.
+	 *
+	 * @since 2.0.11
+	 *
+	 * @param string $translations Translated text.
+	 * @param string $text         Text to translate.
+	 * @param string $domain       Text domain. Unique identifier for retrieving translated strings.
+	 */
+	return apply_filters( 'gettext', $translations, $text, $domain );
 }
 
 /**
@@ -128,17 +116,13 @@ function translate($text, $domain = 'default')
  * @param string $string A pipe-delimited string.
  * @return string Either $string or everything before the last pipe.
  */
-function before_last_bar($string)
-{
-    $last_bar = strrpos($string, '|');
-    if (FALSE === $last_bar)
-    {
-        return $string;
-    }
-    else
-    {
-        return substr($string, 0, $last_bar);
-    }
+function before_last_bar( $string ) {
+	$last_bar = strrpos( $string, '|' );
+	if ( false === $last_bar ) {
+		return $string;
+	} else {
+		return substr( $string, 0, $last_bar );
+	}
 }
 
 /**
@@ -151,27 +135,26 @@ function before_last_bar($string)
  *
  * @since 2.8.0
  *
- * @param string $text Text to translate.
+ * @param string $text    Text to translate.
  * @param string $context Context information for the translators.
- * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
+ * @param string $domain  Optional. Text domain. Unique identifier for retrieving translated strings.
  *                        Default 'default'.
  * @return string Translated text on success, original text on failure.
  */
-function translate_with_gettext_context($text, $context, $domain = 'default')
-{
-    $translations = get_translations_for_domain($domain);
-    $translations = $translations->translate($text, $context);
-    /**
-     * Filter text with its translation based on context information.
-     *
-     * @since 2.8.0
-     *
-     * @param string $translations Translated text.
-     * @param string $text Text to translate.
-     * @param string $context Context information for the translators.
-     * @param string $domain Text domain. Unique identifier for retrieving translated strings.
-     */
-    return apply_filters('gettext_with_context', $translations, $text, $context, $domain);
+function translate_with_gettext_context( $text, $context, $domain = 'default' ) {
+	$translations = get_translations_for_domain( $domain );
+	$translations = $translations->translate( $text, $context );
+	/**
+	 * Filters text with its translation based on context information.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $translations Translated text.
+	 * @param string $text         Text to translate.
+	 * @param string $context      Context information for the translators.
+	 * @param string $domain       Text domain. Unique identifier for retrieving translated strings.
+	 */
+	return apply_filters( 'gettext_with_context', $translations, $text, $context, $domain );
 }
 
 /**
@@ -181,14 +164,13 @@ function translate_with_gettext_context($text, $context, $domain = 'default')
  *
  * @since 2.1.0
  *
- * @param string $text Text to translate.
+ * @param string $text   Text to translate.
  * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
  *                       Default 'default'.
  * @return string Translated text.
  */
-function __($text, $domain = 'default')
-{
-    return translate($text, $domain);
+function __( $text, $domain = 'default' ) {
+	return translate( $text, $domain );
 }
 
 /**
@@ -198,14 +180,13 @@ function __($text, $domain = 'default')
  *
  * @since 2.8.0
  *
- * @param string $text Text to translate.
+ * @param string $text   Text to translate.
  * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
  *                       Default 'default'.
  * @return string Translated text on success, original text on failure.
  */
-function esc_attr__($text, $domain = 'default')
-{
-    return esc_attr(translate($text, $domain));
+function esc_attr__( $text, $domain = 'default' ) {
+	return esc_attr( translate( $text, $domain ) );
 }
 
 /**
@@ -215,14 +196,13 @@ function esc_attr__($text, $domain = 'default')
  *
  * @since 2.8.0
  *
- * @param string $text Text to translate.
+ * @param string $text   Text to translate.
  * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
  *                       Default 'default'.
  * @return string Translated text
  */
-function esc_html__($text, $domain = 'default')
-{
-    return esc_html(translate($text, $domain));
+function esc_html__( $text, $domain = 'default' ) {
+	return esc_html( translate( $text, $domain ) );
 }
 
 /**
@@ -230,13 +210,12 @@ function esc_html__($text, $domain = 'default')
  *
  * @since 1.2.0
  *
- * @param string $text Text to translate.
+ * @param string $text   Text to translate.
  * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
  *                       Default 'default'.
  */
-function _e($text, $domain = 'default')
-{
-    echo translate($text, $domain);
+function _e( $text, $domain = 'default' ) {
+	echo translate( $text, $domain );
 }
 
 /**
@@ -244,13 +223,12 @@ function _e($text, $domain = 'default')
  *
  * @since 2.8.0
  *
- * @param string $text Text to translate.
+ * @param string $text   Text to translate.
  * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
  *                       Default 'default'.
  */
-function esc_attr_e($text, $domain = 'default')
-{
-    echo esc_attr(translate($text, $domain));
+function esc_attr_e( $text, $domain = 'default' ) {
+	echo esc_attr( translate( $text, $domain ) );
 }
 
 /**
@@ -258,13 +236,12 @@ function esc_attr_e($text, $domain = 'default')
  *
  * @since 2.8.0
  *
- * @param string $text Text to translate.
+ * @param string $text   Text to translate.
  * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
  *                       Default 'default'.
  */
-function esc_html_e($text, $domain = 'default')
-{
-    echo esc_html(translate($text, $domain));
+function esc_html_e( $text, $domain = 'default' ) {
+	echo esc_html( translate( $text, $domain ) );
 }
 
 /**
@@ -278,15 +255,14 @@ function esc_html_e($text, $domain = 'default')
  *
  * @since 2.8.0
  *
- * @param string $text Text to translate.
+ * @param string $text    Text to translate.
  * @param string $context Context information for the translators.
- * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
+ * @param string $domain  Optional. Text domain. Unique identifier for retrieving translated strings.
  *                        Default 'default'.
  * @return string Translated context string without pipe.
  */
-function _x($text, $context, $domain = 'default')
-{
-    return translate_with_gettext_context($text, $context, $domain);
+function _x( $text, $context, $domain = 'default' ) {
+	return translate_with_gettext_context( $text, $context, $domain );
 }
 
 /**
@@ -294,15 +270,14 @@ function _x($text, $context, $domain = 'default')
  *
  * @since 3.0.0
  *
- * @param string $text Text to translate.
+ * @param string $text    Text to translate.
  * @param string $context Context information for the translators.
- * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
+ * @param string $domain  Optional. Text domain. Unique identifier for retrieving translated strings.
  *                        Default 'default'.
  * @return string Translated context string without pipe.
  */
-function _ex($text, $context, $domain = 'default')
-{
-    echo _x($text, $context, $domain);
+function _ex( $text, $context, $domain = 'default' ) {
+	echo _x( $text, $context, $domain );
 }
 
 /**
@@ -310,15 +285,14 @@ function _ex($text, $context, $domain = 'default')
  *
  * @since 2.8.0
  *
- * @param string $text Text to translate.
+ * @param string $text    Text to translate.
  * @param string $context Context information for the translators.
- * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
+ * @param string $domain  Optional. Text domain. Unique identifier for retrieving translated strings.
  *                        Default 'default'.
  * @return string Translated text
  */
-function esc_attr_x($text, $context, $domain = 'default')
-{
-    return esc_attr(translate_with_gettext_context($text, $context, $domain));
+function esc_attr_x( $text, $context, $domain = 'default' ) {
+	return esc_attr( translate_with_gettext_context( $text, $context, $domain ) );
 }
 
 /**
@@ -326,15 +300,14 @@ function esc_attr_x($text, $context, $domain = 'default')
  *
  * @since 2.9.0
  *
- * @param string $text Text to translate.
+ * @param string $text    Text to translate.
  * @param string $context Context information for the translators.
- * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
+ * @param string $domain  Optional. Text domain. Unique identifier for retrieving translated strings.
  *                        Default 'default'.
  * @return string Translated text.
  */
-function esc_html_x($text, $context, $domain = 'default')
-{
-    return esc_html(translate_with_gettext_context($text, $context, $domain));
+function esc_html_x( $text, $context, $domain = 'default' ) {
+	return esc_html( translate_with_gettext_context( $text, $context, $domain ) );
 }
 
 /**
@@ -351,28 +324,27 @@ function esc_html_x($text, $context, $domain = 'default')
  *
  * @param string $single The text to be used if the number is singular.
  * @param string $plural The text to be used if the number is plural.
- * @param int $number The number to compare against to use either the singular or plural form.
+ * @param int    $number The number to compare against to use either the singular or plural form.
  * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
  *                       Default 'default'.
  * @return string The translated singular or plural form.
  */
-function _n($single, $plural, $number, $domain = 'default')
-{
-    $translations = get_translations_for_domain($domain);
-    $translation = $translations->translate_plural($single, $plural, $number);
+function _n( $single, $plural, $number, $domain = 'default' ) {
+	$translations = get_translations_for_domain( $domain );
+	$translation = $translations->translate_plural( $single, $plural, $number );
 
-    /**
-     * Filter the singular or plural form of a string.
-     *
-     * @since 2.2.0
-     *
-     * @param string $translation Translated text.
-     * @param string $single The text to be used if the number is singular.
-     * @param string $plural The text to be used if the number is plural.
-     * @param string $number The number to compare against to use either the singular or plural form.
-     * @param string $domain Text domain. Unique identifier for retrieving translated strings.
-     */
-    return apply_filters('ngettext', $translation, $single, $plural, $number, $domain);
+	/**
+	 * Filters the singular or plural form of a string.
+	 *
+	 * @since 2.2.0
+	 *
+	 * @param string $translation Translated text.
+	 * @param string $single      The text to be used if the number is singular.
+	 * @param string $plural      The text to be used if the number is plural.
+	 * @param string $number      The number to compare against to use either the singular or plural form.
+	 * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
+	 */
+	return apply_filters( 'ngettext', $translation, $single, $plural, $number, $domain );
 }
 
 /**
@@ -389,32 +361,31 @@ function _n($single, $plural, $number, $domain = 'default')
  *
  * @since 2.8.0
  *
- * @param string $single The text to be used if the number is singular.
- * @param string $plural The text to be used if the number is plural.
- * @param int $number The number to compare against to use either the singular or plural form.
+ * @param string $single  The text to be used if the number is singular.
+ * @param string $plural  The text to be used if the number is plural.
+ * @param int    $number  The number to compare against to use either the singular or plural form.
  * @param string $context Context information for the translators.
- * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
+ * @param string $domain  Optional. Text domain. Unique identifier for retrieving translated strings.
  *                        Default 'default'.
  * @return string The translated singular or plural form.
  */
-function _nx($single, $plural, $number, $context, $domain = 'default')
-{
-    $translations = get_translations_for_domain($domain);
-    $translation = $translations->translate_plural($single, $plural, $number, $context);
+function _nx($single, $plural, $number, $context, $domain = 'default') {
+	$translations = get_translations_for_domain( $domain );
+	$translation = $translations->translate_plural( $single, $plural, $number, $context );
 
-    /**
-     * Filter the singular or plural form of a string with gettext context.
-     *
-     * @since 2.8.0
-     *
-     * @param string $translation Translated text.
-     * @param string $single The text to be used if the number is singular.
-     * @param string $plural The text to be used if the number is plural.
-     * @param string $number The number to compare against to use either the singular or plural form.
-     * @param string $context Context information for the translators.
-     * @param string $domain Text domain. Unique identifier for retrieving translated strings.
-     */
-    return apply_filters('ngettext_with_context', $translation, $single, $plural, $number, $context, $domain);
+	/**
+	 * Filters the singular or plural form of a string with gettext context.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @param string $translation Translated text.
+	 * @param string $single      The text to be used if the number is singular.
+	 * @param string $plural      The text to be used if the number is plural.
+	 * @param string $number      The number to compare against to use either the singular or plural form.
+	 * @param string $context     Context information for the translators.
+	 * @param string $domain      Text domain. Unique identifier for retrieving translated strings.
+	 */
+	return apply_filters( 'ngettext_with_context', $translation, $single, $plural, $number, $context, $domain );
 }
 
 /**
@@ -426,8 +397,8 @@ function _nx($single, $plural, $number, $context, $domain = 'default')
  * Example:
  *
  *     $messages = array(
- *        'post' => _n_noop( '%s post', '%s posts', 'text-domain' ),
- *        'page' => _n_noop( '%s pages', '%s pages', 'text-domain' ),
+ *      	'post' => _n_noop( '%s post', '%s posts', 'text-domain' ),
+ *      	'page' => _n_noop( '%s pages', '%s pages', 'text-domain' ),
  *     );
  *     ...
  *     $message = $messages[ $type ];
@@ -436,23 +407,22 @@ function _nx($single, $plural, $number, $context, $domain = 'default')
  * @since 2.5.0
  *
  * @param string $singular Singular form to be localized.
- * @param string $plural Plural form to be localized.
- * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
+ * @param string $plural   Plural form to be localized.
+ * @param string $domain   Optional. Text domain. Unique identifier for retrieving translated strings.
  *                         Default null.
  * @return array {
  *     Array of translation information for the strings.
  *
- * @type string $0        Singular form to be localized. No longer used.
- * @type string $1        Plural form to be localized. No longer used.
- * @type string $singular Singular form to be localized.
- * @type string $plural Plural form to be localized.
- * @type null $context Context information for the translators.
- * @type string $domain Text domain.
+ *     @type string $0        Singular form to be localized. No longer used.
+ *     @type string $1        Plural form to be localized. No longer used.
+ *     @type string $singular Singular form to be localized.
+ *     @type string $plural   Plural form to be localized.
+ *     @type null   $context  Context information for the translators.
+ *     @type string $domain   Text domain.
  * }
  */
-function _n_noop($singular, $plural, $domain = NULL)
-{
-    return array(0 => $singular, 1 => $plural, 'singular' => $singular, 'plural' => $plural, 'context' => NULL, 'domain' => $domain);
+function _n_noop( $singular, $plural, $domain = null ) {
+	return array( 0 => $singular, 1 => $plural, 'singular' => $singular, 'plural' => $plural, 'context' => null, 'domain' => $domain );
 }
 
 /**
@@ -464,8 +434,8 @@ function _n_noop($singular, $plural, $domain = NULL)
  * Example:
  *
  *     $messages = array(
- *        'post' => _n_noop( '%s post', '%s posts', 'context', 'text-domain' ),
- *        'page' => _n_noop( '%s pages', '%s pages', 'context', 'text-domain' ),
+ *      	'post' => _n_noop( '%s post', '%s posts', 'context', 'text-domain' ),
+ *      	'page' => _n_noop( '%s pages', '%s pages', 'context', 'text-domain' ),
  *     );
  *     ...
  *     $message = $messages[ $type ];
@@ -474,25 +444,24 @@ function _n_noop($singular, $plural, $domain = NULL)
  * @since 2.8.0
  *
  * @param string $singular Singular form to be localized.
- * @param string $plural Plural form to be localized.
- * @param string $context Context information for the translators.
- * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings.
+ * @param string $plural   Plural form to be localized.
+ * @param string $context  Context information for the translators.
+ * @param string $domain   Optional. Text domain. Unique identifier for retrieving translated strings.
  *                         Default null.
  * @return array {
  *     Array of translation information for the strings.
  *
- * @type string $0        Singular form to be localized. No longer used.
- * @type string $1        Plural form to be localized. No longer used.
- * @type string $2        Context information for the translators. No longer used.
- * @type string $singular Singular form to be localized.
- * @type string $plural Plural form to be localized.
- * @type string $context Context information for the translators.
- * @type string $domain Text domain.
+ *     @type string $0        Singular form to be localized. No longer used.
+ *     @type string $1        Plural form to be localized. No longer used.
+ *     @type string $2        Context information for the translators. No longer used.
+ *     @type string $singular Singular form to be localized.
+ *     @type string $plural   Plural form to be localized.
+ *     @type string $context  Context information for the translators.
+ *     @type string $domain   Text domain.
  * }
  */
-function _nx_noop($singular, $plural, $context, $domain = NULL)
-{
-    return array(0 => $singular, 1 => $plural, 2 => $context, 'singular' => $singular, 'plural' => $plural, 'context' => $context, 'domain' => $domain);
+function _nx_noop( $singular, $plural, $context, $domain = null ) {
+	return array( 0 => $singular, 1 => $plural, 2 => $context, 'singular' => $singular, 'plural' => $plural, 'context' => $context, 'domain' => $domain );
 }
 
 /**
@@ -504,8 +473,8 @@ function _nx_noop($singular, $plural, $context, $domain = NULL)
  * Example:
  *
  *     $messages = array(
- *        'post' => _n_noop( '%s post', '%s posts', 'text-domain' ),
- *        'page' => _n_noop( '%s pages', '%s pages', 'text-domain' ),
+ *      	'post' => _n_noop( '%s post', '%s posts', 'text-domain' ),
+ *      	'page' => _n_noop( '%s pages', '%s pages', 'text-domain' ),
  *     );
  *     ...
  *     $message = $messages[ $type ];
@@ -513,21 +482,20 @@ function _nx_noop($singular, $plural, $context, $domain = NULL)
  *
  * @since 3.1.0
  *
- * @param array $nooped_plural Array with singular, plural, and context keys, usually the result of _n_noop() or _nx_noop().
- * @param int $count Number of objects.
- * @param string $domain Optional. Text domain. Unique identifier for retrieving translated strings. If $nooped_plural contains
+ * @param array  $nooped_plural Array with singular, plural, and context keys, usually the result of _n_noop() or _nx_noop().
+ * @param int    $count         Number of objects.
+ * @param string $domain        Optional. Text domain. Unique identifier for retrieving translated strings. If $nooped_plural contains
  *                              a text domain passed to _n_noop() or _nx_noop(), it will override this value. Default 'default'.
  * @return string Either $single or $plural translated text.
  */
-function translate_nooped_plural($nooped_plural, $count, $domain = 'default')
-{
-    if ($nooped_plural['domain'])
-        $domain = $nooped_plural['domain'];
+function translate_nooped_plural( $nooped_plural, $count, $domain = 'default' ) {
+	if ( $nooped_plural['domain'] )
+		$domain = $nooped_plural['domain'];
 
-    if ($nooped_plural['context'])
-        return _nx($nooped_plural['singular'], $nooped_plural['plural'], $count, $nooped_plural['context'], $domain);
-    else
-        return _n($nooped_plural['singular'], $nooped_plural['plural'], $count, $domain);
+	if ( $nooped_plural['context'] )
+		return _nx( $nooped_plural['singular'], $nooped_plural['plural'], $count, $nooped_plural['context'], $domain );
+	else
+		return _n( $nooped_plural['singular'], $nooped_plural['plural'], $count, $domain );
 }
 
 /**
@@ -541,63 +509,68 @@ function translate_nooped_plural($nooped_plural, $count, $domain = 'default')
  *
  * @since 1.5.0
  *
- * @global array $l10n
+ * @global array $l10n          An array of all currently loaded text domains.
+ * @global array $l10n_unloaded An array of all text domains that have been unloaded again.
  *
  * @param string $domain Text domain. Unique identifier for retrieving translated strings.
  * @param string $mofile Path to the .mo file.
  * @return bool True on success, false on failure.
  */
-function load_textdomain($domain, $mofile)
-{
-    global $l10n;
+function load_textdomain( $domain, $mofile ) {
+	global $l10n, $l10n_unloaded;
 
-    /**
-     * Filter text domain and/or MO file path for loading translations.
-     *
-     * @since 2.9.0
-     *
-     * @param bool $override Whether to override the text domain. Default false.
-     * @param string $domain Text domain. Unique identifier for retrieving translated strings.
-     * @param string $mofile Path to the MO file.
-     */
-    $plugin_override = apply_filters('override_load_textdomain', FALSE, $domain, $mofile);
+	$l10n_unloaded = (array) $l10n_unloaded;
 
-    if (TRUE == $plugin_override)
-    {
-        return TRUE;
-    }
+	/**
+	 * Filters whether to override the .mo file loading.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param bool   $override Whether to override the .mo file loading. Default false.
+	 * @param string $domain   Text domain. Unique identifier for retrieving translated strings.
+	 * @param string $mofile   Path to the MO file.
+	 */
+	$plugin_override = apply_filters( 'override_load_textdomain', false, $domain, $mofile );
 
-    /**
-     * Fires before the MO translation file is loaded.
-     *
-     * @since 2.9.0
-     *
-     * @param string $domain Text domain. Unique identifier for retrieving translated strings.
-     * @param string $mofile Path to the .mo file.
-     */
-    do_action('load_textdomain', $domain, $mofile);
+	if ( true == $plugin_override ) {
+		unset( $l10n_unloaded[ $domain ] );
 
-    /**
-     * Filter MO file path for loading translations for a specific text domain.
-     *
-     * @since 2.9.0
-     *
-     * @param string $mofile Path to the MO file.
-     * @param string $domain Text domain. Unique identifier for retrieving translated strings.
-     */
-    $mofile = apply_filters('load_textdomain_mofile', $mofile, $domain);
+		return true;
+	}
 
-    if (! is_readable($mofile)) return FALSE;
+	/**
+	 * Fires before the MO translation file is loaded.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param string $domain Text domain. Unique identifier for retrieving translated strings.
+	 * @param string $mofile Path to the .mo file.
+	 */
+	do_action( 'load_textdomain', $domain, $mofile );
 
-    $mo = new MO();
-    if (! $mo->import_from_file($mofile)) return FALSE;
+	/**
+	 * Filters MO file path for loading translations for a specific text domain.
+	 *
+	 * @since 2.9.0
+	 *
+	 * @param string $mofile Path to the MO file.
+	 * @param string $domain Text domain. Unique identifier for retrieving translated strings.
+	 */
+	$mofile = apply_filters( 'load_textdomain_mofile', $mofile, $domain );
 
-    if (isset($l10n[$domain]))
-        $mo->merge_with($l10n[$domain]);
+	if ( !is_readable( $mofile ) ) return false;
 
-    $l10n[$domain] = &$mo;
+	$mo = new MO();
+	if ( !$mo->import_from_file( $mofile ) ) return false;
 
-    return TRUE;
+	if ( isset( $l10n[$domain] ) )
+		$mo->merge_with( $l10n[$domain] );
+
+	unset( $l10n_unloaded[ $domain ] );
+
+	$l10n[$domain] = &$mo;
+
+	return true;
 }
 
 /**
@@ -605,44 +578,51 @@ function load_textdomain($domain, $mofile)
  *
  * @since 3.0.0
  *
- * @global array $l10n
+ * @global array $l10n          An array of all currently loaded text domains.
+ * @global array $l10n_unloaded An array of all text domains that have been unloaded again.
  *
  * @param string $domain Text domain. Unique identifier for retrieving translated strings.
  * @return bool Whether textdomain was unloaded.
  */
-function unload_textdomain($domain)
-{
-    global $l10n;
+function unload_textdomain( $domain ) {
+	global $l10n, $l10n_unloaded;
 
-    /**
-     * Filter the text domain for loading translation.
-     *
-     * @since 3.0.0
-     *
-     * @param bool $override Whether to override unloading the text domain. Default false.
-     * @param string $domain Text domain. Unique identifier for retrieving translated strings.
-     */
-    $plugin_override = apply_filters('override_unload_textdomain', FALSE, $domain);
+	$l10n_unloaded = (array) $l10n_unloaded;
 
-    if ($plugin_override)
-        return TRUE;
+	/**
+	 * Filters whether to override the text domain unloading.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param bool   $override Whether to override the text domain unloading. Default false.
+	 * @param string $domain   Text domain. Unique identifier for retrieving translated strings.
+	 */
+	$plugin_override = apply_filters( 'override_unload_textdomain', false, $domain );
 
-    /**
-     * Fires before the text domain is unloaded.
-     *
-     * @since 3.0.0
-     *
-     * @param string $domain Text domain. Unique identifier for retrieving translated strings.
-     */
-    do_action('unload_textdomain', $domain);
+	if ( $plugin_override ) {
+		$l10n_unloaded[ $domain ] = true;
 
-    if (isset($l10n[$domain]))
-    {
-        unset($l10n[$domain]);
-        return TRUE;
-    }
+		return true;
+	}
 
-    return FALSE;
+	/**
+	 * Fires before the text domain is unloaded.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $domain Text domain. Unique identifier for retrieving translated strings.
+	 */
+	do_action( 'unload_textdomain', $domain );
+
+	if ( isset( $l10n[$domain] ) ) {
+		unset( $l10n[$domain] );
+
+		$l10n_unloaded[ $domain ] = true;
+
+		return true;
+	}
+
+	return false;
 }
 
 /**
@@ -655,114 +635,105 @@ function unload_textdomain($domain)
  *
  * @since 1.5.0
  *
- * @param string $locale Optional. Locale to load. Default is the value of {@see get_locale()}.
+ * @param string $locale Optional. Locale to load. Default is the value of get_locale().
  * @return bool Whether the textdomain was loaded.
  */
-function load_default_textdomain($locale = NULL)
-{
-    if (NULL === $locale)
-    {
-        $locale = get_locale();
-    }
+function load_default_textdomain( $locale = null ) {
+	if ( null === $locale ) {
+		$locale = get_locale();
+	}
 
-    // Unload previously loaded strings so we can switch translations.
-    unload_textdomain('default');
+	// Unload previously loaded strings so we can switch translations.
+	unload_textdomain( 'default' );
 
-    $return = load_textdomain('default', WP_LANG_DIR . "/$locale.mo");
+	$return = load_textdomain( 'default', WP_LANG_DIR . "/$locale.mo" );
 
-    if ((is_multisite() || (defined('WP_INSTALLING_NETWORK') && WP_INSTALLING_NETWORK)) && ! file_exists(WP_LANG_DIR . "/admin-$locale.mo"))
-    {
-        load_textdomain('default', WP_LANG_DIR . "/ms-$locale.mo");
-        return $return;
-    }
+	if ( ( is_multisite() || ( defined( 'WP_INSTALLING_NETWORK' ) && WP_INSTALLING_NETWORK ) ) && ! file_exists(  WP_LANG_DIR . "/admin-$locale.mo" ) ) {
+		load_textdomain( 'default', WP_LANG_DIR . "/ms-$locale.mo" );
+		return $return;
+	}
 
-    if (is_admin() || wp_installing() || (defined('WP_REPAIRING') && WP_REPAIRING))
-    {
-        load_textdomain('default', WP_LANG_DIR . "/admin-$locale.mo");
-    }
+	if ( is_admin() || wp_installing() || ( defined( 'WP_REPAIRING' ) && WP_REPAIRING ) ) {
+		load_textdomain( 'default', WP_LANG_DIR . "/admin-$locale.mo" );
+	}
 
-    if (is_network_admin() || (defined('WP_INSTALLING_NETWORK') && WP_INSTALLING_NETWORK))
-        load_textdomain('default', WP_LANG_DIR . "/admin-network-$locale.mo");
+	if ( is_network_admin() || ( defined( 'WP_INSTALLING_NETWORK' ) && WP_INSTALLING_NETWORK ) )
+		load_textdomain( 'default', WP_LANG_DIR . "/admin-network-$locale.mo" );
 
-    return $return;
+	return $return;
 }
 
 /**
- * Load a plugin's translated strings.
+ * Loads a plugin's translated strings.
  *
  * If the path is not given then it will be the root of the plugin directory.
  *
  * The .mo file should be named based on the text domain with a dash, and then the locale exactly.
  *
  * @since 1.5.0
+ * @since 4.6.0 The function now tries to load the .mo file from the languages directory first.
  *
- * @param string $domain Unique identifier for retrieving translated strings
- * @param string $deprecated Use the $plugin_rel_path parameter instead.
+ * @param string $domain          Unique identifier for retrieving translated strings
+ * @param string $deprecated      Optional. Use the $plugin_rel_path parameter instead. Defaukt false.
  * @param string $plugin_rel_path Optional. Relative path to WP_PLUGIN_DIR where the .mo file resides.
  *                                Default false.
  * @return bool True when textdomain is successfully loaded, false otherwise.
  */
-function load_plugin_textdomain($domain, $deprecated = FALSE, $plugin_rel_path = FALSE)
-{
-    $locale = get_locale();
-    /**
-     * Filter a plugin's locale.
-     *
-     * @since 3.0.0
-     *
-     * @param string $locale The plugin's current locale.
-     * @param string $domain Text domain. Unique identifier for retrieving translated strings.
-     */
-    $locale = apply_filters('plugin_locale', $locale, $domain);
+function load_plugin_textdomain( $domain, $deprecated = false, $plugin_rel_path = false ) {
+	/**
+	 * Filters a plugin's locale.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $locale The plugin's current locale.
+	 * @param string $domain Text domain. Unique identifier for retrieving translated strings.
+	 */
+	$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
 
-    if (FALSE !== $plugin_rel_path)
-    {
-        $path = WP_PLUGIN_DIR . '/' . trim($plugin_rel_path, '/');
-    }
-    elseif (FALSE !== $deprecated)
-    {
-        _deprecated_argument(__FUNCTION__, '2.7');
-        $path = ABSPATH . trim($deprecated, '/');
-    }
-    else
-    {
-        $path = WP_PLUGIN_DIR;
-    }
+	$mofile = $domain . '-' . $locale . '.mo';
 
-    // Load the textdomain according to the plugin first
-    $mofile = $domain . '-' . $locale . '.mo';
-    if ($loaded = load_textdomain($domain, $path . '/' . $mofile))
-        return $loaded;
+	// Try to load from the languages directory first.
+	if ( load_textdomain( $domain, WP_LANG_DIR . '/plugins/' . $mofile ) ) {
+		return true;
+	}
 
-    // Otherwise, load from the languages directory
-    $mofile = WP_LANG_DIR . '/plugins/' . $mofile;
-    return load_textdomain($domain, $mofile);
+	if ( false !== $plugin_rel_path ) {
+		$path = WP_PLUGIN_DIR . '/' . trim( $plugin_rel_path, '/' );
+	} elseif ( false !== $deprecated ) {
+		_deprecated_argument( __FUNCTION__, '2.7.0' );
+		$path = ABSPATH . trim( $deprecated, '/' );
+	} else {
+		$path = WP_PLUGIN_DIR;
+	}
+
+	return load_textdomain( $domain, $path . '/' . $mofile );
 }
 
 /**
  * Load the translated strings for a plugin residing in the mu-plugins directory.
  *
  * @since 3.0.0
+ * @since 4.6.0 The function now tries to load the .mo file from the languages directory first.
  *
- * @param string $domain Text domain. Unique identifier for retrieving translated strings.
- * @param string $mu_plugin_rel_path Relative to WPMU_PLUGIN_DIR directory in which the .mo file resides.
- *                                   Default empty string.
+ * @param string $domain             Text domain. Unique identifier for retrieving translated strings.
+ * @param string $mu_plugin_rel_path Optional. Relative to `WPMU_PLUGIN_DIR` directory in which the .mo
+ *                                   file resides. Default empty string.
  * @return bool True when textdomain is successfully loaded, false otherwise.
  */
-function load_muplugin_textdomain($domain, $mu_plugin_rel_path = '')
-{
-    /** This filter is documented in wp-includes/l10n.php */
-    $locale = apply_filters('plugin_locale', get_locale(), $domain);
-    $path = trailingslashit(WPMU_PLUGIN_DIR . '/' . ltrim($mu_plugin_rel_path, '/'));
+function load_muplugin_textdomain( $domain, $mu_plugin_rel_path = '' ) {
+	/** This filter is documented in wp-includes/l10n.php */
+	$locale = apply_filters( 'plugin_locale', get_locale(), $domain );
 
-    // Load the textdomain according to the plugin first
-    $mofile = $domain . '-' . $locale . '.mo';
-    if ($loaded = load_textdomain($domain, $path . $mofile))
-        return $loaded;
+	$mofile = $domain . '-' . $locale . '.mo';
 
-    // Otherwise, load from the languages directory
-    $mofile = WP_LANG_DIR . '/plugins/' . $mofile;
-    return load_textdomain($domain, $mofile);
+	// Try to load from the languages directory first.
+	if ( load_textdomain( $domain, WP_LANG_DIR . '/plugins/' . $mofile ) ) {
+		return true;
+	}
+
+	$path = trailingslashit( WPMU_PLUGIN_DIR . '/' . ltrim( $mu_plugin_rel_path, '/' ) );
+
+	return load_textdomain( $domain, $path . '/' . $mofile );
 }
 
 /**
@@ -774,36 +745,36 @@ function load_muplugin_textdomain($domain, $mu_plugin_rel_path = '')
  * The .mo files must be named based on the locale exactly.
  *
  * @since 1.5.0
+ * @since 4.6.0 The function now tries to load the .mo file from the languages directory first.
  *
  * @param string $domain Text domain. Unique identifier for retrieving translated strings.
- * @param string $path Optional. Path to the directory containing the .mo file.
+ * @param string $path   Optional. Path to the directory containing the .mo file.
  *                       Default false.
  * @return bool True when textdomain is successfully loaded, false otherwise.
  */
-function load_theme_textdomain($domain, $path = FALSE)
-{
-    $locale = get_locale();
-    /**
-     * Filter a theme's locale.
-     *
-     * @since 3.0.0
-     *
-     * @param string $locale The theme's current locale.
-     * @param string $domain Text domain. Unique identifier for retrieving translated strings.
-     */
-    $locale = apply_filters('theme_locale', $locale, $domain);
+function load_theme_textdomain( $domain, $path = false ) {
+	/**
+	 * Filters a theme's locale.
+	 *
+	 * @since 3.0.0
+	 *
+	 * @param string $locale The theme's current locale.
+	 * @param string $domain Text domain. Unique identifier for retrieving translated strings.
+	 */
+	$locale = apply_filters( 'theme_locale', get_locale(), $domain );
 
-    if (! $path)
-        $path = get_template_directory();
+	$mofile = $domain . '-' . $locale . '.mo';
 
-    // Load the textdomain according to the theme
-    $mofile = untrailingslashit($path) . "/{$locale}.mo";
-    if ($loaded = load_textdomain($domain, $mofile))
-        return $loaded;
+	// Try to load from the languages directory first.
+	if ( load_textdomain( $domain, WP_LANG_DIR . '/themes/' . $mofile ) ) {
+		return true;
+	}
 
-    // Otherwise, load from the languages directory
-    $mofile = WP_LANG_DIR . "/themes/{$domain}-{$locale}.mo";
-    return load_textdomain($domain, $mofile);
+	if ( ! $path ) {
+		$path = get_template_directory();
+	}
+
+	return load_textdomain( $domain, $path . '/' . $locale . '.mo' );
 }
 
 /**
@@ -817,15 +788,73 @@ function load_theme_textdomain($domain, $path = FALSE)
  * @since 2.9.0
  *
  * @param string $domain Text domain. Unique identifier for retrieving translated strings.
- * @param string $path Optional. Path to the directory containing the .mo file.
+ * @param string $path   Optional. Path to the directory containing the .mo file.
  *                       Default false.
  * @return bool True when the theme textdomain is successfully loaded, false otherwise.
  */
-function load_child_theme_textdomain($domain, $path = FALSE)
-{
-    if (! $path)
-        $path = get_stylesheet_directory();
-    return load_theme_textdomain($domain, $path);
+function load_child_theme_textdomain( $domain, $path = false ) {
+	if ( ! $path )
+		$path = get_stylesheet_directory();
+	return load_theme_textdomain( $domain, $path );
+}
+
+/**
+ * Loads plugin and theme textdomains just-in-time.
+ *
+ * When a textdomain is encountered for the first time, we try to load
+ * the translation file from `wp-content/languages`, removing the need
+ * to call load_plugin_texdomain() or load_theme_texdomain().
+ *
+ * Holds a cached list of available .mo files to improve performance.
+ *
+ * @since 4.6.0
+ * @access private
+ *
+ * @see get_translations_for_domain()
+ * @global array $l10n_unloaded An array of all text domains that have been unloaded again.
+ *
+ * @param string $domain Text domain. Unique identifier for retrieving translated strings.
+ * @return bool True when the textdomain is successfully loaded, false otherwise.
+ */
+function _load_textdomain_just_in_time( $domain ) {
+	global $l10n_unloaded;
+
+	$l10n_unloaded = (array) $l10n_unloaded;
+
+	static $cached_mofiles = null;
+
+	// Short-circuit if domain is 'default' which is reserved for core.
+	if ( 'default' === $domain || isset( $l10n_unloaded[ $domain ] ) ) {
+		return false;
+	}
+
+	if ( null === $cached_mofiles ) {
+		$cached_mofiles = array();
+
+		$locations = array(
+			WP_LANG_DIR . '/plugins',
+			WP_LANG_DIR . '/themes',
+		);
+
+		foreach ( $locations as $location ) {
+			foreach ( get_available_languages( $location ) as $file ) {
+				$cached_mofiles[] = "{$location}/{$file}.mo";
+			}
+		}
+	}
+
+	$locale = get_locale();
+	$mofile = "{$domain}-{$locale}.mo";
+
+	if ( in_array( WP_LANG_DIR . '/plugins/' . $mofile, $cached_mofiles ) ) {
+		return load_textdomain( $domain, WP_LANG_DIR . '/plugins/' . $mofile );
+	}
+
+	if ( in_array( WP_LANG_DIR . '/themes/' . $mofile, $cached_mofiles ) ) {
+		return load_textdomain( $domain, WP_LANG_DIR . '/themes/' . $mofile );
+	}
+
+	return false;
 }
 
 /**
@@ -840,21 +869,18 @@ function load_child_theme_textdomain($domain, $path = FALSE)
  * @param string $domain Text domain. Unique identifier for retrieving translated strings.
  * @return NOOP_Translations A Translations instance.
  */
-function get_translations_for_domain($domain)
-{
-    global $l10n;
-    if (isset($l10n[$domain]))
-    {
-        return $l10n[$domain];
-    }
+function get_translations_for_domain( $domain ) {
+	global $l10n;
+	if ( isset( $l10n[ $domain ] ) || ( _load_textdomain_just_in_time( $domain ) && isset( $l10n[ $domain ] ) ) ) {
+		return $l10n[ $domain ];
+	}
 
-    static $noop_translations = NULL;
-    if (NULL === $noop_translations)
-    {
-        $noop_translations = new NOOP_Translations;
-    }
+	static $noop_translations = null;
+	if ( null === $noop_translations ) {
+		$noop_translations = new NOOP_Translations;
+	}
 
-    return $noop_translations;
+	return $noop_translations;
 }
 
 /**
@@ -867,10 +893,9 @@ function get_translations_for_domain($domain)
  * @param string $domain Text domain. Unique identifier for retrieving translated strings.
  * @return bool Whether there are translations.
  */
-function is_textdomain_loaded($domain)
-{
-    global $l10n;
-    return isset($l10n[$domain]);
+function is_textdomain_loaded( $domain ) {
+	global $l10n;
+	return isset( $l10n[ $domain ] );
 }
 
 /**
@@ -890,9 +915,8 @@ function is_textdomain_loaded($domain)
  * @param string $name The role name.
  * @return string Translated role name on success, original name on failure.
  */
-function translate_user_role($name)
-{
-    return translate_with_gettext_context(before_last_bar($name), 'User role');
+function translate_user_role( $name ) {
+	return translate_with_gettext_context( before_last_bar($name), 'User role' );
 }
 
 /**
@@ -906,26 +930,21 @@ function translate_user_role($name)
  *                    Default WP_LANG_DIR.
  * @return array An array of language codes or an empty array if no languages are present. Language codes are formed by stripping the .mo extension from the language file names.
  */
-function get_available_languages($dir = NULL)
-{
-    $languages = array();
+function get_available_languages( $dir = null ) {
+	$languages = array();
 
-    $lang_files = glob((is_null($dir) ? WP_LANG_DIR : $dir) . '/*.mo');
-    if ($lang_files)
-    {
-        foreach ($lang_files as $lang_file)
-        {
-            $lang_file = basename($lang_file, '.mo');
-            if (0 !== strpos($lang_file, 'continents-cities') && 0 !== strpos($lang_file, 'ms-') &&
-                0 !== strpos($lang_file, 'admin-')
-            )
-            {
-                $languages[] = $lang_file;
-            }
-        }
-    }
+	$lang_files = glob( ( is_null( $dir) ? WP_LANG_DIR : $dir ) . '/*.mo' );
+	if ( $lang_files ) {
+		foreach ( $lang_files as $lang_file ) {
+			$lang_file = basename( $lang_file, '.mo' );
+			if ( 0 !== strpos( $lang_file, 'continents-cities' ) && 0 !== strpos( $lang_file, 'ms-' ) &&
+				0 !== strpos( $lang_file, 'admin-' ) ) {
+				$languages[] = $lang_file;
+			}
+		}
+	}
 
-    return $languages;
+	return $languages;
 }
 
 /**
@@ -939,52 +958,45 @@ function get_available_languages($dir = NULL)
  * @param string $type What to search for. Accepts 'plugins', 'themes', 'core'.
  * @return array Array of language data.
  */
-function wp_get_installed_translations($type)
-{
-    if ($type !== 'themes' && $type !== 'plugins' && $type !== 'core')
-        return array();
+function wp_get_installed_translations( $type ) {
+	if ( $type !== 'themes' && $type !== 'plugins' && $type !== 'core' )
+		return array();
 
-    $dir = 'core' === $type ? '' : "/$type";
+	$dir = 'core' === $type ? '' : "/$type";
 
-    if (! is_dir(WP_LANG_DIR))
-        return array();
+	if ( ! is_dir( WP_LANG_DIR ) )
+		return array();
 
-    if ($dir && ! is_dir(WP_LANG_DIR . $dir))
-        return array();
+	if ( $dir && ! is_dir( WP_LANG_DIR . $dir ) )
+		return array();
 
-    $files = scandir(WP_LANG_DIR . $dir);
-    if (! $files)
-        return array();
+	$files = scandir( WP_LANG_DIR . $dir );
+	if ( ! $files )
+		return array();
 
-    $language_data = array();
+	$language_data = array();
 
-    foreach ($files as $file)
-    {
-        if ('.' === $file[0] || is_dir(WP_LANG_DIR . "$dir/$file"))
-        {
-            continue;
-        }
-        if (substr($file, -3) !== '.po')
-        {
-            continue;
-        }
-        if (! preg_match('/(?:(.+)-)?([a-z]{2,3}(?:_[A-Z]{2})?(?:_[a-z0-9]+)?).po/', $file, $match))
-        {
-            continue;
-        }
-        if (! in_array(substr($file, 0, -3) . '.mo', $files))
-        {
-            continue;
-        }
+	foreach ( $files as $file ) {
+		if ( '.' === $file[0] || is_dir( WP_LANG_DIR . "$dir/$file" ) ) {
+			continue;
+		}
+		if ( substr( $file, -3 ) !== '.po' ) {
+			continue;
+		}
+		if ( ! preg_match( '/(?:(.+)-)?([a-z]{2,3}(?:_[A-Z]{2})?(?:_[a-z0-9]+)?).po/', $file, $match ) ) {
+			continue;
+		}
+		if ( ! in_array( substr( $file, 0, -3 ) . '.mo', $files ) )  {
+			continue;
+		}
 
-        list(, $textdomain, $language) = $match;
-        if ('' === $textdomain)
-        {
-            $textdomain = 'default';
-        }
-        $language_data[$textdomain][$language] = wp_get_pomo_file_data(WP_LANG_DIR . "$dir/$file");
-    }
-    return $language_data;
+		list( , $textdomain, $language ) = $match;
+		if ( '' === $textdomain ) {
+			$textdomain = 'default';
+		}
+		$language_data[ $textdomain ][ $language ] = wp_get_pomo_file_data( WP_LANG_DIR . "$dir/$file" );
+	}
+	return $language_data;
 }
 
 /**
@@ -995,20 +1007,18 @@ function wp_get_installed_translations($type)
  * @param string $po_file Path to PO file.
  * @return array PO file headers.
  */
-function wp_get_pomo_file_data($po_file)
-{
-    $headers = get_file_data($po_file, array(
-        'POT-Creation-Date'  => '"POT-Creation-Date',
-        'PO-Revision-Date'   => '"PO-Revision-Date',
-        'Project-Id-Version' => '"Project-Id-Version',
-        'X-Generator'        => '"X-Generator',
-    ));
-    foreach ($headers as $header => $value)
-    {
-        // Remove possible contextual '\n' and closing double quote.
-        $headers[$header] = preg_replace('~(\\\n)?"$~', '', $value);
-    }
-    return $headers;
+function wp_get_pomo_file_data( $po_file ) {
+	$headers = get_file_data( $po_file, array(
+		'POT-Creation-Date'  => '"POT-Creation-Date',
+		'PO-Revision-Date'   => '"PO-Revision-Date',
+		'Project-Id-Version' => '"Project-Id-Version',
+		'X-Generator'        => '"X-Generator',
+	) );
+	foreach ( $headers as $header => $value ) {
+		// Remove possible contextual '\n' and closing double quote.
+		$headers[ $header ] = preg_replace( '~(\\\n)?"$~', '', $value );
+	}
+	return $headers;
 }
 
 /**
@@ -1023,121 +1033,109 @@ function wp_get_pomo_file_data($po_file)
  * @param string|array $args {
  *     Optional. Array or string of arguments for outputting the language selector.
  *
- * @type string $id ID attribute of the select element. Default empty.
- * @type string $name Name attribute of the select element. Default empty.
- * @type array $languages List of installed languages, contain only the locales.
+ *     @type string   $id                           ID attribute of the select element. Default empty.
+ *     @type string   $name                         Name attribute of the select element. Default empty.
+ *     @type array    $languages                    List of installed languages, contain only the locales.
  *                                                  Default empty array.
- * @type array $translations List of available translations. Default result of
+ *     @type array    $translations                 List of available translations. Default result of
  *                                                  wp_get_available_translations().
- * @type string $selected Language which should be selected. Default empty.
- * @type bool|int $echo Whether to echo the generated markup. Accepts 0, 1, or their
+ *     @type string   $selected                     Language which should be selected. Default empty.
+ *     @type bool|int $echo                         Whether to echo the generated markup. Accepts 0, 1, or their
  *                                                  boolean equivalents. Default 1.
- * @type bool $show_available_translations Whether to show available translations. Default true.
+ *     @type bool     $show_available_translations  Whether to show available translations. Default true.
  * }
  * @return string HTML content
  */
-function wp_dropdown_languages($args = array())
-{
+function wp_dropdown_languages( $args = array() ) {
 
-    $args = wp_parse_args($args, array(
-        'id'                          => '',
-        'name'                        => '',
-        'languages'                   => array(),
-        'translations'                => array(),
-        'selected'                    => '',
-        'echo'                        => 1,
-        'show_available_translations' => TRUE,
-    ));
+	$args = wp_parse_args( $args, array(
+		'id'           => '',
+		'name'         => '',
+		'languages'    => array(),
+		'translations' => array(),
+		'selected'     => '',
+		'echo'         => 1,
+		'show_available_translations' => true,
+	) );
 
-    $translations = $args['translations'];
-    if (empty($translations))
-    {
-        require_once(ABSPATH . 'wp-admin/includes/translation-install.php');
-        $translations = wp_get_available_translations();
-    }
+	$translations = $args['translations'];
+	if ( empty( $translations ) ) {
+		require_once( ABSPATH . 'wp-admin/includes/translation-install.php' );
+		$translations = wp_get_available_translations();
+	}
 
-    /*
-     * $args['languages'] should only contain the locales. Find the locale in
-     * $translations to get the native name. Fall back to locale.
-     */
-    $languages = array();
-    foreach ($args['languages'] as $locale)
-    {
-        if (isset($translations[$locale]))
-        {
-            $translation = $translations[$locale];
-            $languages[] = array(
-                'language'    => $translation['language'],
-                'native_name' => $translation['native_name'],
-                'lang'        => current($translation['iso']),
-            );
+	/*
+	 * $args['languages'] should only contain the locales. Find the locale in
+	 * $translations to get the native name. Fall back to locale.
+	 */
+	$languages = array();
+	foreach ( $args['languages'] as $locale ) {
+		if ( isset( $translations[ $locale ] ) ) {
+			$translation = $translations[ $locale ];
+			$languages[] = array(
+				'language'    => $translation['language'],
+				'native_name' => $translation['native_name'],
+				'lang'        => current( $translation['iso'] ),
+			);
 
-            // Remove installed language from available translations.
-            unset($translations[$locale]);
-        }
-        else
-        {
-            $languages[] = array(
-                'language'    => $locale,
-                'native_name' => $locale,
-                'lang'        => '',
-            );
-        }
-    }
+			// Remove installed language from available translations.
+			unset( $translations[ $locale ] );
+		} else {
+			$languages[] = array(
+				'language'    => $locale,
+				'native_name' => $locale,
+				'lang'        => '',
+			);
+		}
+	}
 
-    $translations_available = (! empty($translations) && $args['show_available_translations']);
+	$translations_available = ( ! empty( $translations ) && $args['show_available_translations'] );
 
-    $output = sprintf('<select name="%s" id="%s">', esc_attr($args['name']), esc_attr($args['id']));
+	$output = sprintf( '<select name="%s" id="%s">', esc_attr( $args['name'] ), esc_attr( $args['id'] ) );
 
-    // Holds the HTML markup.
-    $structure = array();
+	// Holds the HTML markup.
+	$structure = array();
 
-    // List installed languages.
-    if ($translations_available)
-    {
-        $structure[] = '<optgroup label="' . esc_attr_x('Installed', 'translations') . '">';
-    }
-    $structure[] = '<option value="" lang="en" data-installed="1">English (United States)</option>';
-    foreach ($languages as $language)
-    {
-        $structure[] = sprintf(
-            '<option value="%s" lang="%s"%s data-installed="1">%s</option>',
-            esc_attr($language['language']),
-            esc_attr($language['lang']),
-            selected($language['language'], $args['selected'], FALSE),
-            esc_html($language['native_name'])
-        );
-    }
-    if ($translations_available)
-    {
-        $structure[] = '</optgroup>';
-    }
+	// List installed languages.
+	if ( $translations_available ) {
+		$structure[] = '<optgroup label="' . esc_attr_x( 'Installed', 'translations' ) . '">';
+	}
+	$structure[] = '<option value="" lang="en" data-installed="1">English (United States)</option>';
+	foreach ( $languages as $language ) {
+		$structure[] = sprintf(
+			'<option value="%s" lang="%s"%s data-installed="1">%s</option>',
+			esc_attr( $language['language'] ),
+			esc_attr( $language['lang'] ),
+			selected( $language['language'], $args['selected'], false ),
+			esc_html( $language['native_name'] )
+		);
+	}
+	if ( $translations_available ) {
+		$structure[] = '</optgroup>';
+	}
 
-    // List available translations.
-    if ($translations_available)
-    {
-        $structure[] = '<optgroup label="' . esc_attr_x('Available', 'translations') . '">';
-        foreach ($translations as $translation)
-        {
-            $structure[] = sprintf(
-                '<option value="%s" lang="%s"%s>%s</option>',
-                esc_attr($translation['language']),
-                esc_attr(current($translation['iso'])),
-                selected($translation['language'], $args['selected'], FALSE),
-                esc_html($translation['native_name'])
-            );
-        }
-        $structure[] = '</optgroup>';
-    }
+	// List available translations.
+	if ( $translations_available ) {
+		$structure[] = '<optgroup label="' . esc_attr_x( 'Available', 'translations' ) . '">';
+		foreach ( $translations as $translation ) {
+			$structure[] = sprintf(
+				'<option value="%s" lang="%s"%s>%s</option>',
+				esc_attr( $translation['language'] ),
+				esc_attr( current( $translation['iso'] ) ),
+				selected( $translation['language'], $args['selected'], false ),
+				esc_html( $translation['native_name'] )
+			);
+		}
+		$structure[] = '</optgroup>';
+	}
 
-    $output .= join("\n", $structure);
+	$output .= join( "\n", $structure );
 
-    $output .= '</select>';
+	$output .= '</select>';
 
-    if ($args['echo'])
-    {
-        echo $output;
-    }
+	if ( $args['echo'] ) {
+		echo $output;
+	}
 
-    return $output;
+	return $output;
 }

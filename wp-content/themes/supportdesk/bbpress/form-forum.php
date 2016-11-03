@@ -1,12 +1,10 @@
 <?php
-
 /**
  * New/Edit Forum
  *
- * @package bbPress
+ * @package    bbPress
  * @subpackage Theme
  */
-
 ?>
 
 <?php if (bbp_is_forum_edit()) : ?>
@@ -15,7 +13,7 @@
 
     <?php bbp_breadcrumb(); ?>
 
-    <?php bbp_single_forum_description(array('forum_id' => bbp_get_forum_id())); ?>
+    <?php bbp_single_forum_description(['forum_id' => bbp_get_forum_id()]); ?>
 
     <?php endif; ?>
 
@@ -31,20 +29,23 @@
                     <legend>
 
                         <?php
-                        if (bbp_is_forum_edit())
+                        if (bbp_is_forum_edit()) {
                             printf(__('Now Editing &ldquo;%s&rdquo;', 'bbpress'), bbp_get_forum_title());
-                        else
-                            bbp_is_single_forum() ? printf(__('Create New Forum in &ldquo;%s&rdquo;', 'bbpress'), bbp_get_forum_title()) : _e('Create New Forum', 'bbpress');
+                        } else {
+                            bbp_is_single_forum() ? printf(__('Create New Forum in &ldquo;%s&rdquo;', 'bbpress'),
+                                                           bbp_get_forum_title()) : _e('Create New Forum', 'bbpress');
+                        }
                         ?>
 
                     </legend>
 
                     <?php do_action('bbp_theme_before_forum_form_notices'); ?>
 
-                    <?php if (! bbp_is_forum_edit() && bbp_is_forum_closed()) : ?>
+                    <?php if (!bbp_is_forum_edit() && bbp_is_forum_closed()) : ?>
 
                         <div class="bbp-template-notice">
-                            <p><?php _e('This forum is closed to new content, however your account still allows you to do so.', 'bbpress'); ?></p>
+                            <p><?php _e('This forum is closed to new content, however your account still allows you to do so.',
+                                        'bbpress'); ?></p>
                         </div>
 
                     <?php endif; ?>
@@ -52,7 +53,8 @@
                     <?php if (current_user_can('unfiltered_html')) : ?>
 
                         <div class="bbp-template-notice">
-                            <p><?php _e('Your account has the ability to post unrestricted HTML content.', 'bbpress'); ?></p>
+                            <p><?php _e('Your account has the ability to post unrestricted HTML content.',
+                                        'bbpress'); ?></p>
                         </div>
 
                     <?php endif; ?>
@@ -65,7 +67,8 @@
 
                         <p>
                             <label
-                                for="bbp_forum_title"><?php printf(__('Forum Name (Maximum Length: %d):', 'bbpress'), bbp_get_title_max_length()); ?></label><br/>
+                                for="bbp_forum_title"><?php printf(__('Forum Name (Maximum Length: %d):', 'bbpress'),
+                                                                   bbp_get_title_max_length()); ?></label><br/>
                             <input type="text" id="bbp_forum_title" value="<?php bbp_form_forum_title(); ?>"
                                    tabindex="<?php bbp_tab_index(); ?>" size="40" name="bbp_forum_title"
                                    maxlength="<?php bbp_title_max_length(); ?>"/>
@@ -75,7 +78,7 @@
 
                         <?php do_action('bbp_theme_before_forum_form_content'); ?>
 
-                        <?php if (! function_exists('wp_editor')) : ?>
+                        <?php if (!function_exists('wp_editor')) : ?>
 
                             <p>
                                 <label
@@ -87,16 +90,17 @@
 
                         <?php else : ?>
 
-                            <?php bbp_the_content(array('context' => 'forum')); ?>
+                            <?php bbp_the_content(['context' => 'forum']); ?>
 
                         <?php endif; ?>
 
                         <?php do_action('bbp_theme_after_forum_form_content'); ?>
 
-                        <?php if (! current_user_can('unfiltered_html')) : ?>
+                        <?php if (!current_user_can('unfiltered_html')) : ?>
 
                             <p class="form-allowed-tags">
-                                <label><?php _e('You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:', 'bbpress'); ?></label><br/>
+                                <label><?php _e('You may use these <abbr title="HyperText Markup Language">HTML</abbr> tags and attributes:',
+                                                'bbpress'); ?></label><br/>
                                 <code><?php bbp_allowed_tags(); ?></code>
                             </p>
 
@@ -135,12 +139,12 @@
                             <label for="bbp_forum_parent_id"><?php _e('Parent Forum:', 'bbpress'); ?></label><br/>
 
                             <?php
-                            bbp_dropdown(array(
-                                'select_id' => 'bbp_forum_parent_id',
-                                'show_none' => __('(No Parent)', 'bbpress'),
-                                'selected'  => bbp_get_form_forum_parent(),
-                                'exclude'   => bbp_get_forum_id()
-                            ));
+                            bbp_dropdown([
+                                             'select_id' => 'bbp_forum_parent_id',
+                                             'show_none' => __('(No Parent)', 'bbpress'),
+                                             'selected'  => bbp_get_form_forum_parent(),
+                                             'exclude'   => bbp_get_forum_id()
+                                         ]);
                             ?>
                         </p>
 
@@ -177,7 +181,8 @@
 
         <div id="no-forum-<?php bbp_forum_id(); ?>" class="bbp-no-forum">
             <div class="bbp-template-notice">
-                <p><?php printf(__('The forum &#8216;%s&#8217; is closed to new content.', 'bbpress'), bbp_get_forum_title()); ?></p>
+                <p><?php printf(__('The forum &#8216;%s&#8217; is closed to new content.', 'bbpress'),
+                                bbp_get_forum_title()); ?></p>
             </div>
         </div>
 
@@ -185,7 +190,8 @@
 
         <div id="no-forum-<?php bbp_forum_id(); ?>" class="bbp-no-forum">
             <div class="bbp-template-notice">
-                <p><?php is_user_logged_in() ? _e('You cannot create new forums.', 'bbpress') : _e('You must be logged in to create new forums.', 'bbpress'); ?></p>
+                <p><?php is_user_logged_in() ? _e('You cannot create new forums.', 'bbpress')
+                        : _e('You must be logged in to create new forums.', 'bbpress'); ?></p>
             </div>
         </div>
 

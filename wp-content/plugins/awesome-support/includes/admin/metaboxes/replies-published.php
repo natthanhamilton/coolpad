@@ -6,10 +6,8 @@
  * @link      http://themeavenue.net
  * @copyright 2014 ThemeAvenue
  */
-
 // If this file is called directly, abort.
-if (! defined('WPINC'))
-{
+if (!defined('WPINC')) {
     die;
 }
 ?>
@@ -18,21 +16,17 @@ if (! defined('WPINC'))
 
     <?php
     /* Display avatar only for replies */
-    if ('ticket_reply' == $row->post_type)
-    {
-
+    if ('ticket_reply' == $row->post_type) {
         echo $user_avatar;
-
         /**
          * Triggers an action right under the user avatar for ticket replies.
          *
          * @since 3.2.6
          *
-         * @param int $row ->ID The current reply ID
+         * @param int $row     ->ID The current reply ID
          * @param int $user_id The reply author user ID
          */
         do_action('wpas_mb_replies_under_avatar', $row->ID, $user_id);
-
     }
     ?>
 
@@ -57,46 +51,36 @@ if (! defined('WPINC'))
 
     <div class="wpas-ticket-controls">
         <?php
-
         $ticket_id = filter_input(INPUT_GET, 'post', FILTER_SANITIZE_NUMBER_INT);
-
         /**
          * Fires before the ticket reply controls (mark as read, delete, edit...) are displayed
          *
          * @since 3.2.6
          *
-         * @param int $ticket_id ID of the current ticket
-         * @param WP_Post $row Current reply post object
+         * @param int     $ticket_id ID of the current ticket
+         * @param WP_Post $row       Current reply post object
          */
         do_action('wpas_ticket_reply_controls_before', $ticket_id, $row);
-
         /**
          * Ticket reply controls
          *
          * @since 3.2.6
          */
-        $controls = apply_filters('wpas_ticket_reply_controls', array(), $ticket_id, $row);
-
-        if (! empty($controls))
-        {
-
-            $output = array();
-
-            foreach ($controls as $control_id => $control)
-            {
+        $controls = apply_filters('wpas_ticket_reply_controls', [], $ticket_id, $row);
+        if (!empty($controls)) {
+            $output = [];
+            foreach ($controls as $control_id => $control) {
                 array_push($output, $control);
             }
-
             echo implode(' | ', $output);
         }
-
         /**
          * Fires after the ticket reply controls (mark as read, delete, edit...) are displayed
          *
          * @since 3.2.6
          *
-         * @param int $ticket_id ID of the current ticket
-         * @param WP_Post $row Current reply post object
+         * @param int     $ticket_id ID of the current ticket
+         * @param WP_Post $row       Current reply post object
          */
         do_action('wpas_ticket_reply_controls_after', $ticket_id, $row);
         ?>
@@ -105,26 +89,21 @@ if (! defined('WPINC'))
     <?php
     /* Filter the content before we display it */
     $content = apply_filters('the_content', $row->post_content);
-
     /* The content displayed to agents */
     echo '<div class="wpas-reply-content" id="wpas-reply-' . $row->ID . '">';
-
     /**
      * wpas_backend_reply_content_before hook
      *
      * @since  3.0.0
      */
     do_action('wpas_backend_reply_content_before', $row->ID);
-
     echo wp_kses($content, wp_kses_allowed_html('post'));
-
     /**
      * wpas_backend_reply_content_after hook
      *
      * @since  3.0.0
      */
     do_action('wpas_backend_reply_content_after', $row->ID);
-
     echo '</div>';
     ?>
 </td>

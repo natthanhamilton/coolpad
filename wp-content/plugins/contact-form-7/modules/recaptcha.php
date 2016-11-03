@@ -1,196 +1,150 @@
 <?php
 
 class WPCF7_RECAPTCHA extends WPCF7_Service {
-
     const VERIFY_URL = 'https://www.google.com/recaptcha/api/siteverify';
-
     private static $instance;
-    private $sitekeys;
+    private        $sitekeys;
 
-    private function __construct()
-    {
+    private function __construct() {
         $this->sitekeys = WPCF7::get_option('recaptcha');
     }
 
-    public static function get_instance()
-    {
-        if (empty(self::$instance))
-        {
+    public static function get_instance() {
+        if (empty(self::$instance)) {
             self::$instance = new self;
         }
 
         return self::$instance;
     }
 
-    public function get_title()
-    {
+    public function get_title() {
         return __('reCAPTCHA', 'contact-form-7');
     }
 
-    public function verify($response_token)
-    {
+    public function verify($response_token) {
         $is_human = FALSE;
-
-        if (empty($response_token))
-        {
+        if (empty($response_token)) {
             return $is_human;
         }
-
-        $url = self::VERIFY_URL;
+        $url     = self::VERIFY_URL;
         $sitekey = $this->get_sitekey();
-        $secret = $this->get_secret($sitekey);
-
-        $response = wp_safe_remote_post($url, array(
-            'body' => array(
+        $secret  = $this->get_secret($sitekey);
+        $response = wp_safe_remote_post($url, [
+            'body' => [
                 'secret'   => $secret,
                 'response' => $response_token,
-                'remoteip' => $_SERVER['REMOTE_ADDR'])));
-
-        if (200 != wp_remote_retrieve_response_code($response))
-        {
+                'remoteip' => $_SERVER['REMOTE_ADDR']]]);
+        if (200 != wp_remote_retrieve_response_code($response)) {
             return $is_human;
         }
-
         $response = wp_remote_retrieve_body($response);
         $response = json_decode($response, TRUE);
-
         $is_human = isset($response['success']) && TRUE == $response['success'];
+
         return $is_human;
-    }    public function is_active()
-    {
-        $sitekey = $this->get_sitekey();
-        $secret = $this->get_secret($sitekey);
-        return $sitekey && $secret;
     }
 
-    public function get_sitekey()
-    {
-        if (empty($this->sitekeys) || ! is_array($this->sitekeys))
-        {
+    public function get_sitekey() {
+        if (empty($this->sitekeys) || !is_array($this->sitekeys)) {
             return FALSE;
         }
-
         $sitekeys = array_keys($this->sitekeys);
 
         return $sitekeys[0];
-    }    public function get_categories()
-    {
-        return array('captcha');
+    }    public function is_active() {
+        $sitekey = $this->get_sitekey();
+        $secret  = $this->get_secret($sitekey);
+
+        return $sitekey && $secret;
     }
 
-    public function get_secret($sitekey)
-    {
+    public function get_secret($sitekey) {
         $sitekeys = (array)$this->sitekeys;
-
-        if (isset($sitekeys[$sitekey]))
-        {
-            return $sitekeys[$sitekey];
-        }
-        else
-        {
+        if (isset($sitekeys[ $sitekey ])) {
+            return $sitekeys[ $sitekey ];
+        } else {
             return FALSE;
         }
-    }    public function icon()
-    {
     }
 
-    public function link()
-    {
+    public function get_categories() {
+        return ['captcha'];
+    }
+
+
+
+    public function icon() {
+    }
+
+    public function link() {
         echo sprintf('<a href="%1$s">%2$s</a>',
-            'https://www.google.com/recaptcha/intro/index.html',
-            'google.com/recaptcha');
+                     'https://www.google.com/recaptcha/intro/index.html',
+                     'google.com/recaptcha');
     }
 
-
-
-
-
-
-
-    private function menu_page_url($args = '')
-    {
-        $args = wp_parse_args($args, array());
-
+    private function menu_page_url($args = '') {
+        $args = wp_parse_args($args, []);
         $url = menu_page_url('wpcf7-integration', FALSE);
-        $url = add_query_arg(array('service' => 'recaptcha'), $url);
-
-        if (! empty($args))
-        {
+        $url = add_query_arg(['service' => 'recaptcha'], $url);
+        if (!empty($args)) {
             $url = add_query_arg($args, $url);
         }
 
         return $url;
     }
 
-    public function load($action = '')
-    {
-        if ('setup' == $action)
-        {
-            if ('POST' == $_SERVER['REQUEST_METHOD'])
-            {
+    public function load($action = '') {
+        if ('setup' == $action) {
+            if ('POST' == $_SERVER['REQUEST_METHOD']) {
                 check_admin_referer('wpcf7-recaptcha-setup');
-
                 $sitekey = isset($_POST['sitekey']) ? trim($_POST['sitekey']) : '';
-                $secret = isset($_POST['secret']) ? trim($_POST['secret']) : '';
-
-                if ($sitekey && $secret)
-                {
-                    WPCF7::update_option('recaptcha', array($sitekey => $secret));
-                    $redirect_to = $this->menu_page_url(array(
-                        'message' => 'success'));
-                }
-                elseif ('' === $sitekey && '' === $secret)
-                {
+                $secret  = isset($_POST['secret']) ? trim($_POST['secret']) : '';
+                if ($sitekey && $secret) {
+                    WPCF7::update_option('recaptcha', [$sitekey => $secret]);
+                    $redirect_to = $this->menu_page_url([
+                                                            'message' => 'success']);
+                } elseif ('' === $sitekey && '' === $secret) {
                     WPCF7::update_option('recaptcha', NULL);
-                    $redirect_to = $this->menu_page_url(array(
-                        'message' => 'success'));
+                    $redirect_to = $this->menu_page_url([
+                                                            'message' => 'success']);
+                } else {
+                    $redirect_to = $this->menu_page_url([
+                                                            'action'  => 'setup',
+                                                            'message' => 'invalid']);
                 }
-                else
-                {
-                    $redirect_to = $this->menu_page_url(array(
-                        'action'  => 'setup',
-                        'message' => 'invalid'));
-                }
-
                 wp_safe_redirect($redirect_to);
                 exit();
             }
         }
     }
 
-    public function admin_notice($message = '')
-    {
-        if ('invalid' == $message)
-        {
+    public function admin_notice($message = '') {
+        if ('invalid' == $message) {
             echo sprintf(
                 '<div class="error notice notice-error is-dismissible"><p><strong>%1$s</strong>: %2$s</p></div>',
                 esc_html(__("ERROR", 'contact-form-7')),
                 esc_html(__("Invalid key values.", 'contact-form-7')));
         }
-
-        if ('success' == $message)
-        {
+        if ('success' == $message) {
             echo sprintf('<div class="updated notice notice-success is-dismissible"><p>%s</p></div>',
-                esc_html(__('Settings saved.', 'contact-form-7')));
+                         esc_html(__('Settings saved.', 'contact-form-7')));
         }
     }
 
-    public function display($action = '')
-    {
+    public function display($action = '') {
         ?>
-        <p><?php echo esc_html(__("reCAPTCHA is a free service to protect your website from spam and abuse.", 'contact-form-7')); ?></p>
+        <p><?php echo esc_html(__("reCAPTCHA is a free service to protect your website from spam and abuse.",
+                                  'contact-form-7')); ?></p>
 
         <?php
-        if ('setup' == $action)
-        {
+        if ('setup' == $action) {
             $this->display_setup();
+
             return;
         }
-
-        if ($this->is_active())
-        {
+        if ($this->is_active()) {
             $sitekey = $this->get_sitekey();
-            $secret = $this->get_secret($sitekey);
+            $secret  = $this->get_secret($sitekey);
             ?>
             <table class="form-table">
                 <tbody>
@@ -209,22 +163,22 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
                   class="button"><?php echo esc_html(__("Reset Keys", 'contact-form-7')); ?></a></p>
 
             <?php
-        }
-        else
-        {
+        } else {
             ?>
-            <p><?php echo esc_html(__("To use reCAPTCHA, you need to install an API key pair.", 'contact-form-7')); ?></p>
+            <p><?php echo esc_html(__("To use reCAPTCHA, you need to install an API key pair.",
+                                      'contact-form-7')); ?></p>
 
             <p><a href="<?php echo esc_url($this->menu_page_url('action=setup')); ?>"
                   class="button"><?php echo esc_html(__("Configure Keys", 'contact-form-7')); ?></a></p>
 
-            <p><?php echo sprintf(esc_html(__("For more details, see %s.", 'contact-form-7')), wpcf7_link(__('http://contactform7.com/recaptcha/', 'contact-form-7'), __('reCAPTCHA', 'contact-form-7'))); ?></p>
+            <p><?php echo sprintf(esc_html(__("For more details, see %s.", 'contact-form-7')),
+                                  wpcf7_link(__('http://contactform7.com/recaptcha/', 'contact-form-7'),
+                                             __('reCAPTCHA', 'contact-form-7'))); ?></p>
             <?php
         }
     }
 
-    public function display_setup()
-    {
+    public function display_setup() {
         ?>
         <form method="post" action="<?php echo esc_url($this->menu_page_url('action=setup')); ?>">
             <?php wp_nonce_field('wpcf7-recaptcha-setup'); ?>
@@ -253,49 +207,34 @@ class WPCF7_RECAPTCHA extends WPCF7_Service {
 }
 
 add_action('wpcf7_init', 'wpcf7_recaptcha_register_service');
-
-function wpcf7_recaptcha_register_service()
-{
+function wpcf7_recaptcha_register_service() {
     $integration = WPCF7_Integration::get_instance();
-
-    $categories = array(
-        'captcha' => __('CAPTCHA', 'contact-form-7'));
-
-    foreach ($categories as $name => $category)
-    {
+    $categories = [
+        'captcha' => __('CAPTCHA', 'contact-form-7')];
+    foreach ($categories as $name => $category) {
         $integration->add_category($name, $category);
     }
-
-    $services = array(
-        'recaptcha' => WPCF7_RECAPTCHA::get_instance());
-
-    foreach ($services as $name => $service)
-    {
+    $services = [
+        'recaptcha' => WPCF7_RECAPTCHA::get_instance()];
+    foreach ($services as $name => $service) {
         $integration->add_service($name, $service);
     }
 }
 
 add_action('wpcf7_enqueue_scripts', 'wpcf7_recaptcha_enqueue_scripts');
-
-function wpcf7_recaptcha_enqueue_scripts()
-{
+function wpcf7_recaptcha_enqueue_scripts() {
     $url = 'https://www.google.com/recaptcha/api.js';
-    $url = add_query_arg(array(
-        'onload' => 'recaptchaCallback',
-        'render' => 'explicit'), $url);
-
-    wp_register_script('google-recaptcha', $url, array(), '2.0', TRUE);
+    $url = add_query_arg([
+                             'onload' => 'recaptchaCallback',
+                             'render' => 'explicit'], $url);
+    wp_register_script('google-recaptcha', $url, [], '2.0', TRUE);
 }
 
 add_action('wp_footer', 'wpcf7_recaptcha_callback_script');
-
-function wpcf7_recaptcha_callback_script()
-{
-    if (! wp_script_is('google-recaptcha', 'enqueued'))
-    {
+function wpcf7_recaptcha_callback_script() {
+    if (!wp_script_is('google-recaptcha', 'enqueued')) {
         return;
     }
-
     ?>
     <script type="text/javascript">
         var recaptchaCallback = function () {
@@ -329,60 +268,45 @@ function wpcf7_recaptcha_callback_script()
 }
 
 add_action('wpcf7_init', 'wpcf7_recaptcha_add_shortcode_recaptcha');
-
-function wpcf7_recaptcha_add_shortcode_recaptcha()
-{
+function wpcf7_recaptcha_add_shortcode_recaptcha() {
     $recaptcha = WPCF7_RECAPTCHA::get_instance();
-
-    if ($recaptcha->is_active())
-    {
+    if ($recaptcha->is_active()) {
         wpcf7_add_shortcode('recaptcha', 'wpcf7_recaptcha_shortcode_handler');
     }
 }
 
-function wpcf7_recaptcha_shortcode_handler($tag)
-{
+function wpcf7_recaptcha_shortcode_handler($tag) {
     wp_enqueue_script('google-recaptcha');
-
     $tag = new WPCF7_Shortcode($tag);
-
-    $atts = array();
-
-    $recaptcha = WPCF7_RECAPTCHA::get_instance();
-    $atts['data-sitekey'] = $recaptcha->get_sitekey();
-    $atts['data-theme'] = $tag->get_option('theme', '(dark|light)', TRUE);
-    $atts['data-type'] = $tag->get_option('type', '(audio|image)', TRUE);
-    $atts['data-size'] = $tag->get_option('size', '(compact|normal)', TRUE);
+    $atts = [];
+    $recaptcha             = WPCF7_RECAPTCHA::get_instance();
+    $atts['data-sitekey']  = $recaptcha->get_sitekey();
+    $atts['data-theme']    = $tag->get_option('theme', '(dark|light)', TRUE);
+    $atts['data-type']     = $tag->get_option('type', '(audio|image)', TRUE);
+    $atts['data-size']     = $tag->get_option('size', '(compact|normal)', TRUE);
     $atts['data-tabindex'] = $tag->get_option('tabindex', 'int', TRUE);
     $atts['data-callback'] = $tag->get_option('callback', '', TRUE);
-    $atts['data-expired-callback'] =
-        $tag->get_option('expired-callback', '', TRUE);
-
+    $atts['data-expired-callback']
+                           = $tag->get_option('expired-callback', '', TRUE);
     $atts['class'] = $tag->get_class_option(
         wpcf7_form_controls_class($tag->type, 'g-recaptcha'));
-    $atts['id'] = $tag->get_id_option();
-
+    $atts['id']    = $tag->get_id_option();
     $html = sprintf('<div %1$s></div>', wpcf7_format_atts($atts));
     $html .= wpcf7_recaptcha_noscript(
-        array('sitekey' => $atts['data-sitekey']));
+        ['sitekey' => $atts['data-sitekey']]);
     $html = sprintf('<div class="wpcf7-form-control-wrap">%s</div>', $html);
 
     return $html;
 }
 
-function wpcf7_recaptcha_noscript($args = '')
-{
-    $args = wp_parse_args($args, array(
-        'sitekey' => ''));
-
-    if (empty($args['sitekey']))
-    {
+function wpcf7_recaptcha_noscript($args = '') {
+    $args = wp_parse_args($args, [
+        'sitekey' => '']);
+    if (empty($args['sitekey'])) {
         return;
     }
-
     $url = add_query_arg('k', $args['sitekey'],
-        'https://www.google.com/recaptcha/api/fallback');
-
+                         'https://www.google.com/recaptcha/api/fallback');
     ob_start();
     ?>
 
@@ -408,73 +332,54 @@ function wpcf7_recaptcha_noscript($args = '')
 }
 
 add_filter('wpcf7_spam', 'wpcf7_recaptcha_check_with_google', 9);
-
-function wpcf7_recaptcha_check_with_google($spam)
-{
-    if ($spam)
-    {
+function wpcf7_recaptcha_check_with_google($spam) {
+    if ($spam) {
         return $spam;
     }
-
     $contact_form = wpcf7_get_current_contact_form();
-
-    if (! $contact_form)
-    {
+    if (!$contact_form) {
         return $spam;
     }
-
-    $tags = $contact_form->form_scan_shortcode(array('type' => 'recaptcha'));
-
-    if (empty($tags))
-    {
+    $tags = $contact_form->form_scan_shortcode(['type' => 'recaptcha']);
+    if (empty($tags)) {
         return $spam;
     }
-
     $recaptcha = WPCF7_RECAPTCHA::get_instance();
-
-    if (! $recaptcha->is_active())
-    {
+    if (!$recaptcha->is_active()) {
         return $spam;
     }
-
     $response_token = wpcf7_recaptcha_response();
-    $spam = ! $recaptcha->verify($response_token);
+    $spam           = !$recaptcha->verify($response_token);
 
     return $spam;
 }
 
 add_action('wpcf7_admin_init', 'wpcf7_add_tag_generator_recaptcha', 45);
-
-function wpcf7_add_tag_generator_recaptcha()
-{
+function wpcf7_add_tag_generator_recaptcha() {
     $tag_generator = WPCF7_TagGenerator::get_instance();
     $tag_generator->add('recaptcha', __('reCAPTCHA', 'contact-form-7'),
-        'wpcf7_tag_generator_recaptcha', array('nameless' => 1));
+                        'wpcf7_tag_generator_recaptcha', ['nameless' => 1]);
 }
 
-function wpcf7_tag_generator_recaptcha($contact_form, $args = '')
-{
-    $args = wp_parse_args($args, array());
-
+function wpcf7_tag_generator_recaptcha($contact_form, $args = '') {
+    $args = wp_parse_args($args, []);
     $recaptcha = WPCF7_RECAPTCHA::get_instance();
-
-    if (! $recaptcha->is_active())
-    {
+    if (!$recaptcha->is_active()) {
         ?>
         <div class="control-box">
             <fieldset>
-                <legend><?php echo sprintf(esc_html(__("To use reCAPTCHA, first you need to install an API key pair. For more details, see %s.", 'contact-form-7')), wpcf7_link(__('http://contactform7.com/recaptcha/', 'contact-form-7'), __('reCAPTCHA', 'contact-form-7'))); ?></legend>
+                <legend><?php echo sprintf(esc_html(__("To use reCAPTCHA, first you need to install an API key pair. For more details, see %s.",
+                                                       'contact-form-7')),
+                                           wpcf7_link(__('http://contactform7.com/recaptcha/', 'contact-form-7'),
+                                                      __('reCAPTCHA', 'contact-form-7'))); ?></legend>
             </fieldset>
         </div>
         <?php
-
         return;
     }
-
     $description = __("Generate a form-tag for a reCAPTCHA widget. For more details, see %s.", 'contact-form-7');
-
-    $desc_link = wpcf7_link(__('http://contactform7.com/recaptcha/', 'contact-form-7'), __('reCAPTCHA', 'contact-form-7'));
-
+    $desc_link = wpcf7_link(__('http://contactform7.com/recaptcha/', 'contact-form-7'),
+                            __('reCAPTCHA', 'contact-form-7'));
     ?>
     <div class="control-box">
         <fieldset>
@@ -487,20 +392,23 @@ function wpcf7_tag_generator_recaptcha($contact_form, $args = '')
                     <td>
                         <fieldset>
                             <legend
-                                class="screen-reader-text"><?php echo esc_html(__('Theme', 'contact-form-7')); ?></legend>
+                                class="screen-reader-text"><?php echo esc_html(__('Theme',
+                                                                                  'contact-form-7')); ?></legend>
                             <label for="<?php echo esc_attr($args['content'] . '-theme-light'); ?>"><input type="radio"
                                                                                                            name="theme"
                                                                                                            class="option default"
                                                                                                            id="<?php echo esc_attr($args['content'] . '-theme-light'); ?>"
                                                                                                            value="light"
-                                                                                                           checked="checked"/> <?php echo esc_html(__('Light', 'contact-form-7')); ?>
+                                                                                                           checked="checked"/> <?php echo esc_html(__('Light',
+                                                                                                                                                      'contact-form-7')); ?>
                             </label>
                             <br/>
                             <label for="<?php echo esc_attr($args['content'] . '-theme-dark'); ?>"><input type="radio"
                                                                                                           name="theme"
                                                                                                           class="option"
                                                                                                           id="<?php echo esc_attr($args['content'] . '-theme-dark'); ?>"
-                                                                                                          value="dark"/> <?php echo esc_html(__('Dark', 'contact-form-7')); ?>
+                                                                                                          value="dark"/> <?php echo esc_html(__('Dark',
+                                                                                                                                                'contact-form-7')); ?>
                             </label>
                         </fieldset>
                     </td>
@@ -511,20 +419,23 @@ function wpcf7_tag_generator_recaptcha($contact_form, $args = '')
                     <td>
                         <fieldset>
                             <legend
-                                class="screen-reader-text"><?php echo esc_html(__('Size', 'contact-form-7')); ?></legend>
+                                class="screen-reader-text"><?php echo esc_html(__('Size',
+                                                                                  'contact-form-7')); ?></legend>
                             <label for="<?php echo esc_attr($args['content'] . '-size-normal'); ?>"><input type="radio"
                                                                                                            name="size"
                                                                                                            class="option default"
                                                                                                            id="<?php echo esc_attr($args['content'] . '-size-normal'); ?>"
                                                                                                            value="normal"
-                                                                                                           checked="checked"/> <?php echo esc_html(__('Normal', 'contact-form-7')); ?>
+                                                                                                           checked="checked"/> <?php echo esc_html(__('Normal',
+                                                                                                                                                      'contact-form-7')); ?>
                             </label>
                             <br/>
                             <label for="<?php echo esc_attr($args['content'] . '-size-compact'); ?>"><input type="radio"
                                                                                                             name="size"
                                                                                                             class="option"
                                                                                                             id="<?php echo esc_attr($args['content'] . '-size-compact'); ?>"
-                                                                                                            value="compact"/> <?php echo esc_html(__('Compact', 'contact-form-7')); ?>
+                                                                                                            value="compact"/> <?php echo esc_html(__('Compact',
+                                                                                                                                                     'contact-form-7')); ?>
                             </label>
                         </fieldset>
                     </td>
@@ -532,7 +443,8 @@ function wpcf7_tag_generator_recaptcha($contact_form, $args = '')
 
                 <tr>
                     <th scope="row"><label
-                            for="<?php echo esc_attr($args['content'] . '-id'); ?>"><?php echo esc_html(__('Id attribute', 'contact-form-7')); ?></label>
+                            for="<?php echo esc_attr($args['content'] . '-id'); ?>"><?php echo esc_html(__('Id attribute',
+                                                                                                           'contact-form-7')); ?></label>
                     </th>
                     <td><input type="text" name="id" class="idvalue oneline option"
                                id="<?php echo esc_attr($args['content'] . '-id'); ?>"/></td>
@@ -540,7 +452,8 @@ function wpcf7_tag_generator_recaptcha($contact_form, $args = '')
 
                 <tr>
                     <th scope="row"><label
-                            for="<?php echo esc_attr($args['content'] . '-class'); ?>"><?php echo esc_html(__('Class attribute', 'contact-form-7')); ?></label>
+                            for="<?php echo esc_attr($args['content'] . '-class'); ?>"><?php echo esc_html(__('Class attribute',
+                                                                                                              'contact-form-7')); ?></label>
                     </th>
                     <td><input type="text" name="class" class="classvalue oneline option"
                                id="<?php echo esc_attr($args['content'] . '-class'); ?>"/></td>
@@ -562,10 +475,8 @@ function wpcf7_tag_generator_recaptcha($contact_form, $args = '')
     <?php
 }
 
-function wpcf7_recaptcha_response()
-{
-    if (isset($_POST['g-recaptcha-response']))
-    {
+function wpcf7_recaptcha_response() {
+    if (isset($_POST['g-recaptcha-response'])) {
         return $_POST['g-recaptcha-response'];
     }
 

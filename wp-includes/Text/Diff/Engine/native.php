@@ -131,65 +131,6 @@ class Text_Diff_Engine_native {
     }
 
     /**
-     * Finds LCS of two sequences.
-     *
-     * The results are recorded in the vectors $this->{x,y}changed[], by
-     * storing a 1 in the element for each line that is an insertion or
-     * deletion (ie. is not in the LCS).
-     *
-     * The subsequence of file 0 is (XOFF, XLIM) and likewise for file 1.
-     *
-     * Note that XLIM, YLIM are exclusive bounds.  All line numbers are
-     * origin-0 and discarded lines are not counted.
-     */
-    function _compareseq ($xoff, $xlim, $yoff, $ylim)
-    {
-        /* Slide down the bottom initial diagonal. */
-        while ($xoff < $xlim && $yoff < $ylim
-               && $this->xv[$xoff] == $this->yv[$yoff]) {
-            ++$xoff;
-            ++$yoff;
-        }
-
-        /* Slide up the top initial diagonal. */
-        while ($xlim > $xoff && $ylim > $yoff
-               && $this->xv[$xlim - 1] == $this->yv[$ylim - 1]) {
-            --$xlim;
-            --$ylim;
-        }
-
-        if ($xoff == $xlim || $yoff == $ylim) {
-            $lcs = 0;
-        } else {
-            /* This is ad hoc but seems to work well.  $nchunks =
-             * sqrt(min($xlim - $xoff, $ylim - $yoff) / 2.5); $nchunks =
-             * max(2,min(8,(int)$nchunks)); */
-            $nchunks = min(7, $xlim - $xoff, $ylim - $yoff) + 1;
-            list($lcs, $seps)
-                = $this->_diag($xoff, $xlim, $yoff, $ylim, $nchunks);
-        }
-
-        if ($lcs == 0) {
-            /* X and Y sequences have no common subsequence: mark all
-             * changed. */
-            while ($yoff < $ylim) {
-                $this->ychanged[$this->yind[$yoff++]] = 1;
-            }
-            while ($xoff < $xlim) {
-                $this->xchanged[$this->xind[$xoff++]] = 1;
-            }
-        } else {
-            /* Use the partitions to split this problem into subproblems. */
-            reset($seps);
-            $pt1 = $seps[0];
-            while ($pt2 = next($seps)) {
-                $this->_compareseq ($pt1[0], $pt2[0], $pt1[1], $pt2[1]);
-                $pt1 = $pt2;
-            }
-        }
-    }
-
-    /**
      * Divides the Largest Common Subsequence (LCS) of the sequences (XOFF,
      * XLIM) and (YOFF, YLIM) into NCHUNKS approximately equally sized
      * segments.
@@ -311,6 +252,65 @@ class Text_Diff_Engine_native {
         $this->seq[$end] = $ypos;
         $this->in_seq[$ypos] = 1;
         return $end;
+    }
+
+    /**
+     * Finds LCS of two sequences.
+     *
+     * The results are recorded in the vectors $this->{x,y}changed[], by
+     * storing a 1 in the element for each line that is an insertion or
+     * deletion (ie. is not in the LCS).
+     *
+     * The subsequence of file 0 is (XOFF, XLIM) and likewise for file 1.
+     *
+     * Note that XLIM, YLIM are exclusive bounds.  All line numbers are
+     * origin-0 and discarded lines are not counted.
+     */
+    function _compareseq ($xoff, $xlim, $yoff, $ylim)
+    {
+        /* Slide down the bottom initial diagonal. */
+        while ($xoff < $xlim && $yoff < $ylim
+               && $this->xv[$xoff] == $this->yv[$yoff]) {
+            ++$xoff;
+            ++$yoff;
+        }
+
+        /* Slide up the top initial diagonal. */
+        while ($xlim > $xoff && $ylim > $yoff
+               && $this->xv[$xlim - 1] == $this->yv[$ylim - 1]) {
+            --$xlim;
+            --$ylim;
+        }
+
+        if ($xoff == $xlim || $yoff == $ylim) {
+            $lcs = 0;
+        } else {
+            /* This is ad hoc but seems to work well.  $nchunks =
+             * sqrt(min($xlim - $xoff, $ylim - $yoff) / 2.5); $nchunks =
+             * max(2,min(8,(int)$nchunks)); */
+            $nchunks = min(7, $xlim - $xoff, $ylim - $yoff) + 1;
+            list($lcs, $seps)
+                = $this->_diag($xoff, $xlim, $yoff, $ylim, $nchunks);
+        }
+
+        if ($lcs == 0) {
+            /* X and Y sequences have no common subsequence: mark all
+             * changed. */
+            while ($yoff < $ylim) {
+                $this->ychanged[$this->yind[$yoff++]] = 1;
+            }
+            while ($xoff < $xlim) {
+                $this->xchanged[$this->xind[$xoff++]] = 1;
+            }
+        } else {
+            /* Use the partitions to split this problem into subproblems. */
+            reset($seps);
+            $pt1 = $seps[0];
+            while ($pt2 = next($seps)) {
+                $this->_compareseq ($pt1[0], $pt2[0], $pt1[1], $pt2[1]);
+                $pt1 = $pt2;
+            }
+        }
     }
 
     /**

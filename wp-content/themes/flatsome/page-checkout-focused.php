@@ -3,7 +3,6 @@
 Template name: Page Checkout - Focused
 Use this for Cart, Checkout and thank you page.
 */
-
 global $woo_options;
 global $woocommerce;
 global $flatsome_opt;
@@ -32,8 +31,7 @@ global $flatsome_opt;
      style="max-width:960px;margin:60px auto 60px auto;">
 
     <!-- woocommerce message -->
-    <?php if (function_exists('wc_print_notices'))
-    {
+    <?php if (function_exists('wc_print_notices')) {
         wc_print_notices();
     } ?>
 
@@ -42,13 +40,10 @@ global $flatsome_opt;
         <a id="logo" href="<?php echo esc_url(home_url('/')); ?>"
            style="margin: 0 auto 0 auto;padding:30px 0px 15px;display:block;max-height:<?php echo $flatsome_opt['header_height']; ?>px; max-width:<?php echo $flatsome_opt['logo_width']; ?>px"
            rel="home">
-            <?php if ($flatsome_opt['site_logo'])
-            {
+            <?php if ($flatsome_opt['site_logo']) {
                 $site_title = esc_attr(get_bloginfo('name', 'display'));
                 echo '<img src="' . $flatsome_opt['site_logo'] . '" class="header_logo tip-top"  alt="' . $site_title . '"/>';
-            }
-            else
-            {
+            } else {
                 bloginfo('name');
             } ?>
         </a>
@@ -60,23 +55,19 @@ global $flatsome_opt;
             <div id="content" class="large-12 columns" role="main">
 
                 <?php while (have_posts()) : the_post(); ?>
-                    <?php if (function_exists('is_wc_endpoint_url'))
-                    { ?>
-                        <?php if (! is_wc_endpoint_url('order-received'))
-                    { ?>
-                        <div class="checkout-breadcrumb">
-                            <h1>
-                                <span class="title-cart"><?php _e('Shopping Cart', 'flatsome'); ?></span>
-                                <span class="icon-angle-right divider"></span>
-                                <span class="title-checkout"><?php _e('Checkout details', 'flatsome'); ?></span>
-                                <span class="icon-angle-right divider"></span>
-                                <span class="title-thankyou"><?php _e('Order Complete', 'flatsome'); ?></span>
-                            </h1>
-                        </div>
-                    <?php } ?>
-                    <?php }
-                    else
-                    { ?>
+                    <?php if (function_exists('is_wc_endpoint_url')) { ?>
+                        <?php if (!is_wc_endpoint_url('order-received')) { ?>
+                            <div class="checkout-breadcrumb">
+                                <h1>
+                                    <span class="title-cart"><?php _e('Shopping Cart', 'flatsome'); ?></span>
+                                    <span class="icon-angle-right divider"></span>
+                                    <span class="title-checkout"><?php _e('Checkout details', 'flatsome'); ?></span>
+                                    <span class="icon-angle-right divider"></span>
+                                    <span class="title-thankyou"><?php _e('Order Complete', 'flatsome'); ?></span>
+                                </h1>
+                            </div>
+                        <?php } ?>
+                    <?php } else { ?>
                         <div class="checkout-breadcrumb">
                             <h1>
                                 <span class="title-cart"><?php _e('Shopping Cart', 'flatsome'); ?></span>
@@ -105,30 +96,24 @@ global $flatsome_opt;
                 <div class="left">
                     <?php if (has_nav_menu('footer')) : ?>
                         <?php
-                        wp_nav_menu(array(
-                            'theme_location' => 'footer',
-                            'menu_class'     => 'footer-nav',
-                            'depth'          => 1,
-                            'fallback_cb'    => FALSE,
-                        ));
+                        wp_nav_menu([
+                                        'theme_location' => 'footer',
+                                        'menu_class'     => 'footer-nav',
+                                        'depth'          => 1,
+                                        'fallback_cb'    => FALSE,
+                                    ]);
                         ?>
                     <?php endif; ?>
-                    <div class="copyright-footer"><?php if (isset($flatsome_opt['footer_left_text']))
-                        {
+                    <div class="copyright-footer"><?php if (isset($flatsome_opt['footer_left_text'])) {
                             echo do_shortcode($flatsome_opt['footer_left_text']);
-                        }
-                        else
-                        {
+                        } else {
                             echo 'Define left footer text / navigation in Theme Option Panel';
                         } ?></div>
                 </div><!-- .left -->
                 <div class="right">
-                    <?php if (isset($flatsome_opt['footer_right_text']))
-                    {
+                    <?php if (isset($flatsome_opt['footer_right_text'])) {
                         echo do_shortcode($flatsome_opt['footer_right_text']);
-                    }
-                    else
-                    {
+                    } else {
                         echo 'Define right footer text in Theme Option Panel';
                     } ?>
                 </div>
@@ -144,8 +129,7 @@ global $flatsome_opt;
 <!-- back to top -->
 <a href="#top" id="top-link"><span class="icon-angle-up"></span></a>
 
-<?php if (isset($flatsome_opt['html_scripts_footer']))
-{
+<?php if (isset($flatsome_opt['html_scripts_footer'])) {
     // Insert footer scripts
     echo $flatsome_opt['html_scripts_footer'];
 } ?>

@@ -1,6 +1,5 @@
 <?php
-
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit;
 }
 
@@ -8,14 +7,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @version 2.0-beta13.1
  */
 abstract class WP_REST_Controller {
-
 	/**
 	 * The namespace of this controller's route.
 	 *
 	 * @var string
 	 */
 	protected $namespace;
-
 	/**
 	 * The base of this controller's route.
 	 *
@@ -27,141 +24,173 @@ abstract class WP_REST_Controller {
 	 * Register the routes for the objects of the controller.
 	 */
 	public function register_routes() {
-		_doing_it_wrong( 'WP_REST_Controller::register_routes', __( 'The register_routes() method must be overriden', 'woocommerce' ), 'WPAPI-2.0' );
+		_doing_it_wrong('WP_REST_Controller::register_routes',
+		                __('The register_routes() method must be overriden', 'woocommerce'), 'WPAPI-2.0');
 	}
 
 	/**
 	 * Check if a given request has access to get items.
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
+	 *
 	 * @return WP_Error|boolean
 	 */
-	public function get_items_permissions_check( $request ) {
-		return new WP_Error( 'invalid-method', sprintf( __( "Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce' ), __METHOD__ ), array( 'status' => 405 ) );
+	public function get_items_permissions_check($request) {
+		return new WP_Error('invalid-method',
+		                    sprintf(__("Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce'),
+		                            __METHOD__), ['status' => 405]);
 	}
 
 	/**
 	 * Get a collection of items.
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
+	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
-	public function get_items( $request ) {
-		return new WP_Error( 'invalid-method', sprintf( __( "Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce' ), __METHOD__ ), array( 'status' => 405 ) );
+	public function get_items($request) {
+		return new WP_Error('invalid-method',
+		                    sprintf(__("Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce'),
+		                            __METHOD__), ['status' => 405]);
 	}
 
 	/**
 	 * Check if a given request has access to get a specific item.
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
+	 *
 	 * @return WP_Error|boolean
 	 */
-	public function get_item_permissions_check( $request ) {
-		return new WP_Error( 'invalid-method', sprintf( __( "Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce' ), __METHOD__ ), array( 'status' => 405 ) );
+	public function get_item_permissions_check($request) {
+		return new WP_Error('invalid-method',
+		                    sprintf(__("Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce'),
+		                            __METHOD__), ['status' => 405]);
 	}
 
 	/**
 	 * Get one item from the collection.
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
+	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
-	public function get_item( $request ) {
-		return new WP_Error( 'invalid-method', sprintf( __( "Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce' ), __METHOD__ ), array( 'status' => 405 ) );
+	public function get_item($request) {
+		return new WP_Error('invalid-method',
+		                    sprintf(__("Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce'),
+		                            __METHOD__), ['status' => 405]);
 	}
 
 	/**
 	 * Check if a given request has access to create items.
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
+	 *
 	 * @return WP_Error|boolean
 	 */
-	public function create_item_permissions_check( $request ) {
-		return new WP_Error( 'invalid-method', sprintf( __( "Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce' ), __METHOD__ ), array( 'status' => 405 ) );
+	public function create_item_permissions_check($request) {
+		return new WP_Error('invalid-method',
+		                    sprintf(__("Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce'),
+		                            __METHOD__), ['status' => 405]);
 	}
 
 	/**
 	 * Create one item from the collection.
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
+	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
-	public function create_item( $request ) {
-		return new WP_Error( 'invalid-method', sprintf( __( "Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce' ), __METHOD__ ), array( 'status' => 405 ) );
+	public function create_item($request) {
+		return new WP_Error('invalid-method',
+		                    sprintf(__("Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce'),
+		                            __METHOD__), ['status' => 405]);
 	}
 
 	/**
 	 * Check if a given request has access to update a specific item.
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
+	 *
 	 * @return WP_Error|boolean
 	 */
-	public function update_item_permissions_check( $request ) {
-		return new WP_Error( 'invalid-method', sprintf( __( "Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce' ), __METHOD__ ), array( 'status' => 405 ) );
+	public function update_item_permissions_check($request) {
+		return new WP_Error('invalid-method',
+		                    sprintf(__("Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce'),
+		                            __METHOD__), ['status' => 405]);
 	}
 
 	/**
 	 * Update one item from the collection.
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
+	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
-	public function update_item( $request ) {
-		return new WP_Error( 'invalid-method', sprintf( __( "Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce' ), __METHOD__ ), array( 'status' => 405 ) );
+	public function update_item($request) {
+		return new WP_Error('invalid-method',
+		                    sprintf(__("Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce'),
+		                            __METHOD__), ['status' => 405]);
 	}
 
 	/**
 	 * Check if a given request has access to delete a specific item.
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
+	 *
 	 * @return WP_Error|boolean
 	 */
-	public function delete_item_permissions_check( $request ) {
-		return new WP_Error( 'invalid-method', sprintf( __( "Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce' ), __METHOD__ ), array( 'status' => 405 ) );
+	public function delete_item_permissions_check($request) {
+		return new WP_Error('invalid-method',
+		                    sprintf(__("Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce'),
+		                            __METHOD__), ['status' => 405]);
 	}
 
 	/**
 	 * Delete one item from the collection.
 	 *
 	 * @param WP_REST_Request $request Full data about the request.
+	 *
 	 * @return WP_Error|WP_REST_Response
 	 */
-	public function delete_item( $request ) {
-		return new WP_Error( 'invalid-method', sprintf( __( "Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce' ), __METHOD__ ), array( 'status' => 405 ) );
+	public function delete_item($request) {
+		return new WP_Error('invalid-method',
+		                    sprintf(__("Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce'),
+		                            __METHOD__), ['status' => 405]);
 	}
 
 	/**
 	 * Prepare the item for the REST response.
 	 *
-	 * @param mixed $item WordPress representation of the item.
+	 * @param mixed           $item    WordPress representation of the item.
 	 * @param WP_REST_Request $request Request object.
+	 *
 	 * @return WP_REST_Response $response
 	 */
-	public function prepare_item_for_response( $item, $request ) {
-		return new WP_Error( 'invalid-method', sprintf( __( "Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce' ), __METHOD__ ), array( 'status' => 405 ) );
+	public function prepare_item_for_response($item, $request) {
+		return new WP_Error('invalid-method',
+		                    sprintf(__("Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce'),
+		                            __METHOD__), ['status' => 405]);
 	}
 
 	/**
 	 * Prepare a response for inserting into a collection.
 	 *
 	 * @param WP_REST_Response $response Response object.
+	 *
 	 * @return array Response data, ready for insertion into collection data.
 	 */
-	public function prepare_response_for_collection( $response ) {
-		if ( ! ( $response instanceof WP_REST_Response ) ) {
+	public function prepare_response_for_collection($response) {
+		if (!($response instanceof WP_REST_Response)) {
 			return $response;
 		}
-
-		$data = (array) $response->get_data();
+		$data   = (array)$response->get_data();
 		$server = rest_get_server();
-
-		if ( method_exists( $server, 'get_compact_response_links' ) ) {
-			$links = call_user_func( array( $server, 'get_compact_response_links' ), $response );
+		if (method_exists($server, 'get_compact_response_links')) {
+			$links = call_user_func([$server, 'get_compact_response_links'], $response);
 		} else {
-			$links = call_user_func( array( $server, 'get_response_links' ), $response );
+			$links = call_user_func([$server, 'get_response_links'], $response);
 		}
-
-		if ( ! empty( $links ) ) {
+		if (!empty($links)) {
 			$data['_links'] = $links;
 		}
 
@@ -171,30 +200,28 @@ abstract class WP_REST_Controller {
 	/**
 	 * Filter a response based on the context defined in the schema.
 	 *
-	 * @param array $data
+	 * @param array  $data
 	 * @param string $context
+	 *
 	 * @return array
 	 */
-	public function filter_response_by_context( $data, $context ) {
-
+	public function filter_response_by_context($data, $context) {
 		$schema = $this->get_item_schema();
-		foreach ( $data as $key => $value ) {
-			if ( empty( $schema['properties'][ $key ] ) || empty( $schema['properties'][ $key ]['context'] ) ) {
+		foreach ($data as $key => $value) {
+			if (empty($schema['properties'][ $key ]) || empty($schema['properties'][ $key ]['context'])) {
 				continue;
 			}
-
-			if ( ! in_array( $context, $schema['properties'][ $key ]['context'] ) ) {
-				unset( $data[ $key ] );
+			if (!in_array($context, $schema['properties'][ $key ]['context'])) {
+				unset($data[ $key ]);
 			}
-
-			if ( 'object' === $schema['properties'][ $key ]['type'] && ! empty( $schema['properties'][ $key ]['properties'] ) ) {
-				foreach ( $schema['properties'][ $key ]['properties'] as $attribute => $details ) {
-					if ( empty( $details['context'] ) ) {
+			if ('object' === $schema['properties'][ $key ]['type'] && !empty($schema['properties'][ $key ]['properties'])) {
+				foreach ($schema['properties'][ $key ]['properties'] as $attribute => $details) {
+					if (empty($details['context'])) {
 						continue;
 					}
-					if ( ! in_array( $context, $details['context'] ) ) {
-						if ( isset( $data[ $key ][ $attribute ] ) ) {
-							unset( $data[ $key ][ $attribute ] );
+					if (!in_array($context, $details['context'])) {
+						if (isset($data[ $key ][ $attribute ])) {
+							unset($data[ $key ][ $attribute ]);
 						}
 					}
 				}
@@ -210,7 +237,7 @@ abstract class WP_REST_Controller {
 	 * @return array
 	 */
 	public function get_item_schema() {
-		return $this->add_additional_fields_schema( array() );
+		return $this->add_additional_fields_schema([]);
 	}
 
 	/**
@@ -220,23 +247,19 @@ abstract class WP_REST_Controller {
 	 *
 	 * @param array $schema Schema array.
 	 */
-	protected function add_additional_fields_schema( $schema ) {
-		if ( empty( $schema['title'] ) ) {
+	protected function add_additional_fields_schema($schema) {
+		if (empty($schema['title'])) {
 			return $schema;
 		}
-
 		/**
 		 * Can't use $this->get_object_type otherwise we cause an inf loop.
 		 */
 		$object_type = $schema['title'];
-
-		$additional_fields = $this->get_additional_fields( $object_type );
-
-		foreach ( $additional_fields as $field_name => $field_options ) {
-			if ( ! $field_options['schema'] ) {
+		$additional_fields = $this->get_additional_fields($object_type);
+		foreach ($additional_fields as $field_name => $field_options) {
+			if (!$field_options['schema']) {
 				continue;
 			}
-
 			$schema['properties'][ $field_name ] = $field_options['schema'];
 		}
 
@@ -247,22 +270,19 @@ abstract class WP_REST_Controller {
 	 * Get all the registered additional fields for a given object-type.
 	 *
 	 * @param  string $object_type
+	 *
 	 * @return array
 	 */
-	protected function get_additional_fields( $object_type = null ) {
-
-		if ( ! $object_type ) {
+	protected function get_additional_fields($object_type = NULL) {
+		if (!$object_type) {
 			$object_type = $this->get_object_type();
 		}
-
-		if ( ! $object_type ) {
-			return array();
+		if (!$object_type) {
+			return [];
 		}
-
 		global $wp_rest_additional_fields;
-
-		if ( ! $wp_rest_additional_fields || ! isset( $wp_rest_additional_fields[ $object_type ] ) ) {
-			return array();
+		if (!$wp_rest_additional_fields || !isset($wp_rest_additional_fields[ $object_type ])) {
+			return [];
 		}
 
 		return $wp_rest_additional_fields[ $object_type ];
@@ -275,9 +295,8 @@ abstract class WP_REST_Controller {
 	 */
 	protected function get_object_type() {
 		$schema = $this->get_item_schema();
-
-		if ( ! $schema || ! isset( $schema['title'] ) ) {
-			return null;
+		if (!$schema || !isset($schema['title'])) {
+			return NULL;
 		}
 
 		return $schema['title'];
@@ -289,12 +308,10 @@ abstract class WP_REST_Controller {
 	 * @return array
 	 */
 	public function get_public_item_schema() {
-
 		$schema = $this->get_item_schema();
-
-		foreach ( $schema['properties'] as &$property ) {
-			if ( isset( $property['arg_options'] ) ) {
-				unset( $property['arg_options'] );
+		foreach ($schema['properties'] as &$property) {
+			if (isset($property['arg_options'])) {
+				unset($property['arg_options']);
 			}
 		}
 
@@ -307,32 +324,32 @@ abstract class WP_REST_Controller {
 	 * @return array
 	 */
 	public function get_collection_params() {
-		return array(
-			'context'                => $this->get_context_param(),
-			'page'                   => array(
-				'description'        => __( 'Current page of the collection.', 'woocommerce' ),
-				'type'               => 'integer',
-				'default'            => 1,
-				'sanitize_callback'  => 'absint',
-				'validate_callback'  => 'rest_validate_request_arg',
-				'minimum'            => 1,
-			),
-			'per_page'               => array(
-				'description'        => __( 'Maximum number of items to be returned in result set.', 'woocommerce' ),
-				'type'               => 'integer',
-				'default'            => 10,
-				'minimum'            => 1,
-				'maximum'            => 100,
-				'sanitize_callback'  => 'absint',
-				'validate_callback'  => 'rest_validate_request_arg',
-			),
-			'search'                 => array(
-				'description'        => __( 'Limit results to those matching a string.', 'woocommerce' ),
-				'type'               => 'string',
-				'sanitize_callback'  => 'sanitize_text_field',
-				'validate_callback'  => 'rest_validate_request_arg',
-			),
-		);
+		return [
+			'context'  => $this->get_context_param(),
+			'page'     => [
+				'description'       => __('Current page of the collection.', 'woocommerce'),
+				'type'              => 'integer',
+				'default'           => 1,
+				'sanitize_callback' => 'absint',
+				'validate_callback' => 'rest_validate_request_arg',
+				'minimum'           => 1,
+			],
+			'per_page' => [
+				'description'       => __('Maximum number of items to be returned in result set.', 'woocommerce'),
+				'type'              => 'integer',
+				'default'           => 10,
+				'minimum'           => 1,
+				'maximum'           => 100,
+				'sanitize_callback' => 'absint',
+				'validate_callback' => 'rest_validate_request_arg',
+			],
+			'search'   => [
+				'description'       => __('Limit results to those matching a string.', 'woocommerce'),
+				'type'              => 'string',
+				'sanitize_callback' => 'sanitize_text_field',
+				'validate_callback' => 'rest_validate_request_arg',
+			],
+		];
 	}
 
 	/**
@@ -340,31 +357,34 @@ abstract class WP_REST_Controller {
 	 *
 	 * Ensures consistent description between endpoints, and populates enum from schema.
 	 *
-	 * @param array     $args
+	 * @param array $args
+	 *
 	 * @return array
 	 */
-	public function get_context_param( $args = array() ) {
-		$param_details = array(
-			'description'        => __( 'Scope under which the request is made; determines fields present in response.', 'woocommerce' ),
-			'type'               => 'string',
-			'sanitize_callback'  => 'sanitize_key',
-			'validate_callback'  => 'rest_validate_request_arg',
-		);
-		$schema = $this->get_item_schema();
-		if ( empty( $schema['properties'] ) ) {
-			return array_merge( $param_details, $args );
+	public function get_context_param($args = []) {
+		$param_details = [
+			'description'       => __('Scope under which the request is made; determines fields present in response.',
+			                          'woocommerce'),
+			'type'              => 'string',
+			'sanitize_callback' => 'sanitize_key',
+			'validate_callback' => 'rest_validate_request_arg',
+		];
+		$schema        = $this->get_item_schema();
+		if (empty($schema['properties'])) {
+			return array_merge($param_details, $args);
 		}
-		$contexts = array();
-		foreach ( $schema['properties'] as $key => $attributes ) {
-			if ( ! empty( $attributes['context'] ) ) {
-				$contexts = array_merge( $contexts, $attributes['context'] );
+		$contexts = [];
+		foreach ($schema['properties'] as $key => $attributes) {
+			if (!empty($attributes['context'])) {
+				$contexts = array_merge($contexts, $attributes['context']);
 			}
 		}
-		if ( ! empty( $contexts ) ) {
-			$param_details['enum'] = array_unique( $contexts );
-			rsort( $param_details['enum'] );
+		if (!empty($contexts)) {
+			$param_details['enum'] = array_unique($contexts);
+			rsort($param_details['enum']);
 		}
-		return array_merge( $param_details, $args );
+
+		return array_merge($param_details, $args);
 	}
 
 	/**
@@ -375,53 +395,44 @@ abstract class WP_REST_Controller {
 	 *                       values and may fall-back to a given default, this
 	 *                       is not done on `EDITABLE` requests. Default is
 	 *                       WP_REST_Server::CREATABLE.
+	 *
 	 * @return array $endpoint_args
 	 */
-	public function get_endpoint_args_for_item_schema( $method = WP_REST_Server::CREATABLE ) {
-
-		$schema                = $this->get_item_schema();
-		$schema_properties     = ! empty( $schema['properties'] ) ? $schema['properties'] : array();
-		$endpoint_args = array();
-
-		foreach ( $schema_properties as $field_id => $params ) {
-
+	public function get_endpoint_args_for_item_schema($method = WP_REST_Server::CREATABLE) {
+		$schema            = $this->get_item_schema();
+		$schema_properties = !empty($schema['properties']) ? $schema['properties'] : [];
+		$endpoint_args     = [];
+		foreach ($schema_properties as $field_id => $params) {
 			// Arguments specified as `readonly` are not allowed to be set.
-			if ( ! empty( $params['readonly'] ) ) {
+			if (!empty($params['readonly'])) {
 				continue;
 			}
-
-			$endpoint_args[ $field_id ] = array(
+			$endpoint_args[ $field_id ] = [
 				'validate_callback' => 'rest_validate_request_arg',
 				'sanitize_callback' => 'rest_sanitize_request_arg',
-			);
-
-			if ( isset( $params['description'] ) ) {
+			];
+			if (isset($params['description'])) {
 				$endpoint_args[ $field_id ]['description'] = $params['description'];
 			}
-
-			if ( WP_REST_Server::CREATABLE === $method && isset( $params['default'] ) ) {
+			if (WP_REST_Server::CREATABLE === $method && isset($params['default'])) {
 				$endpoint_args[ $field_id ]['default'] = $params['default'];
 			}
-
-			if ( WP_REST_Server::CREATABLE === $method && ! empty( $params['required'] ) ) {
-				$endpoint_args[ $field_id ]['required'] = true;
+			if (WP_REST_Server::CREATABLE === $method && !empty($params['required'])) {
+				$endpoint_args[ $field_id ]['required'] = TRUE;
 			}
-
-			foreach ( array( 'type', 'format', 'enum' ) as $schema_prop ) {
-				if ( isset( $params[ $schema_prop ] ) ) {
+			foreach (['type', 'format', 'enum'] as $schema_prop) {
+				if (isset($params[ $schema_prop ])) {
 					$endpoint_args[ $field_id ][ $schema_prop ] = $params[ $schema_prop ];
 				}
 			}
-
 			// Merge in any options provided by the schema property.
-			if ( isset( $params['arg_options'] ) ) {
-
+			if (isset($params['arg_options'])) {
 				// Only use required / default from arg_options on CREATABLE endpoints.
-				if ( WP_REST_Server::CREATABLE !== $method ) {
-					$params['arg_options'] = array_diff_key( $params['arg_options'], array( 'required' => '', 'default' => '' ) );
+				if (WP_REST_Server::CREATABLE !== $method) {
+					$params['arg_options'] = array_diff_key($params['arg_options'],
+					                                        ['required' => '', 'default' => '']);
 				}
-
-				$endpoint_args[ $field_id ] = array_merge( $endpoint_args[ $field_id ], $params['arg_options'] );
+				$endpoint_args[ $field_id ] = array_merge($endpoint_args[ $field_id ], $params['arg_options']);
 			}
 		}
 
@@ -432,30 +443,31 @@ abstract class WP_REST_Controller {
 	 * Prepare the item for create or update operation.
 	 *
 	 * @param WP_REST_Request $request Request object.
+	 *
 	 * @return WP_Error|object $prepared_item
 	 */
-	protected function prepare_item_for_database( $request ) {
-		return new WP_Error( 'invalid-method', sprintf( __( "Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce' ), __METHOD__ ), array( 'status' => 405 ) );
+	protected function prepare_item_for_database($request) {
+		return new WP_Error('invalid-method',
+		                    sprintf(__("Method '%s' not implemented. Must be over-ridden in subclass.", 'woocommerce'),
+		                            __METHOD__), ['status' => 405]);
 	}
 
 	/**
 	 * Add the values from additional fields to a data object.
 	 *
-	 * @param array  $object
+	 * @param array           $object
 	 * @param WP_REST_Request $request
+	 *
 	 * @return array modified object with additional fields.
 	 */
-	protected function add_additional_fields_to_object( $object, $request ) {
-
+	protected function add_additional_fields_to_object($object, $request) {
 		$additional_fields = $this->get_additional_fields();
-
-		foreach ( $additional_fields as $field_name => $field_options ) {
-
-			if ( ! $field_options['get_callback'] ) {
+		foreach ($additional_fields as $field_name => $field_options) {
+			if (!$field_options['get_callback']) {
 				continue;
 			}
-
-			$object[ $field_name ] = call_user_func( $field_options['get_callback'], $object, $field_name, $request, $this->get_object_type() );
+			$object[ $field_name ] = call_user_func($field_options['get_callback'], $object, $field_name, $request,
+			                                        $this->get_object_type());
 		}
 
 		return $object;
@@ -464,26 +476,21 @@ abstract class WP_REST_Controller {
 	/**
 	 * Update the values of additional fields added to a data object.
 	 *
-	 * @param array  $object
+	 * @param array           $object
 	 * @param WP_REST_Request $request
 	 */
-	protected function update_additional_fields_for_object( $object, $request ) {
-
+	protected function update_additional_fields_for_object($object, $request) {
 		$additional_fields = $this->get_additional_fields();
-
-		foreach ( $additional_fields as $field_name => $field_options ) {
-
-			if ( ! $field_options['update_callback'] ) {
+		foreach ($additional_fields as $field_name => $field_options) {
+			if (!$field_options['update_callback']) {
 				continue;
 			}
-
 			// Don't run the update callbacks if the data wasn't passed in the request.
-			if ( ! isset( $request[ $field_name ] ) ) {
+			if (!isset($request[ $field_name ])) {
 				continue;
 			}
-
-			call_user_func( $field_options['update_callback'], $request[ $field_name ], $object, $field_name, $request, $this->get_object_type() );
+			call_user_func($field_options['update_callback'], $request[ $field_name ], $object, $field_name, $request,
+			               $this->get_object_type());
 		}
 	}
-
 }

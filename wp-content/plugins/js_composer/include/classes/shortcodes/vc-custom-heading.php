@@ -22,6 +22,30 @@ class WPBakeryShortCode_VC_Custom_heading extends WPBakeryShortCode {
 	);
 
 	/**
+	 * Used to get field name in vc_map function for google_fonts, font_container and etc..
+	 *
+	 * @param $key
+	 *
+	 * @since 4.4
+	 * @return bool
+	 */
+	protected function getField( $key ) {
+		return isset( $this->fields[ $key ] ) ? $this->fields[ $key ] : false;
+	}
+
+	/**
+	 * Get param value by providing key
+	 *
+	 * @param $key
+	 *
+	 * @since 4.4
+	 * @return array|bool
+	 */
+	protected function getParamData( $key ) {
+		return WPBMap::getParam( $this->shortcode, $this->getField( $key ) );
+	}
+
+	/**
 	 * Parses shortcode attributes and set defaults based on vc_map function relative to shortcode and fields names
 	 *
 	 * @param $atts
@@ -66,30 +90,6 @@ class WPBakeryShortCode_VC_Custom_heading extends WPBakeryShortCode {
 			'font_container_data' => $font_container_data,
 			'google_fonts_data' => $google_fonts_data,
 		);
-	}
-
-	/**
-	 * Get param value by providing key
-	 *
-	 * @param $key
-	 *
-	 * @since 4.4
-	 * @return array|bool
-	 */
-	protected function getParamData( $key ) {
-		return WPBMap::getParam( $this->shortcode, $this->getField( $key ) );
-	}
-
-	/**
-	 * Used to get field name in vc_map function for google_fonts, font_container and etc..
-	 *
-	 * @param $key
-	 *
-	 * @since 4.4
-	 * @return bool
-	 */
-	protected function getField( $key ) {
-		return isset( $this->fields[ $key ] ) ? $this->fields[ $key ] : false;
 	}
 
 	/**

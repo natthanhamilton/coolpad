@@ -10,7 +10,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  */
 class WPBakeryShortCode_VC_Column extends WPBakeryShortCode {
-	public $nonDraggableClass = 'vc-non-draggable-column';
 	/**
 	 * @var array
 	 */
@@ -21,19 +20,8 @@ class WPBakeryShortCode_VC_Column extends WPBakeryShortCode {
 		'width' => '1/1',
 	);
 
+	public $nonDraggableClass = 'vc-non-draggable-column';
 	/**
-	 * @param string $font_color
-	 *
-	 * @return string
-	 */
-	public function buildStyle( $font_color = '' ) {
-		$style = '';
-		if ( ! empty( $font_color ) ) {
-			$style .= vc_get_css_color( 'color', $font_color );
-		}
-
-		return empty( $style ) ? $style : ' style="' . esc_attr( $style ) . '"';
-	}	/**
 	 * @param $controls
 	 * @param string $extended_css
 	 *
@@ -262,5 +250,17 @@ class WPBakeryShortCode_VC_Column extends WPBakeryShortCode {
 		return '<%= window.vc_convert_column_size(params.width) %>';
 	}
 
+	/**
+	 * @param string $font_color
+	 *
+	 * @return string
+	 */
+	public function buildStyle( $font_color = '' ) {
+		$style = '';
+		if ( ! empty( $font_color ) ) {
+			$style .= vc_get_css_color( 'color', $font_color );
+		}
 
+		return empty( $style ) ? $style : ' style="' . esc_attr( $style ) . '"';
+	}
 }

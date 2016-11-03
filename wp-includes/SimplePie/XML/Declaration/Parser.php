@@ -157,18 +157,6 @@ class SimplePie_XML_Declaration_Parser
 		return (bool) ($this->position < $this->data_length);
 	}
 
-	public function before_version_name()
-	{
-		if ($this->skip_whitespace())
-		{
-			$this->state = 'version_name';
-		}
-		else
-		{
-			$this->state = false;
-		}
-	}
-
 	/**
 	 * Advance past any whitespace
 	 *
@@ -179,6 +167,38 @@ class SimplePie_XML_Declaration_Parser
 		$whitespace = strspn($this->data, "\x09\x0A\x0D\x20", $this->position);
 		$this->position += $whitespace;
 		return $whitespace;
+	}
+
+	/**
+	 * Read value
+	 */
+	public function get_value()
+	{
+		$quote = substr($this->data, $this->position, 1);
+		if ($quote === '"' || $quote === "'")
+		{
+			$this->position++;
+			$len = strcspn($this->data, $quote, $this->position);
+			if ($this->has_data())
+			{
+				$value = substr($this->data, $this->position, $len);
+				$this->position += $len + 1;
+				return $value;
+			}
+		}
+		return false;
+	}
+
+	public function before_version_name()
+	{
+		if ($this->skip_whitespace())
+		{
+			$this->state = 'version_name';
+		}
+		else
+		{
+			$this->state = false;
+		}
 	}
 
 	public function version_name()
@@ -227,26 +247,6 @@ class SimplePie_XML_Declaration_Parser
 		{
 			$this->state = false;
 		}
-	}
-
-	/**
-	 * Read value
-	 */
-	public function get_value()
-	{
-		$quote = substr($this->data, $this->position, 1);
-		if ($quote === '"' || $quote === "'")
-		{
-			$this->position++;
-			$len = strcspn($this->data, $quote, $this->position);
-			if ($this->has_data())
-			{
-				$value = substr($this->data, $this->position, $len);
-				$this->position += $len + 1;
-				return $value;
-			}
-		}
-		return false;
 	}
 
 	public function encoding_name()

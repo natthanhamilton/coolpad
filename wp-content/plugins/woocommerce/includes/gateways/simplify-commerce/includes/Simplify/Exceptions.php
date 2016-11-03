@@ -26,15 +26,12 @@
  * SUCH DAMAGE.
  */
 
-
 /**
  *
  * Base class for all API exceptions.
  *
  */
-class Simplify_ApiException extends Exception
-{
-
+class Simplify_ApiException extends Exception {
 	protected $errorData;
 	protected $status;
 	protected $errorCode;
@@ -43,26 +40,20 @@ class Simplify_ApiException extends Exception
 	/**
 	 * @ignore
 	 */
-	function __construct($message, $status = null, $errorData = null) {
+	function __construct($message, $status = NULL, $errorData = NULL) {
 		parent::__construct($message);
-
-		$this->status = $status;
-		$this->errorCode = null;
-		$this->reference = null;
-
-		if ($errorData != null) {
-
+		$this->status    = $status;
+		$this->errorCode = NULL;
+		$this->reference = NULL;
+		if ($errorData != NULL) {
 			$this->reference = $errorData['reference'];
 			$this->errorData = $errorData;
-
 			$error = $errorData['error'];
-			if ($error != null) {
-
+			if ($error != NULL) {
 				$m = $error['message'];
-				if ($m != null) {
+				if ($m != NULL) {
 					$this->message = $m;
 				}
-
 				$this->errorCode = $error['code'];
 			}
 		}
@@ -70,6 +61,7 @@ class Simplify_ApiException extends Exception
 
 	/**
 	 * Returns a map of all error data returned by the API.
+	 *
 	 * @return array a map containing API error data.
 	 */
 	function getErrorData() {
@@ -78,18 +70,20 @@ class Simplify_ApiException extends Exception
 
 	/**
 	 * Returns a description of the error.
+	 *
 	 * @return string Description of the error.
 	 */
 	function describe() {
 		return get_class($this) . ": \""
-			. $this->getMessage() . "\" (status: "
-			. $this->getStatus() . ", error code: "
-			. $this->getErrorCode() . ", reference: "
-			. $this->getReference() . ")";
+		       . $this->getMessage() . "\" (status: "
+		       . $this->getStatus() . ", error code: "
+		       . $this->getErrorCode() . ", reference: "
+		       . $this->getReference() . ")";
 	}
 
 	/**
 	 * Returns the HTTP status for the request.
+	 *
 	 * @return string HTTP status code (or null if there is no status).
 	 */
 	function getStatus() {
@@ -98,6 +92,7 @@ class Simplify_ApiException extends Exception
 
 	/**
 	 * Returns an code for the API error.
+	 *
 	 * @return string the error code.
 	 */
 	function getErrorCode() {
@@ -106,24 +101,22 @@ class Simplify_ApiException extends Exception
 
 	/**
 	 * Returns unique reference for the API error.
+	 *
 	 * @return string a reference (or null if there is no reference).
 	 */
 	function getReference() {
 		return $this->reference;
 	}
-
 }
-
 
 /**
  * Exception raised when there are communication problems contacting the API.
  */
 class Simplify_ApiConnectionException extends Simplify_ApiException {
-
 	/**
 	 * @ignore
 	 */
-	function __construct($message, $status = null, $errorData = null) {
+	function __construct($message, $status = NULL, $errorData = NULL) {
 		parent::__construct($message, $status, $errorData);
 	}
 }
@@ -132,11 +125,10 @@ class Simplify_ApiConnectionException extends Simplify_ApiException {
  * Exception raised where there are problems authenticating a request.
  */
 class Simplify_AuthenticationException extends Simplify_ApiException {
-
 	/**
 	 * @ignore
 	 */
-	function __construct($message, $status = null, $errorData = null) {
+	function __construct($message, $status = NULL, $errorData = NULL) {
 		parent::__construct($message, $status, $errorData);
 	}
 }
@@ -145,23 +137,20 @@ class Simplify_AuthenticationException extends Simplify_ApiException {
  * Exception raised when the API request contains errors.
  */
 class Simplify_BadRequestException extends Simplify_ApiException {
-
 	protected $fieldErrors;
 
 	/**
 	 * @ignore
 	 */
-	function __construct($message, $status = null, $errorData = null) {
+	function __construct($message, $status = NULL, $errorData = NULL) {
 		parent::__construct($message, $status, $errorData);
-
-		$fieldErrors = array();
-
-		if ($errorData != null) {
+		$fieldErrors = [];
+		if ($errorData != NULL) {
 			$error = $errorData['error'];
-			if ($error != null) {
+			if ($error != NULL) {
 				$fieldErrors = $error['fieldErrors'];
-				if ($fieldErrors != null) {
-					$this->fieldErrors = array();
+				if ($fieldErrors != NULL) {
+					$this->fieldErrors = [];
 					foreach ($fieldErrors as $fieldError) {
 						array_push($this->fieldErrors, new Simplify_FieldError($fieldError));
 					}
@@ -172,6 +161,7 @@ class Simplify_BadRequestException extends Simplify_ApiException {
 
 	/**
 	 * Returns a boolean indicating whether there are any field errors.
+	 *
 	 * @return boolean true if there are field errors; false otherwise.
 	 */
 	function hasFieldErrors() {
@@ -180,31 +170,32 @@ class Simplify_BadRequestException extends Simplify_ApiException {
 
 	/**
 	 * Returns a description of the error.
+	 *
 	 * @return string description of the error.
 	 */
 	function describe() {
 		$s = parent::describe();
 		foreach ($this->getFieldErrors() as $fieldError) {
-			$s = $s . "\n" . (string) $fieldError;
+			$s = $s . "\n" . (string)$fieldError;
 		}
+
 		return $s . "\n";
 	}
 
 	/**
 	 * Returns a list containing all field errors.
+	 *
 	 * @return array list of field errors.
 	 */
 	function getFieldErrors() {
 		return $this->fieldErrors;
 	}
-
 }
 
 /**
  * Represents a single error in a field of a request sent to the API.
  */
 class Simplify_FieldError {
-
 	protected $field;
 	protected $code;
 	protected $message;
@@ -213,9 +204,8 @@ class Simplify_FieldError {
 	 * @ignore
 	 */
 	function __construct($errorData) {
-
-		$this->field = $errorData['field'];
-		$this->code = $errorData['code'];
+		$this->field   = $errorData['field'];
+		$this->code    = $errorData['code'];
 		$this->message = $errorData['message'];
 	}
 
@@ -225,6 +215,7 @@ class Simplify_FieldError {
 
 	/**
 	 * Returns the name of the field with the error.
+	 *
 	 * @return string the field name.
 	 */
 	function getFieldName() {
@@ -233,6 +224,7 @@ class Simplify_FieldError {
 
 	/**
 	 * Returns a description of the error.
+	 *
 	 * @return string description of the error.
 	 */
 	function getMessage() {
@@ -241,23 +233,22 @@ class Simplify_FieldError {
 
 	/**
 	 * Returns the code for the error.
+	 *
 	 * @return string the error code.
 	 */
 	function getErrorCode() {
 		return $this->code;
 	}
-
 }
 
 /**
  * Exception when a requested object cannot be found.
  */
 class Simplify_ObjectNotFoundException extends Simplify_ApiException {
-
 	/**
 	 * @ignore
 	 */
-	function __construct($message, $status = null, $errorData = null) {
+	function __construct($message, $status = NULL, $errorData = NULL) {
 		parent::__construct($message, $status, $errorData);
 	}
 }
@@ -266,11 +257,10 @@ class Simplify_ObjectNotFoundException extends Simplify_ApiException {
  * Exception when a request was not allowed.
  */
 class Simplify_NotAllowedException extends Simplify_ApiException {
-
 	/**
 	 * @ignore
 	 */
-	function __construct($message, $status = null, $errorData = null) {
+	function __construct($message, $status = NULL, $errorData = NULL) {
 		parent::__construct($message, $status, $errorData);
 	}
 }
@@ -279,11 +269,10 @@ class Simplify_NotAllowedException extends Simplify_ApiException {
  * Exception when there was a system error processing a request.
  */
 class Simplify_SystemException extends Simplify_ApiException {
-
 	/**
 	 * @ignore
 	 */
-	function __construct($message, $status = null, $errorData = null) {
+	function __construct($message, $status = NULL, $errorData = NULL) {
 		parent::__construct($message, $status, $errorData);
 	}
 }

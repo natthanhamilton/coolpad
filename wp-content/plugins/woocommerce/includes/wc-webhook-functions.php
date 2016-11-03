@@ -7,11 +7,9 @@
  * @package  WooCommerce/Functions
  * @version  2.3.0
  */
-
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly
 }
-
 /**
  * Get Webhook statuses.
  *
@@ -19,9 +17,9 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @return array
  */
 function wc_get_webhook_statuses() {
-	return apply_filters( 'woocommerce_webhook_statuses', array(
-		'active'   => __( 'Active', 'woocommerce' ),
-		'paused'   => __( 'Paused', 'woocommerce' ),
-		'disabled' => __( 'Disabled', 'woocommerce' ),
-	) );
+	return apply_filters('woocommerce_webhook_statuses', [
+		'active'   => __('Active', 'woocommerce'),
+		'paused'   => __('Paused', 'woocommerce'),
+		'disabled' => __('Disabled', 'woocommerce'),
+	]);
 }

@@ -27,6 +27,7 @@
     visibility: visible;
     backface-visibility: hidden
 }
+
 .ubtn:after {
     content: '';
     position: absolute;
@@ -35,6 +36,7 @@
     -moz-transition: all .3s;
     transition: all .3s
 }
+
 .ubtn-data {
     z-index: 3;
     position: inherit;
@@ -44,10 +46,12 @@
     font-size: inherit;
     color: inherit
 }
+
 button.ubtn {
     background: inherit;
     color: inherit
 }
+
 button.ubtn:hover,
 button.ubtn:focus,
 button.ubtn:active,
@@ -57,6 +61,7 @@ button.ubtn:visited {
     box-shadow: inherit;
     outline: 0
 }
+
 /*.ubtn-right {
     float: right
 }*/
@@ -64,40 +69,50 @@ button.ubtn:visited {
     display: block;
     text-align: left
 }
+
 .ubtn-ctn-center {
     display: block;
     text-align: center
 }
+
 .ubtn-ctn-right {
     display: block;
     text-align: right
 }
+
 a.ubtn-link {
     display: inline-block;
-    margin:0px;
+    margin: 0px;
     color: inherit;
     text-decoration: none;
     max-width: 100%
 }
+
 a.ubtn-link:hover {
     color: inherit;
     text-decoration: none
 }
+
 a.ubtn-link .ubtn {
     margin: 0
 }
+
 button.ubtn-mini {
     padding: 5px 10px
 }
+
 button.ubtn-small {
     padding: 8px 16px
 }
+
 button.ubtn-normal {
     padding: 15px 30px
 }
+
 button.ubtn-large {
     padding: 21px 42px
 }
+
 .ubtn-block {
     display: block;
     width: 100% !important;
@@ -106,20 +121,25 @@ button.ubtn-large {
     padding-left: 0;
     padding-right: 0
 }
+
 button.ubtn-custom {
     padding: 0
 }
-@media(max-width:768px) {
+
+@media (max-width: 768px) {
     .ubtn-small {
         padding: 6px 12px
     }
+
     .ubtn-normal {
         padding: 10px 24px
     }
+
     .ubtn-large {
         padding: 12px 36px
     }
 }
+
 .ubtn-shd {
     border-radius: 5px;
     background: #eaeaea;
@@ -128,6 +148,7 @@ button.ubtn-custom {
     -moz-transition: none !important;
     transition: none !important
 }
+
 .ubtn-sep-icon .ubtn-icon {
     position: absolute;
     top: 50%;
@@ -142,9 +163,11 @@ button.ubtn-custom {
     -moz-transition: all .3s;
     transition: all .3s
 }
+
 .ubtn-sep-icon:hover .ubtn-icon {
     opacity: 1
 }
+
 .ubtn-sep-icon .ubtn-icon span {
     line-height: inherit;
     display: inline-block;
@@ -155,6 +178,7 @@ button.ubtn-custom {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale
 }
+
 .ubtn.ubtn-sep-icon.ubtn-only-icon .ubtn-icon {
     position: relative;
     left: 0;
@@ -167,52 +191,67 @@ button.ubtn-custom {
     -ms-transform: translate(0);
     transform: translate(0)
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-at-left .ubtn-icon {
     left: 20px;
     opacity: 1
 }
+
 .ubtn-img-container .ubtn-sep-icon.ubtn-sep-icon-at-left .ubtn-icon {
     left: 20px;
     opacity: 1
 }
+
 .ubtn-img-container .ubtn-sep-icon.ubtn-sep-icon-at-right .ubtn-icon {
     right: 20px;
     opacity: 1
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-at-right .ubtn-icon {
     right: 20px;
     opacity: 1
 }
+
 .ubtn-sep-icon-left .ubtn-icon {
     left: -2em
 }
+
 .ubtn-sep-icon-left:hover .ubtn-icon {
     left: 10px
 }
+
 .ubtn-img-container .ubtn-sep-icon-left:hover .ubtn-icon {
     left: 10px
 }
+
 .ubtn-sep-icon-left-rev .ubtn-icon {
     left: 4em
 }
+
 .ubtn-sep-icon-left-rev:hover .ubtn-icon {
     left: 20px
 }
+
 .ubtn-sep-icon-right .ubtn-icon {
     right: -2em
 }
+
 .ubtn-img-container .ubtn-sep-icon-right:hover .ubtn-icon {
     right: 30px
 }
+
 .ubtn-sep-icon-right:hover .ubtn-icon {
     right: 5px
 }
+
 .ubtn-sep-icon-right-rev .ubtn-icon {
     right: 4em
 }
+
 .ubtn-sep-icon-right-rev:hover .ubtn-icon {
     right: 20px
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-top-push .ubtn-icon,
 .ubtn-sep-icon.ubtn-sep-icon-left-push .ubtn-icon,
 .ubtn-sep-icon.ubtn-sep-icon-right-push .ubtn-icon,
@@ -232,6 +271,7 @@ button.ubtn-custom {
     transform: translateY(0);
     line-height: 1
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-top-push .ubtn-icon i,
 .ubtn-sep-icon.ubtn-sep-icon-left-push .ubtn-icon i,
 .ubtn-sep-icon.ubtn-sep-icon-right-push .ubtn-icon i,
@@ -245,6 +285,7 @@ button.ubtn-custom {
     -ms-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%)
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-top-push .ubtn-text,
 .ubtn-sep-icon.ubtn-sep-icon-left-push .ubtn-text,
 .ubtn-sep-icon.ubtn-sep-icon-right-push .ubtn-text,
@@ -255,12 +296,15 @@ button.ubtn-custom {
     -ms-transform: translateX(0) translateY(0);
     transform: translateX(0) translateY(0)
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-top-push .ubtn-icon {
     top: -500px
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-top-push:hover .ubtn-icon {
     top: 0
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-top-push:hover .ubtn-text {
     display: inline-block;
     -webkit-transform: translateY(500px);
@@ -268,6 +312,7 @@ button.ubtn-custom {
     -ms-transform: translateY(500px);
     transform: translateY(500px)
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-top-push .ubtn-icon,
 .ubtn-sep-icon.ubtn-sep-icon-top-push:hover .ubtn-icon,
 .ubtn-sep-icon.ubtn-sep-icon-top-push .ubtn-text,
@@ -276,12 +321,15 @@ button.ubtn-custom {
     -moz-transition: all .45s;
     transition: all .45s
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-bottom-push .ubtn-icon {
     top: 500px
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-bottom-push:hover .ubtn-icon {
     top: 0
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-bottom-push:hover .ubtn-text {
     display: inline-block;
     -webkit-transform: translateY(-500px);
@@ -289,6 +337,7 @@ button.ubtn-custom {
     -ms-transform: translateY(-500px);
     transform: translateY(-500px)
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-bottom-push .ubtn-icon,
 .ubtn-sep-icon.ubtn-sep-icon-bottom-push:hover .ubtn-icon,
 .ubtn-sep-icon.ubtn-sep-icon-bottom-push .ubtn-text,
@@ -297,12 +346,15 @@ button.ubtn-custom {
     -moz-transition: all .45s;
     transition: all .45s
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-left-push .ubtn-icon {
     left: -500px
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-left-push:hover .ubtn-icon {
     left: 0
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-left-push:hover .ubtn-text {
     display: inline-block;
     -webkit-transform: translateX(500px);
@@ -310,6 +362,7 @@ button.ubtn-custom {
     -ms-transform: translateX(500px);
     transform: translateX(500px)
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-left-push .ubtn-icon,
 .ubtn-sep-icon.ubtn-sep-icon-left-push:hover .ubtn-icon,
 .ubtn-sep-icon.ubtn-sep-icon-left-push .ubtn-text,
@@ -318,12 +371,15 @@ button.ubtn-custom {
     -moz-transition: all .6s;
     transition: all .6s
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-right-push .ubtn-icon {
     left: 500px
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-right-push:hover .ubtn-icon {
     left: 0
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-right-push:hover .ubtn-text {
     display: inline-block;
     -webkit-transform: translateX(-500px);
@@ -331,6 +387,7 @@ button.ubtn-custom {
     -ms-transform: translateX(-500px);
     transform: translateX(-500px)
 }
+
 .ubtn-sep-icon.ubtn-sep-icon-right-push .ubtn-icon,
 .ubtn-sep-icon.ubtn-sep-icon-right-push:hover .ubtn-icon,
 .ubtn-sep-icon.ubtn-sep-icon-right-push .ubtn-text,
@@ -339,6 +396,7 @@ button.ubtn-custom {
     -moz-transition: all .6s;
     transition: all .6s
 }
+
 .ubtn-hover {
     width: 100%;
     height: 100%;
@@ -352,46 +410,57 @@ button.ubtn-custom {
     -webkit-transition: all .3s;
     -moz-transition: all .3s;
     transition: all .3s;
-    border-radius:inherit;
+    border-radius: inherit;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
     box-sizing: border-box
 }
+
 .ubtn-fade-bg .ubtn-hover {
     background: rgba(255, 255, 255, 0);
     opacity: 0
 }
+
 .ubtn-fade-bg:hover .ubtn-hover {
     opacity: 1
 }
+
 .ubtn-top-bg .ubtn-hover {
     top: -100%;
     background: #CCC
 }
+
 .ubtn-top-bg:hover .ubtn-hover {
     top: 0
 }
+
 .ubtn-bottom-bg .ubtn-hover {
     top: 100%;
     background: #CCC
 }
+
 .ubtn-bottom-bg:hover .ubtn-hover {
     top: 0
 }
+
 .ubtn-left-bg .ubtn-hover {
     left: -100%;
     background: #CCC
 }
+
 .ubtn-left-bg:hover .ubtn-hover {
     left: 0
 }
+
 .ubtn-right-bg .ubtn-hover {
     left: 100%;
     background: #CCC
 }
+
 .ubtn-right-bg:hover .ubtn-hover {
     left: 0
 }
+
 .ubtn-center-hz-bg .ubtn-hover {
     width: 0;
     height: 103%;
@@ -404,14 +473,17 @@ button.ubtn-custom {
     -ms-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%)
 }
+
 .ubtn-center-hz-bg:hover .ubtn-hover {
     width: 90%;
     opacity: 1
 }
+
 .ubtn-center-hz-bg:active .ubtn-hover {
     width: 101%;
     opacity: 1
 }
+
 .ubtn-center-vt-bg .ubtn-hover {
     width: 101%;
     height: 0;
@@ -424,14 +496,17 @@ button.ubtn-custom {
     -ms-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%)
 }
+
 .ubtn-center-vt-bg:hover .ubtn-hover {
     height: 75%;
     opacity: 1
 }
+
 .ubtn-center-vt-bg:active .ubtn-hover {
     height: 130%;
     opacity: 1
 }
+
 .ubtn-center-dg-bg .ubtn-hover {
     width: 100%;
     height: 0;
@@ -444,23 +519,28 @@ button.ubtn-custom {
     -ms-transform: translateX(-50%) translateY(-50%) rotate(45deg);
     transform: translateX(-50%) translateY(-50%) rotate(45deg)
 }
+
 .ubtn-center-dg-bg:hover .ubtn-hover {
     height: 260%;
     opacity: 1
 }
+
 .ubtn-center-dg-bg:active .ubtn-hover {
     height: 400%;
     opacity: 1
 }
+
 .no-ubtn-shadow {
     box-shadow: none !important;
     -webkit-transition: all 50ms linear !important;
     -moz-transition: all 50ms linear !important;
     transition: all 50ms linear !important
 }
+
 .ubtn-img-container {
     position: relative
 }
+
 .ubtn-img-container img {
     position: relative;
     display: block;
@@ -470,6 +550,7 @@ button.ubtn-custom {
     margin: 0 auto;
     padding: 0
 }
+
 .ubtn-img-container .ubtn {
     position: absolute;
     display: block;
@@ -480,6 +561,7 @@ button.ubtn-custom {
     -moz-transform: translateX(-50%) translateY(-50%);
     transform: translateX(-50%) translateY(-50%)
 }
+
 .ubtn-img-container .ubtn.ubtn-right {
     -webkit-transform: translateX(0%) translateY(-50%);
     -moz-transform: translateX(0%) translateY(-50%);
@@ -487,6 +569,7 @@ button.ubtn-custom {
     right: 0;
     left: initial;
 }
+
 .ubtn-img-container .ubtn.ubtn-left {
     -webkit-transform: translateX(0%) translateY(-50%);
     -moz-transform: translateX(0%) translateY(-50%);
@@ -494,13 +577,16 @@ button.ubtn-custom {
     left: 0;
     right: initial;
 }
+
 .ubtn-img-container .ubtn-data {
     position: relative;
     display: inline-block
 }
+
 .ubtn-img-container a.ubtn-link {
     display: block
 }
+
 .ulta-grow {
     display: inline-block;
     -webkit-transition-duration: .3s;
@@ -510,12 +596,14 @@ button.ubtn-custom {
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-grow:hover,
 .ulta-grow:focus,
 .ulta-grow:active {
     -webkit-transform: scale(1.1);
     transform: scale(1.1)
 }
+
 .ulta-shrink {
     display: inline-block;
     -webkit-transition-duration: .3s;
@@ -525,12 +613,14 @@ button.ubtn-custom {
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-shrink:hover,
 .ulta-shrink:focus,
 .ulta-shrink:active {
     -webkit-transform: scale(0.9);
     transform: scale(0.9)
 }
+
 @-webkit-keyframes ulta-pulse {
     25% {
         -webkit-transform: scale(1.1);
@@ -541,6 +631,7 @@ button.ubtn-custom {
         transform: scale(0.9)
     }
 }
+
 @keyframes ulta-pulse {
     25% {
         -webkit-transform: scale(1.1);
@@ -551,11 +642,13 @@ button.ubtn-custom {
         transform: scale(0.9)
     }
 }
+
 .ulta-pulse {
     display: inline-block;
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-pulse:hover,
 .ulta-pulse:focus,
 .ulta-pulse:active {
@@ -568,23 +661,27 @@ button.ubtn-custom {
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite
 }
+
 @-webkit-keyframes ulta-pulse-grow {
     to {
         -webkit-transform: scale(1.1);
         transform: scale(1.1)
     }
 }
+
 @keyframes ulta-pulse-grow {
     to {
         -webkit-transform: scale(1.1);
         transform: scale(1.1)
     }
 }
+
 .ulta-pulse-grow {
     display: inline-block;
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-pulse-grow:hover,
 .ulta-pulse-grow:focus,
 .ulta-pulse-grow:active {
@@ -599,23 +696,27 @@ button.ubtn-custom {
     -webkit-animation-direction: alternate;
     animation-direction: alternate
 }
+
 @-webkit-keyframes ulta-pulse-shrink {
     to {
         -webkit-transform: scale(0.9);
         transform: scale(0.9)
     }
 }
+
 @keyframes ulta-pulse-shrink {
     to {
         -webkit-transform: scale(0.9);
         transform: scale(0.9)
     }
 }
+
 .ulta-pulse-shrink {
     display: inline-block;
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-pulse-shrink:hover,
 .ulta-pulse-shrink:focus,
 .ulta-pulse-shrink:active {
@@ -630,6 +731,7 @@ button.ubtn-custom {
     -webkit-animation-direction: alternate;
     animation-direction: alternate
 }
+
 @-webkit-keyframes ulta-push {
     50% {
         -webkit-transform: scale(0.8);
@@ -640,6 +742,7 @@ button.ubtn-custom {
         transform: scale(1)
     }
 }
+
 @keyframes ulta-push {
     50% {
         -webkit-transform: scale(0.8);
@@ -650,11 +753,13 @@ button.ubtn-custom {
         transform: scale(1)
     }
 }
+
 .ulta-push {
     display: inline-block;
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-push:hover,
 .ulta-push:focus,
 .ulta-push:active {
@@ -667,6 +772,7 @@ button.ubtn-custom {
     -webkit-animation-iteration-count: 1;
     animation-iteration-count: 1
 }
+
 @-webkit-keyframes ulta-pop {
     50% {
         -webkit-transform: scale(1.2);
@@ -677,6 +783,7 @@ button.ubtn-custom {
         transform: scale(1)
     }
 }
+
 @keyframes ulta-pop {
     50% {
         -webkit-transform: scale(1.2);
@@ -687,11 +794,13 @@ button.ubtn-custom {
         transform: scale(1)
     }
 }
+
 .ulta-pop {
     display: inline-block;
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-pop:hover,
 .ulta-pop:focus,
 .ulta-pop:active {
@@ -704,6 +813,7 @@ button.ubtn-custom {
     -webkit-animation-iteration-count: 1;
     animation-iteration-count: 1
 }
+
 .ulta-rotate {
     display: inline-block;
     -webkit-transition-duration: .3s;
@@ -713,12 +823,14 @@ button.ubtn-custom {
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-rotate:hover,
 .ulta-rotate:focus,
 .ulta-rotate:active {
     -webkit-transform: rotate(4deg);
     transform: rotate(4deg)
 }
+
 .ulta-grow-rotate {
     display: inline-block;
     -webkit-transition-duration: .3s;
@@ -728,12 +840,14 @@ button.ubtn-custom {
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-grow-rotate:hover,
 .ulta-grow-rotate:focus,
 .ulta-grow-rotate:active {
     -webkit-transform: scale(1.1) rotate(4deg);
     transform: scale(1.1) rotate(4deg)
 }
+
 .ulta-float {
     display: inline-block;
     -webkit-transition-duration: .3s;
@@ -743,12 +857,14 @@ button.ubtn-custom {
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-float:hover,
 .ulta-float:focus,
 .ulta-float:active {
     -webkit-transform: translateY(-5px);
     transform: translateY(-5px)
 }
+
 .ulta-sink {
     display: inline-block;
     -webkit-transition-duration: .3s;
@@ -758,12 +874,14 @@ button.ubtn-custom {
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-sink:hover,
 .ulta-sink:focus,
 .ulta-sink:active {
     -webkit-transform: translateY(5px);
     transform: translateY(5px)
 }
+
 @-webkit-keyframes ulta-hover {
     50% {
         -webkit-transform: translateY(-3px);
@@ -774,6 +892,7 @@ button.ubtn-custom {
         transform: translateY(-6px)
     }
 }
+
 @keyframes ulta-hover {
     50% {
         -webkit-transform: translateY(-3px);
@@ -784,6 +903,7 @@ button.ubtn-custom {
         transform: translateY(-6px)
     }
 }
+
 .ulta-hover {
     display: inline-block;
     -webkit-transition-duration: .5s;
@@ -793,6 +913,7 @@ button.ubtn-custom {
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-hover:hover,
 .ulta-hover:focus,
 .ulta-hover:active {
@@ -811,6 +932,7 @@ button.ubtn-custom {
     -webkit-animation-direction: alternate;
     animation-direction: alternate
 }
+
 @-webkit-keyframes ulta-hang {
     50% {
         -webkit-transform: translateY(3px);
@@ -821,6 +943,7 @@ button.ubtn-custom {
         transform: translateY(6px)
     }
 }
+
 @keyframes ulta-hang {
     50% {
         -webkit-transform: translateY(3px);
@@ -831,6 +954,7 @@ button.ubtn-custom {
         transform: translateY(6px)
     }
 }
+
 .ulta-hang {
     display: inline-block;
     -webkit-transition-duration: .5s;
@@ -840,6 +964,7 @@ button.ubtn-custom {
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-hang:hover,
 .ulta-hang:focus,
 .ulta-hang:active {
@@ -858,6 +983,7 @@ button.ubtn-custom {
     -webkit-animation-direction: alternate;
     animation-direction: alternate
 }
+
 .ulta-skew {
     display: inline-block;
     -webkit-transition-duration: .3s;
@@ -867,12 +993,14 @@ button.ubtn-custom {
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-skew:hover,
 .ulta-skew:focus,
 .ulta-skew:active {
     -webkit-transform: skew(-10deg);
     transform: skew(-10deg)
 }
+
 .ulta-skew-forward {
     display: inline-block;
     -webkit-transition-duration: .3s;
@@ -884,12 +1012,14 @@ button.ubtn-custom {
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-skew-forward:hover,
 .ulta-skew-forward:focus,
 .ulta-skew-forward:active {
     -webkit-transform: skew(-10deg);
     transform: skew(-10deg)
 }
+
 .ulta-skew-backward {
     display: inline-block;
     -webkit-transition-duration: .3s;
@@ -901,12 +1031,14 @@ button.ubtn-custom {
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-skew-backward:hover,
 .ulta-skew-backward:focus,
 .ulta-skew-backward:active {
     -webkit-transform: skew(10deg);
     transform: skew(10deg)
 }
+
 @-webkit-keyframes ulta-wobble-vertical {
     16.65% {
         -webkit-transform: translateY(8px);
@@ -933,6 +1065,7 @@ button.ubtn-custom {
         transform: translateY(0)
     }
 }
+
 @keyframes ulta-wobble-vertical {
     16.65% {
         -webkit-transform: translateY(8px);
@@ -959,11 +1092,13 @@ button.ubtn-custom {
         transform: translateY(0)
     }
 }
+
 .ulta-wobble-vertical {
     display: inline-block;
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-wobble-vertical:hover,
 .ulta-wobble-vertical:focus,
 .ulta-wobble-vertical:active {
@@ -976,6 +1111,7 @@ button.ubtn-custom {
     -webkit-animation-iteration-count: 1;
     animation-iteration-count: 1
 }
+
 @-webkit-keyframes ulta-wobble-horizontal {
     16.65% {
         -webkit-transform: translateX(8px);
@@ -1002,6 +1138,7 @@ button.ubtn-custom {
         transform: translateX(0)
     }
 }
+
 @keyframes ulta-wobble-horizontal {
     16.65% {
         -webkit-transform: translateX(8px);
@@ -1028,11 +1165,13 @@ button.ubtn-custom {
         transform: translateX(0)
     }
 }
+
 .ulta-wobble-horizontal {
     display: inline-block;
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-wobble-horizontal:hover,
 .ulta-wobble-horizontal:focus,
 .ulta-wobble-horizontal:active {
@@ -1045,6 +1184,7 @@ button.ubtn-custom {
     -webkit-animation-iteration-count: 1;
     animation-iteration-count: 1
 }
+
 @-webkit-keyframes ulta-wobble-to-bottom-right {
     16.65% {
         -webkit-transform: translate(8px, 8px);
@@ -1071,6 +1211,7 @@ button.ubtn-custom {
         transform: translate(0, 0)
     }
 }
+
 @keyframes ulta-wobble-to-bottom-right {
     16.65% {
         -webkit-transform: translate(8px, 8px);
@@ -1097,11 +1238,13 @@ button.ubtn-custom {
         transform: translate(0, 0)
     }
 }
+
 .ulta-wobble-to-bottom-right {
     display: inline-block;
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-wobble-to-bottom-right:hover,
 .ulta-wobble-to-bottom-right:focus,
 .ulta-wobble-to-bottom-right:active {
@@ -1114,6 +1257,7 @@ button.ubtn-custom {
     -webkit-animation-iteration-count: 1;
     animation-iteration-count: 1
 }
+
 @-webkit-keyframes ulta-wobble-to-top-right {
     16.65% {
         -webkit-transform: translate(8px, -8px);
@@ -1140,6 +1284,7 @@ button.ubtn-custom {
         transform: translate(0, 0)
     }
 }
+
 @keyframes ulta-wobble-to-top-right {
     16.65% {
         -webkit-transform: translate(8px, -8px);
@@ -1166,11 +1311,13 @@ button.ubtn-custom {
         transform: translate(0, 0)
     }
 }
+
 .ulta-wobble-to-top-right {
     display: inline-block;
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-wobble-to-top-right:hover,
 .ulta-wobble-to-top-right:focus,
 .ulta-wobble-to-top-right:active {
@@ -1183,6 +1330,7 @@ button.ubtn-custom {
     -webkit-animation-iteration-count: 1;
     animation-iteration-count: 1
 }
+
 @-webkit-keyframes ulta-wobble-top {
     16.65% {
         -webkit-transform: skew(-12deg);
@@ -1209,6 +1357,7 @@ button.ubtn-custom {
         transform: skew(0)
     }
 }
+
 @keyframes ulta-wobble-top {
     16.65% {
         -webkit-transform: skew(-12deg);
@@ -1235,6 +1384,7 @@ button.ubtn-custom {
         transform: skew(0)
     }
 }
+
 .ulta-wobble-top {
     display: inline-block;
     -webkit-transform-origin: 0 100%;
@@ -1242,6 +1392,7 @@ button.ubtn-custom {
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-wobble-top:hover,
 .ulta-wobble-top:focus,
 .ulta-wobble-top:active {
@@ -1254,6 +1405,7 @@ button.ubtn-custom {
     -webkit-animation-iteration-count: 1;
     animation-iteration-count: 1
 }
+
 @-webkit-keyframes ulta-wobble-bottom {
     16.65% {
         -webkit-transform: skew(-12deg);
@@ -1280,6 +1432,7 @@ button.ubtn-custom {
         transform: skew(0)
     }
 }
+
 @keyframes ulta-wobble-bottom {
     16.65% {
         -webkit-transform: skew(-12deg);
@@ -1306,6 +1459,7 @@ button.ubtn-custom {
         transform: skew(0)
     }
 }
+
 .ulta-wobble-bottom {
     display: inline-block;
     -webkit-transform-origin: 100% 0;
@@ -1313,6 +1467,7 @@ button.ubtn-custom {
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-wobble-bottom:hover,
 .ulta-wobble-bottom:focus,
 .ulta-wobble-bottom:active {
@@ -1325,6 +1480,7 @@ button.ubtn-custom {
     -webkit-animation-iteration-count: 1;
     animation-iteration-count: 1
 }
+
 @-webkit-keyframes ulta-wobble-skew {
     16.65% {
         -webkit-transform: skew(-12deg);
@@ -1351,6 +1507,7 @@ button.ubtn-custom {
         transform: skew(0)
     }
 }
+
 @keyframes ulta-wobble-skew {
     16.65% {
         -webkit-transform: skew(-12deg);
@@ -1377,11 +1534,13 @@ button.ubtn-custom {
         transform: skew(0)
     }
 }
+
 .ulta-wobble-skew {
     display: inline-block;
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-wobble-skew:hover,
 .ulta-wobble-skew:focus,
 .ulta-wobble-skew:active {
@@ -1394,6 +1553,7 @@ button.ubtn-custom {
     -webkit-animation-iteration-count: 1;
     animation-iteration-count: 1
 }
+
 @-webkit-keyframes ulta-buzz {
     50% {
         -webkit-transform: translateX(3px) rotate(2deg);
@@ -1404,6 +1564,7 @@ button.ubtn-custom {
         transform: translateX(-3px) rotate(-2deg)
     }
 }
+
 @keyframes ulta-buzz {
     50% {
         -webkit-transform: translateX(3px) rotate(2deg);
@@ -1414,11 +1575,13 @@ button.ubtn-custom {
         transform: translateX(-3px) rotate(-2deg)
     }
 }
+
 .ulta-buzz {
     display: inline-block;
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-buzz:hover,
 .ulta-buzz:focus,
 .ulta-buzz:active {
@@ -1431,6 +1594,7 @@ button.ubtn-custom {
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite
 }
+
 @-webkit-keyframes ulta-buzz-out {
     10% {
         -webkit-transform: translateX(3px) rotate(2deg);
@@ -1473,6 +1637,7 @@ button.ubtn-custom {
         transform: translateX(-1px) rotate(0)
     }
 }
+
 @keyframes ulta-buzz-out {
     10% {
         -webkit-transform: translateX(3px) rotate(2deg);
@@ -1515,11 +1680,13 @@ button.ubtn-custom {
         transform: translateX(-1px) rotate(0)
     }
 }
+
 .ulta-buzz-out {
     display: inline-block;
     -webkit-transform: translateZ(0);
     transform: translateZ(0)
 }
+
 .ulta-buzz-out:hover,
 .ulta-buzz-out:focus,
 .ulta-buzz-out:active {
@@ -1532,15 +1699,18 @@ button.ubtn-custom {
     -webkit-animation-iteration-count: 1;
     animation-iteration-count: 1
 }
+
 .ubtn-img-container .ubtn-data.ubtn-icon i {
     position: absolute;
     top: 50%;
     transform: translateY(-50%);
 }
+
 .ubtn-img-container .ubtn-data.ubtn-icon {
     height: 100%;
     position: absolute;
 }
+
 /*.ubtn-img-container .ubtn-data.ubtn-text {
     left: 15px;
     Left to align space for icon
@@ -1549,14 +1719,16 @@ button.ubtn-custom {
 .ubtn-hover {
     opacity: 0;
 }
+
 .ubtn-hover-active {
     opacity: 1;
 }
+
 /*swapnil*/
-.ubtn-img-container .ubtn-sep-icon-right .ubtn-data.ubtn-text{
+.ubtn-img-container .ubtn-sep-icon-right .ubtn-data.ubtn-text {
     left: -10px;
 }
 
-.ubtn-img-container .ubtn-sep-icon-at-left .ubtn-data.ubtn-text{
+.ubtn-img-container .ubtn-sep-icon-at-left .ubtn-data.ubtn-text {
     right: -15px;
 }

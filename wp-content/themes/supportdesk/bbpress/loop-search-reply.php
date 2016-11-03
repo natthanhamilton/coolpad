@@ -1,12 +1,10 @@
 <?php
-
 /**
  * Search Loop - Single Reply
  *
- * @package bbPress
+ * @package    bbPress
  * @subpackage Theme
  */
-
 ?>
 
 <div class="bbp-reply-header">
@@ -43,7 +41,7 @@
 
         <?php do_action('bbp_theme_before_reply_author_details'); ?>
 
-        <?php bbp_reply_author_link(array('sep' => '<br />', 'show_role' => TRUE)); ?>
+        <?php bbp_reply_author_link(['sep' => '<br />', 'show_role' => TRUE]); ?>
 
         <?php if (bbp_is_user_keymaster()) : ?>
 

@@ -23,15 +23,15 @@ class Vc_Backend_Editor implements Vc_Editor_Interface {
 	/**
 	 * @var
 	 */
+	protected $layout;
+	/**
+	 * @var
+	 */
 	public $post_custom_css;
 	/**
 	 * @var bool|string $post - stores data about post.
 	 */
 	public $post = false;
-	/**
-	 * @var
-	 */
-	protected $layout;
 
 	/**
 	 * This method is called by Vc_Manager to register required action hooks for VC backend editor.
@@ -88,66 +88,6 @@ class Vc_Backend_Editor implements Vc_Editor_Interface {
 	}
 
 	/**
-	 * Check is post type is valid for rendering VC backend editor.
-	 *
-	 * @return bool
-	 */
-	public function isValidPostType( $type = '' ) {
-		if( 'vc_grid_item' === $type ) { return false; }
-		return vc_check_post_type( ! empty( $type ) ? $type : get_post_type() );
-	}
-
-	public function registerBackendJavascript() {
-		// editor can be disabled but fe can be enabled. so we currently need this file. @todo maybe make backend-disabled.min.js
-		wp_register_script( 'vc-backend-actions-js', vc_asset_url( 'js/dist/backend-actions.min.js' ), array(
-			'jquery',
-			'backbone',
-			'underscore',
-		), WPB_VC_VERSION, true );
-		wp_register_script( 'vc-backend-min-js', vc_asset_url( 'js/dist/backend.min.js' ), array( 'vc-backend-actions-js' ), WPB_VC_VERSION, true );
-		// used in tta shortcodes, and panels.
-		wp_register_script( 'vc_accordion_script', vc_asset_url( 'lib/vc_accordion/vc-accordion.min.js' ), array( 'jquery' ), WPB_VC_VERSION, true );
-		wp_register_script( 'wpb_php_js', vc_asset_url( 'lib/php.default/php.default.min.js' ), array( 'jquery' ), WPB_VC_VERSION, true );
-		// used as polyfill for JSON.stringify and etc
-		wp_register_script( 'wpb_json-js', vc_asset_url( 'lib/bower/json-js/json2.min.js' ), array(), WPB_VC_VERSION, true );
-		// used in post settings editor
-		wp_register_script( 'ace-editor', vc_asset_url( 'lib/bower/ace-builds/src-min-noconflict/ace.js' ), array( 'jquery' ), WPB_VC_VERSION, true );
-		wp_register_script( 'webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js' ); // Google Web Font CDN
-
-		wp_localize_script( 'vc-backend-actions-js', 'i18nLocale', visual_composer()->getEditorsLocale() );
-	}
-
-	public function registerBackendCss() {
-		wp_register_style( 'js_composer', vc_asset_url( 'css/js_composer_backend_editor.min.css' ), array(), WPB_VC_VERSION, false );
-
-		if ( $this->editorEnabled() ) {
-			/**
-			 * @deprecated, used for accordions/tabs/tours
-			 */
-			wp_register_style( 'ui-custom-theme', vc_asset_url( 'css/ui-custom-theme/jquery-ui-less.custom.min.css' ), array(), WPB_VC_VERSION, false );
-
-			/**
-			 * @todo check vc_add-element-deprecated-warning for fa icon usage ( set to our font )
-			 * also used in vc_icon shortcode
-			 */
-			wp_register_style( 'font-awesome', vc_asset_url( 'lib/bower/font-awesome/css/font-awesome.min.css' ), array(), WPB_VC_VERSION, false );
-
-			/**
-			 * @todo check for usages
-			 * definetelly used in edit form param: css_animation, but curreny vc_add_shortcode_param doesn't accept css [ @todo refactor that ]
-			 */
-			wp_register_style( 'animate-css', vc_asset_url( 'lib/bower/animate-css/animate.min.css' ), array(), WPB_VC_VERSION, false );
-		}
-	}
-
-	/**
-	 * @return bool
-	 */
-	public function editorEnabled() {
-		return vc_user_access()->part( 'backend_editor' )->can()->get();
-	}
-
-	/**
 	 * Output html for backend editor meta box.
 	 *
 	 * @param null|Wp_Post $post
@@ -191,6 +131,16 @@ class Vc_Backend_Editor implements Vc_Editor_Interface {
 	}
 
 	/**
+	 * Check is post type is valid for rendering VC backend editor.
+	 *
+	 * @return bool
+	 */
+	public function isValidPostType( $type = '' ) {
+		if( 'vc_grid_item' === $type ) { return false; }
+		return vc_check_post_type( ! empty( $type ) ? $type : get_post_type() );
+	}
+
+	/**
 	 * Enqueue required javascript libraries and css files.
 	 *
 	 * This method also setups reminder about license activation.
@@ -221,6 +171,111 @@ class Vc_Backend_Editor implements Vc_Editor_Interface {
 			$this->enqueueCss(); //needed for navbar @todo split
 		}
 		do_action( 'vc_backend_editor_enqueue_js_css' );
+	}
+
+	/**
+	 * Save generated shortcodes, html and visual composer status in posts meta.
+	 *
+	 * @deprecated 4.4
+	 * @since  3.0
+	 * @access public
+	 *
+	 * @param $post_id - current post id
+	 *
+	 * @return void
+	 */
+	public function save( $post_id ) {
+		_deprecated_function( '\Vc_Backend_Editor::save', '4.4 (will be removed in 4.10)', '\Vc_Post_Admin::save' );
+	}
+
+	/**
+	 * Create shortcode's string.
+	 *
+	 * @since  3.0
+	 * @access public
+	 * @deprecated 4.9
+	 */
+	public function elementBackendHtml() {
+		_deprecated_function( '\Vc_Backend_Editor::elementBackendHtml', '4.9 (will be removed in 4.10)' );
+		vc_user_access()
+			->checkAdminNonce()
+			->validateDie()
+			->wpAny( 'edit_posts', 'edit_pages' )
+			->validateDie()
+			->part( 'backend_editor' )
+			->can()// checks is backend_editor enabled( !== false )
+			->validateDie();
+
+		$data_element = vc_post_param( 'data_element' );
+
+		if ( 'vc_column' === $data_element && null !== vc_post_param( 'data_width' ) ) {
+			$output = do_shortcode( '[vc_column width="' . vc_post_param( 'data_width' ) . '"]' );
+			echo $output;
+		} elseif ( 'vc_row' === $data_element || 'vc_row_inner' === $data_element ) {
+			$output = do_shortcode( '[' . $data_element . ']' );
+			echo $output;
+		} else {
+			$output = do_shortcode( '[' . $data_element . ']' );
+			echo $output;
+		}
+		die();
+	}
+
+	/**
+	 * @deprecated 4.8
+	 * @return string
+	 */
+	public function showRulesValue() {
+		global $current_user;
+		wp_get_current_user();
+		/** @var $settings - get use group access rules */
+		$settings = vc_settings()->get( 'groups_access_rules' );
+		$role = is_object( $current_user ) && isset( $current_user->roles[0] ) ? $current_user->roles[0] : '';
+
+		return isset( $settings[ $role ]['show'] ) ? $settings[ $role ]['show'] : '';
+	}
+
+	public function registerBackendJavascript() {
+		// editor can be disabled but fe can be enabled. so we currently need this file. @todo maybe make backend-disabled.min.js
+		wp_register_script( 'vc-backend-actions-js', vc_asset_url( 'js/dist/backend-actions.min.js' ), array(
+			'jquery',
+			'backbone',
+			'underscore',
+		), WPB_VC_VERSION, true );
+		wp_register_script( 'vc-backend-min-js', vc_asset_url( 'js/dist/backend.min.js' ), array( 'vc-backend-actions-js' ), WPB_VC_VERSION, true );
+		// used in tta shortcodes, and panels.
+		wp_register_script( 'vc_accordion_script', vc_asset_url( 'lib/vc_accordion/vc-accordion.min.js' ), array( 'jquery' ), WPB_VC_VERSION, true );
+		wp_register_script( 'wpb_php_js', vc_asset_url( 'lib/php.default/php.default.min.js' ), array( 'jquery' ), WPB_VC_VERSION, true );
+		// used as polyfill for JSON.stringify and etc
+		wp_register_script( 'wpb_json-js', vc_asset_url( 'lib/bower/json-js/json2.min.js' ), array(), WPB_VC_VERSION, true );
+		// used in post settings editor
+		wp_register_script( 'ace-editor', vc_asset_url( 'lib/bower/ace-builds/src-min-noconflict/ace.js' ), array( 'jquery' ), WPB_VC_VERSION, true );
+		wp_register_script( 'webfont', '//ajax.googleapis.com/ajax/libs/webfont/1.4.7/webfont.js' ); // Google Web Font CDN
+
+		wp_localize_script( 'vc-backend-actions-js', 'i18nLocale', visual_composer()->getEditorsLocale() );
+	}
+
+	public function registerBackendCss() {
+		wp_register_style( 'js_composer', vc_asset_url( 'css/js_composer_backend_editor.min.css' ), array(), WPB_VC_VERSION, false );
+
+		if ( $this->editorEnabled() ) {
+			/**
+			 * @deprecated, used for accordions/tabs/tours
+			 */
+			wp_register_style( 'ui-custom-theme', vc_asset_url( 'css/ui-custom-theme/jquery-ui-less.custom.min.css' ), array(), WPB_VC_VERSION, false );
+
+			/**
+			 * @todo check vc_add-element-deprecated-warning for fa icon usage ( set to our font )
+			 * also used in vc_icon shortcode
+			 */
+			wp_register_style( 'font-awesome', vc_asset_url( 'lib/bower/font-awesome/css/font-awesome.min.css' ), array(), WPB_VC_VERSION, false );
+
+			/**
+			 * @todo check for usages
+			 * definetelly used in edit form param: css_animation, but curreny vc_add_shortcode_param doesn't accept css [ @todo refactor that ]
+			 */
+			wp_register_style( 'animate-css', vc_asset_url( 'lib/bower/animate-css/animate.min.css' ), array(), WPB_VC_VERSION, false );
+		}
 	}
 
 	public function enqueueJs() {
@@ -286,64 +341,9 @@ class Vc_Backend_Editor implements Vc_Editor_Interface {
 	}
 
 	/**
-	 * Save generated shortcodes, html and visual composer status in posts meta.
-	 *
-	 * @deprecated 4.4
-	 * @since  3.0
-	 * @access public
-	 *
-	 * @param $post_id - current post id
-	 *
-	 * @return void
+	 * @return bool
 	 */
-	public function save( $post_id ) {
-		_deprecated_function( '\Vc_Backend_Editor::save', '4.4 (will be removed in 4.10)', '\Vc_Post_Admin::save' );
-	}
-
-	/**
-	 * Create shortcode's string.
-	 *
-	 * @since  3.0
-	 * @access public
-	 * @deprecated 4.9
-	 */
-	public function elementBackendHtml() {
-		_deprecated_function( '\Vc_Backend_Editor::elementBackendHtml', '4.9 (will be removed in 4.10)' );
-		vc_user_access()
-			->checkAdminNonce()
-			->validateDie()
-			->wpAny( 'edit_posts', 'edit_pages' )
-			->validateDie()
-			->part( 'backend_editor' )
-			->can()// checks is backend_editor enabled( !== false )
-			->validateDie();
-
-		$data_element = vc_post_param( 'data_element' );
-
-		if ( 'vc_column' === $data_element && null !== vc_post_param( 'data_width' ) ) {
-			$output = do_shortcode( '[vc_column width="' . vc_post_param( 'data_width' ) . '"]' );
-			echo $output;
-		} elseif ( 'vc_row' === $data_element || 'vc_row_inner' === $data_element ) {
-			$output = do_shortcode( '[' . $data_element . ']' );
-			echo $output;
-		} else {
-			$output = do_shortcode( '[' . $data_element . ']' );
-			echo $output;
-		}
-		die();
-	}
-
-	/**
-	 * @deprecated 4.8
-	 * @return string
-	 */
-	public function showRulesValue() {
-		global $current_user;
-		wp_get_current_user();
-		/** @var $settings - get use group access rules */
-		$settings = vc_settings()->get( 'groups_access_rules' );
-		$role = is_object( $current_user ) && isset( $current_user->roles[0] ) ? $current_user->roles[0] : '';
-
-		return isset( $settings[ $role ]['show'] ) ? $settings[ $role ]['show'] : '';
+	public function editorEnabled() {
+		return vc_user_access()->part( 'backend_editor' )->can()->get();
 	}
 }

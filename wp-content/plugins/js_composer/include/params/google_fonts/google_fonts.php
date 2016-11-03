@@ -51,6 +51,21 @@ class Vc_Google_Fonts {
 	}
 
 	/**
+	 *
+	 * Load google fonts list for param
+	 * To change this list use add_filters('vc_google_fonts_get_fonts_filter','your_custom_function'); and change array
+	 * vc_filter: vc_google_fonts_get_fonts_filter
+	 * @since 4.3
+	 * @return array List of available fonts as array of objects. {"font_family":"Abril
+	 *     Fatface","font_styles":"regular","font_types":"400 regular:400:normal"}
+	 *
+	 * @return array
+	 */
+	public function _vc_google_fonts_get_fonts() {
+		return apply_filters( 'vc_google_fonts_get_fonts_filter', json_decode( $this->fonts_list ) );
+	}
+
+	/**
 	 * @param $attr
 	 * @param $value
 	 *
@@ -77,21 +92,6 @@ class Vc_Google_Fonts {
 		) );
 
 		return array( 'fields' => $fields, 'values' => $values );
-	}
-
-	/**
-	 *
-	 * Load google fonts list for param
-	 * To change this list use add_filters('vc_google_fonts_get_fonts_filter','your_custom_function'); and change array
-	 * vc_filter: vc_google_fonts_get_fonts_filter
-	 * @since 4.3
-	 * @return array List of available fonts as array of objects. {"font_family":"Abril
-	 *     Fatface","font_styles":"regular","font_types":"400 regular:400:normal"}
-	 *
-	 * @return array
-	 */
-	public function _vc_google_fonts_get_fonts() {
-		return apply_filters( 'vc_google_fonts_get_fonts_filter', json_decode( $this->fonts_list ) );
 	}
 }
 

@@ -4,13 +4,13 @@ if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
 }
 class TitanFrameworkOptionSave extends TitanFrameworkOption {
 
-	public $defaultSecondarySettings = array(
+	public $defaultSecondarySettings = [
 		'save' => '',
 		'reset' => '',
-		'use_reset' => true,
+		'use_reset' => TRUE,
 		'reset_question' => '',
 		'action' => 'save',
-	);
+	];
 
 	public function display() {
 		if ( ! empty( $this->owner->postID ) ) {

@@ -15,17 +15,6 @@ abstract class Vc_Access {
 	 */
 	protected $validAccess = true;
 
-	/**
-	 * Get current validation state and reset it to true. ( should be never called twice )
-	 * @return bool
-	 */
-	public function get() {
-		$result = $this->getValidAccess();
-		$this->setValidAccess( true );
-
-		return $result;
-	}
-
 	public function getValidAccess() {
 		return $this->validAccess;
 	}
@@ -37,45 +26,6 @@ abstract class Vc_Access {
 	 */
 	public function setValidAccess( $validAccess ) {
 		$this->validAccess = $validAccess;
-
-		return $this;
-	}
-
-	/**
-	 * Call die() function with message if access is invalid.
-	 *
-	 * @param string $message
-	 *
-	 * @return $this
-	 */
-	public function validateDie( $message = '' ) {
-		$result = $this->getValidAccess();
-		$this->setValidAccess( true );
-		if ( ! $result ) {
-			if ( defined( 'VC_DIE_EXCEPTION' ) && VC_DIE_EXCEPTION ) {
-				throw new Exception( $message );
-			} else {
-				die( $message );
-			}
-		}
-
-		return $this;
-	}
-
-	/**
-	 * Any of provided rules should be valid.
-	 * Usage: checkAny(
-	 *      'vc_verify_admin_nonce',
-	 *      array( 'current_user_can', 'edit_post', 12 ),
-	 *      array( 'current_user_can', 'edit_posts' ),
-	 * )
-	 * @return $this
-	 */
-	public function checkAny() {
-		if ( $this->getValidAccess() ) {
-			$args = func_get_args();
-			$this->checkMulti( 'check', true, $args );
-		}
 
 		return $this;
 	}
@@ -110,6 +60,74 @@ abstract class Vc_Access {
 	}
 
 	/**
+	 * Get current validation state and reset it to true. ( should be never called twice )
+	 * @return bool
+	 */
+	public function get() {
+		$result = $this->getValidAccess();
+		$this->setValidAccess( true );
+
+		return $result;
+	}
+
+	/**
+	 * Call die() function with message if access is invalid.
+	 *
+	 * @param string $message
+	 *
+	 * @return $this
+	 */
+	public function validateDie( $message = '' ) {
+		$result = $this->getValidAccess();
+		$this->setValidAccess( true );
+		if ( ! $result ) {
+			if ( defined( 'VC_DIE_EXCEPTION' ) && VC_DIE_EXCEPTION ) {
+				throw new Exception( $message );
+			} else {
+				die( $message );
+			}
+		}
+
+		return $this;
+	}
+
+
+	/**
+	 * @param $func
+	 *
+	 * @return $this
+	 */
+	public function check( $func ) {
+		if ( $this->getValidAccess() ) {
+			$args = func_get_args();
+			$args = array_slice( $args, 1 );
+			if ( ! empty( $func ) ) {
+				$this->setValidAccess( call_user_func_array( $func, $args ) );
+			}
+		}
+
+		return $this;
+	}
+
+	/**
+	 * Any of provided rules should be valid.
+	 * Usage: checkAny(
+	 *      'vc_verify_admin_nonce',
+	 *      array( 'current_user_can', 'edit_post', 12 ),
+	 *      array( 'current_user_can', 'edit_posts' ),
+	 * )
+	 * @return $this
+	 */
+	public function checkAny() {
+		if ( $this->getValidAccess() ) {
+			$args = func_get_args();
+			$this->checkMulti( 'check', true, $args );
+		}
+
+		return $this;
+	}
+
+	/**
 	 * All provided rules should be valid.
 	 * Usage: checkAll(
 	 *      'vc_verify_admin_nonce',
@@ -134,23 +152,6 @@ abstract class Vc_Access {
 	 */
 	public function checkAdminNonce( $nonce = '' ) {
 		return $this->check( 'vc_verify_admin_nonce', $nonce );
-	}
-
-	/**
-	 * @param $func
-	 *
-	 * @return $this
-	 */
-	public function check( $func ) {
-		if ( $this->getValidAccess() ) {
-			$args = func_get_args();
-			$args = array_slice( $args, 1 );
-			if ( ! empty( $func ) ) {
-				$this->setValidAccess( call_user_func_array( $func, $args ) );
-			}
-		}
-
-		return $this;
 	}
 
 	/**

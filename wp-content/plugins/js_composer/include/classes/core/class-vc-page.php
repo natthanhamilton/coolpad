@@ -45,13 +45,6 @@ class Vc_Page implements Vc_Render {
 		return $this;
 	}
 
-	public function render() {
-		vc_include_template( $this->getTemplatePath(),
-			array(
-				'page' => $this,
-			) );
-	}
-
 	/**
 	 * @return mixed
 	 */
@@ -68,5 +61,12 @@ class Vc_Page implements Vc_Render {
 		$this->templatePath = $templatePath;
 
 		return $this;
+	}
+
+	public function render() {
+		vc_include_template( $this->getTemplatePath(),
+			array(
+				'page' => $this,
+			) );
 	}
 }

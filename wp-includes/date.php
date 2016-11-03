@@ -2,13 +2,13 @@
 /**
  * Class for generating SQL clauses that filter a primary query according to date.
  *
- * `WP_Date_Query` is a helper that allows primary query classes, such as {@see WP_Query},
- * to filter their results by date columns, by generating `WHERE` subclauses to be attached
- * to the primary SQL query string.
+ * WP_Date_Query is a helper that allows primary query classes, such as WP_Query, to filter
+ * their results by date columns, by generating `WHERE` subclauses to be attached to the
+ * primary SQL query string.
  *
  * Attempting to filter by an invalid date value (eg month=13) will generate SQL that will
  * return no results. In these cases, a _doing_it_wrong() error notice is also thrown.
- * See {@link WP_Date_Query::validate_date_values()}.
+ * See WP_Date_Query::validate_date_values().
  *
  * @link https://codex.wordpress.org/Function_Reference/WP_Query Codex page.
  *
@@ -18,7 +18,7 @@ class WP_Date_Query {
 	/**
 	 * Array of date queries.
 	 *
-	 * See {@see WP_Date_Query::__construct()} for information on date query arguments.
+	 * See WP_Date_Query::__construct() for information on date query arguments.
 	 *
 	 * @since 3.7.0
 	 * @access public
@@ -185,92 +185,6 @@ class WP_Date_Query {
 	}
 
 	/**
-	 * Validates a column name parameter.
-	 *
-	 * Column names without a table prefix (like 'post_date') are checked against a whitelist of
-	 * known tables, and then, if found, have a table prefix (such as 'wp_posts.') prepended.
-	 * Prefixed column names (such as 'wp_posts.post_date') bypass this whitelist check,
-	 * and are only sanitized to remove illegal characters.
-	 *
-	 * @since 3.7.0
-	 * @access public
-	 *
-	 * @param string $column The user-supplied column name.
-	 * @return string A validated column name value.
-	 */
-	public function validate_column( $column ) {
-		global $wpdb;
-
-		$valid_columns = array(
-			'post_date', 'post_date_gmt', 'post_modified',
-			'post_modified_gmt', 'comment_date', 'comment_date_gmt',
-			'user_registered',
-		);
-
-		// Attempt to detect a table prefix.
-		if ( false === strpos( $column, '.' ) ) {
-			/**
-			 * Filter the list of valid date query columns.
-			 *
-			 * @since 3.7.0
-			 * @since 4.1.0 Added 'user_registered' to the default recognized columns.
-			 *
-			 * @param array $valid_columns An array of valid date query columns. Defaults
-			 *                             are 'post_date', 'post_date_gmt', 'post_modified',
-			 *                             'post_modified_gmt', 'comment_date', 'comment_date_gmt',
-			 *	                           'user_registered'
-			 */
-			if ( ! in_array( $column, apply_filters( 'date_query_valid_columns', $valid_columns ) ) ) {
-				$column = 'post_date';
-			}
-
-			$known_columns = array(
-				$wpdb->posts => array(
-					'post_date',
-					'post_date_gmt',
-					'post_modified',
-					'post_modified_gmt',
-				),
-				$wpdb->comments => array(
-					'comment_date',
-					'comment_date_gmt',
-				),
-				$wpdb->users => array(
-					'user_registered',
-				),
-			);
-
-			// If it's a known column name, add the appropriate table prefix.
-			foreach ( $known_columns as $table_name => $table_columns ) {
-				if ( in_array( $column, $table_columns ) ) {
-					$column = $table_name . '.' . $column;
-					break;
-				}
-			}
-
-		}
-
-		// Remove unsafe characters.
-		return preg_replace( '/[^a-zA-Z0-9_$\.]/', '', $column );
-	}
-
-	/**
-	 * Determines and validates what comparison operator to use.
-	 *
-	 * @since 3.7.0
-	 * @access public
-	 *
-	 * @param array $query A date query or a date subquery.
-	 * @return string The comparison operator.
-	 */
-	public function get_compare( $query ) {
-		if ( ! empty( $query['compare'] ) && in_array( $query['compare'], array( '=', '!=', '>', '>=', '<', '<=', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN' ) ) )
-			return strtoupper( $query['compare'] );
-
-		return $this->compare;
-	}
-
-	/**
 	 * Recursive-friendly query sanitizer.
 	 *
 	 * Ensures that each query-level clause has a 'relation' key, and that
@@ -344,6 +258,22 @@ class WP_Date_Query {
 	protected function is_first_order_clause( $query ) {
 		$time_keys = array_intersect( $this->time_keys, array_keys( $query ) );
 		return ! empty( $time_keys );
+	}
+
+	/**
+	 * Determines and validates what comparison operator to use.
+	 *
+	 * @since 3.7.0
+	 * @access public
+	 *
+	 * @param array $query A date query or a date subquery.
+	 * @return string The comparison operator.
+	 */
+	public function get_compare( $query ) {
+		if ( ! empty( $query['compare'] ) && in_array( $query['compare'], array( '=', '!=', '>', '>=', '<', '<=', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN' ) ) )
+			return strtoupper( $query['compare'] );
+
+		return $this->compare;
 	}
 
 	/**
@@ -542,6 +472,80 @@ class WP_Date_Query {
 	}
 
 	/**
+	 * Validates a column name parameter.
+	 *
+	 * Column names without a table prefix (like 'post_date') are checked against a whitelist of
+	 * known tables, and then, if found, have a table prefix (such as 'wp_posts.') prepended.
+	 * Prefixed column names (such as 'wp_posts.post_date') bypass this whitelist check,
+	 * and are only sanitized to remove illegal characters.
+	 *
+	 * @since 3.7.0
+	 * @access public
+	 *
+	 * @param string $column The user-supplied column name.
+	 * @return string A validated column name value.
+	 */
+	public function validate_column( $column ) {
+		global $wpdb;
+
+		$valid_columns = array(
+			'post_date', 'post_date_gmt', 'post_modified',
+			'post_modified_gmt', 'comment_date', 'comment_date_gmt',
+			'user_registered', 'registered', 'last_updated',
+		);
+
+		// Attempt to detect a table prefix.
+		if ( false === strpos( $column, '.' ) ) {
+			/**
+			 * Filters the list of valid date query columns.
+			 *
+			 * @since 3.7.0
+			 * @since 4.1.0 Added 'user_registered' to the default recognized columns.
+			 *
+			 * @param array $valid_columns An array of valid date query columns. Defaults
+			 *                             are 'post_date', 'post_date_gmt', 'post_modified',
+			 *                             'post_modified_gmt', 'comment_date', 'comment_date_gmt',
+			 *	                           'user_registered'
+			 */
+			if ( ! in_array( $column, apply_filters( 'date_query_valid_columns', $valid_columns ) ) ) {
+				$column = 'post_date';
+			}
+
+			$known_columns = array(
+				$wpdb->posts => array(
+					'post_date',
+					'post_date_gmt',
+					'post_modified',
+					'post_modified_gmt',
+				),
+				$wpdb->comments => array(
+					'comment_date',
+					'comment_date_gmt',
+				),
+				$wpdb->users => array(
+					'user_registered',
+				),
+				$wpdb->blogs => array(
+					'registered',
+					'last_updated',
+				),
+			);
+
+			// If it's a known column name, add the appropriate table prefix.
+			foreach ( $known_columns as $table_name => $table_columns ) {
+				if ( in_array( $column, $table_columns ) ) {
+					$column = $table_name . '.' . $column;
+					break;
+				}
+			}
+
+		}
+
+		// Remove unsafe characters.
+		return preg_replace( '/[^a-zA-Z0-9_$\.]/', '', $column );
+	}
+
+	/**
 	 * Generate WHERE clause to be appended to a main query.
 	 *
 	 * @since 3.7.0
@@ -555,7 +559,7 @@ class WP_Date_Query {
 		$where = $sql['where'];
 
 		/**
-		 * Filter the date query WHERE clause.
+		 * Filters the date query WHERE clause.
 		 *
 		 * @since 3.7.0
 		 *
@@ -568,8 +572,8 @@ class WP_Date_Query {
 	/**
 	 * Generate SQL clauses to be appended to a main query.
 	 *
-	 * Called by the public {@see WP_Date_Query::get_sql()}, this method
-	 * is abstracted out to maintain parity with the other Query classes.
+	 * Called by the public WP_Date_Query::get_sql(), this method is abstracted
+	 * out to maintain parity with the other Query classes.
 	 *
 	 * @since 4.1.0
 	 * @access protected
@@ -677,6 +681,27 @@ class WP_Date_Query {
 	}
 
 	/**
+	 * Turns a single date clause into pieces for a WHERE clause.
+	 *
+	 * A wrapper for get_sql_for_clause(), included here for backward
+	 * compatibility while retaining the naming convention across Query classes.
+	 *
+	 * @since  3.7.0
+	 * @access protected
+	 *
+	 * @param  array $query Date query arguments.
+	 * @return array {
+	 *     Array containing JOIN and WHERE SQL clauses to append to the main query.
+	 *
+	 *     @type string $join  SQL fragment to append to the main JOIN clause.
+	 *     @type string $where SQL fragment to append to the main WHERE clause.
+	 * }
+	 */
+	protected function get_sql_for_subquery( $query ) {
+		return $this->get_sql_for_clause( $query, '' );
+	}
+
+	/**
 	 * Turns a first-order date query into SQL for a WHERE clause.
 	 *
 	 * @since  4.1.0
@@ -772,6 +797,62 @@ class WP_Date_Query {
 	}
 
 	/**
+	 * Builds and validates a value string based on the comparison operator.
+	 *
+	 * @since 3.7.0
+	 * @access public
+	 *
+	 * @param string $compare The compare operator to use
+	 * @param string|array $value The value
+	 * @return string|false|int The value to be used in SQL or false on error.
+	 */
+	public function build_value( $compare, $value ) {
+		if ( ! isset( $value ) )
+			return false;
+
+		switch ( $compare ) {
+			case 'IN':
+			case 'NOT IN':
+				$value = (array) $value;
+
+				// Remove non-numeric values.
+				$value = array_filter( $value, 'is_numeric' );
+
+				if ( empty( $value ) ) {
+					return false;
+				}
+
+				return '(' . implode( ',', array_map( 'intval', $value ) ) . ')';
+
+			case 'BETWEEN':
+			case 'NOT BETWEEN':
+				if ( ! is_array( $value ) || 2 != count( $value ) ) {
+					$value = array( $value, $value );
+				} else {
+					$value = array_values( $value );
+				}
+
+				// If either value is non-numeric, bail.
+				foreach ( $value as $v ) {
+					if ( ! is_numeric( $v ) ) {
+						return false;
+					}
+				}
+
+				$value = array_map( 'intval', $value );
+
+				return $value[0] . ' AND ' . $value[1];
+
+			default;
+				if ( ! is_numeric( $value ) ) {
+					return false;
+				}
+
+				return (int) $value;
+		}
+	}
+
+	/**
 	 * Builds a MySQL format date/time based on some query parameters.
 	 *
 	 * You can pass an array of values (year, month, etc.) with missing parameter values being defaulted to
@@ -860,62 +941,6 @@ class WP_Date_Query {
 	}
 
 	/**
-	 * Builds and validates a value string based on the comparison operator.
-	 *
-	 * @since 3.7.0
-	 * @access public
-	 *
-	 * @param string $compare The compare operator to use
-	 * @param string|array $value The value
-	 * @return string|false|int The value to be used in SQL or false on error.
-	 */
-	public function build_value( $compare, $value ) {
-		if ( ! isset( $value ) )
-			return false;
-
-		switch ( $compare ) {
-			case 'IN':
-			case 'NOT IN':
-				$value = (array) $value;
-
-				// Remove non-numeric values.
-				$value = array_filter( $value, 'is_numeric' );
-
-				if ( empty( $value ) ) {
-					return false;
-				}
-
-				return '(' . implode( ',', array_map( 'intval', $value ) ) . ')';
-
-			case 'BETWEEN':
-			case 'NOT BETWEEN':
-				if ( ! is_array( $value ) || 2 != count( $value ) ) {
-					$value = array( $value, $value );
-				} else {
-					$value = array_values( $value );
-				}
-
-				// If either value is non-numeric, bail.
-				foreach ( $value as $v ) {
-					if ( ! is_numeric( $v ) ) {
-						return false;
-					}
-				}
-
-				$value = array_map( 'intval', $value );
-
-				return $value[0] . ' AND ' . $value[1];
-
-			default;
-				if ( ! is_numeric( $value ) ) {
-					return false;
-				}
-
-				return (int) $value;
-		}
-	}
-
-	/**
 	 * Builds a query string for comparing time values (hour, minute, second).
 	 *
 	 * If just hour, minute, or second is set than a normal comparison will be done.
@@ -989,26 +1014,5 @@ class WP_Date_Query {
 		}
 
 		return $wpdb->prepare( "DATE_FORMAT( $column, %s ) $compare %f", $format, $time );
-	}
-
-	/**
-	 * Turns a single date clause into pieces for a WHERE clause.
-	 *
-	 * A wrapper for get_sql_for_clause(), included here for backward
-	 * compatibility while retaining the naming convention across Query classes.
-	 *
-	 * @since  3.7.0
-	 * @access protected
-	 *
-	 * @param  array $query Date query arguments.
-	 * @return array {
-	 *     Array containing JOIN and WHERE SQL clauses to append to the main query.
-	 *
-	 *     @type string $join  SQL fragment to append to the main JOIN clause.
-	 *     @type string $where SQL fragment to append to the main WHERE clause.
-	 * }
-	 */
-	protected function get_sql_for_subquery( $query ) {
-		return $this->get_sql_for_clause( $query, '' );
 	}
 }

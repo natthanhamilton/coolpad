@@ -1,12 +1,10 @@
 <?php
-
 /**
  * Search Loop - Single Topic
  *
- * @package bbPress
+ * @package    bbPress
  * @subpackage Theme
  */
-
 ?>
 
 <div class="bbp-topic-header">
@@ -48,7 +46,7 @@
 
         <?php do_action('bbp_theme_before_topic_author_details'); ?>
 
-        <?php bbp_topic_author_link(array('type' => 'avatar', 'show_role' => FALSE)); ?>
+        <?php bbp_topic_author_link(['type' => 'avatar', 'show_role' => FALSE]); ?>
 
         <?php if (bbp_is_user_keymaster()) : ?>
 
@@ -66,7 +64,7 @@
 
     <div class="bbp-meta">
 
-        <?php bbp_topic_author_link(array('type' => 'name', 'show_role' => FALSE)); ?>
+        <?php bbp_topic_author_link(['type' => 'name', 'show_role' => FALSE]); ?>
         <span class="bbp-topic-post-date"><?php bbp_topic_post_date(bbp_get_topic_id()); ?></span>
 
     </div>

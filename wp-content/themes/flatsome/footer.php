@@ -4,7 +4,6 @@
  *
  * @package flatsome
  */
-
 global $flatsome_opt;
 ?>
 
@@ -12,8 +11,7 @@ global $flatsome_opt;
 </div><!-- #main-content -->
 
 <footer class="footer-wrapper" role="contentinfo">
-    <?php if (isset($flatsome_opt['html_before_footer']))
-    {
+    <?php if (isset($flatsome_opt['html_before_footer'])) {
         // BEFORE FOOTER HTML BLOCK
         echo do_shortcode($flatsome_opt['html_before_footer']);
     } ?>
@@ -40,8 +38,7 @@ global $flatsome_opt;
         </div><!-- end footer 2 -->
     <?php endif; ?>
 
-    <?php if (isset($flatsome_opt['html_after_footer']))
-    {
+    <?php if (isset($flatsome_opt['html_after_footer'])) {
         // AFTER FOOTER HTML BLOCK
         echo do_shortcode($flatsome_opt['html_after_footer']);
     } ?>
@@ -53,30 +50,24 @@ global $flatsome_opt;
                 <div class="left">
                     <?php if (has_nav_menu('footer')) : ?>
                         <?php
-                        wp_nav_menu(array(
-                            'theme_location' => 'footer',
-                            'menu_class'     => 'footer-nav',
-                            'depth'          => 1,
-                            'fallback_cb'    => FALSE,
-                        ));
+                        wp_nav_menu([
+                                        'theme_location' => 'footer',
+                                        'menu_class'     => 'footer-nav',
+                                        'depth'          => 1,
+                                        'fallback_cb'    => FALSE,
+                                    ]);
                         ?>
                     <?php endif; ?>
-                    <div class="copyright-footer"><?php if (isset($flatsome_opt['footer_left_text']))
-                        {
+                    <div class="copyright-footer"><?php if (isset($flatsome_opt['footer_left_text'])) {
                             echo do_shortcode($flatsome_opt['footer_left_text']);
-                        }
-                        else
-                        {
+                        } else {
                             echo 'Define left footer text / navigation in Theme Option Panel';
                         } ?></div>
                 </div><!-- .left -->
                 <div class="right">
-                    <?php if (isset($flatsome_opt['footer_right_text']))
-                    {
+                    <?php if (isset($flatsome_opt['footer_right_text'])) {
                         echo do_shortcode($flatsome_opt['footer_right_text']);
-                    }
-                    else
-                    {
+                    } else {
                         echo 'Define right footer text in Theme Option Panel';
                     } ?>
                 </div>
@@ -89,8 +80,7 @@ global $flatsome_opt;
 <!-- back to top -->
 <a href="#top" id="top-link" class="animated fadeInUp"><span class="icon-angle-up"></span></a>
 
-<?php if (isset($flatsome_opt['html_scripts_footer']))
-{
+<?php if (isset($flatsome_opt['html_scripts_footer'])) {
     // Insert footer scripts
     echo $flatsome_opt['html_scripts_footer'];
 } ?>

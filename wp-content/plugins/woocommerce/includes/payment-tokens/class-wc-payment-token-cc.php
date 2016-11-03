@@ -1,5 +1,5 @@
 <?php
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly
 }
 
@@ -8,14 +8,13 @@ if ( ! defined( 'ABSPATH' ) ) {
  *
  * Representation of a payment token for credit cards.
  *
- * @class 		WC_Payment_Token_CC
- * @since		2.6.0
- * @category 	PaymentTokens
- * @package 	WooCommerce/PaymentTokens
- * @author		WooThemes
+ * @class         WC_Payment_Token_CC
+ * @since         2.6.0
+ * @category      PaymentTokens
+ * @package       WooCommerce/PaymentTokens
+ * @author        WooThemes
  */
 class WC_Payment_Token_CC extends WC_Payment_Token {
-
 	/** @protected string Token Type String. */
 	protected $type = 'CC';
 
@@ -32,118 +31,126 @@ class WC_Payment_Token_CC extends WC_Payment_Token {
 	 * @return boolean True if the passed data is valid
 	 */
 	public function validate() {
-		if ( false === parent::validate() ) {
-			return false;
+		if (FALSE === parent::validate()) {
+			return FALSE;
+		}
+		if (!$this->get_last4()) {
+			return FALSE;
+		}
+		if (!$this->get_expiry_year()) {
+			return FALSE;
+		}
+		if (!$this->get_expiry_month()) {
+			return FALSE;
+		}
+		if (!$this->get_card_type()) {
+			return FALSE;
+		}
+		if (4 !== strlen($this->get_expiry_year())) {
+			return FALSE;
+		}
+		if (2 !== strlen($this->get_expiry_month())) {
+			return FALSE;
 		}
 
-		if ( ! $this->get_last4() ) {
-			return false;
-		}
-
-		if ( ! $this->get_expiry_year() ) {
-			return false;
-		}
-
-		if ( ! $this->get_expiry_month() ) {
-			return false;
-		}
-
-		if ( ! $this->get_card_type() ) {
-			return false;
-		}
-
-		if ( 4 !== strlen( $this->get_expiry_year() ) ) {
-			return false;
-		}
-
-		if ( 2 !== strlen( $this->get_expiry_month() ) ) {
-			return false;
-		}
-
-		return true;
+		return TRUE;
 	}
 
 	/**
 	 * Returns the last four digits.
+	 *
 	 * @since 2.6.0
 	 * @return string Last 4 digits
 	 */
 	public function get_last4() {
-		return $this->get_meta( 'last4' );
+		return $this->get_meta('last4');
 	}
 
 	/**
 	 * Returns the card expiration year (YYYY).
+	 *
 	 * @since 2.6.0
 	 * @return string Expiration year
 	 */
 	public function get_expiry_year() {
-		return $this->get_meta( 'expiry_year' );
+		return $this->get_meta('expiry_year');
 	}
 
 	/**
 	 * Returns the card expiration month (MM).
+	 *
 	 * @since 2.6.0
 	 * @return string Expiration month
 	 */
 	public function get_expiry_month() {
-		return $this->get_meta( 'expiry_month' );
+		return $this->get_meta('expiry_month');
 	}
 
 	/**
 	 * Returns the card type (mastercard, visa, ...).
+	 *
 	 * @since 2.6.0
 	 * @return string Card type
 	 */
 	public function get_card_type() {
-		return $this->get_meta( 'card_type' );
+		return $this->get_meta('card_type');
 	}
 
 	/**
 	 * Get type to display to user.
+	 *
 	 * @return string
 	 */
 	public function get_display_name() {
-		$display = wc_get_credit_card_type_label( $this->get_card_type() );
-		$display .= '&nbsp;' . sprintf( __( 'ending in %s', 'woocommerce' ), $this->get_last4() );
-		$display .= ' ' . sprintf( __( '(expires %s)', 'woocommerce' ), $this->get_expiry_month() . '/' . substr( $this->get_expiry_year(), 2 ) );
+		$display = wc_get_credit_card_type_label($this->get_card_type());
+		$display .= '&nbsp;' . sprintf(__('ending in %s', 'woocommerce'), $this->get_last4());
+		$display .= ' ' . sprintf(__('(expires %s)', 'woocommerce'),
+		                          $this->get_expiry_month() . '/' . substr($this->get_expiry_year(), 2));
+
 		return $display;
 	}
 
 	/**
 	 * Set the card type (mastercard, visa, ...).
+	 *
 	 * @since 2.6.0
+	 *
 	 * @param string $type
 	 */
-	public function set_card_type( $type ) {
-		$this->add_meta_data( 'card_type', $type, true );
+	public function set_card_type($type) {
+		$this->add_meta_data('card_type', $type, TRUE);
 	}
 
 	/**
 	 * Set the expiration year for the card (YYYY format).
+	 *
 	 * @since 2.6.0
+	 *
 	 * @param string $year
 	 */
-	public function set_expiry_year( $year ) {
-		$this->add_meta_data( 'expiry_year', $year, true );
+	public function set_expiry_year($year) {
+		$this->add_meta_data('expiry_year', $year, TRUE);
 	}
 
 	/**
 	 * Set the expiration month for the card (formats into MM format).
+	 *
 	 * @since 2.6.0
+	 *
 	 * @param string $month
 	 */
-	public function set_expiry_month( $month ) {
-		$this->add_meta_data( 'expiry_month', str_pad( $month, 2, '0', STR_PAD_LEFT ), true );
+	public function set_expiry_month($month) {
+		$this->add_meta_data('expiry_month', str_pad($month, 2, '0', STR_PAD_LEFT), TRUE);
 	}
 
 	/**
 	 * Set the last four digits.
+	 *
 	 * @since 2.6.0
+	 *
 	 * @param string $last4
 	 */
-	public function set_last4( $last4 ) {
-		$this->add_meta_data( 'last4', $last4, true );
+	public function set_last4($last4) {
+		$this->add_meta_data('last4', $last4, TRUE);
 	}
-
 }

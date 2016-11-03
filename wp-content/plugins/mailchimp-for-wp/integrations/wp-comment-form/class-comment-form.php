@@ -1,6 +1,5 @@
 <?php
-
-defined( 'ABSPATH' ) or exit;
+defined('ABSPATH') or exit;
 
 /**
  * Class MC4WP_Comment_Form_Integration
@@ -8,7 +7,6 @@ defined( 'ABSPATH' ) or exit;
  * @ignore
  */
 class MC4WP_Comment_Form_Integration extends MC4WP_Integration {
-
 	/**
 	 * @var string
 	 */
@@ -20,38 +18,36 @@ class MC4WP_Comment_Form_Integration extends MC4WP_Integration {
 	/**
 	 * @var bool
 	 */
-	protected $added_through_filter = false;
+	protected $added_through_filter = FALSE;
 
 	/**
 	 * Add hooks
 	 */
 	public function add_hooks() {
-
-		if( ! $this->options['implicit'] ) {
+		if (!$this->options['implicit']) {
 			// hooks for outputting the checkbox
-			add_filter( 'comment_form_submit_field', array( $this, 'add_checkbox_before_submit_button' ), 90 );
-
-			add_action( 'thesis_hook_after_comment_box', array( $this, 'maybe_output_checkbox' ), 90 );
-			add_action( 'comment_form', array( $this, 'maybe_output_checkbox' ), 90 );
+			add_filter('comment_form_submit_field', [$this, 'add_checkbox_before_submit_button'], 90);
+			add_action('thesis_hook_after_comment_box', [$this, 'maybe_output_checkbox'], 90);
+			add_action('comment_form', [$this, 'maybe_output_checkbox'], 90);
 		}
-
 		// hooks for checking if we should subscribe the commenter
-		add_action( 'comment_post', array( $this, 'subscribe_from_comment' ), 40, 2 );
+		add_action('comment_post', [$this, 'subscribe_from_comment'], 40, 2);
 	}
 
 	/**
 	 * @return bool
 	 */
 	public function is_installed() {
-		return true;
+		return TRUE;
 	}
 
 	/**
 	 * {@inheritdoc }
 	 */
-	public function get_object_link( $object_id ) {
-		$comment = get_comment( $object_id );
-		return sprintf( '<a href="%s">Comment #%d</a>', get_edit_comment_link( $object_id ), $object_id );
+	public function get_object_link($object_id) {
+		$comment = get_comment($object_id);
+
+		return sprintf('<a href="%s">Comment #%d</a>', get_edit_comment_link($object_id), $object_id);
 	}
 
 	/**
@@ -61,8 +57,9 @@ class MC4WP_Comment_Form_Integration extends MC4WP_Integration {
 	 *
 	 * @return string
 	 */
-	public function add_checkbox_before_submit_button( $submit_button_html ) {
-		$this->added_through_filter = true;
+	public function add_checkbox_before_submit_button($submit_button_html) {
+		$this->added_through_filter = TRUE;
+
 		return $this->get_checkbox_html() . $submit_button_html;
 	}
 
@@ -71,7 +68,7 @@ class MC4WP_Comment_Form_Integration extends MC4WP_Integration {
 	 * Will output the checkbox if comment_form() function does not use `comment_form_submit_field` filter yet.
 	 */
 	public function maybe_output_checkbox() {
-		if( ! $this->added_through_filter ) {
+		if (!$this->added_through_filter) {
 			$this->output_checkbox();
 		}
 	}
@@ -84,27 +81,22 @@ class MC4WP_Comment_Form_Integration extends MC4WP_Integration {
 	 *
 	 * @return bool|string
 	 */
-	public function subscribe_from_comment( $comment_id, $comment_approved = '' ) {
-
+	public function subscribe_from_comment($comment_id, $comment_approved = '') {
 		// was sign-up checkbox checked?
-		if ( ! $this->triggered() ) {
-			return false;
+		if (!$this->triggered()) {
+			return FALSE;
 		}
-
 		// is this a spam comment?
-		if ( $comment_approved === 'spam' ) {
-			return false;
+		if ($comment_approved === 'spam') {
+			return FALSE;
 		}
-
-		$comment = get_comment( $comment_id );
-
-		$email = $comment->comment_author_email;
-		$merge_vars = array(
-			'NAME' => $comment->comment_author,
+		$comment = get_comment($comment_id);
+		$email      = $comment->comment_author_email;
+		$merge_vars = [
+			'NAME'     => $comment->comment_author,
 			'OPTIN_IP' => $comment->comment_author_IP,
-		);
+		];
 
-		return $this->subscribe( $email, $merge_vars, $comment_id );
+		return $this->subscribe($email, $merge_vars, $comment_id);
 	}
-
 }

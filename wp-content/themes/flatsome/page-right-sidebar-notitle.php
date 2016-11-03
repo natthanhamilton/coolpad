@@ -4,8 +4,7 @@ Template name: Right sidebar - No title
 */
 get_header(); ?>
 
-<?php if (has_excerpt())
-{ ?>
+<?php if (has_excerpt()) { ?>
     <div class="page-header">
         <?php the_excerpt(); ?>
     </div>
@@ -21,10 +20,10 @@ get_header(); ?>
                         <div class="entry-content">
                             <?php the_content(); ?>
                             <?php
-                            wp_link_pages(array(
-                                'before' => '<div class="page-links">' . __('Pages:', 'flatsome'),
-                                'after'  => '</div>',
-                            ));
+                            wp_link_pages([
+                                              'before' => '<div class="page-links">' . __('Pages:', 'flatsome'),
+                                              'after'  => '</div>',
+                                          ]);
                             ?>
                         </div><!-- .entry-content -->
                     </article><!-- #post-## -->

@@ -24,15 +24,17 @@ class getid3_dts extends getid3_handler
 	* Default DTS syncword used in native .cpt or .dts formats
 	*/
     const syncword = "\x7F\xFE\x80\x01";
-/**
+
+	private $readBinDataOffset = 0;
+
+    /**
     * Possible syncwords indicating bitstream encoding
     */
     public static $syncwords = array(
     	0 => "\x7F\xFE\x80\x01",  // raw big-endian
     	1 => "\xFE\x7F\x01\x80",  // raw little-endian
     	2 => "\x1F\xFF\xE8\x00",  // 14-bit big-endian
-    	3 => "\xFF\x1F\x00\xE8");
-	private $readBinDataOffset = 0; // 14-bit little-endian
+    	3 => "\xFF\x1F\x00\xE8"); // 14-bit little-endian
 
 	public function Analyze() {
 		$info = &$this->getid3->info;
@@ -182,16 +184,6 @@ class getid3_dts extends getid3_handler
 		return (isset($lookup[$index]) ? $lookup[$index] : false);
 	}
 
-	public static function bitPerSampleLookup($index) {
-		static $lookup = array(
-			0  => 16,
-			1  => 20,
-			2  => 24,
-			3  => 24,
-		);
-		return (isset($lookup[$index]) ? $lookup[$index] : false);
-	}
-
 	public static function sampleRateLookup($index) {
 		static $lookup = array(
 			0  => 'invalid',
@@ -214,16 +206,14 @@ class getid3_dts extends getid3_handler
 		return (isset($lookup[$index]) ? $lookup[$index] : false);
 	}
 
-	public static function dialogNormalization($index, $version) {
-		switch ($version) {
-			case 7:
-				return 0 - $index;
-				break;
-			case 6:
-				return 0 - 16 - $index;
-				break;
-		}
-		return false;
+	public static function bitPerSampleLookup($index) {
+		static $lookup = array(
+			0  => 16,
+			1  => 20,
+			2  => 24,
+			3  => 24,
+		);
+		return (isset($lookup[$index]) ? $lookup[$index] : false);
 	}
 
 	public static function numChannelsLookup($index) {
@@ -284,6 +274,18 @@ class getid3_dts extends getid3_handler
 			15 => 'CL + C+ CR + L + R + SL + S + SR',
 		);
 		return (isset($lookup[$index]) ? $lookup[$index] : 'user-defined');
+	}
+
+	public static function dialogNormalization($index, $version) {
+		switch ($version) {
+			case 7:
+				return 0 - $index;
+				break;
+			case 6:
+				return 0 - 16 - $index;
+				break;
+		}
+		return false;
 	}
 
 }

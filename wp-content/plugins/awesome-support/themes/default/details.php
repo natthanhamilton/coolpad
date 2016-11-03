@@ -7,18 +7,14 @@
  * and then modify the code. If you modify this file directly, your changes
  * will be overwritten during next update of the plugin.
  */
-
 /* Exit if accessed directly */
-if (! defined('ABSPATH'))
-{
+if (!defined('ABSPATH')) {
     exit;
 }
-
 /**
  * @var $post WP_Post
  */
 global $post;
-
 /* Get author meta */
 $author = get_user_by('id', $post->post_author);
 ?>
@@ -52,9 +48,12 @@ $author = get_user_by('id', $post->post_author);
                         <time class="wpas-timestamp"
                               datetime="<?php echo get_the_date('Y-m-d\TH:i:s') . wpas_get_offset_html5(); ?>">
                             <span
-                                class="wpas-human-date"><?php echo get_the_date(get_option('date_format') . ' ' . get_option('time_format'), $post->ID); ?></span>
+                                class="wpas-human-date"><?php echo get_the_date(get_option('date_format') . ' ' . get_option('time_format'),
+                                                                                $post->ID); ?></span>
                             <span
-                                class="wpas-date-ago"><?php printf(__('%s ago', 'awesome-support'), human_time_diff(get_the_time('U', $post->ID), current_time('timestamp'))); ?></span>
+                                class="wpas-date-ago"><?php printf(__('%s ago', 'awesome-support'),
+                                                                   human_time_diff(get_the_time('U', $post->ID),
+                                                                                   current_time('timestamp'))); ?></span>
                         </time>
                     </div>
                 </div>
@@ -66,12 +65,11 @@ $author = get_user_by('id', $post->post_author);
                  * @since  3.0.0
                  */
                 do_action('wpas_frontend_ticket_content_before', $post->ID, $post);
-
                 /**
                  * Display the original ticket's content
                  */
-                echo '<div class="wpas-reply-content">' . make_clickable(apply_filters('the_content', $post->post_content)) . '</div>';
-
+                echo '<div class="wpas-reply-content">' . make_clickable(apply_filters('the_content',
+                                                                                       $post->post_content)) . '</div>';
                 /**
                  * wpas_frontend_ticket_content_after hook
                  *
@@ -86,55 +84,48 @@ $author = get_user_by('id', $post->post_author);
 
         <?php
         // Set the number of replies
-        $replies_per_page = wpas_get_option('replies_per_page', 10);
+        $replies_per_page  = wpas_get_option('replies_per_page', 10);
         $force_all_replies = WPAS()->session->get('force_all_replies');
-
         // Check if we need to force displaying all the replies (direct link to a specific reply for instance)
-        if (TRUE === $force_all_replies)
-        {
+        if (TRUE === $force_all_replies) {
             $replies_per_page = -1;
             WPAS()->session->clean('force_all_replies'); // Clean the session
         }
-
-        $args = array(
+        $args = [
             'posts_per_page' => $replies_per_page,
             'no_found_rows'  => FALSE,
-        );
-
-        $replies = wpas_get_replies($post->ID, array('read', 'unread'), $args, 'wp_query');
-
+        ];
+        $replies = wpas_get_replies($post->ID, ['read', 'unread'], $args, 'wp_query');
         if ($replies->have_posts()):
-
             while ($replies->have_posts()):
-
                 $replies->the_post();
-                $user = get_userdata($post->post_author);
+                $user      = get_userdata($post->post_author);
                 $user_role = get_the_author_meta('roles');
                 $user_role = $user_role[0];
-                $time_ago = human_time_diff(get_the_time('U', $post->ID), current_time('timestamp'));
-
-                wpas_get_template('partials/ticket-reply', array('time_ago' => $time_ago, 'user' => $user, 'post' => $post));
-
+                $time_ago  = human_time_diff(get_the_time('U', $post->ID), current_time('timestamp'));
+                wpas_get_template('partials/ticket-reply', ['time_ago' => $time_ago, 'user' => $user, 'post' => $post]);
             endwhile;
-
         endif;
-
         wp_reset_query(); ?>
         </tbody>
     </table>
 
     <?php
     if ($replies_per_page !== -1 && (int)$replies->found_posts > $replies_per_page):
-
         $current = $replies->post_count;
-        $total = (int)$replies->found_posts;
+        $total   = (int)$replies->found_posts;
         ?>
 
         <div class="wpas-alert wpas-alert-info wpas-pagi">
             <div class="wpas-pagi-loader"><?php _e('Loading...', 'awesome-support'); ?></div>
-            <p class="wpas-pagi-text"><?php echo wp_kses_post(sprintf(_x('Showing %s replies of %s.', 'Showing X replies out of a total of X replies', 'awesome-support'), "<span class='wpas-replies-current'>$current</span>", "<span class='wpas-replies-total'>$total</span>")); ?>
+            <p class="wpas-pagi-text"><?php echo wp_kses_post(sprintf(_x('Showing %s replies of %s.',
+                                                                         'Showing X replies out of a total of X replies',
+                                                                         'awesome-support'),
+                                                                      "<span class='wpas-replies-current'>$current</span>",
+                                                                      "<span class='wpas-replies-total'>$total</span>")); ?>
                 <?php if (-1 !== $replies_per_page): ?><a href="#"
-                                                          class="wpas-pagi-loadmore"><?php _e('Load newer replies', 'awesome-support'); ?></a><?php endif; ?>
+                                                          class="wpas-pagi-loadmore"><?php _e('Load newer replies',
+                                                                                              'awesome-support'); ?></a><?php endif; ?>
             </p>
         </div>
 

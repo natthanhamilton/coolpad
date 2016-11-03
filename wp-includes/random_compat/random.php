@@ -29,35 +29,31 @@
  * SOFTWARE.
  */
 
-if (! defined('PHP_VERSION_ID'))
-{
+if (!defined('PHP_VERSION_ID')) {
     // This constant was introduced in PHP 5.2.7
     $RandomCompatversion = explode('.', PHP_VERSION);
     define(
-    'PHP_VERSION_ID',
+        'PHP_VERSION_ID',
         $RandomCompatversion[0] * 10000
         + $RandomCompatversion[1] * 100
         + $RandomCompatversion[2]
     );
-    $RandomCompatversion = NULL;
+    $RandomCompatversion = null;
 }
 
-if (PHP_VERSION_ID < 70000)
-{
+if (PHP_VERSION_ID < 70000) {
 
-    if (! defined('RANDOM_COMPAT_READ_BUFFER'))
-    {
+    if (!defined('RANDOM_COMPAT_READ_BUFFER')) {
         define('RANDOM_COMPAT_READ_BUFFER', 8);
     }
 
     $RandomCompatDIR = dirname(__FILE__);
 
-    require_once $RandomCompatDIR . '/byte_safe_strings.php';
-    require_once $RandomCompatDIR . '/cast_to_int.php';
-    require_once $RandomCompatDIR . '/error_polyfill.php';
+    require_once $RandomCompatDIR.'/byte_safe_strings.php';
+    require_once $RandomCompatDIR.'/cast_to_int.php';
+    require_once $RandomCompatDIR.'/error_polyfill.php';
 
-    if (! function_exists('random_bytes'))
-    {
+    if (!function_exists('random_bytes')) {
         /**
          * PHP 5.2.0 - 5.6.x way to implement random_bytes()
          *
@@ -73,31 +69,25 @@ if (PHP_VERSION_ID < 70000)
          *
          * See ERRATA.md for our reasoning behind this particular order
          */
-        if (extension_loaded('libsodium'))
-        {
+        if (extension_loaded('libsodium')) {
             // See random_bytes_libsodium.php
-            if (PHP_VERSION_ID >= 50300 && function_exists('\\Sodium\\randombytes_buf'))
-            {
-                require_once $RandomCompatDIR . '/random_bytes_libsodium.php';
-            }
-            elseif (method_exists('Sodium', 'randombytes_buf'))
-            {
-                require_once $RandomCompatDIR . '/random_bytes_libsodium_legacy.php';
+            if (PHP_VERSION_ID >= 50300 && function_exists('\\Sodium\\randombytes_buf')) {
+                require_once $RandomCompatDIR.'/random_bytes_libsodium.php';
+            } elseif (method_exists('Sodium', 'randombytes_buf')) {
+                require_once $RandomCompatDIR.'/random_bytes_libsodium_legacy.php';
             }
         }
 
         /**
          * Reading directly from /dev/urandom:
          */
-        if (DIRECTORY_SEPARATOR === '/')
-        {
+        if (DIRECTORY_SEPARATOR === '/') {
             // DIRECTORY_SEPARATOR === '/' on Unix-like OSes -- this is a fast
             // way to exclude Windows.
-            $RandomCompatUrandom = TRUE;
+            $RandomCompatUrandom = true;
             $RandomCompat_basedir = ini_get('open_basedir');
 
-            if (! empty($RandomCompat_basedir))
-            {
+            if (!empty($RandomCompat_basedir)) {
                 $RandomCompat_open_basedir = explode(
                     PATH_SEPARATOR,
                     strtolower($RandomCompat_basedir)
@@ -106,17 +96,16 @@ if (PHP_VERSION_ID < 70000)
                     '/dev',
                     $RandomCompat_open_basedir
                 );
-                $RandomCompat_open_basedir = NULL;
+                $RandomCompat_open_basedir = null;
             }
 
             if (
-                ! function_exists('random_bytes')
+                !function_exists('random_bytes')
                 &&
                 $RandomCompatUrandom
                 &&
                 @is_readable('/dev/urandom')
-            )
-            {
+            ) {
                 // Error suppression on is_readable() in case of an open_basedir
                 // or safe_mode failure. All we care about is whether or not we
                 // can read it at this point. If the PHP environment is going to
@@ -124,66 +113,59 @@ if (PHP_VERSION_ID < 70000)
                 // place, that is not helpful to us here.
 
                 // See random_bytes_dev_urandom.php
-                require_once $RandomCompatDIR . '/random_bytes_dev_urandom.php';
+                require_once $RandomCompatDIR.'/random_bytes_dev_urandom.php';
             }
             // Unset variables after use
-            $RandomCompat_basedir = NULL;
-            $RandomCompatUrandom = NULL;
+            $RandomCompat_basedir = null;
+            $RandomCompatUrandom = null;
         }
 
         /**
          * mcrypt_create_iv()
          */
         if (
-            ! function_exists('random_bytes')
+            !function_exists('random_bytes')
             &&
             PHP_VERSION_ID >= 50307
             &&
             extension_loaded('mcrypt')
-        )
-        {
+        ) {
             // Prevent this code from hanging indefinitely on non-Windows;
             // see https://bugs.php.net/bug.php?id=69833
             if (
                 DIRECTORY_SEPARATOR !== '/' ||
                 (PHP_VERSION_ID <= 50609 || PHP_VERSION_ID >= 50613)
-            )
-            {
+            ) {
                 // See random_bytes_mcrypt.php
-                require_once $RandomCompatDIR . '/random_bytes_mcrypt.php';
+                require_once $RandomCompatDIR.'/random_bytes_mcrypt.php';
             }
         }
 
         if (
-            ! function_exists('random_bytes')
+            !function_exists('random_bytes')
             &&
             extension_loaded('com_dotnet')
             &&
             class_exists('COM')
-        )
-        {
+        ) {
             $RandomCompat_disabled_classes = preg_split(
                 '#\s*,\s*#',
                 strtolower(ini_get('disable_classes'))
             );
 
-            if (! in_array('com', $RandomCompat_disabled_classes))
-            {
-                try
-                {
+            if (!in_array('com', $RandomCompat_disabled_classes)) {
+                try {
                     $RandomCompatCOMtest = new COM('CAPICOM.Utilities.1');
-                    if (method_exists($RandomCompatCOMtest, 'GetRandom'))
-                    {
+                    if (method_exists($RandomCompatCOMtest, 'GetRandom')) {
                         // See random_bytes_com_dotnet.php
-                        require_once $RandomCompatDIR . '/random_bytes_com_dotnet.php';
+                        require_once $RandomCompatDIR.'/random_bytes_com_dotnet.php';
                     }
-                } catch (com_exception $e)
-                {
+                } catch (com_exception $e) {
                     // Don't try to use it.
                 }
             }
-            $RandomCompat_disabled_classes = NULL;
-            $RandomCompatCOMtest = NULL;
+            $RandomCompat_disabled_classes = null;
+            $RandomCompatCOMtest = null;
         }
 
         /**
@@ -202,20 +184,18 @@ if (PHP_VERSION_ID < 70000)
                 PHP_VERSION_ID >= 50401
             )
             &&
-            ! function_exists('random_bytes')
+            !function_exists('random_bytes')
             &&
             extension_loaded('openssl')
-        )
-        {
+        ) {
             // See random_bytes_openssl.php
-            require_once $RandomCompatDIR . '/random_bytes_openssl.php';
+            require_once $RandomCompatDIR.'/random_bytes_openssl.php';
         }
 
         /**
          * throw new Exception
          */
-        if (! function_exists('random_bytes'))
-        {
+        if (!function_exists('random_bytes')) {
             /**
              * We don't have any more options, so let's throw an exception right now
              * and hope the developer won't let it fail silently.
@@ -229,10 +209,9 @@ if (PHP_VERSION_ID < 70000)
         }
     }
 
-    if (! function_exists('random_int'))
-    {
-        require_once $RandomCompatDIR . '/random_int.php';
+    if (!function_exists('random_int')) {
+        require_once $RandomCompatDIR.'/random_int.php';
     }
 
-    $RandomCompatDIR = NULL;
+    $RandomCompatDIR = null;
 }

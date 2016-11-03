@@ -6,35 +6,33 @@ get_header(); ?>
 
 <?php
 // get the id of the front page
-$st_front_id = get_option('page_on_front ');
+$st_front_id            = get_option('page_on_front ');
 $st_hp_sidebar_position = of_get_option('st_hp_sidebar');
 ?>
 
-<?php if (of_get_option('st_hp_headline') || (of_get_option('st_hp_tagline')) || (of_get_option('st_hp_search') == 1))
-{ ?>
+<?php if (of_get_option('st_hp_headline') || (of_get_option('st_hp_tagline')) || (of_get_option('st_hp_search') == 1)) { ?>
     <!-- #page-header -->
     <div id="page-header" class="clearfix">
         <div class="ht-container">
 
-            <?php if (of_get_option('st_hp_headline'))
-            { ?>
+            <?php if (of_get_option('st_hp_headline')) { ?>
                 <h1><?php echo of_get_option('st_hp_headline'); ?></h1>
             <?php } ?>
-            <?php if (of_get_option('st_hp_tagline'))
-            { ?>
+            <?php if (of_get_option('st_hp_tagline')) { ?>
                 <h2><?php echo of_get_option('st_hp_tagline'); ?></h2>
             <?php } ?>
 
-            <?php if (of_get_option('st_hp_search') == 1)
-            { ?>
+            <?php if (of_get_option('st_hp_search') == 1) { ?>
                 <!-- #live-search -->
                 <div id="live-search">
 
                     <form role="search" method="get" id="searchform" class="clearfix"
                           action="<?php echo home_url('/'); ?>" autocomplete="off">
                         <input type="text"
-                               onfocus="if (this.value == '<?php _e("Search the knowledge base...", "framework") ?>') {this.value = '';}"
-                               onblur="if (this.value == '')  {this.value = '<?php _e("Search the knowledge base...", "framework") ?>';}"
+                               onfocus="if (this.value == '<?php _e("Search the knowledge base...",
+                                                                    "framework") ?>') {this.value = '';}"
+                               onblur="if (this.value == '')  {this.value = '<?php _e("Search the knowledge base...",
+                                                                                      "framework") ?>';}"
                                value="<?php _e("Search the knowledge base...", "framework") ?>" name="s" id="s"/>
                         <input type="hidden" name="post_type[]" value="st_kb"/>
                     </form>
@@ -50,29 +48,21 @@ $st_hp_sidebar_position = of_get_option('st_hp_sidebar');
 
 
 <?php
-if (of_get_option('st_hpblock') == '2col')
-{
+if (of_get_option('st_hpblock') == '2col') {
     $st_hpblock_col = 'col-half';
-}
-elseif (of_get_option('st_hpblock') == '3col')
-{
+} elseif (of_get_option('st_hpblock') == '3col') {
     $st_hpblock_col = 'col-third';
-}
-elseif (of_get_option('st_hpblock') == '4col')
-{
+} elseif (of_get_option('st_hpblock') == '4col') {
     $st_hpblock_col = 'col-fourth';
-}
-else
-{
+} else {
     $st_hpblock_col = 'col-third';
 }
-
-$args = array(
+$args     = [
     'post_type'      => 'st_hpblock',
     'posts_per_page' => '-1',
     'orderby'        => 'menu_order',
     'order'          => 'ASC'
-);
+];
 $wp_query = new WP_Query($args);
 if ($wp_query->have_posts()) : ?>
 
@@ -88,17 +78,17 @@ if ($wp_query->have_posts()) : ?>
 
                         <?php if (get_post_meta($post->ID, '_st_hpblock_link', TRUE))
                         { ?><a href="<?php echo get_post_meta($post->ID, '_st_hpblock_link', TRUE); ?>"><?php } ?>
-                            <?php if (get_post_meta($post->ID, '_st_hpblock_icon', TRUE))
-                            { ?>
+                            <?php if (get_post_meta($post->ID, '_st_hpblock_icon', TRUE)) { ?>
                                 <div class="feature-icon"><img alt=""
-                                                               src="<?php echo get_post_meta($post->ID, '_st_hpblock_icon', TRUE); ?>"/>
+                                                               src="<?php echo get_post_meta($post->ID,
+                                                                                             '_st_hpblock_icon',
+                                                                                             TRUE); ?>"/>
                                 </div>
                             <?php } ?>
                             <h3><?php the_title(); ?></h3>
                             <?php if (get_post_meta($post->ID, '_st_hpblock_link', TRUE))
                             { ?></a><?php } ?>
-                        <?php if (get_post_meta($post->ID, '_st_hpblock_text', TRUE))
-                        { ?>
+                        <?php if (get_post_meta($post->ID, '_st_hpblock_text', TRUE)) { ?>
                             <p><?php echo get_post_meta($post->ID, '_st_hpblock_text', TRUE); ?></p>
                         <?php } ?>
                     </div>
@@ -113,10 +103,9 @@ wp_reset_postdata(); ?>
 
 <?php
 // Show homepage content if it's present
-$post = get_page($st_front_id);
+$post    = get_page($st_front_id);
 $content = apply_filters('the_content', $post->post_content);
-if ($content != '')
-{ ?>
+if ($content != '') { ?>
     <!-- #homepage-content -->
     <div id="homepage-content">
         <div class="ht-container">
@@ -133,8 +122,7 @@ if ($content != '')
             <section id="content" role="main">
 
 
-                <?php if (is_active_sidebar('st_sidebar_homepage_widgets'))
-                { ?>
+                <?php if (is_active_sidebar('st_sidebar_homepage_widgets')) { ?>
                     <div id="homepage-widgets" class="row stacked">
                         <?php dynamic_sidebar('st_sidebar_homepage_widgets'); ?>
                     </div>
@@ -143,8 +131,7 @@ if ($content != '')
             </section>
             <!-- /#content -->
 
-            <?php if ($st_hp_sidebar_position != 'off')
-            {
+            <?php if ($st_hp_sidebar_position != 'off') {
                 get_sidebar('homepage');
             } ?>
 

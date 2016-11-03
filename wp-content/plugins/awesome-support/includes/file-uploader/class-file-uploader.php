@@ -10,7 +10,6 @@
  * @copyright 2014 ThemeAvenue
  */
 class WPAS_File_Upload {
-
     /**
      * Instance of this class.
      *
@@ -18,68 +17,55 @@ class WPAS_File_Upload {
      * @var      object
      */
     protected static $instance = NULL;
-
-    protected $post_id = NULL;
+    protected $post_id   = NULL;
     protected $parent_id = NULL;
-    protected $index = 'files';
-
+    protected $index     = 'files';
     /**
      * Store the potential error messages.
      */
     protected $error_message;
 
-    public function __construct()
-    {
-
+    public function __construct() {
         /**
          * Load the addon settings
          */
         require_once(WPAS_PATH . 'includes/file-uploader/settings-file-upload.php');
-
-        if (! $this->can_attach_files())
-        {
+        if (!$this->can_attach_files()) {
             return;
         }
-
-        add_filter('upload_dir', array($this, 'set_upload_dir'));
-        add_filter('wp_handle_upload_prefilter', array($this, 'limit_upload'), 10, 1);
-        add_filter('upload_mimes', array($this, 'custom_mime_types'), 10, 1);
-        add_action('pre_get_posts', array($this, 'attachment_query_var'), 10, 1);
-        add_action('init', array($this, 'attachment_endpoint'), 10, 1);
-        add_action('template_redirect', array($this, 'view_attachment'), 10, 0);
-        add_action('posts_clauses', array($this, 'filter_attachments_out'), 10, 2);
-
-        if (! is_admin())
-        {
-
+        add_filter('upload_dir', [$this, 'set_upload_dir']);
+        add_filter('wp_handle_upload_prefilter', [$this, 'limit_upload'], 10, 1);
+        add_filter('upload_mimes', [$this, 'custom_mime_types'], 10, 1);
+        add_action('pre_get_posts', [$this, 'attachment_query_var'], 10, 1);
+        add_action('init', [$this, 'attachment_endpoint'], 10, 1);
+        add_action('template_redirect', [$this, 'view_attachment'], 10, 0);
+        add_action('posts_clauses', [$this, 'filter_attachments_out'], 10, 2);
+        if (!is_admin()) {
             /* Load media uploader related files. */
             require_once(ABSPATH . 'wp-admin/includes/image.php');
             require_once(ABSPATH . 'wp-admin/includes/file.php');
             require_once(ABSPATH . 'wp-admin/includes/media.php');
             require_once(ABSPATH . 'wp-admin/includes/template.php');
-
-            add_action('wpas_open_ticket_after', array($this, 'new_ticket_attachment'), 10, 2); // Save attachments after user opened a new ticket
-            add_action('wpas_add_reply_public_after', array($this, 'new_reply_attachment'), 10, 2);  // Save attachments after user submitted a new reply
-            add_action('wpas_submission_form_inside_before_submit', array($this, 'upload_field'));                  // Load the dropzone after description textarea
-            add_action('wpas_ticket_details_reply_textarea_after', array($this, 'upload_field'));                  // Load dropzone after reply textarea
-
+            add_action('wpas_open_ticket_after', [$this, 'new_ticket_attachment'], 10,
+                       2); // Save attachments after user opened a new ticket
+            add_action('wpas_add_reply_public_after', [$this, 'new_reply_attachment'], 10,
+                       2);  // Save attachments after user submitted a new reply
+            add_action('wpas_submission_form_inside_before_submit',
+                       [$this, 'upload_field']);                  // Load the dropzone after description textarea
+            add_action('wpas_ticket_details_reply_textarea_after',
+                       [$this, 'upload_field']);                  // Load dropzone after reply textarea
         }
-
         // We need those during Ajax requests and admin-ajax.php is considered to be part of the admin
-        add_action('wpas_frontend_ticket_content_after', array($this, 'show_attachments'), 10, 1);
-        add_action('wpas_frontend_reply_content_after', array($this, 'show_attachments'), 10, 1);
-
-        if (is_admin())
-        {
-
-            add_action('wpas_add_reply_admin_after', array($this, 'new_reply_backend_attachment'), 10, 2);
-            add_action('post_edit_form_tag', array($this, 'add_form_enctype'), 10, 1);
-            add_action('wpas_admin_after_wysiwyg', array($this, 'upload_field'), 10, 0);
-            add_action('before_delete_post', array($this, 'delete_attachments'), 10, 1);
-            add_action('wpas_backend_ticket_content_after', array($this, 'show_attachments'), 10, 1);
-            add_action('wpas_backend_reply_content_after', array($this, 'show_attachments'), 10, 1);
-            add_filter('wpas_cf_wrapper_class', array($this, 'add_wrapper_class_admin'), 10, 2);
-
+        add_action('wpas_frontend_ticket_content_after', [$this, 'show_attachments'], 10, 1);
+        add_action('wpas_frontend_reply_content_after', [$this, 'show_attachments'], 10, 1);
+        if (is_admin()) {
+            add_action('wpas_add_reply_admin_after', [$this, 'new_reply_backend_attachment'], 10, 2);
+            add_action('post_edit_form_tag', [$this, 'add_form_enctype'], 10, 1);
+            add_action('wpas_admin_after_wysiwyg', [$this, 'upload_field'], 10, 0);
+            add_action('before_delete_post', [$this, 'delete_attachments'], 10, 1);
+            add_action('wpas_backend_ticket_content_after', [$this, 'show_attachments'], 10, 1);
+            add_action('wpas_backend_reply_content_after', [$this, 'show_attachments'], 10, 1);
+            add_filter('wpas_cf_wrapper_class', [$this, 'add_wrapper_class_admin'], 10, 2);
         }
     }
 
@@ -89,16 +75,11 @@ class WPAS_File_Upload {
      * @since  3.0.0
      * @return boolean True if the user has the capability, false otherwise
      */
-    public function can_attach_files()
-    {
-
-        if (FALSE === boolval(wpas_get_option('enable_attachments')))
-        {
+    public function can_attach_files() {
+        if (FALSE === boolval(wpas_get_option('enable_attachments'))) {
             return FALSE;
         }
-
-        if (current_user_can('attach_files'))
-        {
+        if (current_user_can('attach_files')) {
             return TRUE;
         }
 
@@ -112,12 +93,9 @@ class WPAS_File_Upload {
      *
      * @return    object    A single instance of this class.
      */
-    public static function get_instance()
-    {
-
+    public static function get_instance() {
         // If the single instance hasn't been set, set it now.
-        if (NULL == self::$instance)
-        {
+        if (NULL == self::$instance) {
             self::$instance = new self;
         }
 
@@ -132,47 +110,34 @@ class WPAS_File_Upload {
      *
      * @since 3.3
      *
-     * @param array $clauses SQL query clauses
+     * @param array    $clauses  SQL query clauses
      * @param WP_Query $wp_query WordPress query object
      *
      * @return array
      */
-    public function filter_attachments_out($clauses, $wp_query)
-    {
-
+    public function filter_attachments_out($clauses, $wp_query) {
         global $pagenow, $wpdb;
-
         $action = isset($_POST['action']) ? $_POST['action'] : '';
-
         // Make sure the query is for the media library
-        if ('query-attachments' !== $action)
-        {
+        if ('query-attachments' !== $action) {
             return $clauses;
         }
-
         // We only want to alter queries in the admin
-        if (! $wp_query->is_admin)
-        {
+        if (!$wp_query->is_admin) {
             return $clauses;
         }
-
         // Make sure this request is done through Ajax as this is how the media library does it
-        if ('admin-ajax.php' !== $pagenow)
-        {
+        if ('admin-ajax.php' !== $pagenow) {
             return $clauses;
         }
-
         // Is this query for attachments?
-        if ('attachment' !== $wp_query->query_vars['post_type'])
-        {
+        if ('attachment' !== $wp_query->query_vars['post_type']) {
             return $clauses;
         }
-
         $clauses['join'] .= " LEFT OUTER JOIN $wpdb->posts daddy ON daddy.ID = $wpdb->posts.post_parent";
         $clauses['where'] .= " AND daddy.post_type NOT IN ( 'ticket', 'ticket_reply' )";
 
         return $clauses;
-
     }
 
     /**
@@ -181,20 +146,16 @@ class WPAS_File_Upload {
      * @since 3.2.10
      *
      * @param array $classes Field wrapper classes
-     * @param array $field Field parameters
+     * @param array $field   Field parameters
      *
      * @return array
      */
-    public function add_wrapper_class_admin($classes, $field)
-    {
-
-        if ('upload' === $field['args']['field_type'])
-        {
+    public function add_wrapper_class_admin($classes, $field) {
+        if ('upload' === $field['args']['field_type']) {
             array_push($classes, 'wpas-under-reply-box');
         }
 
         return $classes;
-
     }
 
     /**
@@ -207,10 +168,8 @@ class WPAS_File_Upload {
      * @since 3.2.0
      * @return void
      */
-    public function attachment_query_var($query)
-    {
-        if ($query->is_main_query() && isset($_GET['wpas-attachment']))
-        {
+    public function attachment_query_var($query) {
+        if ($query->is_main_query() && isset($_GET['wpas-attachment'])) {
             $query->set('wpas-attachment', filter_input(INPUT_GET, 'wpas-attachment', FILTER_SANITIZE_NUMBER_INT));
         }
     }
@@ -221,8 +180,7 @@ class WPAS_File_Upload {
      * @since 3.2.0
      * @return void
      */
-    public function attachment_endpoint()
-    {
+    public function attachment_endpoint() {
         add_rewrite_endpoint('wpas-attachment', EP_PERMALINK);
     }
 
@@ -236,65 +194,42 @@ class WPAS_File_Upload {
      * @since 3.2.0
      * @return void
      */
-    public function view_attachment()
-    {
-
+    public function view_attachment() {
         $attachment_id = get_query_var('wpas-attachment');
-
-        if (! empty($attachment_id))
-        {
-
+        if (!empty($attachment_id)) {
             $attachment = get_post($attachment_id);
-
             /**
              * Return a 404 page if the attachment ID
              * does not match any attachment in the database.
              */
-            if (empty($attachment))
-            {
-
+            if (empty($attachment)) {
                 /**
                  * @var WP_Query $wp_query WordPress main query
                  */
                 global $wp_query;
-
                 $wp_query->set_404();
-
                 status_header(404);
                 include(get_query_template('404'));
-
                 die();
             }
-
-            if ('attachment' !== $attachment->post_type)
-            {
+            if ('attachment' !== $attachment->post_type) {
                 wp_die(__('The file you requested is not a valid attachment', 'awesome-support'));
             }
-
-            if (empty($attachment->post_parent))
-            {
+            if (empty($attachment->post_parent)) {
                 wp_die(__('The attachment you requested is not attached to any ticket', 'awesome-support'));
             }
-
-            $parent = get_post($attachment->post_parent); // Get the parent. It can be a ticket or a ticket reply
+            $parent    = get_post($attachment->post_parent); // Get the parent. It can be a ticket or a ticket reply
             $parent_id = empty($parent->post_parent) ? $parent->ID : $parent->post_parent;
-
-            if (TRUE !== wpas_can_view_ticket($parent_id))
-            {
+            if (TRUE !== wpas_can_view_ticket($parent_id)) {
                 wp_die(__('You are not allowed to view this attachment', 'awesome-support'));
             }
-
             $filename = basename($attachment->guid);
-
             ini_set('user_agent', 'Awesome Support/' . WPAS_VERSION . '; ' . get_bloginfo('url'));
             header("Content-Type: $attachment->post_mime_type");
             header("Content-Disposition: inline; filename=\"$filename\"");
             readfile($attachment->guid);
-
             die();
-
         }
-
     }
 
     /**
@@ -309,62 +244,44 @@ class WPAS_File_Upload {
      *
      * @return string Upload directory
      */
-    public function set_upload_dir($upload)
-    {
-
+    public function set_upload_dir($upload) {
         /* On the front-end, we make sure that a new ticket or a reply is being submitted */
-        if (! is_admin())
-        {
-            if (! isset($_POST['wpas_title']) && ! isset($_POST['wpas_user_reply']))
-            {
+        if (!is_admin()) {
+            if (!isset($_POST['wpas_title']) && !isset($_POST['wpas_user_reply'])) {
                 return $upload;
             }
         }
-
-        if (is_admin())
-        {
-
+        if (is_admin()) {
             /* Are we in the right post type? */
-            if (! isset($_POST['post_type']) || 'ticket' !== $_POST['post_type'])
+            if (!isset($_POST['post_type']) || 'ticket' !== $_POST['post_type']) {
                 return $upload;
-
-            if (! isset($_POST['wpas_reply']))
+            }
+            if (!isset($_POST['wpas_reply'])) {
                 return $upload;
-
+            }
         }
-
-        if (! $this->can_attach_files())
-        {
+        if (!$this->can_attach_files()) {
             return $upload;
         }
-
         /* Get the ticket ID */
-        $ticket_id = ! is_null($this->parent_id) ? $this->parent_id : $this->post_id;
-
+        $ticket_id = !is_null($this->parent_id) ? $this->parent_id : $this->post_id;
         /* We sort the uploads in sub-folders per ticket. */
         $subdir = "/awesome-support/ticket_$ticket_id";
-
         /* Create final URL and dir */
         $dir = $upload['basedir'] . $subdir;
         $url = $upload['baseurl'] . $subdir;
-
         /* Update upload params */
-        $upload['path'] = $dir;
-        $upload['url'] = $url;
+        $upload['path']   = $dir;
+        $upload['url']    = $url;
         $upload['subdir'] = $subdir;
-
         /* Create the directory if it doesn't exist yet, make sure it's protected otherwise */
-        if (! is_dir($dir))
-        {
+        if (!is_dir($dir)) {
             $this->create_upload_dir($dir);
-        }
-        else
-        {
+        } else {
             $this->protect_upload_dir($dir);
         }
 
         return $upload;
-
     }
 
     /**
@@ -376,18 +293,13 @@ class WPAS_File_Upload {
      *
      * @return boolean Whether or not the directory was created
      */
-    public function create_upload_dir($dir)
-    {
-
+    public function create_upload_dir($dir) {
         $make = mkdir($dir);
-
-        if (TRUE === $make)
-        {
+        if (TRUE === $make) {
             $this->protect_upload_dir($dir);
         }
 
         return $make;
-
     }
 
     /**
@@ -399,18 +311,13 @@ class WPAS_File_Upload {
      *
      * @return void
      */
-    protected function protect_upload_dir($dir)
-    {
-
+    protected function protect_upload_dir($dir) {
         $filename = $dir . '/.htaccess';
-
-        if (! file_exists($filename))
-        {
+        if (!file_exists($filename)) {
             $file = fopen($filename, 'a+');
             fwrite($file, 'Options -Indexes');
             fclose($file);
         }
-
     }
 
     /**
@@ -418,44 +325,38 @@ class WPAS_File_Upload {
      *
      * @return void
      */
-    public function upload_field()
-    {
-
+    public function upload_field() {
         $filetypes = $this->get_allowed_filetypes();
         $filetypes = explode(',', $filetypes);
-        $accept = array();
-
-        foreach ($filetypes as $key => $type)
-        {
-            $filetypes[$key] = "<code>.$type</code>";
+        $accept    = [];
+        foreach ($filetypes as $key => $type) {
+            $filetypes[ $key ] = "<code>.$type</code>";
             array_push($accept, ".$type");
         }
-
         $filetypes = implode(', ', $filetypes);
-        $accept = implode(',', $accept);
-
+        $accept    = implode(',', $accept);
         /**
          * Output the upload field using a custom field
          */
-        $attachments_args = apply_filters('wpas_ticket_attachments_field_args', array(
+        $attachments_args = apply_filters('wpas_ticket_attachments_field_args', [
             'name' => $this->index,
-            'args' => array(
+            'args' => [
                 'required'   => FALSE,
                 'capability' => 'edit_ticket',
                 'field_type' => 'upload',
                 'multiple'   => TRUE,
                 'label'      => __('Attachments', 'awesome-support'),
-                'desc'       => sprintf(__(' You can upload up to %d files (maximum %d MB each) of the following types: %s', 'awesome-support'), (int)wpas_get_option('attachments_max'), (int)wpas_get_option('filesize_max'), apply_filters('wpas_attachments_filetypes_display', $filetypes))
-            )
-        ));
-
+                'desc'       => sprintf(__(' You can upload up to %d files (maximum %d MB each) of the following types: %s',
+                                           'awesome-support'), (int)wpas_get_option('attachments_max'),
+                                        (int)wpas_get_option('filesize_max'),
+                                        apply_filters('wpas_attachments_filetypes_display', $filetypes))
+            ]
+        ]);
         $attachments = new WPAS_Custom_Field($this->index, $attachments_args);
         echo $attachments->get_output();
-
     }
 
-    public function get_allowed_filetypes()
-    {
+    public function get_allowed_filetypes() {
         return apply_filters('wpas_attachments_filetypes', wpas_get_option('attachments_filetypes'));
     }
 
@@ -467,23 +368,18 @@ class WPAS_File_Upload {
      * a boolean value based on the returned array being empty or not.
      *
      * @since  3.0.0
+     *
      * @param  integer $post_id ID of the post to get attachment for
+     *
      * @return boolean          True if the ticket has attachments, false otherwise
      */
-    public function has_attachments($post_id)
-    {
-
+    public function has_attachments($post_id) {
         $attachments = $this->get_attachments($post_id);
-
-        if (empty($attachments))
-        {
+        if (empty($attachments)) {
             return FALSE;
-        }
-        else
-        {
+        } else {
             return TRUE;
         }
-
     }
 
     /**
@@ -492,20 +388,17 @@ class WPAS_File_Upload {
      * Get the attachments for a specific ticket or reply.
      *
      * @since  3.0.0
+     *
      * @param  integer $post_id ID of the post to get attachment for
+     *
      * @return array            Array of attachments or empty array if no attachments are found
      */
-    public function get_attachments($post_id)
-    {
-
+    public function get_attachments($post_id) {
         $post = get_post($post_id);
-
-        if (is_null($post))
-        {
-            return array();
+        if (is_null($post)) {
+            return [];
         }
-
-        $args = array(
+        $args = [
             'post_parent'            => $post_id,
             'post_type'              => 'attachment',
             'post_status'            => 'inherit',
@@ -514,24 +407,18 @@ class WPAS_File_Upload {
             'cache_results'          => FALSE,
             'update_post_term_cache' => FALSE,
             'update_post_meta_cache' => FALSE,
-
-        );
-
+        ];
         $attachments = new WP_Query($args);
-        $list = array();
-
-        if (empty($attachments->posts))
-        {
-            return array();
+        $list        = [];
+        if (empty($attachments->posts)) {
+            return [];
         }
-
-        foreach ($attachments->posts as $key => $attachment)
-        {
-            $list[$attachment->ID] = array('id' => $attachment->ID, 'name' => $attachment->post_title, 'url' => $attachment->guid);
+        foreach ($attachments->posts as $key => $attachment) {
+            $list[ $attachment->ID ]
+                = ['id' => $attachment->ID, 'name' => $attachment->post_title, 'url' => $attachment->guid];
         }
 
         return $list;
-
     }
 
     /**
@@ -540,78 +427,66 @@ class WPAS_File_Upload {
      * Displays a ticket or reply attachments.
      *
      * @since  3.0.0
+     *
      * @param  integer $post_id ID of the post to get attachment for
+     *
      * @return void
      */
-    public function show_attachments($post_id)
-    {
-
+    public function show_attachments($post_id) {
         $attachments = $this->get_attachments($post_id);
-
-        if (! empty($attachments)): ?>
+        if (!empty($attachments)): ?>
 
             <div class="wpas-reply-attachements">
                 <strong><?php _e('Attachments:', 'awesome-support'); ?></strong>
                 <ul>
                     <?php
                     foreach ($attachments as $attachment_id => $attachment):
-
                         /**
                          * Get attachment metadata.
                          *
                          * @var array
                          */
                         $metadata = wp_get_attachment_metadata($attachment_id);
-
                         /**
                          * This is the default case where an attachment was uploaded by the WordPress uploader.
                          * In this case we get the media from the ticket's attachments directory.
                          */
-                        if (! isset($metadata['wpas_upload_source']) || 'wordpress' === $metadata['wpas_upload_source'])
-                        {
-
+                        if (!isset($metadata['wpas_upload_source']) || 'wordpress' === $metadata['wpas_upload_source']) {
                             /**
                              * Get filename.
                              */
-                            $filename = explode('/', $attachment['url']);
-                            $filename = $name = $filename[count($filename) - 1];
+                            $filename   = explode('/', $attachment['url']);
+                            $filename   = $name = $filename[ count($filename) - 1 ];
                             $upload_dir = wp_upload_dir();
-                            $filepath = trailingslashit($upload_dir['basedir']) . "awesome-support/ticket_$post_id/$filename";
-                            $filesize = file_exists($filepath) ? $this->human_filesize(filesize($filepath), 0) : '';
-
+                            $filepath
+                                        = trailingslashit($upload_dir['basedir']) . "awesome-support/ticket_$post_id/$filename";
+                            $filesize   = file_exists($filepath) ? $this->human_filesize(filesize($filepath), 0) : '';
                             /**
                              * Prepare attachment link
                              */
-                            $link = add_query_arg(array('wpas-attachment' => $attachment['id']), home_url());
-
+                            $link = add_query_arg(['wpas-attachment' => $attachment['id']], home_url());
                             ?>
                             <li><a href="<?php echo $link; ?>"
                                    target="_blank"><?php echo $name; ?></a> <?php echo $filesize; ?></li><?php
-
-                        }
-
-                        /**
+                        } /**
                          * Now if we have a different upload source we delegate the computing
                          * to whatever will hook on wpas_attachment_display_$source
                          */
-                        else
-                        {
-
+                        else {
                             $source = sanitize_text_field($metadata['wpas_upload_source']);
-
                             /**
                              * wpas_attachment_display_$source fires if the current attachment
                              * was uploaded by an unknown source.
                              *
                              * @since  3.1.5
+                             *
                              * @param  integer $attachment_id ID of this attachment
-                             * @param  array $attachment The attachment array
-                             * @param  integer $post_id ID of the post we're displaying attachments for
+                             * @param  array   $attachment    The attachment array
+                             * @param  integer $post_id       ID of the post we're displaying attachments for
                              */
-                            do_action('wpas_attachment_display_' . $source, $attachment_id, $attachment, $metadata, $post_id);
-
+                            do_action('wpas_attachment_display_' . $source, $attachment_id, $attachment, $metadata,
+                                      $post_id);
                         }
-
                     endforeach; ?>
                 </ul>
             </div>
@@ -626,28 +501,23 @@ class WPAS_File_Upload {
      *
      * @since  3.0.0
      *
-     * @param  integer $bytes Filesize in bytes
+     * @param  integer $bytes    Filesize in bytes
      * @param  integer $decimals Number of decimals to show
      *
      * @return string             Human readable filesize
      * @link   http://php.net/manual/en/function.filesize.php#106569
      */
-    public function human_filesize($bytes, $decimals = 2)
-    {
-        $sz = 'BKMGTP';
+    public function human_filesize($bytes, $decimals = 2) {
+        $sz     = 'BKMGTP';
         $factor = (int)floor((strlen($bytes) - 1) / 3);
 
-        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[$factor];
+        return sprintf("%.{$decimals}f", $bytes / pow(1024, $factor)) . @$sz[ $factor ];
     }
 
-    public function add_form_enctype($post)
-    {
-
-        if ('ticket' !== $post->post_type)
-        {
+    public function add_form_enctype($post) {
+        if ('ticket' !== $post->post_type) {
             return;
         }
-
         echo ' enctype="multipart/form-data"';
     }
 
@@ -664,14 +534,12 @@ class WPAS_File_Upload {
      *
      * @return string            New redirection URL
      */
-    public function redirect_error($location)
-    {
-
-        $url = remove_query_arg('message', $location);
+    public function redirect_error($location) {
+        $url   = remove_query_arg('message', $location);
         $error = is_array($this->error_message) ? implode(', ', $this->error_message) : $this->error_message;
-
-        wpas_add_error('files_not_uploaded', sprintf(__('Your reply has been correctly submitted but the attachment was not uploaded. %s', 'awesome-support'), $error));
-
+        wpas_add_error('files_not_uploaded',
+                       sprintf(__('Your reply has been correctly submitted but the attachment was not uploaded. %s',
+                                  'awesome-support'), $error));
         $location = wp_sanitize_redirect($url);
 
         return $location;
@@ -685,82 +553,62 @@ class WPAS_File_Upload {
      * simply return an error message to prevent uploading it.
      *
      * @since  3.0.0
+     *
      * @param  array $file Currently processed file details
+     *
      * @return array       File details with a possible error message
      */
-    public function limit_upload($file)
-    {
-
+    public function limit_upload($file) {
         global $post;
-
-        if (empty($post))
-        {
+        if (empty($post)) {
             $protocol = stripos($_SERVER['SERVER_PROTOCOL'], 'https') === TRUE ? 'https://' : 'http://';
-            $post_id = url_to_postid($protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
-            $post = get_post($post_id);
+            $post_id  = url_to_postid($protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
+            $post     = get_post($post_id);
         }
-
         $submission = (int)wpas_get_option('ticket_submit');
-        $post_type = filter_input(INPUT_GET, 'post_type', FILTER_SANITIZE_STRING);
-
+        $post_type  = filter_input(INPUT_GET, 'post_type', FILTER_SANITIZE_STRING);
         /**
          * On the front-end we only want to limit upload size
          * on the submission page or on a ticket details page.
          */
-        if (! is_admin())
-        {
-            if ('ticket' !== $post->post_type && $submission !== $post->ID)
-            {
+        if (!is_admin()) {
+            if ('ticket' !== $post->post_type && $submission !== $post->ID) {
                 return $file;
             }
         }
-
         /**
          * In the admin we only want to limit upload size on the ticket creation screen
          * or on the ticket edit screen.
          */
-        if (is_admin())
-        {
-
-            if (! isset($post) && empty($post_type))
-            {
+        if (is_admin()) {
+            if (!isset($post) && empty($post_type)) {
                 return $file;
             }
-
-            if (isset($post) && 'ticket' !== $post->post_type)
-            {
+            if (isset($post) && 'ticket' !== $post->post_type) {
                 return $file;
             }
-
-            if (! empty($post_type) && 'ticket' !== $post_type)
-            {
+            if (!empty($post_type) && 'ticket' !== $post_type) {
                 return $file;
             }
-
         }
-
-        $filetypes = explode(',', $this->get_allowed_filetypes());
-        $ext = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
-        $max_size = wpas_get_option('filesize_max', 1);
+        $filetypes      = explode(',', $this->get_allowed_filetypes());
+        $ext            = strtolower(pathinfo($file['name'], PATHINFO_EXTENSION));
+        $max_size       = wpas_get_option('filesize_max', 1);
         $max_size_bytes = $max_size * 1024 * 1024;
-
-        if (! in_array($ext, $filetypes))
-        {
-            $file['error'] = sprintf(__('You are not allowed to upload files of this type (%s)', 'awesome-support'), $ext);
+        if (!in_array($ext, $filetypes)) {
+            $file['error'] = sprintf(__('You are not allowed to upload files of this type (%s)', 'awesome-support'),
+                                     $ext);
         }
-
-        if ($file['size'] <= 0)
-        {
-            $file['error'] = __('You cannot upload empty attachments. You attachments weights 0 bytes', 'awesome-support');
+        if ($file['size'] <= 0) {
+            $file['error'] = __('You cannot upload empty attachments. You attachments weights 0 bytes',
+                                'awesome-support');
         }
-
-        if ($file['size'] > $max_size_bytes)
-        {
-            $file['error'] = sprintf(__('Your attachment is too big. You are allowed to attach files up to %s', 'awesome-support'), "$max_size Mo");
+        if ($file['size'] > $max_size_bytes) {
+            $file['error'] = sprintf(__('Your attachment is too big. You are allowed to attach files up to %s',
+                                        'awesome-support'), "$max_size Mo");
         }
 
         return $file;
-
     }
 
     /**
@@ -772,31 +620,20 @@ class WPAS_File_Upload {
      *
      * @return array Our custom mime types list
      */
-    public function custom_mime_types($mimes)
-    {
-
+    public function custom_mime_types($mimes) {
         /* We don't want to allow those extra file types on other pages that the plugin ones */
-        if (! wpas_is_plugin_page())
-        {
+        if (!wpas_is_plugin_page()) {
             return $mimes;
         }
-
         $filetypes = explode(',', $this->get_allowed_filetypes());
-
-        if (! empty($filetypes))
-        {
-
+        if (!empty($filetypes)) {
             require_once(WPAS_PATH . 'includes/file-uploader/mime-types.php');
-
-            foreach ($filetypes as $type)
-            {
-                $mimes[$type] = wpas_get_mime_type($type);
+            foreach ($filetypes as $type) {
+                $mimes[ $type ] = wpas_get_mime_type($type);
             }
-
         }
 
         return $mimes;
-
     }
 
     /**
@@ -808,11 +645,8 @@ class WPAS_File_Upload {
      *
      * @return void
      */
-    public function new_ticket_attachment($ticket_id)
-    {
-
-        if (isset($_POST['wpas_title']))
-        {
+    public function new_ticket_attachment($ticket_id) {
+        if (isset($_POST['wpas_title'])) {
             $this->post_id = intval($ticket_id);
             $this->process_upload();
         }
@@ -827,61 +661,35 @@ class WPAS_File_Upload {
      * @since  3.0.0
      * @return bool Whether or not the upload has been processed
      */
-    public function process_upload()
-    {
-
+    public function process_upload() {
         $index = "wpas_$this->index"; // We need to prefix the index as the custom fields are always prefixed
-
         /* We have a submission with a $_FILES var set */
-        if ($_POST && $_FILES && isset($_FILES[$index]))
-        {
-
-            if (empty($_FILES[$index]['name'][0]))
-            {
+        if ($_POST && $_FILES && isset($_FILES[ $index ])) {
+            if (empty($_FILES[ $index ]['name'][0])) {
                 return FALSE;
             }
-
             $max = wpas_get_option('attachments_max');
-            $id = FALSE; // Declare a default value for $id
-
-            if ($this->individualize_files())
-            {
-
-                for ($i = 0; isset($_FILES["{$index}_$i"]); ++$i)
-                {
-
+            $id  = FALSE; // Declare a default value for $id
+            if ($this->individualize_files()) {
+                for ($i = 0; isset($_FILES["{$index}_$i"]); ++$i) {
                     /* Limit the number of uploaded files */
-                    if ($i + 1 > $max)
-                    {
+                    if ($i + 1 > $max) {
                         break;
                     }
-
                     $id = media_handle_upload("{$index}_$i", $this->post_id);
                 }
-
-            }
-            else
-            {
+            } else {
                 $id = media_handle_upload($index, $this->post_id);
             }
-
-            if (is_wp_error($id))
-            {
-
+            if (is_wp_error($id)) {
                 $this->error_message = $id->get_error_message();
-                add_filter('wpas_redirect_reply_added', array($this, 'redirect_error'), 10, 2);
+                add_filter('wpas_redirect_reply_added', [$this, 'redirect_error'], 10, 2);
 
                 return FALSE;
-
-            }
-            else
-            {
+            } else {
                 return TRUE;
             }
-
-        }
-        else
-        {
+        } else {
             return FALSE;
         }
     }
@@ -896,48 +704,33 @@ class WPAS_File_Upload {
      * @since  3.0.0
      * @return bool Whether or not files were individualized
      */
-    public function individualize_files()
-    {
-
+    public function individualize_files() {
         $files_index = "wpas_$this->index"; // We need to prefix the index as the custom fields are always prefixed
-
-        if (! is_array($_FILES[$files_index]['name']))
-        {
+        if (!is_array($_FILES[ $files_index ]['name'])) {
             return FALSE;
         }
-
-        foreach ($_FILES[$files_index]['name'] as $id => $name)
-        {
-            $index = $files_index . '_' . $id;
-            $_FILES[$index]['name'] = $name;
+        foreach ($_FILES[ $files_index ]['name'] as $id => $name) {
+            $index                    = $files_index . '_' . $id;
+            $_FILES[ $index ]['name'] = $name;
         }
-
-        foreach ($_FILES[$files_index]['type'] as $id => $type)
-        {
-            $index = $files_index . '_' . $id;
-            $_FILES[$index]['type'] = $type;
+        foreach ($_FILES[ $files_index ]['type'] as $id => $type) {
+            $index                    = $files_index . '_' . $id;
+            $_FILES[ $index ]['type'] = $type;
         }
-
-        foreach ($_FILES[$files_index]['tmp_name'] as $id => $tmp_name)
-        {
-            $index = $files_index . '_' . $id;
-            $_FILES[$index]['tmp_name'] = $tmp_name;
+        foreach ($_FILES[ $files_index ]['tmp_name'] as $id => $tmp_name) {
+            $index                        = $files_index . '_' . $id;
+            $_FILES[ $index ]['tmp_name'] = $tmp_name;
         }
-
-        foreach ($_FILES[$files_index]['error'] as $id => $error)
-        {
-            $index = $files_index . '_' . $id;
-            $_FILES[$index]['error'] = $error;
+        foreach ($_FILES[ $files_index ]['error'] as $id => $error) {
+            $index                     = $files_index . '_' . $id;
+            $_FILES[ $index ]['error'] = $error;
         }
-
-        foreach ($_FILES[$files_index]['size'] as $id => $size)
-        {
-            $index = $files_index . '_' . $id;
-            $_FILES[$index]['size'] = $size;
+        foreach ($_FILES[ $files_index ]['size'] as $id => $size) {
+            $index                    = $files_index . '_' . $id;
+            $_FILES[ $index ]['size'] = $size;
         }
 
         return TRUE;
-
     }
 
     /**
@@ -949,12 +742,9 @@ class WPAS_File_Upload {
      *
      * @return void
      */
-    public function new_reply_attachment($reply_id)
-    {
-
-        if ((isset($_POST['wpas_nonce']) || isset($_POST['client_reply'])) || isset($_POST['wpas_reply']))
-        {
-            $this->post_id = intval($reply_id);
+    public function new_reply_attachment($reply_id) {
+        if ((isset($_POST['wpas_nonce']) || isset($_POST['client_reply'])) || isset($_POST['wpas_reply'])) {
+            $this->post_id   = intval($reply_id);
             $this->parent_id = intval($_POST['ticket_id']);
             $this->process_upload();
         }
@@ -969,21 +759,15 @@ class WPAS_File_Upload {
      *
      * @return void
      */
-    public function new_reply_backend_attachment($reply_id)
-    {
-
+    public function new_reply_backend_attachment($reply_id) {
         /* Are we in the right post type? */
-        if (! isset($_POST['post_type']) || 'ticket' !== $_POST['post_type'])
-        {
+        if (!isset($_POST['post_type']) || 'ticket' !== $_POST['post_type']) {
             return;
         }
-
-        if (! $this->can_attach_files())
-        {
+        if (!$this->can_attach_files()) {
             return;
         }
-
-        $this->post_id = intval($reply_id);
+        $this->post_id   = intval($reply_id);
         $this->parent_id = intval($_POST['wpas_post_parent']);
         $this->process_upload();
     }
@@ -994,29 +778,21 @@ class WPAS_File_Upload {
      * Delete all post attachments if a ticket is deleted.
      *
      * @since  3.0.0
+     *
      * @param  integer $post_id ID of the post to be deleted
+     *
      * @return void
      */
-    public function delete_attachments($post_id)
-    {
-
+    public function delete_attachments($post_id) {
         global $post_type;
-
-        if ('ticket' !== $post_type)
-        {
+        if ('ticket' !== $post_type) {
             return;
         }
-
         $attachments = $this->get_attachments($post_id);
-
-        if (! empty($attachments))
-        {
-            foreach ($attachments as $id => $attachment)
-            {
+        if (!empty($attachments)) {
+            foreach ($attachments as $id => $attachment) {
                 wp_delete_attachment($id, TRUE);
             }
         }
-
     }
-
 }

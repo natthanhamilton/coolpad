@@ -8,9 +8,8 @@
  * @link      http://themeavenue.net
  * @copyright 2014 ThemeAvenue
  */
-
 /* Exit if accessed directly */
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit;
 }
 
@@ -20,7 +19,6 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @since 3.2
  */
 class WPAS_Session {
-
 	/**
 	 * Holds the session
 	 *
@@ -30,17 +28,12 @@ class WPAS_Session {
 	private $session;
 
 	public function __construct() {
-
-
-		if ( ! defined( 'WP_SESSION_COOKIE' ) ) {
-			define( 'WP_SESSION_COOKIE', '_wpas_session' );
+		if (!defined('WP_SESSION_COOKIE')) {
+			define('WP_SESSION_COOKIE', '_wpas_session');
 		}
-
-		require_once( WPAS_PATH . 'vendor/ericmann/wp-session-manager/wp-session-manager.php' );
-
+		require_once(WPAS_PATH . 'vendor/ericmann/wp-session-manager/wp-session-manager.php');
 		// Instantiate the session
 		$this->init();
-
 	}
 
 	/**
@@ -64,26 +57,19 @@ class WPAS_Session {
 	 *
 	 * @return void
 	 */
-	public function add( $key, $value, $add = false ) {
-
-		$key   = sanitize_text_field( $key );
-		$value = $this->sanitize( $value );
-
-		if ( true === $this->session->offsetExists( $key ) && true === $add ) {
-
-			$old = $this->get( $key );
-
-			if ( ! is_array( $old ) ) {
-				$old = (array) $old;
+	public function add($key, $value, $add = FALSE) {
+		$key   = sanitize_text_field($key);
+		$value = $this->sanitize($value);
+		if (TRUE === $this->session->offsetExists($key) && TRUE === $add) {
+			$old = $this->get($key);
+			if (!is_array($old)) {
+				$old = (array)$old;
 			}
-
-			$new                   = array_push( $old, $value );
-			$this->session[ $key ] = serialize( $new );
-
+			$new                   = array_push($old, $value);
+			$this->session[ $key ] = serialize($new);
 		} else {
 			$this->session[ $key ] = $value;
 		}
-
 	}
 
 	/**
@@ -95,14 +81,12 @@ class WPAS_Session {
 	 *
 	 * @return string Sanitized value
 	 */
-	public function sanitize( $value ) {
-
-		if ( is_array( $value ) || is_object( $value ) ) {
-			$value = serialize( $value );
+	public function sanitize($value) {
+		if (is_array($value) || is_object($value)) {
+			$value = serialize($value);
 		}
 
 		return $value;
-
 	}
 
 	/**
@@ -115,17 +99,14 @@ class WPAS_Session {
 	 *
 	 * @return mixed
 	 */
-	public function get( $key, $default = false ) {
-
+	public function get($key, $default = FALSE) {
 		$value = $default;
-		$key   = sanitize_text_field( $key );
-
-		if ( true === $this->session->offsetExists( $key ) ) {
+		$key   = sanitize_text_field($key);
+		if (TRUE === $this->session->offsetExists($key)) {
 			$value = $this->session[ $key ];
 		}
 
-		return maybe_unserialize( $value );
-
+		return maybe_unserialize($value);
 	}
 
 	/**
@@ -147,18 +128,15 @@ class WPAS_Session {
 	 *
 	 * @return bool True if the session was cleaned, false otherwise
 	 */
-	public function clean( $key ) {
-
-		$key     = sanitize_text_field( $key );
-		$cleaned = false;
-
-		if ( true === $this->session->offsetExists( $key ) ) {
-			unset( $this->session[ $key ] );
-			$cleaned = true;
+	public function clean($key) {
+		$key     = sanitize_text_field($key);
+		$cleaned = FALSE;
+		if (TRUE === $this->session->offsetExists($key)) {
+			unset($this->session[ $key ]);
+			$cleaned = TRUE;
 		}
 
 		return $cleaned;
-
 	}
 
 	/**
@@ -168,7 +146,6 @@ class WPAS_Session {
 	 * @return void
 	 */
 	public function reset() {
-		$this->session = array();
+		$this->session = [];
 	}
-
 }

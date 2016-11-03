@@ -1,6 +1,5 @@
 <?php
-function flatsome_custom_css()
-{
+function flatsome_custom_css() {
     global $flatsome_opt;
     ob_start();
     ?>
@@ -132,7 +131,7 @@ function flatsome_custom_css()
         <?php if($flatsome_opt['header_bg'] || $flatsome_opt['header_bg_img']){?>
         #masthead {
             background-color: <?php echo $flatsome_opt['header_bg']; ?>;
-            <?php if($flatsome_opt['header_bg_img']) { ?> background-image: url('<?php echo $flatsome_opt['header_bg_img'] ?>');
+        <?php if($flatsome_opt['header_bg_img']) { ?> background-image: url('<?php echo $flatsome_opt['header_bg_img'] ?>');
             background-repeat: <?php echo $flatsome_opt['header_bg_img_pos'] ?> <?php } ?>;
         }
 
@@ -405,13 +404,13 @@ function flatsome_custom_css()
             echo '.yith-wcwl-wishlistexistsbrowse > a:before, .yith-wcwl-add-button > a.add_to_wishlist:before, .yith-wcwl-wishlistaddedbrowse > a:before{';
             if($flatsome_opt['wishlist_icon'] == 'plus'){
                 echo 'content:"\e00c";';
-            } else if($flatsome_opt['wishlist_icon'] == 'star'){
+            } else {if($flatsome_opt['wishlist_icon'] == 'star'){
                 echo 'content:"\e005";';
-            } else if($flatsome_opt['wishlist_icon'] == 'pen'){
+            } else {if($flatsome_opt['wishlist_icon'] == 'pen'){
                 echo 'content:"\e017";';
-            } else if($flatsome_opt['wishlist_icon'] == 'list'){
+            } else {if($flatsome_opt['wishlist_icon'] == 'list'){
                 echo 'content:"\e00b";';
-            }
+            }}}}
             echo '}';
          } ?>
 
@@ -579,16 +578,12 @@ function flatsome_custom_css()
     </style>
 
     <?php
-
     $buffer = ob_get_clean();
-
 // Minify CSS
     $buffer = preg_replace('!/\*[^*]*\*+([^/][^*]*\*+)*/!', '', $buffer);
     $buffer = str_replace(': ', ':', $buffer);
-    $buffer = str_replace(array("\r\n", "\r", "\n", "\t", '  ', '    ', '    '), '', $buffer);
-
+    $buffer = str_replace(["\r\n", "\r", "\n", "\t", '  ', '    ', '    '], '', $buffer);
     echo $buffer;
-
 }
 
 add_action('wp_head', 'flatsome_custom_css', 100);

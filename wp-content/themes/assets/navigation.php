@@ -31,7 +31,7 @@
 										     src="http://res.cloudinary.com/coolpad/image/upload/v1467700465/phones/tattoo-front.png"
 										     alt="Coolpad Tattoo">
 									</div>
-									Tattoo
+									Coolpad Tattoo
 										<span class="desc">
 											For Style
 										</span>
@@ -44,7 +44,7 @@
 										     src="http://res.cloudinary.com/coolpad/image/upload/v1467700465/phones/catalyst-front.png"
 										     alt="Coolpad Catalyst">
 									</div>
-									Catalyst
+									Coolpad Catalyst
 										<span class="desc">
 											For Change
 										</span>
@@ -57,7 +57,7 @@
 										     src="http://res.cloudinary.com/coolpad/image/upload/v1467700465/phones/rogue-front.png"
 										     alt="Coolpad Rogue">
 									</div>
-									Rogue
+									Coolpad Rogue
 										<span class="desc">
 											For Spirit
 										</span>
@@ -66,16 +66,16 @@
 						</ul>
 					</div>
 				</li>
-				<li><a href="http://coolpad.us/products/catalyst">Catalyst</a></li>
 				<li class="dropdown">
-					<a href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">About Us</a>
+					<a href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">About</a>
 					<div class="dropdown-menu">
 						<ul>
 							<li><a href="http://coolpad.us/about">Our Story</a></li>
+							<li><a href="http://coolpad.us/news">Coolpad News</a></li>
 							<li><a href="http://coolpad.us/careers">Careers</a></li>
 							<li><a href="http://coolpad.us/contact">Contact Us</a></li>
 						</ul>
 					</div>
 				</li>
-				<li><a href="http://coolpad.us/news">News</a></li>
 				<li><a href="http://support.coolpad.us/">Support</a></li>
+				<li><a href="http://store.coolpad.us/">Store</a></li>

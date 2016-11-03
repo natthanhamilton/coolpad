@@ -15,52 +15,38 @@
  * For more details on embedding, read our docs:
  * http://www.titanframework.net/embedding-titan-framework-in-your-project/
  */
-
-
-if (! class_exists('TitanFrameworkEmbedder'))
-{
-
-
+if (!class_exists('TitanFrameworkEmbedder')) {
     /**
      * Titan Framework Embedder
      *
      * @since 1.6
      */
     class TitanFrameworkEmbedder {
-
-
         /**
          * Constructor, add hooks for embedding for Titan Framework
          *
          * @since 1.6
          */
-        function __construct()
-        {
+        function __construct() {
             // Don't do anything when we're activating a plugin to prevent errors
             // on redeclaring Titan classes
-            if (is_admin())
-            {
-                if (! empty($_GET['action']) && ! empty($_GET['plugin']))
-                {
-                    if ($_GET['action'] == 'activate')
-                    {
+            if (is_admin()) {
+                if (!empty($_GET['action']) && !empty($_GET['plugin'])) {
+                    if ($_GET['action'] == 'activate') {
                         return;
                     }
                 }
             }
-            add_action('after_setup_theme', array($this, 'perform_check'), 1);
+            add_action('after_setup_theme', [$this, 'perform_check'], 1);
         }
-
 
         /**
          * Uses Titan Framework
          *
          * @since 1.6
          */
-        public function perform_check()
-        {
-            if (class_exists('TitanFramework'))
-            {
+        public function perform_check() {
+            if (class_exists('TitanFramework')) {
                 return;
             }
             require_once('titan-framework.php');

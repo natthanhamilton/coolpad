@@ -29,6 +29,38 @@ class Vc_Role_Access_Controller extends Vc_Access {
 	}
 
 	/**
+	 * Set role name.
+	 *
+	 * @param $role_name
+	 */
+	public function setRoleName( $role_name ) {
+		$this->roleName = $role_name;
+	}
+
+	/**
+	 * Get part for role.
+	 * @return bool
+	 */
+	public function getPart() {
+		return $this->part;
+	}
+
+	/**
+	 * Get state of the Vc access rules part.
+	 *
+	 * @return mixed;
+	 */
+	public function getState() {
+		$role = $this->getRole();
+		$state = null;
+		if ( $role && isset( $role->capabilities, $role->capabilities[ $this->getStateKey() ] ) ) {
+			$state = $role->capabilities[ $this->getStateKey() ];
+		}
+
+		return apply_filters( 'vc_role_access_with_' . $this->getPart() . '_get_state', $state, $this->getRole() );
+	}
+
+	/**
 	 * Set state for full part.
 	 *
 	 * State can have 3 values:
@@ -43,49 +75,6 @@ class Vc_Role_Access_Controller extends Vc_Access {
 	public function setState( $value = true ) {
 		$this->getRole() && $this->getRole()
 		                         ->add_cap( $this->getStateKey(), $value );
-	}
-
-	/**
-	 * @return null|\WP_Role
-	 * @throws Exception
-	 */
-	public function getRole() {
-		if ( ! $this->role ) {
-			if ( ! $this->getRoleName() ) {
-				throw new Exception( 'roleName for role_manager is not set, please use ->who(roleName) method to set!' );
-			}
-			$this->role = get_role( $this->getRoleName() );
-		}
-
-		return $this->role;
-	}
-
-	/**
-	 * @return null|string
-	 */
-	public function getRoleName() {
-		return $this->roleName;
-	}
-
-	/**
-	 * Set role name.
-	 *
-	 * @param $role_name
-	 */
-	public function setRoleName( $role_name ) {
-		$this->roleName = $role_name;
-	}
-
-	public function getStateKey() {
-		return self::$part_name_prefix . $this->getPart();
-	}
-
-	/**
-	 * Get part for role.
-	 * @return bool
-	 */
-	public function getPart() {
-		return $this->part;
 	}
 
 	/**
@@ -130,42 +119,6 @@ class Vc_Role_Access_Controller extends Vc_Access {
 		return $this;
 	}
 
-	public function updateMergedCaps( $rule ) {
-		if ( isset( $this->mergedCaps[ $rule ] ) ) {
-			return $this->mergedCaps[ $rule ];
-		}
-
-		return $rule;
-	}
-
-	/**
-	 * Get state of the Vc access rules part.
-	 *
-	 * @return mixed;
-	 */
-	public function getState() {
-		$role = $this->getRole();
-		$state = null;
-		if ( $role && isset( $role->capabilities, $role->capabilities[ $this->getStateKey() ] ) ) {
-			$state = $role->capabilities[ $this->getStateKey() ];
-		}
-
-		return apply_filters( 'vc_role_access_with_' . $this->getPart() . '_get_state', $state, $this->getRole() );
-	}
-
-	/**
-	 * Get capability for role
-	 *
-	 * @param $rule
-	 *
-	 * @return bool
-	 */
-	public function getCapRule( $rule ) {
-		$rule = $this->getStateKey() . '/' . $rule;
-
-		return $this->getRole() ? $this->getRole()->has_cap( $rule ) : false;
-	}
-
 	/**
 	 * Can user do what he doo.
 	 * Any rule has three types of state: true,false, string.
@@ -190,6 +143,19 @@ class Vc_Role_Access_Controller extends Vc_Access {
 		}
 
 		return $this;
+	}
+
+	/**
+	 * Get capability for role
+	 *
+	 * @param $rule
+	 *
+	 * @return bool
+	 */
+	public function getCapRule( $rule ) {
+		$rule = $this->getStateKey() . '/' . $rule;
+
+		return $this->getRole() ? $this->getRole()->has_cap( $rule ) : false;
 	}
 
 	/**
@@ -224,6 +190,32 @@ class Vc_Role_Access_Controller extends Vc_Access {
 		return $caps;
 	}
 
+	/**
+	 * @return null|\WP_Role
+	 * @throws Exception
+	 */
+	public function getRole() {
+		if ( ! $this->role ) {
+			if ( ! $this->getRoleName() ) {
+				throw new Exception( 'roleName for role_manager is not set, please use ->who(roleName) method to set!' );
+			}
+			$this->role = get_role( $this->getRoleName() );
+		}
+
+		return $this->role;
+	}
+
+	/**
+	 * @return null|string
+	 */
+	public function getRoleName() {
+		return $this->roleName;
+	}
+
+	public function getStateKey() {
+		return self::$part_name_prefix . $this->getPart();
+	}
+
 	public function checkState( $data ) {
 		if ( $this->getValidAccess() ) {
 			$this->setValidAccess( $this->getState() === $data );
@@ -247,6 +239,14 @@ class Vc_Role_Access_Controller extends Vc_Access {
 	 */
 	public function __toString() {
 		return (string) $this->get();
+	}
+
+	public function updateMergedCaps( $rule ) {
+		if ( isset( $this->mergedCaps[ $rule ] ) ) {
+			return $this->mergedCaps[ $rule ];
+		}
+
+		return $rule;
 	}
 
 	/**

@@ -19,21 +19,19 @@
  * Domain Path:       /languages
  */
 // If this file is called directly, abort.
-if (! defined('WPINC'))
-{
+if (!defined('WPINC')) {
     die;
 }
 add_action('plugins_loaded', 'wpas_user_custom_fields');
 /**
  * Register all custom fields after the plugin is safely loaded.
  */
-function wpas_user_custom_fields()
-{
-    if (function_exists('wpas_add_custom_field'))
-    {
-        wpas_add_custom_field('phone_number', array('title' => 'Phone Number', 'required' => TRUE));
-        wpas_add_custom_field('imei', array('title' => 'Product IMEI Number', 'required' => TRUE));
-        wpas_add_custom_taxonomy('carriers', array('title' => 'Carriers', 'label' => 'Carrier', 'label_plural' => 'Carriers', 'taxo_std' => TRUE));
+function wpas_user_custom_fields() {
+    if (function_exists('wpas_add_custom_field')) {
+        wpas_add_custom_field('phone_number', ['title' => 'Phone Number', 'required' => TRUE]);
+        wpas_add_custom_field('imei', ['title' => 'Product IMEI Number', 'required' => TRUE]);
+        wpas_add_custom_taxonomy('carriers',
+                                 ['title' => 'Carriers', 'label' => 'Carrier', 'label_plural' => 'Carriers', 'taxo_std' => TRUE]);
     }
     /* Do NOT write anything after this line */
 }

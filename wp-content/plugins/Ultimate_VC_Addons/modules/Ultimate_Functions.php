@@ -1,9 +1,8 @@
 <?php
-if (! function_exists('ultimate_get_icon_position_json'))
-{
-    function ultimate_get_icon_position_json()
-    {
-        $json = '{
+if (!function_exists('ultimate_get_icon_position_json')) {
+	function ultimate_get_icon_position_json() {
+		$json
+			= '{
 			"Display Text and Icon - Always":{
 				"Icon_at_Left":"ubtn-sep-icon-at-left",
 				"Icon_at_Right":"ubtn-sep-icon-at-right"
@@ -21,13 +20,13 @@ if (! function_exists('ultimate_get_icon_position_json'))
 				"Push_out_Text_to_Right‏":"ubtn-sep-icon-left-push"
 			}
 		}';
-        return $json;
-    }
-}
 
-function ultimate_get_banner2_json()
-{
-    $json = '{
+		return $json;
+	}
+}
+function ultimate_get_banner2_json() {
+	$json
+		= '{
 		"Long_Text":{
 			"Style_1":"style1",
 			"Style_2":"style5",
@@ -47,14 +46,14 @@ function ultimate_get_banner2_json()
 			"Style_12":"style15"
 		}
 	}';
-    return $json;
+
+	return $json;
 }
 
-if (! function_exists('ultimate_get_animation_json'))
-{
-    function ultimate_get_animation_json()
-    {
-        $json = '{
+if (!function_exists('ultimate_get_animation_json')) {
+	function ultimate_get_animation_json() {
+		$json
+			= '{
 		  "attention_seekers": {
 			"No Animation": true,
 			"bounce": true,
@@ -176,6 +175,7 @@ if (! function_exists('ultimate_get_animation_json'))
 			"InfiniteVerticalScaleFlip": true
 		  }
 		}';
-        return $json;
-    }
+
+		return $json;
+	}
 }

@@ -6,12 +6,10 @@
  * @link      http://themeavenue.net
  * @copyright 2015 ThemeAvenue
  */
-
 // If this file is called directly, abort.
-if ( ! defined( 'WPINC' ) ) {
+if (!defined('WPINC')) {
 	die;
 }
-
 /**
  * Get the list of user profile data to display in the user profile metabox
  *
@@ -21,16 +19,14 @@ if ( ! defined( 'WPINC' ) ) {
  *
  * @return array
  */
-function wpas_user_profile_get_contact_info( $ticket_id ) {
-
-	$data = array(
+function wpas_user_profile_get_contact_info($ticket_id) {
+	$data = [
 		'name',
 		'role',
 		'email',
-	);
+	];
 
-	return apply_filters( 'wpas_user_profile_contact_info', $data, $ticket_id );
-
+	return apply_filters('wpas_user_profile_contact_info', $data, $ticket_id);
 }
 
 /**
@@ -46,26 +42,21 @@ function wpas_user_profile_get_contact_info( $ticket_id ) {
  *
  * @return void
  */
-function wpas_user_profile_contact_info_contents( $info, $user, $ticket_id ) {
-
-	switch ( $info ) {
-
+function wpas_user_profile_contact_info_contents($info, $user, $ticket_id) {
+	switch ($info) {
 		case 'name':
-			echo apply_filters( 'wpas_user_profile_contact_name', $user->data->display_name, $user, $ticket_id );
+			echo apply_filters('wpas_user_profile_contact_name', $user->data->display_name, $user, $ticket_id);
 			break;
-
 		case 'role':
-			echo wp_kses_post( sprintf( __( 'Support User since %s', 'awesome-support' ), '<strong>' . date( get_option( 'date_format' ), strtotime( $user->data->user_registered ) ) . '</strong>' ) );
+			echo wp_kses_post(sprintf(__('Support User since %s', 'awesome-support'),
+			                          '<strong>' . date(get_option('date_format'),
+			                                            strtotime($user->data->user_registered)) . '</strong>'));
 			break;
-
 		case 'email':
-			printf( '<a href="mailto:%1$s">%1$s</a>', $user->data->user_email );
+			printf('<a href="mailto:%1$s">%1$s</a>', $user->data->user_email);
 			break;
-
 		default:
-			do_action( 'wpas_user_profile_info_' . $info, $user, $ticket_id );
+			do_action('wpas_user_profile_info_' . $info, $user, $ticket_id);
 			break;
-
 	}
-
 }

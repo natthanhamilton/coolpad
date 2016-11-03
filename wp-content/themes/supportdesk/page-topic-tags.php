@@ -1,12 +1,10 @@
 <?php
-
 /**
  * Template Name: bbPress - Topic Tags
  *
- * @package bbPress
+ * @package    bbPress
  * @subpackage Theme
  */
-
 get_header(); ?>
 
 <?php $st_page_sidebar_pos = get_post_meta($post->ID, '_st_page_sidebar', TRUE); ?>
@@ -15,26 +13,24 @@ get_header(); ?>
 <div id="page-header" class="clearfix">
     <div class="ht-container">
         <h1><?php the_title(); ?></h1>
-        <?php if (get_post_meta($post->ID, '_st_page_tagline', TRUE))
-        { ?>
+        <?php if (get_post_meta($post->ID, '_st_page_tagline', TRUE)) { ?>
             <p><?php echo get_post_meta($post->ID, '_st_page_tagline', TRUE); ?></p>
         <?php } ?>
     </div>
 </div>
 <!-- /#page-header -->
 
-<?php if (! get_post_meta($post->ID, '_st_page_breadcrumbs', TRUE))
-{ ?>
+<?php if (!get_post_meta($post->ID, '_st_page_breadcrumbs', TRUE)) { ?>
     <!-- #breadcrumbs -->
     <div id="page-subnav" class="clearfix">
         <div class="ht-container">
             <?php
-            $st_bbpress_breadcrumbs_args = array(
+            $st_bbpress_breadcrumbs_args = [
                 // Modify default BBPress Breadcrumbs
                 'before' => '<nav class="bbp-breadcrumb">',
                 'after'  => '</nav>',
                 'sep'    => __('&frasl;', 'bbpress'),
-            );
+            ];
             bbp_breadcrumb($st_bbpress_breadcrumbs_args); ?>
         </div>
     </div>
@@ -58,7 +54,10 @@ get_header(); ?>
                     <h1 class="entry-title"><?php the_title(); ?></h1>
                     <div class="entry-content">
 
-                        <?php get_the_content() ? the_content() : '<p>' . _e('This is a collection of tags that are currently popular on our forums.', 'bbpress') . '</p>'; ?>
+                        <?php get_the_content()
+                            ? the_content()
+                            : '<p>' . _e('This is a collection of tags that are currently popular on our forums.',
+                                         'bbpress') . '</p>'; ?>
 
                         <div id="bbpress-forums">
 
@@ -66,7 +65,7 @@ get_header(); ?>
 
                             <div id="bbp-topic-hot-tags">
 
-                                <?php wp_tag_cloud(array('smallest' => 9, 'largest' => 38, 'number' => 80, 'taxonomy' => bbp_get_topic_tag_tax_id())); ?>
+                                <?php wp_tag_cloud(['smallest' => 9, 'largest' => 38, 'number' => 80, 'taxonomy' => bbp_get_topic_tag_tax_id()]); ?>
 
                             </div>
                         </div>
@@ -80,8 +79,7 @@ get_header(); ?>
         </section>
         <!-- #content -->
 
-        <?php if ($st_page_sidebar_pos != 'off')
-        {
+        <?php if ($st_page_sidebar_pos != 'off') {
             get_sidebar();
         } ?>
     </div>

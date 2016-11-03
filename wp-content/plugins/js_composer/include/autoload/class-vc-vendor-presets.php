@@ -13,15 +13,15 @@ class Vc_Vendor_Preset {
 	private static $_instance;
 	private static $presets = array();
 
-	protected function __construct() {
-	}
-
 	public static function getInstance() {
 		if ( ! self::$_instance ) {
 			self::$_instance = new self();
 		}
 
 		return self::$_instance;
+	}
+
+	protected function __construct() {
 	}
 
 	/**

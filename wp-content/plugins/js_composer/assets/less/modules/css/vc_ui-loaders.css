@@ -1,0 +1,35 @@
+.vc_ui-wp-spinner {
+  margin: 0;
+  padding: 0;
+  height: 1em;
+  width: 1em;
+  display: inline-block;
+  vertical-align: middle;
+  opacity: .7;
+  position: relative;
+}
+.vc_ui-wp-spinner::before {
+  content: '';
+  display: block;
+  height: 16px;
+  width: 16px;
+  background: transparent url('../vc/loaders/spinner.svg') 50% 50% no-repeat;
+  background-size: contain;
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  animation: vc_ui-wp-spinner-animation 1.08s linear infinite;
+}
+.vc_ui-wp-spinner.vc_ui-wp-spinner-lg::before {
+  height: 20.8px;
+  width: 20.8px;
+}
+@keyframes vc_ui-wp-spinner-animation {
+  from {
+    transform: translate(-50%, -50%) rotate(0deg);
+  }
+  to {
+    transform: translate(-50%, -50%) rotate(360deg);
+  }
+}

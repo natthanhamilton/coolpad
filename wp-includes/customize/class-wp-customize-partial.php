@@ -38,80 +38,7 @@ class WP_Customize_Partial {
 	 * @var string
 	 */
 	public $id;
-	/**
-	 * Type of this partial.
-	 *
-	 * @since 4.5.0
-	 * @access public
-	 * @var string
-	 */
-	public $type = 'default';
-	/**
-	 * The jQuery selector to find the container element for the partial.
-	 *
-	 * @since 4.5.0
-	 * @access public
-	 * @var string
-	 */
-	public $selector;
-	/**
-	 * IDs for settings tied to the partial.
-	 *
-	 * @access public
-	 * @since 4.5.0
-	 * @var array
-	 */
-	public $settings;
-	/**
-	 * The ID for the setting that this partial is primarily responsible for rendering.
-	 *
-	 * If not supplied, it will default to the ID of the first setting.
-	 *
-	 * @since 4.5.0
-	 * @access public
-	 * @var string
-	 */
-	public $primary_setting;
-	/**
-	 * Capability required to edit this partial.
-	 *
-	 * Normally this is empty and the capability is derived from the capabilities
-	 * of the associated `$settings`.
-	 *
-	 * @since 4.5.0
-	 * @access public
-	 * @var string
-	 */
-	public $capability;
-	/**
-	 * Render callback.
-	 *
-	 * @since 4.5.0
-	 * @access public
-	 * @see WP_Customize_Partial::render()
-	 * @var callable Callback is called with one argument, the instance of
-	 *                 WP_Customize_Partial. The callback can either echo the
-	 *                 partial or return the partial as a string, or return false if error.
-	 */
-	public $render_callback;
-	/**
-	 * Whether the container element is included in the partial, or if only the contents are rendered.
-	 *
-	 * @since 4.5.0
-	 * @access public
-	 * @var bool
-	 */
-	public $container_inclusive = false;
-	/**
-	 * Whether to refresh the entire preview in case a partial cannot be refreshed.
-	 *
-	 * A partial render is considered a failure if the render_callback returns false.
-	 *
-	 * @since 4.5.0
-	 * @access public
-	 * @var bool
-	 */
-	public $fallback_refresh = true;
+
 	/**
 	 * Parsed ID.
 	 *
@@ -123,6 +50,88 @@ class WP_Customize_Partial {
 	 * }
 	 */
 	protected $id_data = array();
+
+	/**
+	 * Type of this partial.
+	 *
+	 * @since 4.5.0
+	 * @access public
+	 * @var string
+	 */
+	public $type = 'default';
+
+	/**
+	 * The jQuery selector to find the container element for the partial.
+	 *
+	 * @since 4.5.0
+	 * @access public
+	 * @var string
+	 */
+	public $selector;
+
+	/**
+	 * IDs for settings tied to the partial.
+	 *
+	 * @access public
+	 * @since 4.5.0
+	 * @var array
+	 */
+	public $settings;
+
+	/**
+	 * The ID for the setting that this partial is primarily responsible for rendering.
+	 *
+	 * If not supplied, it will default to the ID of the first setting.
+	 *
+	 * @since 4.5.0
+	 * @access public
+	 * @var string
+	 */
+	public $primary_setting;
+
+	/**
+	 * Capability required to edit this partial.
+	 *
+	 * Normally this is empty and the capability is derived from the capabilities
+	 * of the associated `$settings`.
+	 *
+	 * @since 4.5.0
+	 * @access public
+	 * @var string
+	 */
+	public $capability;
+
+	/**
+	 * Render callback.
+	 *
+	 * @since 4.5.0
+	 * @access public
+	 * @see WP_Customize_Partial::render()
+	 * @var callable Callback is called with one argument, the instance of
+	 *                 WP_Customize_Partial. The callback can either echo the
+	 *                 partial or return the partial as a string, or return false if error.
+	 */
+	public $render_callback;
+
+	/**
+	 * Whether the container element is included in the partial, or if only the contents are rendered.
+	 *
+	 * @since 4.5.0
+	 * @access public
+	 * @var bool
+	 */
+	public $container_inclusive = false;
+
+	/**
+	 * Whether to refresh the entire preview in case a partial cannot be refreshed.
+	 *
+	 * A partial render is considered a failure if the render_callback returns false.
+	 *
+	 * @since 4.5.0
+	 * @access public
+	 * @var bool
+	 */
+	public $fallback_refresh = true;
 
 	/**
 	 * Constructor.

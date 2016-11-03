@@ -1,7 +1,6 @@
 <?php
-if (! defined('ABSPATH'))
-{
-    die('-1');
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
 }
 
 /**
@@ -12,9 +11,9 @@ if (! defined('ABSPATH'))
  * @var $this WPBakeryShortCode
  */
 $el_class = '';
-$atts = vc_map_get_attributes($this->getShortcode(), $atts);
-extract($atts);
+$atts = vc_map_get_attributes( $this->getShortcode(), $atts );
+extract( $atts );
 
-$css = $this->getExtraClass($el_class);
+$css = $this->getExtraClass( $el_class );
 
-echo '<div class="vc_items' . esc_attr($css) . '">' . __('Item', 'js_composer') . '</div>';
+echo '<div class="vc_items' . esc_attr( $css ) . '">' . __( 'Item', 'js_composer' ) . '</div>';

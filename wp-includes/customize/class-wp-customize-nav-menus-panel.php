@@ -28,6 +28,22 @@ class WP_Customize_Nav_Menus_Panel extends WP_Customize_Panel {
 	public $type = 'nav_menus';
 
 	/**
+	 * Render screen options for Menus.
+	 *
+	 * @since 4.3.0
+	 * @access public
+	 */
+	public function render_screen_options() {
+		// Adds the screen options.
+		require_once ABSPATH . 'wp-admin/includes/nav-menu.php';
+		add_filter( 'manage_nav-menus_columns', 'wp_nav_menu_manage_columns' );
+
+		// Display screen options.
+		$screen = WP_Screen::get( 'nav-menus.php' );
+		$screen->render_screen_options( array( 'wrap' => false ) );
+	}
+
+	/**
 	 * Returns the advanced options for the nav menus page.
 	 *
 	 * Link title attribute added as it's a relatively advanced concept for new users.
@@ -80,21 +96,5 @@ class WP_Customize_Nav_Menus_Panel extends WP_Customize_Panel {
 			</div>
 		</li>
 	<?php
-	}
-
-	/**
-	 * Render screen options for Menus.
-	 *
-	 * @since 4.3.0
-	 * @access public
-	 */
-	public function render_screen_options() {
-		// Adds the screen options.
-		require_once ABSPATH . 'wp-admin/includes/nav-menu.php';
-		add_filter( 'manage_nav-menus_columns', 'wp_nav_menu_manage_columns' );
-
-		// Display screen options.
-		$screen = WP_Screen::get( 'nav-menus.php' );
-		$screen->render_screen_options( array( 'wrap' => false ) );
 	}
 }

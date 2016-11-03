@@ -15,5 +15,4 @@
  * @package WooCommerce/Templates
  * @version 2.7.0
  */
-
 ?>

@@ -6,57 +6,37 @@
  * @link      http://themeavenue.net
  * @copyright 2015 ThemeAvenue
  */
-
 // If this file is called directly, abort.
-if (! defined('WPINC'))
-{
+if (!defined('WPINC')) {
     die;
 }
-
 register_activation_hook(WPAS_PLUGIN_FILE, 'wpas_install');
 /**
  * Fired when the plugin is activated.
  *
  * @since    1.0.0
  *
- * @param    boolean $network_wide True if WPMU superadmin uses
+ * @param    boolean $network_wide       True if WPMU superadmin uses
  *                                       "Network Activate" action, false if
  *                                       WPMU is disabled or plugin is
  *                                       activated on an individual blog.
  */
-function wpas_install($network_wide)
-{
-
-    if (function_exists('is_multisite') && is_multisite())
-    {
-
-        if ($network_wide)
-        {
-
+function wpas_install($network_wide) {
+    if (function_exists('is_multisite') && is_multisite()) {
+        if ($network_wide) {
             // Get all blog ids
             $blog_ids = wpas_get_blog_ids();
-
-            foreach ($blog_ids as $blog_id)
-            {
-
+            foreach ($blog_ids as $blog_id) {
                 switch_to_blog($blog_id);
                 wpas_single_activate();
             }
-
             restore_current_blog();
-
-        }
-        else
-        {
+        } else {
             wpas_single_activate();
         }
-
-    }
-    else
-    {
+    } else {
         wpas_single_activate();
     }
-
 }
 
 add_action('wpmu_new_blog', 'wpas_activate_new_site', 10, 6);
@@ -67,18 +47,13 @@ add_action('wpmu_new_blog', 'wpas_activate_new_site', 10, 6);
  *
  * @param    int $blog_id ID of the new blog.
  */
-function wpas_activate_new_site($blog_id)
-{
-
-    if (1 !== did_action('wpmu_new_blog'))
-    {
+function wpas_activate_new_site($blog_id) {
+    if (1 !== did_action('wpmu_new_blog')) {
         return;
     }
-
     switch_to_blog($blog_id);
     wpas_single_activate();
     restore_current_blog();
-
 }
 
 /**
@@ -86,9 +61,7 @@ function wpas_activate_new_site($blog_id)
  *
  * @since    1.0.0
  */
-function wpas_single_activate()
-{
-
+function wpas_single_activate() {
     /**
      * Full list of capabilities.
      *
@@ -97,7 +70,7 @@ function wpas_single_activate()
      *
      * @var array
      */
-    $full_cap = apply_filters('wpas_user_capabilities_full', array(
+    $full_cap = apply_filters('wpas_user_capabilities_full', [
         'view_ticket',
         'view_private_ticket',
         'edit_ticket',
@@ -114,8 +87,7 @@ function wpas_single_activate()
         'ticket_taxonomy',
         'create_ticket',
         'attach_files'
-    ));
-
+    ]);
     /**
      * Partial list of capabilities.
      *
@@ -125,7 +97,7 @@ function wpas_single_activate()
      *
      * @var array
      */
-    $agent_cap = apply_filters('wpas_user_capabilities_agent', array(
+    $agent_cap = apply_filters('wpas_user_capabilities_agent', [
         'view_ticket',
         'view_private_ticket',
         'edit_ticket',
@@ -137,81 +109,70 @@ function wpas_single_activate()
         'create_ticket',
         'delete_reply',
         'attach_files'
-    ));
-
+    ]);
     /**
      * Very limited list of capabilities for the clients.
      */
-    $client_cap = apply_filters('wpas_user_capabilities_client', array(
+    $client_cap = apply_filters('wpas_user_capabilities_client', [
         'view_ticket',
         'create_ticket',
         'close_ticket',
         'reply_ticket',
         'attach_files'
-    ));
-
-
+    ]);
     /* Get roles to copy capabilities from */
-    $editor = get_role('editor');
-    $author = get_role('author');
+    $editor     = get_role('editor');
+    $author     = get_role('author');
     $subscriber = get_role('subscriber');
-    $admin = get_role('administrator');
-
+    $admin      = get_role('administrator');
     /* Add the new roles */
-    $manager = add_role('wpas_manager', __('Support Supervisor', 'awesome-support'), $editor->capabilities);     // Has full capabilities for the plugin in addition to editor capabilities
-    $tech = add_role('wpas_support_manager', __('Support Manager', 'awesome-support'), $subscriber->capabilities); // Has full capabilities for the plugin only
-    $agent = add_role('wpas_agent', __('Support Agent', 'awesome-support'), $author->capabilities);     // Has limited capabilities for the plugin in addition to author's capabilities
-    $client = add_role('wpas_user', __('Support User', 'awesome-support'), $subscriber->capabilities); // Has posting & replying capapbilities for the plugin in addition to subscriber's capabilities
-
+    $manager = add_role('wpas_manager', __('Support Supervisor', 'awesome-support'),
+                        $editor->capabilities);     // Has full capabilities for the plugin in addition to editor capabilities
+    $tech    = add_role('wpas_support_manager', __('Support Manager', 'awesome-support'),
+                        $subscriber->capabilities); // Has full capabilities for the plugin only
+    $agent   = add_role('wpas_agent', __('Support Agent', 'awesome-support'),
+                        $author->capabilities);     // Has limited capabilities for the plugin in addition to author's capabilities
+    $client  = add_role('wpas_user', __('Support User', 'awesome-support'),
+                        $subscriber->capabilities); // Has posting & replying capapbilities for the plugin in addition to subscriber's capabilities
     /**
      * Add full capacities to admin roles
      */
-    foreach ($full_cap as $cap)
-    {
-
+    foreach ($full_cap as $cap) {
         // Add all the capacities to admin in addition to full WP capacities
-        if (NULL != $admin)
+        if (NULL != $admin) {
             $admin->add_cap($cap);
-
+        }
         // Add full plugin capacities to manager in addition to the editor capacities
-        if (NULL != $manager)
+        if (NULL != $manager) {
             $manager->add_cap($cap);
-
+        }
         // Add full plugin capacities only to technical manager
-        if (NULL != $tech)
+        if (NULL != $tech) {
             $tech->add_cap($cap);
-
+        }
     }
-
     /**
      * Add limited capacities ot agents
      */
-    foreach ($agent_cap as $cap)
-    {
-        if (NULL != $agent)
-        {
+    foreach ($agent_cap as $cap) {
+        if (NULL != $agent) {
             $agent->add_cap($cap);
         }
     }
-
     /**
      * Add limited capacities to users
      */
-    foreach ($client_cap as $cap)
-    {
-        if (NULL != $client)
-        {
+    foreach ($client_cap as $cap) {
+        if (NULL != $client) {
             $client->add_cap($cap);
         }
     }
-
     add_option('wpas_options', serialize(get_settings_defaults()));
     add_option('wpas_setup', 'pending');
     add_option('wpas_redirect_about', TRUE);
     add_option('wpas_support_products', 'pending');
     add_option('wpas_db_version', WPAS_DB_VERSION);
     update_option('wpas_version', WPAS_VERSION);
-
 }
 
 /**
@@ -223,18 +184,15 @@ function wpas_single_activate()
  * @since    1.0.0
  * @return   array|false    The blog ids, false if no matches.
  */
-function wpas_get_blog_ids()
-{
-
+function wpas_get_blog_ids() {
     global $wpdb;
-
     // get an array of blog ids
-    $sql = "SELECT blog_id FROM $wpdb->blogs
+    $sql
+        = "SELECT blog_id FROM $wpdb->blogs
 			WHERE archived = '0' AND spam = '0'
 			AND deleted = '0'";
 
     return $wpdb->get_col($sql);
-
 }
 
 /**
@@ -246,16 +204,11 @@ function wpas_get_blog_ids()
  * @since  2.0.0
  * @return void
  */
-function wpas_create_pages()
-{
-
-    $options = unserialize(get_option('wpas_options', array()));
-    $update = FALSE;
-
-    if (empty($options['ticket_list']))
-    {
-
-        $list_args = array(
+function wpas_create_pages() {
+    $options = unserialize(get_option('wpas_options', []));
+    $update  = FALSE;
+    if (empty($options['ticket_list'])) {
+        $list_args = [
             'post_content'   => '[tickets]',
             'post_title'     => wp_strip_all_tags(__('My Tickets', 'awesome-support')),
             'post_name'      => sanitize_title(__('My Tickets', 'awesome-support')),
@@ -263,21 +216,15 @@ function wpas_create_pages()
             'post_status'    => 'publish',
             'ping_status'    => 'closed',
             'comment_status' => 'closed'
-        );
-
+        ];
         $list = wp_insert_post($list_args, TRUE);
-
-        if (! is_wp_error($list) && is_int($list))
-        {
+        if (!is_wp_error($list) && is_int($list)) {
             $options['ticket_list'] = $list;
-            $update = TRUE;
+            $update                 = TRUE;
         }
     }
-
-    if (empty($options['ticket_submit']))
-    {
-
-        $submit_args = array(
+    if (empty($options['ticket_submit'])) {
+        $submit_args = [
             'post_content'   => '[ticket-submit]',
             'post_title'     => wp_strip_all_tags(__('Submit Ticket', 'awesome-support')),
             'post_name'      => sanitize_title(__('Submit Ticket', 'awesome-support')),
@@ -285,25 +232,17 @@ function wpas_create_pages()
             'post_status'    => 'publish',
             'ping_status'    => 'closed',
             'comment_status' => 'closed'
-        );
-
+        ];
         $submit = wp_insert_post($submit_args, TRUE);
-
-        if (! is_wp_error($submit) && is_int($submit))
-        {
+        if (!is_wp_error($submit) && is_int($submit)) {
             $options['ticket_submit'] = $submit;
-            $update = TRUE;
+            $update                   = TRUE;
         }
-
     }
-
-    if ($update)
-    {
+    if ($update) {
         update_option('wpas_options', serialize($options));
     }
-
-    if (! empty($options['ticket_submit']) && ! empty($options['ticket_list']))
-    {
+    if (!empty($options['ticket_submit']) && !empty($options['ticket_list'])) {
         delete_option('wpas_setup');
     }
 }
@@ -318,8 +257,7 @@ function wpas_create_pages()
  * @since  3.0.0
  * @return void
  */
-function wpas_flush_rewrite_rules()
-{
+function wpas_flush_rewrite_rules() {
     flush_rewrite_rules();
 }
 
@@ -332,28 +270,25 @@ function wpas_flush_rewrite_rules()
  * @since  3.0.0
  * @return void
  */
-function wpas_ask_support_products()
-{
-
+function wpas_ask_support_products() {
     global $pagenow;
-
     $args_single = $args_multiple = $_GET;
-
-    if (! isset($get) || ! is_array($get))
-    {
-        $get = array();
+    if (!isset($get) || !is_array($get)) {
+        $get = [];
     }
-
-    $args_single['products'] = 'single';
+    $args_single['products']   = 'single';
     $args_multiple['products'] = 'multiple';
     ?>
     <div class="updated">
-        <p><?php _e('Will you be supporting multiple products on this support site? You can activate multi-products support now. <small>(This setting can be modified later)</small>', 'awesome-support'); ?></p>
+        <p><?php _e('Will you be supporting multiple products on this support site? You can activate multi-products support now. <small>(This setting can be modified later)</small>',
+                    'awesome-support'); ?></p>
 
         <p>
-            <a href="<?php echo wp_sanitize_redirect(wpas_do_url(admin_url($pagenow), 'admin_products_option', $args_single)); ?>"
+            <a href="<?php echo wp_sanitize_redirect(wpas_do_url(admin_url($pagenow), 'admin_products_option',
+                                                                 $args_single)); ?>"
                class="button-secondary"><?php _e('Single Product', 'awesome-support'); ?></a>
-            <a href="<?php echo wp_sanitize_redirect(wpas_do_url(admin_url($pagenow), 'admin_products_option', $args_multiple)); ?>"
+            <a href="<?php echo wp_sanitize_redirect(wpas_do_url(admin_url($pagenow), 'admin_products_option',
+                                                                 $args_multiple)); ?>"
                class="button-secondary"><?php _e('Multiple Products', 'awesome-support'); ?></a>
         </p>
     </div>

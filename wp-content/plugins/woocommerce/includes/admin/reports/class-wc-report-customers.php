@@ -31,7 +31,7 @@ class WC_Report_Customers extends WC_Admin_Report {
 	 * @return array
 	 */
 	public function get_chart_legend() {
-		$legend = [];
+		$legend   = [];
 		$legend[] = [
 			'title'            => sprintf(__('%s signups in this period', 'woocommerce'),
 			                              '<strong>' . sizeof($this->customers) . '</strong>'),
@@ -48,7 +48,7 @@ class WC_Report_Customers extends WC_Admin_Report {
 	 * @return array
 	 */
 	public function get_chart_widgets() {
-		$widgets = [];
+		$widgets   = [];
 		$widgets[] = [
 			'title'    => '',
 			'callback' => [$this, 'customers_vs_guests']
@@ -61,7 +61,7 @@ class WC_Report_Customers extends WC_Admin_Report {
 	 * Output the report.
 	 */
 	public function output_report() {
-		$ranges = [
+		$ranges              = [
 			'year'       => __('Year', 'woocommerce'),
 			'last_month' => __('Last Month', 'woocommerce'),
 			'month'      => __('This Month', 'woocommerce'),
@@ -72,24 +72,24 @@ class WC_Report_Customers extends WC_Admin_Report {
 			'customers' => '#1abc9c',
 			'guests'    => '#8fdece'
 		];
-		$current_range = !empty($_GET['range']) ? sanitize_text_field($_GET['range']) : '7day';
+		$current_range       = !empty($_GET['range']) ? sanitize_text_field($_GET['range']) : '7day';
 		if (!in_array($current_range, ['custom', 'year', 'last_month', 'month', '7day'])) {
 			$current_range = '7day';
 		}
 		$this->calculate_current_range($current_range);
-		$admin_users = new WP_User_Query(
+		$admin_users     = new WP_User_Query(
 			[
 				'role'   => 'administrator',
 				'fields' => 'ID'
 			]
 		);
-		$manager_users = new WP_User_Query(
+		$manager_users   = new WP_User_Query(
 			[
 				'role'   => 'shop_manager',
 				'fields' => 'ID'
 			]
 		);
-		$users_query = new WP_User_Query(
+		$users_query     = new WP_User_Query(
 			[
 				'fields'  => ['user_registered'],
 				'exclude' => array_merge($admin_users->get_results(), $manager_users->get_results())
@@ -154,31 +154,31 @@ class WC_Report_Customers extends WC_Admin_Report {
 			                                                'query_type'   => 'get_results',
 			                                                'filter_range' => TRUE
 		                                                ]);
-		$guest_orders = $this->get_order_report_data([
-			                                             'data'         => [
-				                                             'ID'        => [
-					                                             'type'     => 'post_data',
-					                                             'function' => 'COUNT',
-					                                             'name'     => 'total_orders'
-				                                             ],
-				                                             'post_date' => [
-					                                             'type'     => 'post_data',
-					                                             'function' => '',
-					                                             'name'     => 'post_date'
-				                                             ],
-			                                             ],
-			                                             'where_meta'   => [
-				                                             [
-					                                             'meta_key'   => '_customer_user',
-					                                             'meta_value' => '0',
-					                                             'operator'   => '='
-				                                             ]
-			                                             ],
-			                                             'group_by'     => $this->group_by_query,
-			                                             'order_by'     => 'post_date ASC',
-			                                             'query_type'   => 'get_results',
-			                                             'filter_range' => TRUE
-		                                             ]);
+		$guest_orders    = $this->get_order_report_data([
+			                                                'data'         => [
+				                                                'ID'        => [
+					                                                'type'     => 'post_data',
+					                                                'function' => 'COUNT',
+					                                                'name'     => 'total_orders'
+				                                                ],
+				                                                'post_date' => [
+					                                                'type'     => 'post_data',
+					                                                'function' => '',
+					                                                'name'     => 'post_date'
+				                                                ],
+			                                                ],
+			                                                'where_meta'   => [
+				                                                [
+					                                                'meta_key'   => '_customer_user',
+					                                                'meta_value' => '0',
+					                                                'operator'   => '='
+				                                                ]
+			                                                ],
+			                                                'group_by'     => $this->group_by_query,
+			                                                'order_by'     => 'post_date ASC',
+			                                                'query_type'   => 'get_results',
+			                                                'filter_range' => TRUE
+		                                                ]);
 		$signups         = $this->prepare_chart_data($this->customers, 'user_registered', '', $this->chart_interval,
 		                                             $this->start_date, $this->chart_groupby);
 		$customer_orders = $this->prepare_chart_data($customer_orders, 'post_date', 'total_orders',
@@ -342,23 +342,23 @@ class WC_Report_Customers extends WC_Admin_Report {
 			                                                      ],
 			                                                      'filter_range' => TRUE
 		                                                      ]);
-		$guest_order_totals = $this->get_order_report_data([
-			                                                   'data'         => [
-				                                                   'ID' => [
-					                                                   'type'     => 'post_data',
-					                                                   'function' => 'COUNT',
-					                                                   'name'     => 'total_orders'
-				                                                   ]
-			                                                   ],
-			                                                   'where_meta'   => [
-				                                                   [
-					                                                   'meta_key'   => '_customer_user',
-					                                                   'meta_value' => '0',
-					                                                   'operator'   => '='
-				                                                   ]
-			                                                   ],
-			                                                   'filter_range' => TRUE
-		                                                   ]);
+		$guest_order_totals    = $this->get_order_report_data([
+			                                                      'data'         => [
+				                                                      'ID' => [
+					                                                      'type'     => 'post_data',
+					                                                      'function' => 'COUNT',
+					                                                      'name'     => 'total_orders'
+				                                                      ]
+			                                                      ],
+			                                                      'where_meta'   => [
+				                                                      [
+					                                                      'meta_key'   => '_customer_user',
+					                                                      'meta_value' => '0',
+					                                                      'operator'   => '='
+				                                                      ]
+			                                                      ],
+			                                                      'filter_range' => TRUE
+		                                                      ]);
 		?>
 		<div class="chart-container">
 			<div class="chart-placeholder customers_vs_guests pie-chart" style="height:200px"></div>

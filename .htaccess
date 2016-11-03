@@ -40,6 +40,7 @@ php_value post_max_size 32M
     </FilesMatch>
   </IfModule>
 </IfModule>
+
 # ----------------------------------------------------------------------
 # Webfont access
 # ----------------------------------------------------------------------
@@ -51,4 +52,3 @@ php_value post_max_size 32M
     Header set Access-Control-Allow-Origin "*"
   </FilesMatch>
 </IfModule>
-

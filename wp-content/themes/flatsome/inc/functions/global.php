@@ -1,10 +1,8 @@
 <?php
-
 /* Global Theme Options variable */
 global $flatsome_opt, $smof_data;
-
 // Get Default options
-$flatsome_defaults = array(
+$flatsome_defaults = [
     'minified_flatsome'             => 0,
     'flatsome_builder'              => 1,
     'maintenance_mode'              => 0,
@@ -73,9 +71,9 @@ $flatsome_defaults = array(
     'type_nav'                      => 'Lato',
     'type_alt'                      => 'Dancing Script',
     'type_subset'                   =>
-        array(
+        [
             0 => 'latin',
-        ),
+        ],
     'custom_font'                   => '',
     'color_primary'                 => '#627f9a',
     'color_secondary'               => '#d26e4b',
@@ -151,7 +149,7 @@ $flatsome_defaults = array(
     'facebook_login_checkout'       => 0,
     'disable_reviews'               => 0,
     'social_icons'                  =>
-        array(
+        [
             0 => 'facebook',
             1 => 'twitter',
             2 => 'email',
@@ -159,62 +157,45 @@ $flatsome_defaults = array(
             4 => 'googleplus',
             5 => 'whatsapp',
             6 => 'tumblr',
-        ),
+        ],
     'custom_share_icons'            => '',
     'of_backup'                     => '',
     'of_transfer'                   => '',
-);
-
-if (empty($smof_data))
-{
-    $smof_data = array();
+];
+if (empty($smof_data)) {
+    $smof_data = [];
 }
-
 $flatsome_opt = array_merge($flatsome_defaults, $smof_data);
-
 /* Check if WooCommerce is active */
-function ux_is_woocommerce_active()
-{
+function ux_is_woocommerce_active() {
     return class_exists('woocommerce') ? TRUE : FALSE;
 }
 
 /* Check if WooCommerce is Active */
-if (! function_exists('is_woocommerce_activated'))
-{
-    function is_woocommerce_activated()
-    {
+if (!function_exists('is_woocommerce_activated')) {
+    function is_woocommerce_activated() {
         return class_exists('woocommerce') ? TRUE : FALSE;
     }
 }
-
-
 /* Check if Extensions Exists */
-if (! function_exists('is_extension_activated'))
-{
-    function is_extension_activated($extension)
-    {
+if (!function_exists('is_extension_activated')) {
+    function is_extension_activated($extension) {
         return class_exists($extension) ? TRUE : FALSE;
     }
 }
-
-if (! function_exists('is_woocommerce_active'))
-{
-    function is_woocommerce_active()
-    {
+if (!function_exists('is_woocommerce_active')) {
+    function is_woocommerce_active() {
         return class_exists('woocommerce') ? TRUE : FALSE;
     }
 }
-
 /* Check WooCommerce Version */
-function ux_woocommerce_version_check($version = '2.1')
-{
-    if (function_exists('is_woocommerce_active') && is_woocommerce_active())
-    {
+function ux_woocommerce_version_check($version = '2.1') {
+    if (function_exists('is_woocommerce_active') && is_woocommerce_active()) {
         global $woocommerce;
-        if (version_compare($woocommerce->version, $version, ">="))
-        {
+        if (version_compare($woocommerce->version, $version, ">=")) {
             return TRUE;
         }
     }
+
     return FALSE;
 }

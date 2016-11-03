@@ -1,16 +1,13 @@
 <?php
-
 /**
  * Template Name: bbPress - Statistics
  *
- * @package bbPress
+ * @package    bbPress
  * @subpackage Theme
  */
-
 // Get the statistics and extract them for later use in this template
 // @todo - remove variable references
 extract(bbp_get_statistics(), EXTR_SKIP);
-
 get_header(); ?>
 
 <?php $st_page_sidebar_pos = get_post_meta($post->ID, '_st_page_sidebar', TRUE); ?>
@@ -19,26 +16,24 @@ get_header(); ?>
 <div id="page-header" class="clearfix">
     <div class="ht-container">
         <h1><?php the_title(); ?></h1>
-        <?php if (get_post_meta($post->ID, '_st_page_tagline', TRUE))
-        { ?>
+        <?php if (get_post_meta($post->ID, '_st_page_tagline', TRUE)) { ?>
             <p><?php echo get_post_meta($post->ID, '_st_page_tagline', TRUE); ?></p>
         <?php } ?>
     </div>
 </div>
 <!-- /#page-header -->
 
-<?php if (! get_post_meta($post->ID, '_st_page_breadcrumbs', TRUE))
-{ ?>
+<?php if (!get_post_meta($post->ID, '_st_page_breadcrumbs', TRUE)) { ?>
     <!-- #breadcrumbs -->
     <div id="page-subnav" class="clearfix">
         <div class="ht-container">
             <?php
-            $st_bbpress_breadcrumbs_args = array(
+            $st_bbpress_breadcrumbs_args = [
                 // Modify default BBPress Breadcrumbs
                 'before' => '<nav class="bbp-breadcrumb">',
                 'after'  => '</nav>',
                 'sep'    => __('&frasl;', 'bbpress'),
-            );
+            ];
             bbp_breadcrumb($st_bbpress_breadcrumbs_args); ?>
         </div>
     </div>
@@ -62,7 +57,8 @@ get_header(); ?>
                     <h1 class="entry-title"><?php the_title(); ?></h1>
                     <div class="entry-content">
 
-                        <?php get_the_content() ? the_content() : _e('<p>Here are the statistics and popular topics of our forums.</p>', 'bbpress'); ?>
+                        <?php get_the_content() ? the_content()
+                            : _e('<p>Here are the statistics and popular topics of our forums.</p>', 'bbpress'); ?>
 
                         <div id="bbpress-forums">
 
@@ -95,7 +91,7 @@ get_header(); ?>
                                     <strong><?php echo $topic_tag_count; ?></strong>
                                 </dd>
 
-                                <?php if (! empty($empty_topic_tag_count)) : ?>
+                                <?php if (!empty($empty_topic_tag_count)) : ?>
 
                                     <dt><?php _e('Empty Topic Tags', 'bbpress'); ?></dt>
                                     <dd>
@@ -104,7 +100,7 @@ get_header(); ?>
 
                                 <?php endif; ?>
 
-                                <?php if (! empty($topic_count_hidden)) : ?>
+                                <?php if (!empty($topic_count_hidden)) : ?>
 
                                     <dt><?php _e('Hidden Topics', 'bbpress'); ?></dt>
                                     <dd>
@@ -116,7 +112,7 @@ get_header(); ?>
 
                                 <?php endif; ?>
 
-                                <?php if (! empty($reply_count_hidden)) : ?>
+                                <?php if (!empty($reply_count_hidden)) : ?>
 
                                     <dt><?php _e('Hidden Replies', 'bbpress'); ?></dt>
                                     <dd>
@@ -136,7 +132,7 @@ get_header(); ?>
 
                             <?php bbp_set_query_name('bbp_popular_topics'); ?>
 
-                            <?php if (bbp_has_topics(array('meta_key' => '_bbp_reply_count', 'posts_per_page' => 15, 'max_num_pages' => 1, 'orderby' => 'meta_value_num', 'show_stickies' => FALSE))) : ?>
+                            <?php if (bbp_has_topics(['meta_key' => '_bbp_reply_count', 'posts_per_page' => 15, 'max_num_pages' => 1, 'orderby' => 'meta_value_num', 'show_stickies' => FALSE])) : ?>
 
                                 <h2 class="entry-title"><?php _e('Popular Topics', 'bbpress'); ?></h2>
 
@@ -163,8 +159,7 @@ get_header(); ?>
         </section>
         <!-- #content -->
 
-        <?php if ($st_page_sidebar_pos != 'off')
-        {
+        <?php if ($st_page_sidebar_pos != 'off') {
             get_sidebar();
         } ?>
     </div>

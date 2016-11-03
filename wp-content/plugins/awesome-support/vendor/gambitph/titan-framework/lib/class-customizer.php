@@ -1,84 +1,69 @@
 <?php
-
-if (! defined('ABSPATH'))
-{
+if (!defined('ABSPATH')) {
     exit; // Exit if accessed directly
 }
 
 class TitanFrameworkCustomizer {
-
-    private static $namespacesWithPrintedPreviewCSS = array();
-    public $settings;
-    public $options = array();
-    public $owner;
-
+    private static $namespacesWithPrintedPreviewCSS = [];
+    public         $settings;
+    public         $options                         = [];
+    public         $owner;
     // Makes sure we only load live previewing CSS only once
-    private $defaultSettings = array(
-        'name'       => '', // Name of the menu item
-        // 'parent' => null, // slug of parent, if blank, then this is a top level menu
-        'id'         => '', // Unique ID of the menu item
-        'panel'      => '', // The Name of the panel to create
-        'panel_desc' => '', // The description to display on the panel
-        'panel_id'   => '', // The panel ID to create / add to. If this is blank & `panel` is given, this will be generated
-        'capability' => 'edit_theme_options', // User role
-        // 'icon' => 'dashicons-admin-generic', // Menu icon for top level menus only
-        'desc'       => '', // Description
-        'position'   => 30,// Menu position for top level menus only
-    );
+    private $defaultSettings
+        = [
+            'name'       => '', // Name of the menu item
+            // 'parent' => null, // slug of parent, if blank, then this is a top level menu
+            'id'         => '', // Unique ID of the menu item
+            'panel'      => '', // The Name of the panel to create
+            'panel_desc' => '', // The description to display on the panel
+            'panel_id'   => '', // The panel ID to create / add to. If this is blank & `panel` is given, this will be generated
+            'capability' => 'edit_theme_options', // User role
+            // 'icon' => 'dashicons-admin-generic', // Menu icon for top level menus only
+            'desc'       => '', // Description
+            'position'   => 30,// Menu position for top level menus only
+        ];
 
-    function __construct($settings, $owner)
-    {
+    function __construct($settings, $owner) {
         $this->owner = $owner;
-
         $this->settings = array_merge($this->defaultSettings, $settings);
-
-        if (empty($this->settings['name']))
-        {
+        if (empty($this->settings['name'])) {
             $this->settings['name'] = __('More Options', TF_I18NDOMAIN);
         }
-
-        if (empty($this->settings['id']))
-        {
-            $this->settings['id'] = $this->owner->optionNamespace . '_' . str_replace(' ', '-', trim(strtolower($this->settings['name'])));
+        if (empty($this->settings['id'])) {
+            $this->settings['id'] = $this->owner->optionNamespace . '_' . str_replace(' ', '-',
+                                                                                      trim(strtolower($this->settings['name'])));
         }
-
-        if (empty($this->settings['panel_id']))
-        {
-            $this->settings['panel_id'] = $this->owner->optionNamespace . '_' . str_replace(' ', '-', trim(strtolower($this->settings['panel'])));
+        if (empty($this->settings['panel_id'])) {
+            $this->settings['panel_id'] = $this->owner->optionNamespace . '_' . str_replace(' ', '-',
+                                                                                            trim(strtolower($this->settings['panel'])));
         }
-
         // Register the customizer control.
-        add_action('customize_register', array($this, 'register'));
-
+        add_action('customize_register', [$this, 'register']);
         // Enqueue required customizer styles & scripts.
-        tf_add_action_once('customize_controls_enqueue_scripts', array($this, 'loadUploaderScript'));
-
+        tf_add_action_once('customize_controls_enqueue_scripts', [$this, 'loadUploaderScript']);
         // Clear local storage, we use it for remembering modified customizer values.
-        tf_add_action_once('customize_controls_print_footer_scripts', array($this, 'initLocalStorage'));
-
+        tf_add_action_once('customize_controls_print_footer_scripts', [$this, 'initLocalStorage']);
         // Generate the custom CSS for live previews.
-        tf_add_action_once('wp_ajax_tf_generate_customizer_css', array($this, 'ajaxGenerateCustomizerCSS'));
-
+        tf_add_action_once('wp_ajax_tf_generate_customizer_css', [$this, 'ajaxGenerateCustomizerCSS']);
         // Modify the values of the options for the generation of CSS with the values from the customizer $_POST.
         global $wp_customize;
-        if (isset($wp_customize))
-        {
-            tf_add_filter_once('tf_pre_get_value_' . $this->owner->optionNamespace, array($this, 'useCustomizerModifiedValue'), 10, 3);
+        if (isset($wp_customize)) {
+            tf_add_filter_once('tf_pre_get_value_' . $this->owner->optionNamespace,
+                               [$this, 'useCustomizerModifiedValue'], 10, 3);
         }
     }
 
-    public function loadUploaderScript()
-    {
+    public function loadUploaderScript() {
         wp_enqueue_media();
-        wp_enqueue_script('tf-theme-customizer-serialize', TitanFramework::getURL('../js/min/serialize-min.js', __FILE__));
-        wp_enqueue_style('tf-admin-theme-customizer-styles', TitanFramework::getURL('../css/admin-theme-customizer-styles.css', __FILE__));
+        wp_enqueue_script('tf-theme-customizer-serialize',
+                          TitanFramework::getURL('../js/min/serialize-min.js', __FILE__));
+        wp_enqueue_style('tf-admin-theme-customizer-styles',
+                         TitanFramework::getURL('../css/admin-theme-customizer-styles.css', __FILE__));
     }
 
-    public function getID()
-    {
+    public function getID() {
         return $this->settings['id'];
     }
-
 
     /**
      * Ajax handler for generating CSS based on the existing options with values changed to
@@ -88,83 +73,64 @@ class TitanFrameworkCustomizer {
      *
      * @return void
      */
-    public function ajaxGenerateCustomizerCSS()
-    {
-
+    public function ajaxGenerateCustomizerCSS() {
         // This value is passed back to the live preview ajax handler in $this->livePreviewMainScript()
-        $generated = array(
+        $generated = [
             'css' => '',
-        );
-
-        foreach (TitanFramework::getAllInstances() as $framework)
-        {
-
+        ];
+        foreach (TitanFramework::getAllInstances() as $framework) {
             // Modify the values of the options for the generation of CSS with the values from the customizer $_POST.
             $namespace = $framework->optionNamespace;
-            add_filter("tf_pre_get_value_{$namespace}", array($this, 'useCustomizerModifiedValue'), 10, 3);
-
+            add_filter("tf_pre_get_value_{$namespace}", [$this, 'useCustomizerModifiedValue'], 10, 3);
             // Generate our new CSS based on the customizer values
             $css = $framework->cssInstance->generateCSS();
-
             $generated['css'] .= $css;
-
             /**
              * Allow options to add customizer live preview parameters. The tf_generate_customizer_preview_js hook allows for manipulating these values.
              *
              * @since 1.9.2
              *
-             * @see tf_generate_customizer_preview_js
+             * @see   tf_generate_customizer_preview_js
              */
             $generated = apply_filters("tf_generate_customizer_preview_css_{$namespace}", $generated);
-
         }
-
         wp_send_json_success($generated);
     }
-
 
     /**
      * Override the getOption value with the customizer value which comes from the $_POST array
      *
      * @since 1.9.2
      *
-     * @param mixed $value The value of the option.
-     * @param int $postID The post ID if there is one (always null in this case).
+     * @param mixed                $value  The value of the option.
+     * @param int                  $postID The post ID if there is one (always null in this case).
      * @param TitanFrameworkOption $option The option being parsed.
      *
      * @return mixed The new value
      *
-     * @see tf_pre_get_value_{namespace}
+     * @see   tf_pre_get_value_{namespace}
      */
-    public function useCustomizerModifiedValue($value, $postID, $option)
-    {
-        if (empty($_POST))
-        {
+    public function useCustomizerModifiedValue($value, $postID, $option) {
+        if (empty($_POST)) {
             return $value;
         }
-        if (! is_array($_POST))
-        {
+        if (!is_array($_POST)) {
             return $value;
         }
-        if (array_key_exists($option->getID(), $_POST))
-        {
-            return $_POST[$option->getID()];
+        if (array_key_exists($option->getID(), $_POST)) {
+            return $_POST[ $option->getID() ];
         }
-
-        if (! empty($_POST['customized']))
-        {
+        if (!empty($_POST['customized'])) {
             $customizedSettings = (array)json_decode(stripslashes($_POST['customized']));
-            if (is_array($customizedSettings) && ! empty($customizedSettings))
-            {
-                if (array_key_exists($option->getID(), $customizedSettings))
-                {
-                    return $customizedSettings[$option->getID()];
+            if (is_array($customizedSettings) && !empty($customizedSettings)) {
+                if (array_key_exists($option->getID(), $customizedSettings)) {
+                    return $customizedSettings[ $option->getID() ];
                 }
             }
         }
+
         return $value;
     }
-
 
     /**
      * Prints the script that clears the JS local storage when customizer loads, this ensures we start fresh.
@@ -174,8 +140,7 @@ class TitanFrameworkCustomizer {
      *
      * @return void
      */
-    public function initLocalStorage()
-    {
+    public function initLocalStorage() {
         ?>
         <script>
             if (typeof localStorage !== 'undefined') {
@@ -185,7 +150,6 @@ class TitanFrameworkCustomizer {
         <?php
     }
 
-
     /**
      * Prints the script that uses ajax to adjust the live customizer CSS.
      * Use localStorage so we can still use values when the customizer refreshes.
@@ -194,8 +158,7 @@ class TitanFrameworkCustomizer {
      *
      * @return void
      */
-    public function livePreviewMainScript()
-    {
+    public function livePreviewMainScript() {
         ?>
         <script>
             window.tf_refresh_css = function () {
@@ -228,7 +191,7 @@ class TitanFrameworkCustomizer {
                              *
                              * @since 1.9.2
                              *
-                             * @see $this->ajaxGenerateCustomizerCSS()
+                             * @see   $this->ajaxGenerateCustomizerCSS()
                              */
                             do_action('tf_generate_customizer_preview_js');
                             ?>
@@ -242,7 +205,6 @@ class TitanFrameworkCustomizer {
         <?php
     }
 
-
     /**
      * Prints the script PER option that handles customizer option changes for live previews
      *
@@ -250,20 +212,15 @@ class TitanFrameworkCustomizer {
      *
      * @return void
      */
-    public function livePreview()
-    {
-
+    public function livePreview() {
         $printStart = FALSE;
     foreach ($this->options as $option)
     {
-
-        if (empty($option->settings['css']) && empty($option->settings['livepreview']))
-        {
+        if (empty($option->settings['css']) && empty($option->settings['livepreview'])) {
             continue;
         }
-
         // Print the starting script tag.
-    if (! $printStart)
+    if (!$printStart)
     {
         $printStart = TRUE;
         ?>
@@ -290,24 +247,20 @@ class TitanFrameworkCustomizer {
                         window.tf_refresh_css();
                         <?php
 
-                        } else
-                    {
-
+                        } else {
                         /**
                          * If the livepreview parameter is given, use that. This is the original behavior.
                          */
                         // Some options may want to insert custom jQuery code before manipulation of live preview/
-                        if (! empty($option->settings['id']))
-                        {
-                            do_action('tf_livepreview_pre_' . $this->owner->optionNamespace, $option->settings['id'], $option->settings['type'], $option);
+                        if (!empty($option->settings['id'])) {
+                            do_action('tf_livepreview_pre_' . $this->owner->optionNamespace, $option->settings['id'],
+                                      $option->settings['type'], $option);
                         }
-
                         echo $option->settings['livepreview'];
-
                         // Some options may want to insert custom jQuery code after manipulation of live preview.
-                        if (! empty($option->settings['id']))
-                        {
-                            do_action('tf_livepreview_post_' . $this->owner->optionNamespace, $option->settings['id'], $option->settings['type'], $option);
+                        if (!empty($option->settings['id'])) {
+                            do_action('tf_livepreview_post_' . $this->owner->optionNamespace, $option->settings['id'],
+                                      $option->settings['type'], $option);
                         }
                     }
 
@@ -327,7 +280,6 @@ class TitanFrameworkCustomizer {
     }
     }
 
-
     /**
      * Prints out CSS styles for the current namespace refresh previewing
      *
@@ -335,98 +287,75 @@ class TitanFrameworkCustomizer {
      *
      * @return    void
      *
-     * @see self::$namespacesWithPrintedPreviewCSS
+     * @see      self::$namespacesWithPrintedPreviewCSS
      */
-    public function printPreviewCSS()
-    {
-
+    public function printPreviewCSS() {
         // Only print the styles once per namespace
-        if (! in_array($this->owner->optionNamespace, self::$namespacesWithPrintedPreviewCSS))
-        {
+        if (!in_array($this->owner->optionNamespace, self::$namespacesWithPrintedPreviewCSS)) {
             self::$namespacesWithPrintedPreviewCSS[] = $this->owner->optionNamespace;
-
             echo '<style id="titan-preview-' . esc_attr($this->owner->optionNamespace) . '">';
             echo $this->owner->cssInstance->generateCSS();
             echo '</style>';
         }
     }
 
-    public function register($wp_customize)
-    {
-        add_action('wp_head', array($this, 'printPreviewCSS'), 1000);
-
+    public function register($wp_customize) {
+        add_action('wp_head', [$this, 'printPreviewCSS'], 1000);
         // Create the panel
-        if (! empty($this->settings['panel_id']))
-        {
+        if (!empty($this->settings['panel_id'])) {
             $existingPanels = $wp_customize->panels();
-
-            if (! array_key_exists($this->settings['panel_id'], $existingPanels))
-            {
-                $wp_customize->add_panel($this->settings['panel_id'], array(
+            if (!array_key_exists($this->settings['panel_id'], $existingPanels)) {
+                $wp_customize->add_panel($this->settings['panel_id'], [
                     'title'       => $this->settings['panel'],
                     'priority'    => $this->settings['position'],
                     'capability'  => $this->settings['capability'],
-                    'description' => ! empty($this->settings['panel_desc']) ? $this->settings['panel_desc'] : '',
-                ));
+                    'description' => !empty($this->settings['panel_desc']) ? $this->settings['panel_desc'] : '',
+                ]);
             }
         }
-
         // Create the section
         $existingSections = $wp_customize->sections();
-
-        if (! array_key_exists($this->settings['id'], $existingSections))
-        {
-            $wp_customize->add_section($this->settings['id'], array(
+        if (!array_key_exists($this->settings['id'], $existingSections)) {
+            $wp_customize->add_section($this->settings['id'], [
                 'title'       => $this->settings['name'],
                 'priority'    => $this->settings['position'],
                 'description' => $this->settings['desc'],
                 'capability'  => $this->settings['capability'],
                 'panel'       => empty($this->settings['panel_id']) ? '' : $this->settings['panel_id'],
-            ));
+            ]);
         }
-
         // Unfortunately we have to call each option's register from here
-        foreach ($this->options as $index => $option)
-        {
-            if (! empty($option->settings['id']))
-            {
-
-                $namespace = $this->owner->optionNamespace;
+        foreach ($this->options as $index => $option) {
+            if (!empty($option->settings['id'])) {
+                $namespace   = $this->owner->optionNamespace;
                 $option_type = $option->settings['type'];
-                $transport = empty($option->settings['livepreview']) && empty($option->settings['css']) ? 'refresh' : 'postMessage';
-
+                $transport   = empty($option->settings['livepreview']) && empty($option->settings['css']) ? 'refresh'
+                    : 'postMessage';
                 /**
                  * Allow options to override the transport mode of an option in the customizer
                  *
                  * @since 1.9.2
                  */
                 $transport = apply_filters("tf_customizer_transport_{$option_type}_{$namespace}", $transport, $option);
-
-                $wp_customize->add_setting($option->getID(), array(
+                $wp_customize->add_setting($option->getID(), [
                     'default'   => $option->settings['default'],
                     'transport' => $transport,
-                ));
+                ]);
             }
-
             // We add the index here, this will be used to order the controls because of this minor bug:
             // https://core.trac.wordpress.org/ticket/20733
             $option->registerCustomizerControl($wp_customize, $this, $index + 100);
         }
-
-        add_action('wp_footer', array($this, 'livePreview'));
-        tf_add_action_once('wp_footer', array($this, 'livePreviewMainScript'));
+        add_action('wp_footer', [$this, 'livePreview']);
+        tf_add_action_once('wp_footer', [$this, 'livePreviewMainScript']);
     }
 
-    public function createOption($settings)
-    {
-        if (! apply_filters('tf_create_option_continue_' . $this->owner->optionNamespace, TRUE, $settings))
-        {
+    public function createOption($settings) {
+        if (!apply_filters('tf_create_option_continue_' . $this->owner->optionNamespace, TRUE, $settings)) {
             return NULL;
         }
-
-        $obj = TitanFrameworkOption::factory($settings, $this);
+        $obj             = TitanFrameworkOption::factory($settings, $this);
         $this->options[] = $obj;
-
         do_action('tf_create_option_' . $this->owner->optionNamespace, $obj);
 
         return $obj;

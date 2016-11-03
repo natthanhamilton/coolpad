@@ -159,7 +159,7 @@ class WC_Tracker {
 	 */
 	private static function get_wordpress_info() {
 		$wp_data = [];
-		$memory = wc_let_to_num(WP_MEMORY_LIMIT);
+		$memory  = wc_let_to_num(WP_MEMORY_LIMIT);
 		if (function_exists('memory_get_usage')) {
 			$system_memory = wc_let_to_num(@ini_get('memory_limit'));
 			$memory        = max($memory, $system_memory);
@@ -193,7 +193,7 @@ class WC_Tracker {
 			$server_data['php_suhosin']        = extension_loaded('suhosin') ? 'Yes' : 'No';
 		}
 		global $wpdb;
-		$server_data['mysql_version'] = $wpdb->db_version();
+		$server_data['mysql_version']        = $wpdb->db_version();
 		$server_data['php_max_upload_size']  = size_format(wp_max_upload_size());
 		$server_data['php_default_timezone'] = date_default_timezone_get();
 		$server_data['php_soap']             = class_exists('SoapClient') ? 'Yes' : 'No';
@@ -270,7 +270,7 @@ class WC_Tracker {
 		$product_count          = [];
 		$product_count_data     = wp_count_posts('product');
 		$product_count['total'] = $product_count_data->publish;
-		$product_statuses = get_terms('product_type', ['hide_empty' => 0]);
+		$product_statuses       = get_terms('product_type', ['hide_empty' => 0]);
 		foreach ($product_statuses as $product_status) {
 			$product_count[ $product_status->name ] = $product_status->count;
 		}

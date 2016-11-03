@@ -2,14 +2,11 @@
 /**
  * Add an option page
  */
-if (is_admin())
-{ // admin actions
+if (is_admin()) { // admin actions
     add_action('admin_menu', 'duplicate_post_menu');
     add_action('admin_init', 'duplicate_post_register_settings');
 }
-
-function duplicate_post_register_settings()
-{ // whitelist options
+function duplicate_post_register_settings() { // whitelist options
     register_setting('duplicate_post_group', 'duplicate_post_copydate');
     register_setting('duplicate_post_group', 'duplicate_post_copyexcerpt');
     register_setting('duplicate_post_group', 'duplicate_post_copyattachments');
@@ -25,40 +22,31 @@ function duplicate_post_register_settings()
     register_setting('duplicate_post_group', 'duplicate_post_show_submitbox');
 }
 
-
-function duplicate_post_menu()
-{
-    add_options_page(__("Duplicate Post Options", DUPLICATE_POST_I18N_DOMAIN), __("Duplicate Post", DUPLICATE_POST_I18N_DOMAIN), 'manage_options', 'duplicatepost', 'duplicate_post_options');
+function duplicate_post_menu() {
+    add_options_page(__("Duplicate Post Options", DUPLICATE_POST_I18N_DOMAIN),
+                     __("Duplicate Post", DUPLICATE_POST_I18N_DOMAIN), 'manage_options', 'duplicatepost',
+                     'duplicate_post_options');
 }
 
-function duplicate_post_options()
-{
-
-    if (current_user_can('edit_users') && (isset($_GET['settings-updated']) && $_GET['settings-updated'] == TRUE))
-    {
+function duplicate_post_options() {
+    if (current_user_can('edit_users') && (isset($_GET['settings-updated']) && $_GET['settings-updated'] == TRUE)) {
         global $wp_roles;
         $roles = $wp_roles->get_names();
-
         $dp_roles = get_option('duplicate_post_roles');
-        if ($dp_roles == "") $dp_roles = array();
-
-        foreach ($roles as $name => $display_name)
-        {
+        if ($dp_roles == "") $dp_roles = [];
+        foreach ($roles as $name => $display_name) {
             $role = get_role($name);
-
             // role should have at least edit_posts capability
-            if (! $role->has_cap('edit_posts')) continue;
-
+            if (!$role->has_cap('edit_posts')) continue;
             /* If the role doesn't have the capability and it was selected, add it. */
-            if (! $role->has_cap('copy_posts') && in_array($name, $dp_roles))
+            if (!$role->has_cap('copy_posts') && in_array($name, $dp_roles)) {
                 $role->add_cap('copy_posts');
-
-            /* If the role has the capability and it wasn't selected, remove it. */
-            elseif ($role->has_cap('copy_posts') && ! in_array($name, $dp_roles))
+            } /* If the role has the capability and it wasn't selected, remove it. */
+            elseif ($role->has_cap('copy_posts') && !in_array($name, $dp_roles)) {
                 $role->remove_cap('copy_posts');
+            }
         }
     }
-
     ?>
     <div class="wrap">
         <div id="icon-options-general" class="icon32">
@@ -98,7 +86,8 @@ function duplicate_post_options()
                                value="1" <?php if (get_option('duplicate_post_copydate') == 1) echo 'checked="checked"'; ?>
                         "/>
 					<span
-                        class="description"><?php _e("Normally, the new copy has its publication date set to current time: check the box to copy the original post/page date", DUPLICATE_POST_I18N_DOMAIN); ?>
+                        class="description"><?php _e("Normally, the new copy has its publication date set to current time: check the box to copy the original post/page date",
+                                                     DUPLICATE_POST_I18N_DOMAIN); ?>
 				</span>
                     </td>
                 </tr>
@@ -109,7 +98,8 @@ function duplicate_post_options()
                                value="1" <?php if (get_option('duplicate_post_copystatus') == 1) echo 'checked="checked"'; ?>
                         "/>
 					<span
-                        class="description"><?php _e("Copy the original post status (draft, published, pending) when cloning from the post list.", DUPLICATE_POST_I18N_DOMAIN); ?>
+                        class="description"><?php _e("Copy the original post status (draft, published, pending) when cloning from the post list.",
+                                                     DUPLICATE_POST_I18N_DOMAIN); ?>
 				</span>
                     </td>
                 </tr>
@@ -120,7 +110,8 @@ function duplicate_post_options()
                                value="1" <?php if (get_option('duplicate_post_copyexcerpt') == 1) echo 'checked="checked"'; ?>
                         "/>
 					<span
-                        class="description"><?php _e("Copy the excerpt from the original post/page", DUPLICATE_POST_I18N_DOMAIN); ?>
+                        class="description"><?php _e("Copy the excerpt from the original post/page",
+                                                     DUPLICATE_POST_I18N_DOMAIN); ?>
 				</span>
                     </td>
                 </tr>
@@ -131,7 +122,8 @@ function duplicate_post_options()
                                value="1" <?php if (get_option('duplicate_post_copyattachments') == 1) echo 'checked="checked"'; ?>
                         "/>
 					<span
-                        class="description"><?php _e("Copy the attachments from the original post/page", DUPLICATE_POST_I18N_DOMAIN); ?>
+                        class="description"><?php _e("Copy the attachments from the original post/page",
+                                                     DUPLICATE_POST_I18N_DOMAIN); ?>
 				</span>
                     </td>
                 </tr>
@@ -142,7 +134,8 @@ function duplicate_post_options()
                                value="1" <?php if (get_option('duplicate_post_copychildren') == 1) echo 'checked="checked"'; ?>
                         "/>
 					<span
-                        class="description"><?php _e("Copy the children from the original post/page", DUPLICATE_POST_I18N_DOMAIN); ?>
+                        class="description"><?php _e("Copy the children from the original post/page",
+                                                     DUPLICATE_POST_I18N_DOMAIN); ?>
 				</span>
                     </td>
                 </tr>
@@ -151,7 +144,8 @@ function duplicate_post_options()
                     </th>
                     <td><input type="text" name="duplicate_post_blacklist"
                                value="<?php echo get_option('duplicate_post_blacklist'); ?>"/> <span
-                            class="description"><?php _e("Comma-separated list of meta fields that must not be copied", DUPLICATE_POST_I18N_DOMAIN); ?>
+                            class="description"><?php _e("Comma-separated list of meta fields that must not be copied",
+                                                         DUPLICATE_POST_I18N_DOMAIN); ?>
 				</span>
                     </td>
                 </tr>
@@ -161,18 +155,20 @@ function duplicate_post_options()
                     <td>
                         <div
                             style="height: 100px; width: 300px; padding: 5px; overflow: auto; border: 1px solid #ccc">
-                            <?php $taxonomies = get_taxonomies(array('public' => TRUE), 'objects');
+                            <?php $taxonomies     = get_taxonomies(['public' => TRUE], 'objects');
                             $taxonomies_blacklist = get_option('duplicate_post_taxonomies_blacklist');
-                            if ($taxonomies_blacklist == "") $taxonomies_blacklist = array();
+                            if ($taxonomies_blacklist == "") $taxonomies_blacklist = [];
                             foreach ($taxonomies as $taxonomy) : ?>
                                 <label style="display: block;"> <input type="checkbox"
                                                                        name="duplicate_post_taxonomies_blacklist[]"
                                                                        value="<?php echo $taxonomy->name ?>"
-                                        <?php if (in_array($taxonomy->name, $taxonomies_blacklist)) echo 'checked="checked"' ?> />
+                                        <?php if (in_array($taxonomy->name,
+                                                           $taxonomies_blacklist)) echo 'checked="checked"' ?> />
                                     <?php echo $taxonomy->labels->name ?> </label>
                             <?php endforeach; ?>
                         </div> <span
-                            class="description"><?php _e("Select the taxonomies you don't want to be copied", DUPLICATE_POST_I18N_DOMAIN); ?>
+                            class="description"><?php _e("Select the taxonomies you don't want to be copied",
+                                                         DUPLICATE_POST_I18N_DOMAIN); ?>
 				</span>
                     </td>
                 </tr>
@@ -182,7 +178,8 @@ function duplicate_post_options()
                     <td><input type="text" name="duplicate_post_title_prefix"
                                value="<?php echo get_option('duplicate_post_title_prefix'); ?>"/>
 					<span
-                        class="description"><?php _e("Prefix to be added before the original title, e.g. \"Copy of\" (blank for no prefix)", DUPLICATE_POST_I18N_DOMAIN); ?>
+                        class="description"><?php _e("Prefix to be added before the original title, e.g. \"Copy of\" (blank for no prefix)",
+                                                     DUPLICATE_POST_I18N_DOMAIN); ?>
 				</span>
                     </td>
                 </tr>
@@ -192,7 +189,8 @@ function duplicate_post_options()
                     <td><input type="text" name="duplicate_post_title_suffix"
                                value="<?php echo get_option('duplicate_post_title_suffix'); ?>"/>
 					<span
-                        class="description"><?php _e("Suffix to be added after the original title, e.g. \"(dup)\" (blank for no suffix)", DUPLICATE_POST_I18N_DOMAIN); ?>
+                        class="description"><?php _e("Suffix to be added after the original title, e.g. \"(dup)\" (blank for no suffix)",
+                                                     DUPLICATE_POST_I18N_DOMAIN); ?>
 				</span>
                     </td>
                 </tr>
@@ -205,7 +203,7 @@ function duplicate_post_options()
                             <?php global $wp_roles;
                             $roles = $wp_roles->get_names();
                             foreach ($roles as $name => $display_name): $role = get_role($name);
-                                if (! $role->has_cap('edit_posts')) continue; ?>
+                                if (!$role->has_cap('edit_posts')) continue; ?>
                                 <label style="display: block;"> <input type="checkbox"
                                                                        name="duplicate_post_roles[]"
                                                                        value="<?php echo $name ?>"
@@ -213,7 +211,8 @@ function duplicate_post_options()
                                     <?php echo translate_user_role($display_name); ?> </label>
                             <?php endforeach; ?>
                         </div> <span
-                            class="description"><?php _e("Warning: users will be able to copy all posts, even those of other users", DUPLICATE_POST_I18N_DOMAIN); ?>
+                            class="description"><?php _e("Warning: users will be able to copy all posts, even those of other users",
+                                                         DUPLICATE_POST_I18N_DOMAIN); ?>
 				</span>
                     </td>
                 </tr>

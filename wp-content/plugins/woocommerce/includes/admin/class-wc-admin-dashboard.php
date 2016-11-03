@@ -71,9 +71,9 @@ if (!class_exists('WC_Admin_Dashboard')) :
 			$query['groupby'] = "GROUP BY product_id";
 			$query['orderby'] = "ORDER BY qty DESC";
 			$query['limits']  = "LIMIT 1";
-			$top_seller = $wpdb->get_row(implode(' ',
-			                                     apply_filters('woocommerce_dashboard_status_widget_top_seller_query',
-			                                                   $query)));
+			$top_seller       = $wpdb->get_row(implode(' ',
+			                                           apply_filters('woocommerce_dashboard_status_widget_top_seller_query',
+			                                                         $query)));
 			// Counts
 			$on_hold_count    = 0;
 			$processing_count = 0;

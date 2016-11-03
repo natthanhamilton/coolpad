@@ -100,8 +100,8 @@ class WC_API_Orders extends WC_API_Resource {
 			$filter['status'] = $status;
 		}
 		$filter['page'] = $page;
-		$query = $this->query_orders($filter);
-		$orders = [];
+		$query          = $this->query_orders($filter);
+		$orders         = [];
 		foreach ($query->posts as $order_id) {
 			if (!$this->is_readable($order_id)) {
 				continue;
@@ -244,8 +244,8 @@ class WC_API_Orders extends WC_API_Resource {
 				$product_id  = (isset($product->variation_id)) ? $product->variation_id : $product->id;
 				$product_sku = $product->get_sku();
 			}
-			$meta = new WC_Order_Item_Meta($item, $product);
-			$item_meta = [];
+			$meta       = new WC_Order_Item_Meta($item, $product);
+			$item_meta  = [];
 			$hideprefix = (isset($filter['all_item_meta']) && 'true' === $filter['all_item_meta']) ? NULL : '_';
 			foreach ($meta->get_formatted($hideprefix) as $meta_key => $formatted_meta) {
 				$item_meta[] = [
@@ -514,7 +514,7 @@ class WC_API_Orders extends WC_API_Resource {
 				return $order_id;
 			}
 			$order = wc_get_order($order_id);
-			$data = apply_filters('woocommerce_api_create_order_note_data', $data, $order_id, $this);
+			$data  = apply_filters('woocommerce_api_create_order_note_data', $data, $order_id, $this);
 			// note content is required
 			if (!isset($data['note'])) {
 				throw new WC_API_Exception('woocommerce_api_invalid_order_note',
@@ -1020,9 +1020,9 @@ class WC_API_Orders extends WC_API_Resource {
 				                           sprintf(__('No %1$s data specified to edit %1$s', 'woocommerce'), 'order'),
 				                           400);
 			}
-			$data = $data['order'];
+			$data          = $data['order'];
 			$update_totals = FALSE;
-			$id = $this->validate_request($id, $this->post_type, 'edit');
+			$id            = $this->validate_request($id, $this->post_type, 'edit');
 			if (is_wp_error($id)) {
 				return $id;
 			}
@@ -1132,7 +1132,7 @@ class WC_API_Orders extends WC_API_Resource {
 	 * @param array     $data
 	 */
 	protected function set_order_addresses($order, $data) {
-		$address_fields = [
+		$address_fields  = [
 			'first_name',
 			'last_name',
 			'company',
@@ -1548,10 +1548,10 @@ class WC_API_Orders extends WC_API_Resource {
 				throw new WC_API_Exception('woocommerce_invalid_shipping_item',
 				                           __('Shipping method ID is required', 'woocommerce'), 400);
 			}
-			$rate = new WC_Shipping_Rate($shipping['method_id'],
-			                             isset($shipping['method_title']) ? $shipping['method_title'] : '',
-			                             isset($shipping['total']) ? floatval($shipping['total']) : 0, [],
-			                             $shipping['method_id']);
+			$rate        = new WC_Shipping_Rate($shipping['method_id'],
+			                                    isset($shipping['method_title']) ? $shipping['method_title'] : '',
+			                                    isset($shipping['total']) ? floatval($shipping['total']) : 0, [],
+			                                    $shipping['method_id']);
 			$shipping_id = $order->add_shipping($rate);
 			if (!$shipping_id) {
 				throw new WC_API_Exception('woocommerce_cannot_create_shipping',

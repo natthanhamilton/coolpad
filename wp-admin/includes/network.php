@@ -23,7 +23,7 @@ function network_domain_check() {
 	if ( $wpdb->get_var( $sql ) ) {
 		return $wpdb->get_var( "SELECT domain FROM $wpdb->site ORDER BY id ASC LIMIT 1" );
 	}
-	return FALSE;
+	return false;
 }
 
 /**
@@ -35,9 +35,9 @@ function network_domain_check() {
 function allow_subdomain_install() {
 	$domain = preg_replace( '|https?://([^/]+)|', '$1', get_option( 'home' ) );
 	if ( parse_url( get_option( 'home' ), PHP_URL_PATH ) || 'localhost' == $domain || preg_match( '|^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$|', $domain ) )
-		return FALSE;
+		return false;
 
-	return TRUE;
+	return true;
 }
 
 /**
@@ -52,23 +52,23 @@ function allow_subdomain_install() {
 function allow_subdirectory_install() {
 	global $wpdb;
         /**
-         * Filter whether to enable the subdirectory install feature in Multisite.
+         * Filters whether to enable the subdirectory install feature in Multisite.
          *
          * @since 3.0.0
          *
          * @param bool $allow Whether to enable the subdirectory install feature in Multisite. Default is false.
          */
-	if ( apply_filters( 'allow_subdirectory_install', FALSE ) )
-		return TRUE;
+	if ( apply_filters( 'allow_subdirectory_install', false ) )
+		return true;
 
 	if ( defined( 'ALLOW_SUBDIRECTORY_INSTALL' ) && ALLOW_SUBDIRECTORY_INSTALL )
-		return TRUE;
+		return true;
 
 	$post = $wpdb->get_row( "SELECT ID FROM $wpdb->posts WHERE post_date < DATE_SUB(NOW(), INTERVAL 1 MONTH) AND post_status = 'publish'" );
 	if ( empty( $post ) )
-		return TRUE;
+		return true;
 
-	return FALSE;
+	return false;
 }
 
 /**
@@ -98,7 +98,7 @@ function get_clean_basedomain() {
  *
  * @param WP_Error $errors
  */
-function network_step1( $errors = FALSE ) {
+function network_step1( $errors = false ) {
 	global $is_apache;
 
 	if ( defined('DO_NOT_UPGRADE_GLOBAL_TABLES') ) {
@@ -118,7 +118,7 @@ function network_step1( $errors = FALSE ) {
 
 	$hostname = get_clean_basedomain();
 	$has_ports = strstr( $hostname, ':' );
-	if ( ( FALSE !== $has_ports && ! in_array( $has_ports, array( ':80', ':443' ) ) ) ) {
+	if ( ( false !== $has_ports && ! in_array( $has_ports, array( ':80', ':443' ) ) ) ) {
 		echo '<div class="error"><p><strong>' . __( 'ERROR:') . '</strong> ' . __( 'You cannot install a network of sites with your server address.' ) . '</p></div>';
 		echo '<p>' . sprintf(
 			/* translators: %s: port number */
@@ -139,7 +139,7 @@ function network_step1( $errors = FALSE ) {
 	if ( is_wp_error( $errors ) ) {
 		echo '<div class="error"><p><strong>' . __( 'ERROR: The network could not be created.' ) . '</strong></p>';
 		foreach ( $errors->get_error_messages() as $error )
-			{echo "<p>$error</p>";}
+			echo "<p>$error</p>";
 		echo '</div>';
 		$error_codes = $errors->get_error_codes();
 	}
@@ -154,12 +154,12 @@ function network_step1( $errors = FALSE ) {
 	if ( isset( $_POST['subdomain_install'] ) ) {
 		$subdomain_install = (bool) $_POST['subdomain_install'];
 	} elseif ( apache_mod_loaded('mod_rewrite') ) { // assume nothing
-		$subdomain_install = TRUE;
+		$subdomain_install = true;
 	} elseif ( !allow_subdirectory_install() ) {
-		$subdomain_install = TRUE;
+		$subdomain_install = true;
 	} else {
-		$subdomain_install = FALSE;
-		if ( $got_mod_rewrite = got_mod_rewrite() ) { // dangerous assumptions 
+		$subdomain_install = false;
+		if ( $got_mod_rewrite = got_mod_rewrite() ) { // dangerous assumptions
 			echo '<div class="updated inline"><p><strong>' . __( 'Note:' ) . '</strong> ';
 			/* translators: %s: mod_rewrite */
 			printf( __( 'Please make sure the Apache %s module is installed as it will be used at the end of this installation.' ),
@@ -180,8 +180,8 @@ function network_step1( $errors = FALSE ) {
 			/* translators: 1: mod_rewrite, 2: mod_rewrite documentation URL, 3: Google search for mod_rewrite */
 			printf( __( 'If %1$s is disabled, ask your administrator to enable that module, or look at the <a href="%2$s">Apache documentation</a> or <a href="%3$s">elsewhere</a> for help setting it up.' ),
 				'<code>mod_rewrite</code>',
-				'http://httpd.apache.org/docs/mod/mod_rewrite.html',
-				'http://www.google.com/search?q=apache+mod_rewrite'
+				'https://httpd.apache.org/docs/mod/mod_rewrite.html',
+				'https://www.google.com/search?q=apache+mod_rewrite'
 			);
 			echo '</p></div>';
 		}
@@ -323,7 +323,7 @@ function network_step1( $errors = FALSE ) {
  *
  * @param WP_Error $errors
  */
-function network_step2( $errors = FALSE ) {
+function network_step2( $errors = false ) {
 	global $wpdb;
 
 	$hostname          = get_clean_basedomain();
@@ -348,9 +348,9 @@ function network_step2( $errors = FALSE ) {
 
 	if ( $_POST ) {
 		if ( allow_subdomain_install() )
-			$subdomain_install = allow_subdirectory_install() ? ! empty( $_POST['subdomain_install'] ) : TRUE;
+			$subdomain_install = allow_subdirectory_install() ? ! empty( $_POST['subdomain_install'] ) : true;
 		else
-			$subdomain_install = FALSE;
+			$subdomain_install = false;
 	} else {
 		if ( is_multisite() ) {
 			$subdomain_install = is_subdomain_install();
@@ -405,10 +405,16 @@ function network_step2( $errors = FALSE ) {
 ?>
 		<ol>
 			<li><p><?php printf(
-				/* translators: 1: wp-config.php 2: location of wp-config file */
-				__( 'Add the following to your %1$s file in %2$s <strong>above</strong> the line reading <code>/* That&#8217;s all, stop editing! Happy blogging. */</code>:' ),
+				/* translators: 1: wp-config.php 2: location of wp-config file, 3: translated version of "That's all, stop editing! Happy blogging." */
+				__( 'Add the following to your %1$s file in %2$s <strong>above</strong> the line reading %3$s:' ),
 				'<code>wp-config.php</code>',
-				'<code>' . $location_of_wp_config . '</code>'
+				'<code>' . $location_of_wp_config . '</code>',
+				/*
+				 * translators: This string should only be translated if wp-config-sample.php is localized.
+				 * You can check the localized release package or
+				 * https://i18n.svn.wordpress.org/<locale code>/branches/<wp version>/dist/wp-config-sample.php
+				 */
+				'<code>/* ' . __( 'That&#8217;s all, stop editing! Happy blogging.' ) . ' */</code>'
 			); ?></p>
 				<textarea class="code" readonly="readonly" cols="100" rows="7">
 define('MULTISITE', true);
@@ -430,7 +436,7 @@ define('BLOG_ID_CURRENT_SITE', 1);
 		$from_api = wp_remote_get( 'https://api.wordpress.org/secret-key/1.1/salt/' );
 		if ( is_wp_error( $from_api ) ) {
 			foreach ( $keys_salts as $c => $v ) {
-				$keys_salts_str .= "\ndefine( '$c', '" . wp_generate_password( 64, TRUE, TRUE ) . "' );";
+				$keys_salts_str .= "\ndefine( '$c', '" . wp_generate_password( 64, true, true ) . "' );";
 			}
 		} else {
 			$from_api = explode( "\n", wp_remote_retrieve_body( $from_api ) );

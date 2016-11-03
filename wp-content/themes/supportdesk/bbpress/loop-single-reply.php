@@ -1,12 +1,10 @@
 <?php
-
 /**
  * Replies Loop - Single Reply
  *
- * @package bbPress
+ * @package    bbPress
  * @subpackage Theme
  */
-
 ?>
 
 
@@ -16,7 +14,7 @@
 
         <?php do_action('bbp_theme_before_reply_author_details'); ?>
 
-        <?php bbp_reply_author_link(array('type' => 'avatar', 'show_role' => FALSE)); ?>
+        <?php bbp_reply_author_link(['type' => 'avatar', 'show_role' => FALSE]); ?>
 
         <?php do_action('bbp_theme_after_reply_author_details'); ?>
 
@@ -24,7 +22,7 @@
 
     <div class="bbp-meta">
 
-        <?php bbp_reply_author_link(array('type' => 'name', 'show_role' => FALSE)); ?>
+        <?php bbp_reply_author_link(['type' => 'name', 'show_role' => FALSE]); ?>
 
         <a href="<?php bbp_reply_url(); ?>" title="<?php bbp_reply_title(); ?>" class="bbp-reply-permalink"><span
                 class="bbp-reply-post-date"><?php bbp_reply_post_date(); ?></span></a>
@@ -44,13 +42,13 @@
     <?php do_action('bbp_theme_before_reply_admin_links'); ?>
 
     <?php
-    $args = array(
+    $args = [
         'id'     => 0,
         'before' => '<span class="bbp-admin-links">',
         'after'  => '</span>',
         'sep'    => ' / ',
-        'links'  => array()
-    );
+        'links'  => []
+    ];
     bbp_reply_admin_links($args); ?>
 
     <?php do_action('bbp_theme_after_reply_admin_links'); ?>

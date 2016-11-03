@@ -49,7 +49,7 @@ class WP_Users_List_Table extends WP_List_Table {
 		parent::__construct( array(
 			'singular' => 'user',
 			'plural'   => 'users',
-			'screen'   => isset( $args['screen'] ) ? $args['screen'] : NULL,
+			'screen'   => isset( $args['screen'] ) ? $args['screen'] : null,
 		) );
 
 		$this->is_site_users = 'site-users-network' === $this->screen->id;
@@ -125,7 +125,7 @@ class WP_Users_List_Table extends WP_List_Table {
 			$args['order'] = $_REQUEST['order'];
 
 		/**
-		 * Filter the query arguments used to retrieve users for the current users list table.
+		 * Filters the query arguments used to retrieve users for the current users list table.
 		 *
 		 * @since 4.4.0
 		 *
@@ -160,7 +160,7 @@ class WP_Users_List_Table extends WP_List_Table {
 	 * with this table.
 	 *
 	 * Provides a list of roles and user count for that role for easy
-	 * filtering of the user table.
+	 * Filtersing of the user table.
 	 *
 	 * @since  3.1.0
 	 * @access protected
@@ -267,7 +267,7 @@ class WP_Users_List_Table extends WP_List_Table {
 			<?php wp_dropdown_roles(); ?>
 		</select>
 	<?php
-			submit_button( __( 'Change' ), 'button', 'changeit', FALSE );
+			submit_button( __( 'Change' ), 'button', 'changeit', false );
 		endif;
 
 		/**
@@ -275,8 +275,11 @@ class WP_Users_List_Table extends WP_List_Table {
 		 * in the Users list table.
 		 *
 		 * @since 3.5.0
+		 * @since 4.6.0 The `$which` parameter was added.
+		 *
+		 * @param string $which The location of the extra table nav markup: 'top' or 'bottom'.
 		 */
-		do_action( 'restrict_manage_users' );
+		do_action( 'restrict_manage_users', $which );
 		echo '</div>';
 	}
 
@@ -336,7 +339,6 @@ class WP_Users_List_Table extends WP_List_Table {
 	protected function get_sortable_columns() {
 		$c = array(
 			'username' => 'login',
-			'name'     => 'name',
 			'email'    => 'email',
 		);
 
@@ -412,7 +414,7 @@ class WP_Users_List_Table extends WP_List_Table {
 				$actions['remove'] = "<a class='submitdelete' href='" . wp_nonce_url( $url."action=remove&amp;user=$user_object->ID", 'bulk-users' ) . "'>" . __( 'Remove' ) . "</a>";
 
 			/**
-			 * Filter the action links displayed under each user in the Users list table.
+			 * Filters the action links displayed under each user in the Users list table.
 			 *
 			 * @since 2.8.0
 			 *
@@ -488,7 +490,7 @@ class WP_Users_List_Table extends WP_List_Table {
 						break;
 					default:
 						/**
-						 * Filter the display output of custom columns in the Users list table.
+						 * Filters the display output of custom columns in the Users list table.
 						 *
 						 * @since 2.8.0
 						 *
@@ -508,6 +510,18 @@ class WP_Users_List_Table extends WP_List_Table {
 		$r .= '</tr>';
 
 		return $r;
+	}
+
+	/**
+	 * Gets the name of the default primary column.
+	 *
+	 * @since 4.3.0
+	 * @access protected
+	 *
+	 * @return string Name of the default primary column, in this case, 'username'.
+	 */
+	protected function get_default_primary_column_name() {
+		return 'username';
 	}
 
 	/**
@@ -535,7 +549,7 @@ class WP_Users_List_Table extends WP_List_Table {
 		}
 
 		/**
-		 * Filter the returned array of roles for a user.
+		 * Filters the returned array of roles for a user.
 		 *
 		 * @since 4.4.0
 		 *
@@ -543,18 +557,6 @@ class WP_Users_List_Table extends WP_List_Table {
 		 * @param WP_User $user_object A WP_User object.
 		 */
 		return apply_filters( 'get_role_list', $role_list, $user_object );
-	}
-
-	/**
-	 * Gets the name of the default primary column.
-	 *
-	 * @since 4.3.0
-	 * @access protected
-	 *
-	 * @return string Name of the default primary column, in this case, 'username'.
-	 */
-	protected function get_default_primary_column_name() {
-		return 'username';
 	}
 
 }

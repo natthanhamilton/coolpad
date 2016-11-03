@@ -1,7 +1,6 @@
 <?php
-if (! defined('ABSPATH'))
-{
-    die('-1');
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
 }
 /**
  * Shortcode attributes
@@ -44,44 +43,40 @@ $i_icon_linecons = $i_color = $i_custom_color =
 $i_background_style = $i_background_color =
 $i_custom_background_color = $i_size = $i_css_animation = '';
 
-$atts = vc_map_get_attributes($this->getShortcode(), $atts);
-extract($atts);
+$atts = vc_map_get_attributes( $this->getShortcode(), $atts );
+extract( $atts );
 
 $class = 'vc_separator wpb_content_element';
 
-$class .= ('' !== $title_align) ? ' vc_' . $title_align : '';
-$class .= ('' !== $el_width) ? ' vc_sep_width_' . $el_width : ' vc_sep_width_100';
-$class .= ('' !== $style) ? ' vc_sep_' . $style : '';
-$class .= ('' !== $border_width) ? ' vc_sep_border_width_' . $border_width : '';
-$class .= ('' !== $align) ? ' vc_sep_pos_' . $align : '';
+$class .= ( '' !== $title_align ) ? ' vc_' . $title_align : '';
+$class .= ( '' !== $el_width ) ? ' vc_sep_width_' . $el_width : ' vc_sep_width_100';
+$class .= ( '' !== $style ) ? ' vc_sep_' . $style : '';
+$class .= ( '' !== $border_width ) ? ' vc_sep_border_width_' . $border_width : '';
+$class .= ( '' !== $align ) ? ' vc_sep_pos_' . $align : '';
 
-$class .= ('separator_no_text' === $layout) ? ' vc_separator_no_text' : '';
-if ('' !== $color && 'custom' !== $color)
-{
-    $class .= ' vc_sep_color_' . $color;
+$class .= ( 'separator_no_text' === $layout ) ? ' vc_separator_no_text' : '';
+if ( '' !== $color && 'custom' !== $color ) {
+	$class .= ' vc_sep_color_' . $color;
 }
-$inline_css = ('custom' === $color && '' !== $accent_color) ? ' style="' . vc_get_css_color('border-color', $accent_color) . '"' : '';
+$inline_css = ( 'custom' === $color && '' !== $accent_color ) ? ' style="' . vc_get_css_color( 'border-color', $accent_color ) . '"' : '';
 
 $class_to_filter = $class;
-$class_to_filter .= vc_shortcode_custom_css_class($css, ' ') . $this->getExtraClass($el_class);
-$css_class = apply_filters(VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $class_to_filter, $this->settings['base'], $atts);
-$css_class = esc_attr(trim($css_class));
+$class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class );
+$css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $class_to_filter, $this->settings['base'], $atts );
+$css_class = esc_attr( trim( $css_class ) );
 $icon = '';
-if ('true' === $add_icon)
-{
-    vc_icon_element_fonts_enqueue($i_type);
-    $icon = $this->getVcIcon($atts);
+if ( 'true' === $add_icon ) {
+	vc_icon_element_fonts_enqueue( $i_type );
+	$icon = $this->getVcIcon( $atts );
 }
 
 $content = '';
-if ($icon)
-{
-    $content = $icon;
+if ( $icon ) {
+	$content = $icon;
 }
-if ('' !== $title && 'separator_no_text' !== $layout)
-{
-    $css_class .= ' vc_separator-has-text';
-    $content .= '<h4>' . $title . '</h4>';
+if ( '' !== $title && 'separator_no_text' !== $layout ) {
+	$css_class .= ' vc_separator-has-text';
+	$content .= '<h4>' . $title . '</h4>';
 }
 
 

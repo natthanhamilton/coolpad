@@ -6,16 +6,14 @@
     <div id="page-header" class="clearfix">
         <div class="ht-container">
             <h1><?php the_title(); ?></h1>
-            <?php if (get_post_meta(get_the_ID(), '_st_page_tagline', TRUE))
-            { ?>
+            <?php if (get_post_meta(get_the_ID(), '_st_page_tagline', TRUE)) { ?>
                 <p><?php echo get_post_meta(get_the_ID(), '_st_page_tagline', TRUE); ?></p>
             <?php } ?>
         </div>
     </div>
     <!-- /#page-header -->
 
-<?php if (! get_post_meta(get_the_ID(), '_st_page_breadcrumbs', TRUE))
-{ ?>
+<?php if (!get_post_meta(get_the_ID(), '_st_page_breadcrumbs', TRUE)) { ?>
     <!-- #breadcrumbs -->
     <div id="page-subnav" class="clearfix">
         <div class="ht-container">
@@ -37,7 +35,8 @@
                     <article id="post-<?php the_ID(); ?>" <?php post_class(); ?>>
                         <div class="entry-content">
                             <?php the_content(); ?>
-                            <?php wp_link_pages(array('before' => '<div class="page-links">' . __('Pages:', 'framework'), 'after' => '</div>')); ?>
+                            <?php wp_link_pages(['before' => '<div class="page-links">' . __('Pages:',
+                                                                                             'framework'), 'after' => '</div>']); ?>
                         </div>
 
                     </article>
@@ -47,8 +46,7 @@
             </section>
             <!-- #content -->
 
-            <?php if ($st_page_sidebar_position != 'off')
-            {
+            <?php if ($st_page_sidebar_position != 'off') {
                 get_sidebar();
             } ?>
 

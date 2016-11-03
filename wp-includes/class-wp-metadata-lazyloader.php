@@ -109,6 +109,26 @@ class WP_Metadata_Lazyloader {
 	}
 
 	/**
+	 * Resets lazy-load queue for a given object type.
+	 *
+	 * @since 4.5.0
+	 * @access public
+	 *
+	 * @param string $object_type Object type. Accepts 'comment' or 'term'.
+	 * @return bool|WP_Error True on success, WP_Error on failure.
+	 */
+	public function reset_queue( $object_type ) {
+		if ( ! isset( $this->settings[ $object_type ] ) ) {
+			return new WP_Error( 'invalid_object_type', __( 'Invalid object type' ) );
+		}
+
+		$type_settings = $this->settings[ $object_type ];
+
+		$this->pending_objects[ $object_type ] = array();
+		remove_filter( $type_settings['filter'], $type_settings['callback'] );
+	}
+
+	/**
 	 * Lazy-loads term meta for queued terms.
 	 *
 	 * This method is public so that it can be used as a filter callback. As a rule, there
@@ -133,26 +153,6 @@ class WP_Metadata_Lazyloader {
 	}
 
 	/**
-	 * Resets lazy-load queue for a given object type.
-	 *
-	 * @since 4.5.0
-	 * @access public
-	 *
-	 * @param string $object_type Object type. Accepts 'comment' or 'term'.
-	 * @return bool|WP_Error True on success, WP_Error on failure.
-	 */
-	public function reset_queue( $object_type ) {
-		if ( ! isset( $this->settings[ $object_type ] ) ) {
-			return new WP_Error( 'invalid_object_type', __( 'Invalid object type' ) );
-		}
-
-		$type_settings = $this->settings[ $object_type ];
-
-		$this->pending_objects[ $object_type ] = array();
-		remove_filter( $type_settings['filter'], $type_settings['callback'] );
-	}
-
-	/**
 	 * Lazy-loads comment meta for queued comments.
 	 *
 	 * This method is public so that it can be used as a filter callback. As a rule, there is no need to invoke it
@@ -160,7 +160,7 @@ class WP_Metadata_Lazyloader {
 	 *
 	 * @since 4.5.0
 	 *
-	 * @param mixed $check The `$check` param passed from the 'get_comment_metadata' hook.
+	 * @param mixed $check The `$check` param passed from the {@see 'get_comment_metadata'} hook.
 	 * @return mixed The original value of `$check`, so as not to short-circuit `get_comment_metadata()`.
 	 */
 	public function lazyload_comment_meta( $check ) {

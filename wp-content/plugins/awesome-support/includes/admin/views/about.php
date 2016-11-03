@@ -101,7 +101,8 @@
                     <h2>Extending the Possibilities</h2>
                     <p>Even though Awesome Support has a lot of built-in features, it is impossible to make everyone
                         happy. This is why we have lots of addons to help you tailor your support system.</p>
-                    <a href="<?php echo esc_url(add_query_arg(array('post_type' => 'ticket', 'page' => 'wpas-addons'), admin_url('edit.php'))); ?>"
+                    <a href="<?php echo esc_url(add_query_arg(['post_type' => 'ticket', 'page' => 'wpas-addons'],
+                                                              admin_url('edit.php'))); ?>"
                        class="button button-large button-primary">Browse extensions</a>
                     <p>Please also make sure to check <a href="#" target="_blank">our roadmap</a>.</p>
                 </div>

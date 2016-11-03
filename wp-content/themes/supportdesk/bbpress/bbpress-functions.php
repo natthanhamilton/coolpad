@@ -1,20 +1,15 @@
 <?php
-
 /**
  * Functions of bbPress's Default theme
  *
- * @package bbPress
+ * @package    bbPress
  * @subpackage BBP_Theme_Compat
- * @since bbPress (r3732)
+ * @since      bbPress (r3732)
  */
-
 // Exit if accessed directly
-if (! defined('ABSPATH')) exit;
-
+if (!defined('ABSPATH')) exit;
 /** Theme Setup ***************************************************************/
-
-if (! class_exists('BBP_Default')) :
-
+if (!class_exists('BBP_Default')) :
     /**
      * Loads bbPress Default Theme functionality
      *
@@ -27,25 +22,22 @@ if (! class_exists('BBP_Default')) :
      *
      * See @link BBP_Theme_Compat() for more.
      *
-     * @since bbPress (r3732)
+     * @since      bbPress (r3732)
      *
-     * @package bbPress
+     * @package    bbPress
      * @subpackage BBP_Theme_Compat
      */
     class BBP_Default extends BBP_Theme_Compat {
-
         /** Functions *************************************************************/
-
         /**
          * The main bbPress (Default) Loader
          *
          * @since bbPress (r3732)
          *
-         * @uses BBP_Default::setup_globals()
-         * @uses BBP_Default::setup_actions()
+         * @uses  BBP_Default::setup_globals()
+         * @uses  BBP_Default::setup_actions()
          */
-        public function __construct()
-        {
+        public function __construct() {
             $this->setup_globals();
             $this->setup_actions();
         }
@@ -60,48 +52,41 @@ if (! class_exists('BBP_Default')) :
          * You'll want to customize the values in here, so they match whatever your
          * needs are.
          *
-         * @since bbPress (r3732)
+         * @since  bbPress (r3732)
          * @access private
          */
-        private function setup_globals()
-        {
-            $bbp = bbpress();
-            $this->id = 'default';
-            $this->name = __('bbPress Default', 'bbpress');
+        private function setup_globals() {
+            $bbp           = bbpress();
+            $this->id      = 'default';
+            $this->name    = __('bbPress Default', 'bbpress');
             $this->version = bbp_get_version();
-            $this->dir = trailingslashit($bbp->themes_dir . 'default');
-            $this->url = trailingslashit($bbp->themes_url . 'default');
+            $this->dir     = trailingslashit($bbp->themes_dir . 'default');
+            $this->url     = trailingslashit($bbp->themes_url . 'default');
         }
 
         /**
          * Setup the theme hooks
          *
-         * @since bbPress (r3732)
+         * @since  bbPress (r3732)
          * @access private
          *
-         * @uses add_filter() To add various filters
-         * @uses add_action() To add various actions
+         * @uses   add_filter() To add various filters
+         * @uses   add_action() To add various actions
          */
-        private function setup_actions()
-        {
-
+        private function setup_actions() {
             /** Scripts ***********************************************************/
-
-            add_action('bbp_enqueue_scripts', array($this, 'enqueue_styles')); // Enqueue theme CSS
-            add_action('bbp_enqueue_scripts', array($this, 'enqueue_scripts')); // Enqueue theme JS
-            add_filter('bbp_enqueue_scripts', array($this, 'localize_topic_script')); // Enqueue theme script localization
-            add_action('bbp_head', array($this, 'head_scripts')); // Output some extra JS in the <head>
-            add_action('wp_ajax_dim-favorite', array($this, 'ajax_favorite')); // Handles the ajax favorite/unfavorite
-            add_action('wp_ajax_dim-subscription', array($this, 'ajax_subscription')); // Handles the ajax subscribe/unsubscribe
-
+            add_action('bbp_enqueue_scripts', [$this, 'enqueue_styles']); // Enqueue theme CSS
+            add_action('bbp_enqueue_scripts', [$this, 'enqueue_scripts']); // Enqueue theme JS
+            add_filter('bbp_enqueue_scripts', [$this, 'localize_topic_script']); // Enqueue theme script localization
+            add_action('bbp_head', [$this, 'head_scripts']); // Output some extra JS in the <head>
+            add_action('wp_ajax_dim-favorite', [$this, 'ajax_favorite']); // Handles the ajax favorite/unfavorite
+            add_action('wp_ajax_dim-subscription',
+                       [$this, 'ajax_subscription']); // Handles the ajax subscribe/unsubscribe
             /** Template Wrappers *************************************************/
-
             //add_action( 'bbp_before_main_content',  array( $this, 'before_main_content'   ) ); // Top wrapper HTML
             //add_action( 'bbp_after_main_content',   array( $this, 'after_main_content'    ) ); // Bottom wrapper HTML
-
             /** Override **********************************************************/
-
-            do_action_ref_array('bbp_theme_compat_actions', array(&$this));
+            do_action_ref_array('bbp_theme_compat_actions', [&$this]);
         }
 
         /**
@@ -140,37 +125,26 @@ if (! class_exists('BBP_Default')) :
          *
          * @since bbPress (r3732)
          *
-         * @uses wp_enqueue_style() To enqueue the styles
+         * @uses  wp_enqueue_style() To enqueue the styles
          */
-        public function enqueue_styles()
-        {
-
+        public function enqueue_styles() {
             // LTR or RTL
             $file = 'bbpress/bbpress.css';
-
             // Check child theme
-            if (file_exists(trailingslashit(get_stylesheet_directory()) . $file))
-            {
+            if (file_exists(trailingslashit(get_stylesheet_directory()) . $file)) {
                 $location = trailingslashit(get_stylesheet_directory_uri());
-                $handle = 'bbp-child-bbpress';
-
+                $handle   = 'bbp-child-bbpress';
                 // Check parent theme
-            }
-            elseif (file_exists(trailingslashit(get_template_directory()) . $file))
-            {
+            } elseif (file_exists(trailingslashit(get_template_directory()) . $file)) {
                 $location = trailingslashit(get_template_directory_uri());
-                $handle = 'bbp-parent-bbpress';
-
+                $handle   = 'bbp-parent-bbpress';
                 // bbPress Theme Compatibility
-            }
-            else
-            {
+            } else {
                 $location = trailingslashit($this->url);
-                $handle = 'bbp-default-bbpress';
+                $handle   = 'bbp-default-bbpress';
             }
-
             // Enqueue the bbPress styling
-            wp_enqueue_style($handle, $location . $file, array('theme-style'), $this->version);
+            wp_enqueue_style($handle, $location . $file, ['theme-style'], $this->version);
         }
 
         /**
@@ -178,18 +152,17 @@ if (! class_exists('BBP_Default')) :
          *
          * @since bbPress (r3732)
          *
-         * @uses bbp_is_single_topic() To check if it's the topic page
-         * @uses bbp_is_single_user_edit() To check if it's the profile edit page
-         * @uses wp_enqueue_script() To enqueue the scripts
+         * @uses  bbp_is_single_topic() To check if it's the topic page
+         * @uses  bbp_is_single_user_edit() To check if it's the profile edit page
+         * @uses  wp_enqueue_script() To enqueue the scripts
          */
-        public function enqueue_scripts()
-        {
-
-            if (bbp_is_single_topic())
-                wp_enqueue_script('bbpress-topic', get_template_directory_uri() . '/bbpress/topic.min.js', array('wp-lists'), $this->version, TRUE);
-
-            elseif (bbp_is_single_user_edit())
+        public function enqueue_scripts() {
+            if (bbp_is_single_topic()) {
+                wp_enqueue_script('bbpress-topic', get_template_directory_uri() . '/bbpress/topic.min.js', ['wp-lists'],
+                                  $this->version, TRUE);
+            } elseif (bbp_is_single_user_edit()) {
                 wp_enqueue_script('user-profile');
+            }
         }
 
         /**
@@ -197,12 +170,11 @@ if (! class_exists('BBP_Default')) :
          *
          * @since bbPress (r3732)
          *
-         * @uses bbp_is_single_topic() To check if it's the topic page
-         * @uses admin_url() To get the admin url
-         * @uses bbp_is_single_user_edit() To check if it's the profile edit page
+         * @uses  bbp_is_single_topic() To check if it's the topic page
+         * @uses  admin_url() To get the admin url
+         * @uses  bbp_is_single_user_edit() To check if it's the profile edit page
          */
-        public function head_scripts()
-        {
+        public function head_scripts() {
             ?>
 
             <script type="text/javascript">
@@ -227,67 +199,55 @@ if (! class_exists('BBP_Default')) :
          *
          * @since bbPress (r3732)
          *
-         * @uses bbp_is_single_topic() To check if it's the topic page
-         * @uses is_user_logged_in() To check if user is logged in
-         * @uses bbp_get_current_user_id() To get the current user id
-         * @uses bbp_get_topic_id() To get the topic id
-         * @uses bbp_get_favorites_permalink() To get the favorites permalink
-         * @uses bbp_is_user_favorite() To check if the topic is in user's favorites
-         * @uses bbp_is_subscriptions_active() To check if the subscriptions are active
-         * @uses bbp_is_user_subscribed() To check if the user is subscribed to topic
-         * @uses bbp_get_topic_permalink() To get the topic permalink
-         * @uses wp_localize_script() To localize the script
+         * @uses  bbp_is_single_topic() To check if it's the topic page
+         * @uses  is_user_logged_in() To check if user is logged in
+         * @uses  bbp_get_current_user_id() To get the current user id
+         * @uses  bbp_get_topic_id() To get the topic id
+         * @uses  bbp_get_favorites_permalink() To get the favorites permalink
+         * @uses  bbp_is_user_favorite() To check if the topic is in user's favorites
+         * @uses  bbp_is_subscriptions_active() To check if the subscriptions are active
+         * @uses  bbp_is_user_subscribed() To check if the user is subscribed to topic
+         * @uses  bbp_get_topic_permalink() To get the topic permalink
+         * @uses  wp_localize_script() To localize the script
          */
-        public function localize_topic_script()
-        {
-
+        public function localize_topic_script() {
             // Bail if not viewing a single topic
-            if (! bbp_is_single_topic())
+            if (!bbp_is_single_topic()) {
                 return;
-
+            }
             // Bail if user is not logged in
-            if (! is_user_logged_in())
+            if (!is_user_logged_in()) {
                 return;
-
+            }
             $user_id = bbp_get_current_user_id();
-
-            $localizations = array(
+            $localizations = [
                 'currentUserId' => $user_id,
                 'topicId'       => bbp_get_topic_id(),
-            );
-
+            ];
             // Favorites
-            if (bbp_is_favorites_active())
-            {
+            if (bbp_is_favorites_active()) {
                 $localizations['favoritesActive'] = 1;
-                $localizations['favoritesLink'] = bbp_get_favorites_permalink($user_id);
-                $localizations['isFav'] = (int)bbp_is_user_favorite($user_id);
-                $localizations['favLinkYes'] = __('favorites', 'bbpress');
-                $localizations['favLinkNo'] = __('?', 'bbpress');
-                $localizations['favYes'] = __('This topic is one of your %favLinkYes% [%favDel%]', 'bbpress');
-                $localizations['favNo'] = __('%favAdd% (%favLinkNo%)', 'bbpress');
-                $localizations['favDel'] = __('&times;', 'bbpress');
-                $localizations['favAdd'] = __('Add this topic to your favorites', 'bbpress');
-            }
-            else
-            {
+                $localizations['favoritesLink']   = bbp_get_favorites_permalink($user_id);
+                $localizations['isFav']           = (int)bbp_is_user_favorite($user_id);
+                $localizations['favLinkYes']      = __('favorites', 'bbpress');
+                $localizations['favLinkNo']       = __('?', 'bbpress');
+                $localizations['favYes']          = __('This topic is one of your %favLinkYes% [%favDel%]', 'bbpress');
+                $localizations['favNo']           = __('%favAdd% (%favLinkNo%)', 'bbpress');
+                $localizations['favDel']          = __('&times;', 'bbpress');
+                $localizations['favAdd']          = __('Add this topic to your favorites', 'bbpress');
+            } else {
                 $localizations['favoritesActive'] = 0;
             }
-
             // Subscriptions
-            if (bbp_is_subscriptions_active())
-            {
-                $localizations['subsActive'] = 1;
+            if (bbp_is_subscriptions_active()) {
+                $localizations['subsActive']   = 1;
                 $localizations['isSubscribed'] = (int)bbp_is_user_subscribed($user_id);
-                $localizations['subsSub'] = __('Subscribe', 'bbpress');
-                $localizations['subsUns'] = __('Unsubscribe', 'bbpress');
-                $localizations['subsLink'] = bbp_get_topic_permalink();
-            }
-            else
-            {
+                $localizations['subsSub']      = __('Subscribe', 'bbpress');
+                $localizations['subsUns']      = __('Unsubscribe', 'bbpress');
+                $localizations['subsLink']     = bbp_get_topic_permalink();
+            } else {
                 $localizations['subsActive'] = 0;
             }
-
             wp_localize_script('bbpress-topic', 'bbpTopicJS', $localizations);
         }
 
@@ -296,44 +256,34 @@ if (! class_exists('BBP_Default')) :
          *
          * @since bbPress (r3732)
          *
-         * @uses bbp_get_current_user_id() To get the current user id
-         * @uses current_user_can() To check if the current user can edit the user
-         * @uses bbp_get_topic() To get the topic
-         * @uses check_ajax_referer() To verify the nonce & check the referer
-         * @uses bbp_is_user_favorite() To check if the topic is user's favorite
-         * @uses bbp_remove_user_favorite() To remove the topic from user's favorites
-         * @uses bbp_add_user_favorite() To add the topic from user's favorites
+         * @uses  bbp_get_current_user_id() To get the current user id
+         * @uses  current_user_can() To check if the current user can edit the user
+         * @uses  bbp_get_topic() To get the topic
+         * @uses  check_ajax_referer() To verify the nonce & check the referer
+         * @uses  bbp_is_user_favorite() To check if the topic is user's favorite
+         * @uses  bbp_remove_user_favorite() To remove the topic from user's favorites
+         * @uses  bbp_add_user_favorite() To add the topic from user's favorites
          */
-        public function ajax_favorite()
-        {
+        public function ajax_favorite() {
             $user_id = bbp_get_current_user_id();
-            $id = intval($_POST['id']);
-
-            if (! current_user_can('edit_user', $user_id))
+            $id      = intval($_POST['id']);
+            if (!current_user_can('edit_user', $user_id)) {
                 die('-1');
-
+            }
             $topic = bbp_get_topic($id);
-
-            if (empty($topic))
+            if (empty($topic)) {
                 die('0');
-
+            }
             check_ajax_referer('toggle-favorite_' . $topic->ID);
-
-            if (bbp_is_user_favorite($user_id, $topic->ID))
-            {
-                if (bbp_remove_user_favorite($user_id, $topic->ID))
-                {
+            if (bbp_is_user_favorite($user_id, $topic->ID)) {
+                if (bbp_remove_user_favorite($user_id, $topic->ID)) {
+                    die('1');
+                }
+            } else {
+                if (bbp_add_user_favorite($user_id, $topic->ID)) {
                     die('1');
                 }
             }
-            else
-            {
-                if (bbp_add_user_favorite($user_id, $topic->ID))
-                {
-                    die('1');
-                }
-            }
-
             die('0');
         }
 
@@ -342,68 +292,53 @@ if (! class_exists('BBP_Default')) :
          *
          * @since bbPress (r3732)
          *
-         * @uses bbp_is_subscriptions_active() To check if the subscriptions are active
-         * @uses bbp_get_current_user_id() To get the current user id
-         * @uses current_user_can() To check if the current user can edit the user
-         * @uses bbp_get_topic() To get the topic
-         * @uses check_ajax_referer() To verify the nonce & check the referer
-         * @uses bbp_is_user_subscribed() To check if the topic is in user's
+         * @uses  bbp_is_subscriptions_active() To check if the subscriptions are active
+         * @uses  bbp_get_current_user_id() To get the current user id
+         * @uses  current_user_can() To check if the current user can edit the user
+         * @uses  bbp_get_topic() To get the topic
+         * @uses  check_ajax_referer() To verify the nonce & check the referer
+         * @uses  bbp_is_user_subscribed() To check if the topic is in user's
          *                                 subscriptions
-         * @uses bbp_remove_user_subscriptions() To remove the topic from user's
+         * @uses  bbp_remove_user_subscriptions() To remove the topic from user's
          *                                        subscriptions
-         * @uses bbp_add_user_subscriptions() To add the topic from user's subscriptions
+         * @uses  bbp_add_user_subscriptions() To add the topic from user's subscriptions
          */
-        public function ajax_subscription()
-        {
-            if (! bbp_is_subscriptions_active())
+        public function ajax_subscription() {
+            if (!bbp_is_subscriptions_active()) {
                 return;
-
+            }
             $user_id = bbp_get_current_user_id();
-            $id = intval($_POST['id']);
-
-            if (! current_user_can('edit_user', $user_id))
+            $id      = intval($_POST['id']);
+            if (!current_user_can('edit_user', $user_id)) {
                 die('-1');
-
+            }
             $topic = bbp_get_topic($id);
-
-            if (empty($topic))
+            if (empty($topic)) {
                 die('0');
-
+            }
             check_ajax_referer('toggle-subscription_' . $topic->ID);
-
-            if (bbp_is_user_subscribed($user_id, $topic->ID))
-            {
-                if (bbp_remove_user_subscription($user_id, $topic->ID))
-                {
+            if (bbp_is_user_subscribed($user_id, $topic->ID)) {
+                if (bbp_remove_user_subscription($user_id, $topic->ID)) {
+                    die('1');
+                }
+            } else {
+                if (bbp_add_user_subscription($user_id, $topic->ID)) {
                     die('1');
                 }
             }
-            else
-            {
-                if (bbp_add_user_subscription($user_id, $topic->ID))
-                {
-                    die('1');
-                }
-            }
-
             die('0');
         }
     }
 
     new BBP_Default();
 endif;
-
-
-function st_bbp_list_forums($args = '')
-{
-
+function st_bbp_list_forums($args = '') {
     // Define used variables
     $output = $sub_forums = $topic_count = $reply_count = $counts = '';
-    $i = 0;
-    $count = array();
-
+    $i      = 0;
+    $count  = [];
     // Defaults and arguments
-    $defaults = array(
+    $defaults = [
         'before'              => '<ul class="bbp-forums-list">',
         'after'               => '</ul>',
         'link_before'         => '<li class="bbp-forum">',
@@ -416,182 +351,140 @@ function st_bbp_list_forums($args = '')
         'show_topic_count'    => TRUE,
         'show_reply_count'    => TRUE,
         'show_freshness_link' => TRUE,
-    );
-    $r = bbp_parse_args($args, $defaults, 'list_forums');
+    ];
+    $r        = bbp_parse_args($args, $defaults, 'list_forums');
     extract($r, EXTR_SKIP);
-
     // Bail if there are no subforums
-    if (! bbp_get_forum_subforum_count($forum_id))
+    if (!bbp_get_forum_subforum_count($forum_id)) {
         return;
-
+    }
     // Loop through forums and create a list
     $sub_forums = bbp_forum_get_subforums($forum_id);
-    if (! empty($sub_forums))
-    {
-
+    if (!empty($sub_forums)) {
         // Total count (for separator)
         $total_subs = count($sub_forums);
-        foreach ($sub_forums as $sub_forum)
-        {
+        foreach ($sub_forums as $sub_forum) {
             $i++; // Separator count
-
             // Get forum details
-            $count = array();
-            $show_sep = $total_subs > $i ? $separator : '';
-            $permalink = bbp_get_forum_permalink($sub_forum->ID);
-            $title = bbp_get_forum_title($sub_forum->ID);
+            $count       = [];
+            $show_sep    = $total_subs > $i ? $separator : '';
+            $permalink   = bbp_get_forum_permalink($sub_forum->ID);
+            $title       = bbp_get_forum_title($sub_forum->ID);
             $description = bbp_get_forum_content($sub_forum->ID);
-
             // Show topic count
-            if (! empty($show_topic_count) && ! bbp_is_forum_category($sub_forum->ID))
-            {
+            if (!empty($show_topic_count) && !bbp_is_forum_category($sub_forum->ID)) {
                 $count['topic'] = bbp_get_forum_topic_count($sub_forum->ID);
             }
-
             // Show reply count
-            if (! empty($show_reply_count) && ! bbp_is_forum_category($sub_forum->ID))
-            {
+            if (!empty($show_reply_count) && !bbp_is_forum_category($sub_forum->ID)) {
                 $count['reply'] = bbp_get_forum_reply_count($sub_forum->ID);
             }
-
             // Counts to show
-            if (! empty($count))
-            {
+            if (!empty($count)) {
                 $counts = $count_before . implode($count_sep, $count) . $count_after;
             }
-
-            if (! empty($show_freshness_link))
-            {
-                $freshness_link = "<div class='freshness-forum-link'>" . st_get_last_poster_block($sub_forum->ID) . "</div>";
+            if (!empty($show_freshness_link)) {
+                $freshness_link
+                    = "<div class='freshness-forum-link'>" . st_get_last_poster_block($sub_forum->ID) . "</div>";
             }
-
             // Build this sub forums link
-            if ($i % 2)
-            {
+            if ($i % 2) {
                 $class = "odd-forum-row";
-            }
-            else
-            {
+            } else {
                 $class = "even-forum-row";
             }
             $output .= "<li class='{$class}'><ul>" . $link_before . '<div class="bbp-forum-title-container"><a href="' . $permalink . '" class="bbp-forum-link">' . $title . '</a><p class="bbp-forum-description">' . $description . '</p></div>' . $counts . $freshness_link . $link_after . "</ul></li>";
         }
-
         // Output the list
         echo apply_filters('bbp_list_forums', $before . $output . $after, $args);
     }
 }
 
 /* Generate a list of topics a user has started, but with a limit argument */
-function st_bbp_get_user_topics_started($user_id = 0, $limit = 3, $max_num_pages = 1)
-{
-
+function st_bbp_get_user_topics_started($user_id = 0, $limit = 3, $max_num_pages = 1) {
     // Validate user
     $user_id = bbp_get_user_id($user_id);
-    if (empty($user_id))
+    if (empty($user_id)) {
         return FALSE;
-
+    }
     // Query defaults
-    $default_query = array(
+    $default_query = [
         'author'         => $user_id,
         'show_stickies'  => FALSE,
         'order'          => 'DESC',
         'posts_per_page' => $limit,
         'max_num_pages'  => $max_num_pages
-    );
-
+    ];
     // Try to get the topics
     $query = bbp_has_topics($default_query);
-    if (empty($query))
+    if (empty($query)) {
         return FALSE;
+    }
 
     return apply_filters('bbp_get_user_topics_started', $query, $user_id);
 }
 
 /** Last poster / freshness block for forums */
-function st_last_poster_block($subforum_id = "")
-{
+function st_last_poster_block($subforum_id = "") {
     echo st_get_last_poster_block($subforum_id = "");
 }
 
-function st_get_last_poster_block($subforum_id = "")
-{
-
-    if (! empty($subforum_id))
-    {
+function st_get_last_poster_block($subforum_id = "") {
+    if (!empty($subforum_id)) {
         // Main forum display with sub forums
         $st_forum_topic_count_two = bbp_get_forum_topic_count($subforum_id);
-
-
-        if ($st_forum_topic_count_two == 0)
-        {
+        if ($st_forum_topic_count_two == 0) {
             $output = "<div class='last-posted-topic-title no-topics'>";
             $output .= "No Topics";
-        }
-        else
-        {
+        } else {
             $output = "<div class='last-posted-topic-title'>";
-
             // Get and crop title lenth if needed
-            $st_topic_last_reply_title = bbp_get_topic_last_reply_title(bbp_get_forum_last_active_id($subforum_id));
-            $st_topic_last_reply_title_print = (strlen($st_topic_last_reply_title) > 50) ? substr($st_topic_last_reply_title, 0, 53) . '&hellip;' : $st_topic_last_reply_title;
-
+            $st_topic_last_reply_title       = bbp_get_topic_last_reply_title(bbp_get_forum_last_active_id($subforum_id));
+            $st_topic_last_reply_title_print = (strlen($st_topic_last_reply_title) > 50)
+                ? substr($st_topic_last_reply_title, 0, 53) . '&hellip;' : $st_topic_last_reply_title;
             $output .= "<a href='" . bbp_get_forum_last_topic_permalink($subforum_id) . "'>" . $st_topic_last_reply_title_print . "</a>";
             $output .= "</div>";
             $output .= "<div class='last-posted-topic-time'>";
             $output .= bbp_get_forum_last_active_time($subforum_id);
         }
         $output .= "</div>";
-    }
-    else
-    {
+    } else {
         // forum category display (no sub forums list)
         $st_forum_topic_count = bbp_get_forum_topic_count();
-
-        if ($st_forum_topic_count == 0)
-        {
+        if ($st_forum_topic_count == 0) {
             $output = "<div class='last-posted-topic-title no-topics'>";
             $output .= "No Topics";
-        }
-        else
-        {
+        } else {
             $output = "<div class='last-posted-topic-title'>";
-
             // Get and crop title lenth if needed
-            $st_topic_last_reply_title = bbp_get_topic_last_reply_title(bbp_get_forum_last_active_id($subforum_id));
-            $st_topic_last_reply_title_print = (strlen($st_topic_last_reply_title) > 50) ? substr($st_topic_last_reply_title, 0, 53) . '&hellip;' : $st_topic_last_reply_title;
-
+            $st_topic_last_reply_title       = bbp_get_topic_last_reply_title(bbp_get_forum_last_active_id($subforum_id));
+            $st_topic_last_reply_title_print = (strlen($st_topic_last_reply_title) > 50)
+                ? substr($st_topic_last_reply_title, 0, 53) . '&hellip;' : $st_topic_last_reply_title;
             $output .= "<a href='" . bbp_get_forum_last_topic_permalink() . "'>" . $st_topic_last_reply_title_print . "</a>";
             $output .= "</div>";
             $output .= "<div class='last-posted-topic-time'>";
             $output .= bbp_get_forum_last_active_time();
         }
         $output .= "</div>";
-
     }
 
     return $output;
-
 }
 
 /* Last poster / freshness block for topics */
-function st_last_poster_block_topics()
-{
+function st_last_poster_block_topics() {
     echo teamop_get_last_poster_block_topics();
 }
 
-function teamop_get_last_poster_block_topics()
-{
-
+function teamop_get_last_poster_block_topics() {
     $output .= "<div class='last-posted-topic-user'>";
-    $output .= bbp_get_reply_author_link(array('post_id' => bbp_get_topic_last_active_id(), 'size' => '14'));
+    $output .= bbp_get_reply_author_link(['post_id' => bbp_get_topic_last_active_id(), 'size' => '14']);
     $output .= "</div>";
     $output .= "<div class='last-posted-topic-time'>";
     $output .= bbp_get_topic_last_active_time(bbp_get_topic_last_active_id());
     $output .= "</div>";
 
     return $output;
-
 }
 
 

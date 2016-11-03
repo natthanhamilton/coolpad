@@ -28,13 +28,11 @@ global $flatsome_opt;
     <div id="main-content" class="site-main">
 
         <!-- woocommerce message -->
-        <?php if (function_exists('wc_print_notices'))
-        {
+        <?php if (function_exists('wc_print_notices')) {
             wc_print_notices();
         } ?>
 
-        <?php if (has_excerpt())
-        { ?>
+        <?php if (has_excerpt()) { ?>
             <div class="page-header">
                 <?php the_excerpt(); ?>
             </div>
@@ -54,30 +52,24 @@ global $flatsome_opt;
                     <div class="left">
                         <?php if (has_nav_menu('footer')) : ?>
                             <?php
-                            wp_nav_menu(array(
-                                'theme_location' => 'footer',
-                                'menu_class'     => 'footer-nav',
-                                'depth'          => 1,
-                                'fallback_cb'    => FALSE,
-                            ));
+                            wp_nav_menu([
+                                            'theme_location' => 'footer',
+                                            'menu_class'     => 'footer-nav',
+                                            'depth'          => 1,
+                                            'fallback_cb'    => FALSE,
+                                        ]);
                             ?>
                         <?php endif; ?>
-                        <div class="copyright-footer"><?php if (isset($flatsome_opt['footer_left_text']))
-                            {
+                        <div class="copyright-footer"><?php if (isset($flatsome_opt['footer_left_text'])) {
                                 echo $flatsome_opt['footer_left_text'];
-                            }
-                            else
-                            {
+                            } else {
                                 echo 'Define left footer text / navigation in Theme Option Panel';
                             } ?></div>
                     </div><!-- .left -->
                     <div class="right">
-                        <?php if (isset($flatsome_opt['footer_right_text']))
-                        {
+                        <?php if (isset($flatsome_opt['footer_right_text'])) {
                             echo do_shortcode($flatsome_opt['footer_right_text']);
-                        }
-                        else
-                        {
+                        } else {
                             echo 'Define right footer text in Theme Option Panel';
                         } ?>
                     </div>
@@ -89,8 +81,7 @@ global $flatsome_opt;
 
 <!-- back to top -->
 <a href="#top" id="top-link"><span class="icon-angle-up"></span></a>
-<?php if (isset($flatsome_opt['html_scripts_footer']))
-{
+<?php if (isset($flatsome_opt['html_scripts_footer'])) {
     // Insert footer scripts
     echo $flatsome_opt['html_scripts_footer'];
 } ?>

@@ -53,8 +53,8 @@ class Simplify_Deposit extends Simplify_Object {
 	static public function listDeposit($criteria = NULL, $authentication = NULL) {
 		$args           = func_get_args();
 		$authentication = Simplify_PaymentsApi::buildAuthenticationObject($authentication, $args, 2);
-		$val  = new Simplify_Deposit();
-		$list = Simplify_PaymentsApi::listObject($val, $criteria, $authentication);
+		$val            = new Simplify_Deposit();
+		$list           = Simplify_PaymentsApi::listObject($val, $criteria, $authentication);
 
 		return $list;
 	}
@@ -73,9 +73,9 @@ class Simplify_Deposit extends Simplify_Object {
 	static public function findDeposit($id, $authentication = NULL) {
 		$args           = func_get_args();
 		$authentication = Simplify_PaymentsApi::buildAuthenticationObject($authentication, $args, 2);
-		$val     = new Simplify_Deposit();
-		$val->id = $id;
-		$obj = Simplify_PaymentsApi::findObject($val, $authentication);
+		$val            = new Simplify_Deposit();
+		$val->id        = $id;
+		$obj            = Simplify_PaymentsApi::findObject($val, $authentication);
 
 		return $obj;
 	}

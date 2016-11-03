@@ -7,6 +7,7 @@
     -ms-transform: translateX(-50%);
     transform: translateX(-50%)
 }
+
 .ult-easy-separator-wrapper.ult-top-easy-separator {
     top: 0;
     bottom: auto;
@@ -14,6 +15,7 @@
     -ms-transform: translate(-50%, -50%);
     transform: translate(-50%, -50%)
 }
+
 .ult-easy-separator-wrapper.ult-bottom-easy-separator {
     top: auto;
     bottom: 0;
@@ -21,20 +23,24 @@
     -ms-transform: translate(-50%, 50%);
     transform: translate(-50%, 50%)
 }
+
 .ult-easy-separator-wrapper .ult-easy-separator-img {
     box-shadow: none;
     max-width: 100%;
     width: 100%
 }
+
 .ult-easy-separator-no-default.ult-bottom-easy-separator,
 .ult-easy-separator-no-default.ult-top-easy-separator {
-    -webkit-transform: translate(-50%, 0)!important;
-    -ms-transform: translate(-50%, 0)!important;
-    transform: translate(-50%, 0)!important
+    -webkit-transform: translate(-50%, 0) !important;
+    -ms-transform: translate(-50%, 0) !important;
+    transform: translate(-50%, 0) !important
 }
+
 .ult-easy-separator-inner-wrapper {
     position: relative;
 }
+
 .ult-easy-separator-inner-wrapper a {
     position: absolute;
     width: 100%;

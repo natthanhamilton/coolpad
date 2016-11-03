@@ -1,105 +1,73 @@
 <?php
-
-function wpcf7_l10n()
-{
-    static $l10n = array();
-
-    if (! empty($l10n))
-    {
+function wpcf7_l10n() {
+    static $l10n = [];
+    if (!empty($l10n)) {
         return $l10n;
     }
-
-    if (! is_admin())
-    {
+    if (!is_admin()) {
         return $l10n;
     }
-
     require_once(ABSPATH . 'wp-admin/includes/translation-install.php');
-
-    $api = translations_api('plugins', array(
+    $api = translations_api('plugins', [
         'slug'    => 'contact-form-7',
-        'version' => WPCF7_VERSION));
-
-    if (is_wp_error($api) || empty($api['translations']))
-    {
+        'version' => WPCF7_VERSION]);
+    if (is_wp_error($api) || empty($api['translations'])) {
         return $l10n;
     }
-
-    foreach ((array)$api['translations'] as $translation)
-    {
-        if (! empty($translation['language'])
-            && ! empty($translation['english_name'])
-        )
-        {
-            $l10n[$translation['language']] = $translation['english_name'];
+    foreach ((array)$api['translations'] as $translation) {
+        if (!empty($translation['language'])
+            && !empty($translation['english_name'])
+        ) {
+            $l10n[ $translation['language'] ] = $translation['english_name'];
         }
     }
 
     return $l10n;
 }
 
-function wpcf7_is_valid_locale($locale)
-{
+function wpcf7_is_valid_locale($locale) {
     $pattern = '/^[a-z]{2,3}(?:_[a-zA-Z_]{2,})?$/';
+
     return (bool)preg_match($pattern, $locale);
 }
 
-function wpcf7_is_rtl($locale = '')
-{
-    if (empty($locale))
-    {
+function wpcf7_is_rtl($locale = '') {
+    if (empty($locale)) {
         return function_exists('is_rtl') ? is_rtl() : FALSE;
     }
-
-    $rtl_locales = array(
+    $rtl_locales = [
         'ar'    => 'Arabic',
         'he_IL' => 'Hebrew',
-        'fa_IR' => 'Persian');
+        'fa_IR' => 'Persian'];
 
-    return isset($rtl_locales[$locale]);
+    return isset($rtl_locales[ $locale ]);
 }
 
-function wpcf7_load_textdomain($locale = NULL)
-{
+function wpcf7_load_textdomain($locale = NULL) {
     global $l10n;
-
     $domain = 'contact-form-7';
-
-    if (get_locale() == $locale)
-    {
+    if (get_locale() == $locale) {
         $locale = NULL;
     }
-
-    if (empty($locale))
-    {
-        if (is_textdomain_loaded($domain))
-        {
+    if (empty($locale)) {
+        if (is_textdomain_loaded($domain)) {
             return TRUE;
-        }
-        else
-        {
+        } else {
             return load_plugin_textdomain($domain, FALSE, $domain . '/languages');
         }
-    }
-    else
-    {
-        $mo_orig = $l10n[$domain];
+    } else {
+        $mo_orig = $l10n[ $domain ];
         unload_textdomain($domain);
-
         $mofile = $domain . '-' . $locale . '.mo';
-        $path = WP_PLUGIN_DIR . '/' . $domain . '/languages';
-
-        if ($loaded = load_textdomain($domain, $path . '/' . $mofile))
-        {
+        $path   = WP_PLUGIN_DIR . '/' . $domain . '/languages';
+        if ($loaded = load_textdomain($domain, $path . '/' . $mofile)) {
             return $loaded;
-        }
-        else
-        {
+        } else {
             $mofile = WP_LANG_DIR . '/plugins/' . $mofile;
+
             return load_textdomain($domain, $mofile);
         }
-
-        $l10n[$domain] = $mo_orig;
+        $l10n[ $domain ] = $mo_orig;
     }
 
     return FALSE;

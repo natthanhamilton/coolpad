@@ -115,7 +115,7 @@ if (!function_exists('register_rest_field')) {
 			'update_callback' => NULL,
 			'schema'          => NULL,
 		];
-		$args = wp_parse_args($args, $defaults);
+		$args     = wp_parse_args($args, $defaults);
 		global $wp_rest_additional_fields;
 		$object_types = (array)$object_type;
 		foreach ($object_types as $object_type) {

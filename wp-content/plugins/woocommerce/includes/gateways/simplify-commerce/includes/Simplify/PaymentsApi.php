@@ -1,4 +1,5 @@
 <?php
+
 /*
  * Copyright (c) 2013 - 2015 MasterCard International Incorporated
  * All rights reserved.
@@ -26,30 +27,25 @@
  * SUCH DAMAGE.
  */
 
-
-class Simplify_PaymentsApi
-{
+class Simplify_PaymentsApi {
+	/**
+	 * @ignore
+	 */
+	public static $methodMap
+		= [
+			'create' => 'POST',
+			'delete' => 'DELETE',
+			'list'   => 'GET',
+			'show'   => 'GET',
+			'update' => 'PUT'
+		];
 
 	/**
 	 * @ignore
 	 */
-	public static $methodMap = array(
-		'create' => 'POST',
-		'delete' => 'DELETE',
-		'list' => 'GET',
-		'show' => 'GET',
-		'update' => 'PUT'
-	);
-
-	/**
-	 * @ignore
-	 */
-	static public function createObject($object, $authentication = null)
-	{
+	static public function createObject($object, $authentication = NULL) {
 		$paymentsApi = new Simplify_PaymentsApi();
-
 		$jsonObject = $paymentsApi->execute("create", $object, $authentication);
-
 		$o = $paymentsApi->convertFromHashToObject($jsonObject, $object->getClazz());
 
 		return $o;
@@ -58,33 +54,30 @@ class Simplify_PaymentsApi
 	/**
 	 * @ignore
 	 */
-	private function execute($action, $object, $authentication)
-	{
+	private function execute($action, $object, $authentication) {
 		$http = new Simplify_HTTP();
 
 		return $http->apiRequest($this->getUrl($authentication->publicKey, $action, $object), $this->getMethod($action),
-			$authentication, json_encode($object->getProperties()));
+		                         $authentication, json_encode($object->getProperties()));
 	}
 
 	/**
 	 * @ignore
 	 */
-	public function getUrl($publicKey, $action, $object)
-	{
+	public function getUrl($publicKey, $action, $object) {
 		$url = $this->fixUrl(Simplify::$apiBaseSandboxUrl);
 		if ($this->isLiveKey($publicKey)) {
 			$url = $this->fixUrl(Simplify::$apiBaseLiveUrl);
 		}
 		$url = $this->fixUrl($url) . urlencode(lcfirst($object->getClazz())) . '/';
-
-		$queryParams = array();
+		$queryParams = [];
 		if ($action == "show") {
 			$url .= urlencode($object->id);
 		} elseif ($action == "list") {
-			$queryParams = array_merge($queryParams, array('max' => $object->max, 'offset' => $object->offset));
+			$queryParams = array_merge($queryParams, ['max' => $object->max, 'offset' => $object->offset]);
 			if (is_array($object->filter) && count(array_keys($object->filter))) {
 				foreach ($object->filter as $key => $value) {
-			$queryParams["filter[$key]"] = $value;
+					$queryParams["filter[$key]"] = $value;
 				}
 			}
 			if (is_array($object->sorting) && count(array_keys($object->sorting))) {
@@ -94,35 +87,34 @@ class Simplify_PaymentsApi
 			}
 			$query = http_build_query($queryParams);
 			if ($query != '') {
-				if (strpos($url, '?', strlen($url)) === false) $url .= '?';
+				if (strpos($url, '?', strlen($url)) === FALSE) $url .= '?';
 				$url .= $query;
 			}
-
 		} elseif ($action == "delete") {
 			$url .= urlencode($object->id);
 		} elseif ($action == "update") {
 			$url .= urlencode($object->id);
 		} elseif ($action == "create") {
 		}
+
 		return $url;
 	}
 
 	/**
 	 * @ignore
 	 */
-	private function fixUrl($url)
-	{
+	private function fixUrl($url) {
 		if ($this->endsWith($url, '/')) {
 			return $url;
 		}
+
 		return $url . '/';
 	}
 
 	/**
 	 * @ignore
 	 */
-	private function endsWith($s, $c)
-	{
+	private function endsWith($s, $c) {
 		return substr($s, -strlen($c)) == $c;
 	}
 
@@ -136,33 +128,30 @@ class Simplify_PaymentsApi
 	/**
 	 * @ignore
 	 */
-	public function getMethod($action)
-	{
+	public function getMethod($action) {
 		if (array_key_exists(strtolower($action), self::$methodMap)) {
-			return self::$methodMap[strtolower($action)];
+			return self::$methodMap[ strtolower($action) ];
 		}
+
 		return 'GET';
 	}
 
 	/**
 	 * @ignore
 	 */
-	public function convertFromHashToObject($from, $toClazz)
-	{
-		$clazz = 'stdClass';
+	public function convertFromHashToObject($from, $toClazz) {
+		$clazz   = 'stdClass';
 		$toClazz = "Simplify_" . $toClazz;
-		if ("stdClass" != $toClazz && class_exists("{$toClazz}", false)) {
+		if ("stdClass" != $toClazz && class_exists("{$toClazz}", FALSE)) {
 			$clazz = "{$toClazz}";
 		}
 		$object = new $clazz();
-
 		foreach ($from as $key => $value) {
 			if (is_array($value) && count(array_keys($value))) {
 				$newClazz = "Simplify_" . ucfirst($key);
-				if (!class_exists($newClazz, false)) {
+				if (!class_exists($newClazz, FALSE)) {
 					$newClazz = 'stdClass';
 				}
-
 				$object->$key = $this->convertFromHashToObject($value, $newClazz);
 			} else {
 				$object->$key = $value;
@@ -175,12 +164,10 @@ class Simplify_PaymentsApi
 	/**
 	 * @ignore
 	 */
-	static public function findObject($object, $authentication = null)
-	{
+	static public function findObject($object, $authentication = NULL) {
 		$paymentsApi = new Simplify_PaymentsApi();
-
 		$jsonObject = $paymentsApi->execute("show", $object, $authentication);
-		$o = $paymentsApi->convertFromHashToObject($jsonObject, $object->getClazz());
+		$o          = $paymentsApi->convertFromHashToObject($jsonObject, $object->getClazz());
 
 		return $o;
 	}
@@ -188,11 +175,10 @@ class Simplify_PaymentsApi
 	/**
 	 * @ignore
 	 */
-	static public function updateObject($object, $authentication = null) {
+	static public function updateObject($object, $authentication = NULL) {
 		$paymentsApi = new Simplify_PaymentsApi();
-
 		$jsonObject = $paymentsApi->execute("update", $object, $authentication);
-		$o = $paymentsApi->convertFromHashToObject($jsonObject, $object->getClazz());
+		$o          = $paymentsApi->convertFromHashToObject($jsonObject, $object->getClazz());
 
 		return $o;
 	}
@@ -200,9 +186,8 @@ class Simplify_PaymentsApi
 	/**
 	 * @ignore
 	 */
-	static public function deleteObject($object, $authentication = null) {
+	static public function deleteObject($object, $authentication = NULL) {
 		$paymentsApi = new Simplify_PaymentsApi();
-
 		$jsonObject = $paymentsApi->execute("delete", $object, $authentication);
 
 		return $jsonObject;
@@ -211,8 +196,8 @@ class Simplify_PaymentsApi
 	/**
 	 * @ignore
 	 */
-	static public function listObject($object, $criteria = null, $authentication =null) {
-		if ($criteria != null) {
+	static public function listObject($object, $criteria = NULL, $authentication = NULL) {
+		if ($criteria != NULL) {
 			if (isset($criteria['max'])) {
 				$object->max = $criteria['max'];
 			}
@@ -226,10 +211,8 @@ class Simplify_PaymentsApi
 				$object->filter = $criteria['filter'];
 			}
 		}
-
 		$paymentsApi = new Simplify_PaymentsApi();
-		$jsonObject = $paymentsApi->execute("list", $object, $authentication);
-
+		$jsonObject  = $paymentsApi->execute("list", $object, $authentication);
 		$ret = new Simplify_ResourceList();
 		if (array_key_exists('list', $jsonObject) & is_array($jsonObject['list'])) {
 			foreach ($jsonObject['list'] as $obj) {
@@ -248,26 +231,25 @@ class Simplify_PaymentsApi
 	 * passing the keys. i.e as two separate strings.  We take those two string and create the Authentication object
 	 *
 	 * @ignore
+	 *
 	 * @param $authentication
 	 * @param $args
 	 * @param $expectedArgCount
+	 *
 	 * @return Simplify_Authentication
 	 */
-	static function buildAuthenticationObject($authentication = null, $args, $expectedArgCount){
-
-		if(sizeof($args) > $expectedArgCount) {
-			$authentication = new Simplify_Authentication($args[$expectedArgCount-1], $args[$expectedArgCount]);
+	static function buildAuthenticationObject($authentication = NULL, $args, $expectedArgCount) {
+		if (sizeof($args) > $expectedArgCount) {
+			$authentication = new Simplify_Authentication($args[ $expectedArgCount - 1 ], $args[ $expectedArgCount ]);
 		}
-
-		if ($authentication == null){
+		if ($authentication == NULL) {
 			$authentication = new Simplify_Authentication();
 		}
-
 		// check that the keys have been set, if not use the global keys
-		if ( empty($authentication->publicKey)){
+		if (empty($authentication->publicKey)) {
 			$authentication->publicKey = Simplify::$publicKey;
 		}
-		if ( empty($authentication->privateKey)){
+		if (empty($authentication->privateKey)) {
 			$authentication->privateKey = Simplify::$privateKey;
 		}
 
@@ -277,14 +259,11 @@ class Simplify_PaymentsApi
 	/**
 	 * @ignore
 	 */
-	public function jwsDecode($hash, $authentication)
-	{
+	public function jwsDecode($hash, $authentication) {
 		$http = new Simplify_HTTP();
-
 		$data = $http->jwsDecode($authentication, $hash);
 
-		return json_decode($data, true);
+		return json_decode($data, TRUE);
 	}
-
 }
 

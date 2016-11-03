@@ -98,7 +98,7 @@ class WC_REST_Order_Refunds_Controller extends WC_REST_Posts_Controller {
 	 * @return array
 	 */
 	public function get_collection_params() {
-		$params = parent::get_collection_params();
+		$params       = parent::get_collection_params();
 		$params['dp'] = [
 			'default'           => 2,
 			'description'       => __('Number of decimal points to use in each resource.', 'woocommerce'),
@@ -111,6 +111,19 @@ class WC_REST_Order_Refunds_Controller extends WC_REST_Posts_Controller {
 	}
 
 	/**
+	 * Query args.
+	 *
+	 * @param array           $args
+	 * @param WP_REST_Request $request
+	 *
+	 * @return array
+	 */
+	public function query_args($args, $request) {
+		// Set post_status.
+		$args['post_status'] = 'any';
+
+		return $args;
+	}	/**
 	 * Prepare a single order refund output for response.
 	 *
 	 * @param WP_Post         $post    Post object.
@@ -129,7 +142,7 @@ class WC_REST_Order_Refunds_Controller extends WC_REST_Posts_Controller {
 			return new WP_Error('woocommerce_rest_invalid_order_refund_id',
 			                    __('Invalid order refund ID.', 'woocommerce'), 404);
 		}
-		$dp = $request['dp'];
+		$dp   = $request['dp'];
 		$data = [
 			'id'           => $refund->id,
 			'date_created' => wc_rest_prepare_date_response($refund->date),
@@ -149,8 +162,8 @@ class WC_REST_Order_Refunds_Controller extends WC_REST_Posts_Controller {
 				$variation_id = $product->variation_id;
 				$product_sku  = $product->get_sku();
 			}
-			$meta = new WC_Order_Item_Meta($item, $product);
-			$item_meta = [];
+			$meta       = new WC_Order_Item_Meta($item, $product);
+			$item_meta  = [];
 			$hideprefix = 'true' === $request['all_item_meta'] ? NULL : '_';
 			foreach ($meta->get_formatted($hideprefix) as $meta_key => $formatted_meta) {
 				$item_meta[] = [
@@ -159,7 +172,7 @@ class WC_REST_Order_Refunds_Controller extends WC_REST_Posts_Controller {
 					'value' => $formatted_meta['value'],
 				];
 			}
-			$line_item = [
+			$line_item       = [
 				'id'           => $item_id,
 				'name'         => $item['name'],
 				'sku'          => $product_sku,
@@ -212,20 +225,7 @@ class WC_REST_Order_Refunds_Controller extends WC_REST_Posts_Controller {
 		return apply_filters("woocommerce_rest_prepare_{$this->post_type}", $response, $post, $request);
 	}
 
-	/**
-	 * Query args.
-	 *
-	 * @param array           $args
-	 * @param WP_REST_Request $request
-	 *
-	 * @return array
-	 */
-	public function query_args($args, $request) {
-		// Set post_status.
-		$args['post_status'] = 'any';
 
-		return $args;
-	}
 
 	/**
 	 * Prepare links for the request.
@@ -274,7 +274,7 @@ class WC_REST_Order_Refunds_Controller extends WC_REST_Posts_Controller {
 			                    __('Refund amount must be greater than zero.', 'woocommerce'), 400);
 		}
 		$api_refund = is_bool($request['api_refund']) ? $request['api_refund'] : TRUE;
-		$data = [
+		$data       = [
 			'order_id'   => $order_data->ID,
 			'amount'     => $request['amount'],
 			'line_items' => $request['line_items'],

@@ -112,27 +112,27 @@ class WC_REST_Customers_Controller extends WC_REST_Controller {
 	 * @return array
 	 */
 	public function get_collection_params() {
-		$params = parent::get_collection_params();
+		$params                       = parent::get_collection_params();
 		$params['context']['default'] = 'view';
-		$params['exclude'] = [
+		$params['exclude']            = [
 			'description'       => __('Ensure result set excludes specific ids.', 'woocommerce'),
 			'type'              => 'array',
 			'default'           => [],
 			'sanitize_callback' => 'wp_parse_id_list',
 		];
-		$params['include'] = [
+		$params['include']            = [
 			'description'       => __('Limit result set to specific ids.', 'woocommerce'),
 			'type'              => 'array',
 			'default'           => [],
 			'sanitize_callback' => 'wp_parse_id_list',
 		];
-		$params['offset']  = [
+		$params['offset']             = [
 			'description'       => __('Offset the result set by a specific number of items.', 'woocommerce'),
 			'type'              => 'integer',
 			'sanitize_callback' => 'absint',
 			'validate_callback' => 'rest_validate_request_arg',
 		];
-		$params['order']   = [
+		$params['order']              = [
 			'default'           => 'asc',
 			'description'       => __('Order sort attribute ascending or descending.', 'woocommerce'),
 			'enum'              => ['asc', 'desc'],
@@ -140,7 +140,7 @@ class WC_REST_Customers_Controller extends WC_REST_Controller {
 			'type'              => 'string',
 			'validate_callback' => 'rest_validate_request_arg',
 		];
-		$params['orderby'] = [
+		$params['orderby']            = [
 			'default'           => 'name',
 			'description'       => __('Sort collection by object attribute.', 'woocommerce'),
 			'enum'              => [
@@ -153,13 +153,13 @@ class WC_REST_Customers_Controller extends WC_REST_Controller {
 			'type'              => 'string',
 			'validate_callback' => 'rest_validate_request_arg',
 		];
-		$params['email']   = [
+		$params['email']              = [
 			'description'       => __('Limit result set to resources with a specific email.', 'woocommerce'),
 			'type'              => 'string',
 			'format'            => 'email',
 			'validate_callback' => 'rest_validate_request_arg',
 		];
-		$params['role']    = [
+		$params['role']               = [
 			'description'       => __('Limit result set to resources with a specific role.', 'woocommerce'),
 			'type'              => 'string',
 			'default'           => 'customer',
@@ -315,18 +315,18 @@ class WC_REST_Customers_Controller extends WC_REST_Controller {
 		 * @param WP_REST_Request $request       The current request.
 		 */
 		$prepared_args = apply_filters('woocommerce_rest_customer_query', $prepared_args, $request);
-		$query = new WP_User_Query($prepared_args);
-		$users = [];
+		$query         = new WP_User_Query($prepared_args);
+		$users         = [];
 		foreach ($query->results as $user) {
 			$data    = $this->prepare_item_for_response($user, $request);
 			$users[] = $this->prepare_response_for_collection($data);
 		}
 		$response = rest_ensure_response($users);
 		// Store pagation values for headers then unset for count query.
-		$per_page = (int)$prepared_args['number'];
-		$page     = ceil((((int)$prepared_args['offset']) / $per_page) + 1);
+		$per_page                = (int)$prepared_args['number'];
+		$page                    = ceil((((int)$prepared_args['offset']) / $per_page) + 1);
 		$prepared_args['fields'] = 'ID';
-		$total_users = $query->get_total();
+		$total_users             = $query->get_total();
 		if ($total_users < 1) {
 			// Out-of-bounds, run the query again without LIMIT for total count.
 			unset($prepared_args['number']);
@@ -366,7 +366,7 @@ class WC_REST_Customers_Controller extends WC_REST_Controller {
 	 */
 	public function prepare_item_for_response($customer, $request) {
 		$last_order = wc_get_customer_last_order($customer->ID);
-		$data = [
+		$data       = [
 			'id'            => $customer->ID,
 			'date_created'  => wc_rest_prepare_date_response($customer->user_registered),
 			'date_modified' => $customer->last_update ? wc_rest_prepare_date_response(date('Y-m-d H:i:s',
@@ -409,9 +409,9 @@ class WC_REST_Customers_Controller extends WC_REST_Controller {
 				'country'    => $customer->shipping_country,
 			],
 		];
-		$context = !empty($request['context']) ? $request['context'] : 'view';
-		$data    = $this->add_additional_fields_to_object($data, $request);
-		$data    = $this->filter_response_by_context($data, $context);
+		$context    = !empty($request['context']) ? $request['context'] : 'view';
+		$data       = $this->add_additional_fields_to_object($data, $request);
+		$data       = $this->filter_response_by_context($data, $context);
 		// Wrap the data in a response object.
 		$response = rest_ensure_response($data);
 		$response->add_links($this->prepare_links($customer));

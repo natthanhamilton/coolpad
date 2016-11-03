@@ -19,15 +19,15 @@ if($flatsome_opt['blog_header']){ echo do_shortcode($flatsome_opt['blog_header']
 
 		<?php if($flatsome_opt['blog_layout'] == 'left-sidebar') {
 		 	echo '<div id="content" class="large-9 right columns" role="main">';
-		 } else if($flatsome_opt['blog_layout'] == 'right-sidebar'){
+		 } else {if($flatsome_opt['blog_layout'] == 'right-sidebar'){
 		 	echo '<div id="content" class="large-9 left columns" role="main">';
-		 } else if($flatsome_opt['blog_layout'] == 'no-sidebar' && $flatsome_opt['blog_style'] == 'blog-pinterest'){
+		 } else {if($flatsome_opt['blog_layout'] == 'no-sidebar' && $flatsome_opt['blog_style'] == 'blog-pinterest'){
 		 	echo '<div id="content" class="large-12 columns" role="main">';
-		 } else if($flatsome_opt['blog_layout'] == 'no-sidebar'){
+		 } else {if($flatsome_opt['blog_layout'] == 'no-sidebar'){
 		 	echo '<div id="content" class="large-12 columns" role="main">';
 		 } else {
 		 	echo '<div id="content" class="large-9 left columns" role="main">';
-		 }
+		 }}}}
 		?>
 
 

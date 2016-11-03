@@ -98,28 +98,6 @@ class WP_HTTP_Proxy {
 	}
 
 	/**
-	 * Retrieve header string for proxy authentication.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @return string
-	 */
-	public function authentication_header() {
-		return 'Proxy-Authorization: Basic ' . base64_encode( $this->authentication() );
-	}
-
-	/**
-	 * Retrieve authentication string for proxy authentication.
-	 *
-	 * @since 2.8.0
-	 *
-	 * @return string
-	 */
-	public function authentication() {
-		return $this->username() . ':' . $this->password();
-	}
-
-	/**
 	 * Retrieve the username for proxy authentication.
 	 *
 	 * @since 2.8.0
@@ -145,6 +123,28 @@ class WP_HTTP_Proxy {
 			return WP_PROXY_PASSWORD;
 
 		return '';
+	}
+
+	/**
+	 * Retrieve authentication string for proxy authentication.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	public function authentication() {
+		return $this->username() . ':' . $this->password();
+	}
+
+	/**
+	 * Retrieve header string for proxy authentication.
+	 *
+	 * @since 2.8.0
+	 *
+	 * @return string
+	 */
+	public function authentication_header() {
+		return 'Proxy-Authorization: Basic ' . base64_encode( $this->authentication() );
 	}
 
 	/**
@@ -176,7 +176,7 @@ class WP_HTTP_Proxy {
 		$home = parse_url( get_option('siteurl') );
 
 		/**
-		 * Filter whether to preempt sending the request through the proxy server.
+		 * Filters whether to preempt sending the request through the proxy server.
 		 *
 		 * Returning false will bypass the proxy; returning true will send
 		 * the request through the proxy. Returning null bypasses the filter.

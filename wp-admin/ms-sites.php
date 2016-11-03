@@ -2,10 +2,12 @@
 /**
  * Multisite sites administration panel.
  *
- * @package    WordPress
+ * @package WordPress
  * @subpackage Multisite
- * @since      3.0.0
+ * @since 3.0.0
  */
-require_once(dirname(__FILE__) . '/admin.php');
-wp_redirect(network_admin_url('sites.php'));
+
+require_once( dirname( __FILE__ ) . '/admin.php' );
+
+wp_redirect( network_admin_url('sites.php') );
 exit;

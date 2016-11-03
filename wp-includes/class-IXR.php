@@ -50,13 +50,6 @@ class IXR_Value {
     var $type;
 
 	/**
-	 * PHP4 constructor.
-	 */
-	public function IXR_Value( $data, $type = false ) {
-		self::__construct( $data, $type );
-	}
-
-	/**
 	 * PHP5 constructor.
 	 */
 	function __construct( $data, $type = false )
@@ -78,6 +71,13 @@ class IXR_Value {
             }
         }
     }
+
+	/**
+	 * PHP4 constructor.
+	 */
+	public function IXR_Value( $data, $type = false ) {
+		self::__construct( $data, $type );
+	}
 
     function calculateType()
     {
@@ -114,24 +114,6 @@ class IXR_Value {
         } else {
             return 'array';
         }
-    }
-
-    /**
-     * Checks whether or not the supplied array is a struct or not
-     *
-     * @param array $array
-     * @return bool
-     */
-    function isStruct($array)
-    {
-        $expected = 0;
-        foreach ($array as $key => $value) {
-            if ((string)$key != (string)$expected) {
-                return true;
-            }
-            $expected++;
-        }
-        return false;
     }
 
     function getXml()
@@ -175,6 +157,24 @@ class IXR_Value {
         }
         return false;
     }
+
+    /**
+     * Checks whether or not the supplied array is a struct or not
+     *
+     * @param array $array
+     * @return bool
+     */
+    function isStruct($array)
+    {
+        $expected = 0;
+        foreach ($array as $key => $value) {
+            if ((string)$key !== (string)$expected) {
+                return true;
+            }
+            $expected++;
+        }
+        return false;
+    }
 }
 
 /**
@@ -205,19 +205,19 @@ class IXR_Message
     var $_parser;
 
 	/**
-	 * PHP4 constructor.
-	 */
-	public function IXR_Message( $message ) {
-		self::__construct( $message );
-	}
-
-	/**
 	 * PHP5 constructor.
 	 */
     function __construct( $message )
     {
         $this->message =& $message;
     }
+
+	/**
+	 * PHP4 constructor.
+	 */
+	public function IXR_Message( $message ) {
+		self::__construct( $message );
+	}
 
     function parse()
     {
@@ -249,7 +249,7 @@ class IXR_Message
         $element_limit = 30000;
         if ( function_exists( 'apply_filters' ) ) {
             /**
-             * Filter the number of elements to parse in an XML-RPC response.
+             * Filters the number of elements to parse in an XML-RPC response.
              *
              * @since 4.0.0
              *
@@ -273,7 +273,7 @@ class IXR_Message
         $chunk_size = 262144;
 
         /**
-         * Filter the chunk size that can be used to parse an XML-RPC reponse message.
+         * Filters the chunk size that can be used to parse an XML-RPC reponse message.
          *
          * @since 4.4.0
          *
@@ -419,13 +419,6 @@ class IXR_Server
     var $capabilities;
 
 	/**
-	 * PHP4 constructor.
-	 */
-	public function IXR_Server( $callbacks = false, $data = false, $wait = false ) {
-		self::__construct( $callbacks, $data, $wait );
-	}
-
-	/**
 	 * PHP5 constructor.
 	 */
     function __construct( $callbacks = false, $data = false, $wait = false )
@@ -440,12 +433,12 @@ class IXR_Server
         }
     }
 
-    function setCallbacks()
-    {
-        $this->callbacks['system.getCapabilities'] = 'this:getCapabilities';
-        $this->callbacks['system.listMethods'] = 'this:listMethods';
-        $this->callbacks['system.multicall'] = 'this:multiCall';
-    }
+	/**
+	 * PHP4 constructor.
+	 */
+	public function IXR_Server( $callbacks = false, $data = false, $wait = false ) {
+		self::__construct( $callbacks, $data, $wait );
+	}
 
     function serve($data = false)
     {
@@ -502,33 +495,6 @@ EOD;
       $this->output($xml);
     }
 
-    function error($error, $message = false)
-    {
-        // Accepts either an error object or an error code and message
-        if ($message && !is_object($error)) {
-            $error = new IXR_Error($error, $message);
-        }
-        $this->output($error->getXml());
-    }
-
-    function output($xml)
-    {
-        $charset = function_exists('get_option') ? get_option('blog_charset') : '';
-        if ($charset)
-            $xml = '<?xml version="1.0" encoding="'.$charset.'"?>'."\n".$xml;
-        else
-            $xml = '<?xml version="1.0"?>'."\n".$xml;
-        $length = strlen($xml);
-        header('Connection: close');
-        if ($charset)
-            header('Content-Type: text/xml; charset='.$charset);
-        else
-            header('Content-Type: text/xml');
-        header('Date: '.date('r'));
-        echo $xml;
-        exit;
-    }
-
     function call($methodname, $args)
     {
         if (!$this->hasMethod($methodname)) {
@@ -568,14 +534,36 @@ EOD;
         return $result;
     }
 
+    function error($error, $message = false)
+    {
+        // Accepts either an error object or an error code and message
+        if ($message && !is_object($error)) {
+            $error = new IXR_Error($error, $message);
+        }
+        $this->output($error->getXml());
+    }
+
+    function output($xml)
+    {
+        $charset = function_exists('get_option') ? get_option('blog_charset') : '';
+        if ($charset)
+            $xml = '<?xml version="1.0" encoding="'.$charset.'"?>'."\n".$xml;
+        else
+            $xml = '<?xml version="1.0"?>'."\n".$xml;
+        $length = strlen($xml);
+        header('Connection: close');
+        if ($charset)
+            header('Content-Type: text/xml; charset='.$charset);
+        else
+            header('Content-Type: text/xml');
+        header('Date: '.date('r'));
+        echo $xml;
+        exit;
+    }
+
     function hasMethod($method)
     {
         return in_array($method, array_keys($this->callbacks));
-    }
-
-    function getCapabilities($args)
-    {
-        return $this->capabilities;
     }
 
     function setCapabilities()
@@ -595,6 +583,18 @@ EOD;
                 'specVersion' => 1
         ),
         );
+    }
+
+    function getCapabilities($args)
+    {
+        return $this->capabilities;
+    }
+
+    function setCallbacks()
+    {
+        $this->callbacks['system.getCapabilities'] = 'this:getCapabilities';
+        $this->callbacks['system.listMethods'] = 'this:listMethods';
+        $this->callbacks['system.multicall'] = 'this:multiCall';
     }
 
     function listMethods($args)
@@ -642,13 +642,6 @@ class IXR_Request
     var $xml;
 
 	/**
-	 * PHP4 constructor.
-	 */
-	public function IXR_Request( $method, $args ) {
-		self::__construct( $method, $args );
-	}
-
-	/**
 	 * PHP5 constructor.
 	 */
     function __construct($method, $args)
@@ -670,6 +663,13 @@ EOD;
         }
         $this->xml .= '</params></methodCall>';
     }
+
+	/**
+	 * PHP4 constructor.
+	 */
+	public function IXR_Request( $method, $args ) {
+		self::__construct( $method, $args );
+	}
 
     function getLength()
     {
@@ -705,13 +705,6 @@ class IXR_Client
     var $error = false;
 
 	/**
-	 * PHP4 constructor.
-	 */
-	public function IXR_Client( $server, $path = false, $port = 80, $timeout = 15 ) {
-		self::__construct( $server, $path, $port, $timeout );
-	}
-
-	/**
 	 * PHP5 constructor.
 	 */
     function __construct( $server, $path = false, $port = 80, $timeout = 15 )
@@ -739,6 +732,13 @@ class IXR_Client
         $this->useragent = 'The Incutio XML-RPC PHP Library';
         $this->timeout = $timeout;
     }
+
+	/**
+	 * PHP4 constructor.
+	 */
+	public function IXR_Client( $server, $path = false, $port = 80, $timeout = 15 ) {
+		self::__construct( $server, $path, $port, $timeout );
+	}
 
     function query()
     {
@@ -860,13 +860,6 @@ class IXR_Error
     var $message;
 
 	/**
-	 * PHP4 constructor.
-	 */
-	public function IXR_Error( $code, $message ) {
-		self::__construct( $code, $message );
-	}
-
-	/**
 	 * PHP5 constructor.
 	 */
     function __construct( $code, $message )
@@ -874,6 +867,13 @@ class IXR_Error
         $this->code = $code;
         $this->message = htmlspecialchars($message);
     }
+
+	/**
+	 * PHP4 constructor.
+	 */
+	public function IXR_Error( $code, $message ) {
+		self::__construct( $code, $message );
+	}
 
     function getXml()
     {
@@ -916,13 +916,6 @@ class IXR_Date {
     var $timezone;
 
 	/**
-	 * PHP4 constructor.
-	 */
-	public function IXR_Date( $time ) {
-		self::__construct( $time );
-	}
-
-	/**
 	 * PHP5 constructor.
 	 */
     function __construct( $time )
@@ -934,6 +927,13 @@ class IXR_Date {
             $this->parseIso($time);
         }
     }
+
+	/**
+	 * PHP4 constructor.
+	 */
+	public function IXR_Date( $time ) {
+		self::__construct( $time );
+	}
 
     function parseTimestamp($timestamp)
     {
@@ -957,14 +957,14 @@ class IXR_Date {
         $this->timezone = substr($iso, 17);
     }
 
-    function getXml()
-    {
-        return '<dateTime.iso8601>'.$this->getIso().'</dateTime.iso8601>';
-    }
-
     function getIso()
     {
         return $this->year.$this->month.$this->day.'T'.$this->hour.':'.$this->minute.':'.$this->second.$this->timezone;
+    }
+
+    function getXml()
+    {
+        return '<dateTime.iso8601>'.$this->getIso().'</dateTime.iso8601>';
     }
 
     function getTimestamp()
@@ -984,19 +984,19 @@ class IXR_Base64
     var $data;
 
 	/**
-	 * PHP4 constructor.
-	 */
-	public function IXR_Base64( $data ) {
-		self::__construct( $data );
-	}
-
-	/**
 	 * PHP5 constructor.
 	 */
     function __construct( $data )
     {
         $this->data = $data;
     }
+
+	/**
+	 * PHP4 constructor.
+	 */
+	public function IXR_Base64( $data ) {
+		self::__construct( $data );
+	}
 
     function getXml()
     {
@@ -1014,13 +1014,6 @@ class IXR_IntrospectionServer extends IXR_Server
 {
     var $signatures;
     var $help;
-
-	/**
-	 * PHP4 constructor.
-	 */
-	public function IXR_IntrospectionServer() {
-		self::__construct();
-	}
 
 	/**
 	 * PHP5 constructor.
@@ -1058,6 +1051,13 @@ class IXR_IntrospectionServer extends IXR_Server
             'Returns a documentation string for the specified method'
         );
     }
+
+	/**
+	 * PHP4 constructor.
+	 */
+	public function IXR_IntrospectionServer() {
+		self::__construct();
+	}
 
     function addCallback($method, $callback, $args, $help)
     {
@@ -1188,13 +1188,6 @@ class IXR_ClientMulticall extends IXR_Client
     var $calls = array();
 
 	/**
-	 * PHP4 constructor.
-	 */
-	public function IXR_ClientMulticall( $server, $path = false, $port = 80 ) {
-		self::__construct( $server, $path, $port );
-	}
-
-	/**
 	 * PHP5 constructor.
 	 */
     function __construct( $server, $path = false, $port = 80 )
@@ -1202,6 +1195,13 @@ class IXR_ClientMulticall extends IXR_Client
         parent::IXR_Client($server, $path, $port);
         $this->useragent = 'The Incutio XML-RPC PHP Library (multicall client)';
     }
+
+	/**
+	 * PHP4 constructor.
+	 */
+	public function IXR_ClientMulticall( $server, $path = false, $port = 80 ) {
+		self::__construct( $server, $path, $port );
+	}
 
     function addCall()
     {

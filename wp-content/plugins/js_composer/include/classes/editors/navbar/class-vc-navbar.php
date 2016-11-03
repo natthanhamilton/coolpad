@@ -45,18 +45,6 @@ class Vc_Navbar implements Vc_Render {
 	}
 
 	/**
-	 * Render template.
-	 */
-	public function render() {
-		vc_include_template( 'editors/navbar/navbar.tpl.php', array(
-			'css_class' => $this->css_class,
-			'controls' => $this->getControls(),
-			'nav_bar' => $this,
-			'post' => $this->post(),
-		) );
-	}
-
-	/**
 	 * Generate array of controls by iterating property $controls list.
 	 * vc_filter: vc_nav_controls - hook to override list of controls
 	 * @return array - list of arrays witch contains key name and html output for button.
@@ -83,6 +71,18 @@ class Vc_Navbar implements Vc_Render {
 		}
 
 		return get_post();
+	}
+
+	/**
+	 * Render template.
+	 */
+	public function render() {
+		vc_include_template( 'editors/navbar/navbar.tpl.php', array(
+			'css_class' => $this->css_class,
+			'controls' => $this->getControls(),
+			'nav_bar' => $this,
+			'post' => $this->post(),
+		) );
 	}
 
 	/**

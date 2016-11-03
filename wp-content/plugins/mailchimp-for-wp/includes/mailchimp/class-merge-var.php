@@ -8,37 +8,30 @@
  * @access public
  */
 class MC4WP_MailChimp_Merge_Var {
-
 	/**
 	 * @var string
 	 */
 	public $name;
-
 	/**
 	 * @var string
 	 */
 	public $field_type;
-
 	/**
 	 * @var string
 	 */
 	public $tag;
-
 	/**
 	 * @var bool Is this a required field for the list it belongs to?
 	 */
-	public $required = false;
-
+	public $required = FALSE;
 	/**
 	 * @var array
 	 */
-	public $choices = array();
-
+	public $choices = [];
 	/**
 	 * @var bool Is this field public? As in, should it show on forms?
 	 */
-	public $public = true;
-
+	public $public = TRUE;
 	/**
 	 * @var string Default value for the field.
 	 */
@@ -48,15 +41,15 @@ class MC4WP_MailChimp_Merge_Var {
 	 * @param string $name
 	 * @param string $field_type
 	 * @param string $tag
-	 * @param bool $required
-	 * @param array $choices
+	 * @param bool   $required
+	 * @param array  $choices
 	 */
-	public function __construct( $name, $field_type, $tag, $required = false, $choices = array() ) {
-		$this->name = $name;
+	public function __construct($name, $field_type, $tag, $required = FALSE, $choices = []) {
+		$this->name       = $name;
 		$this->field_type = $field_type;
-		$this->tag = strtoupper( $tag );
-		$this->required = $required;
-		$this->choices = $choices;
+		$this->tag        = strtoupper($tag);
+		$this->required   = $required;
+		$this->choices    = $choices;
 	}
 
 	/**
@@ -66,23 +59,19 @@ class MC4WP_MailChimp_Merge_Var {
 	 *
 	 * @return MC4WP_MailChimp_Merge_Var
 	 */
-	public static function from_data( $data ) {
-
-		$instance = new self( $data->name, $data->field_type, $data->tag, $data->req );
-
-		$optional = array(
+	public static function from_data($data) {
+		$instance = new self($data->name, $data->field_type, $data->tag, $data->req);
+		$optional = [
 			'choices',
 			'public',
 			'default'
-		);
-
-		foreach( $optional as $key ) {
-			if( isset( $data->$key ) ) {
+		];
+		foreach ($optional as $key) {
+			if (isset($data->$key)) {
 				$instance->$key = $data->$key;
 			}
 		}
 
 		return $instance;
 	}
-
 }

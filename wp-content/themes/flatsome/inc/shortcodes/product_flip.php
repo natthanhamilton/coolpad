@@ -1,22 +1,19 @@
 <?php
 // [ux_product_flip]
-function ux_product_flip($atts, $content = NULL)
-{
+function ux_product_flip($atts, $content = NULL) {
     global $woocommerce;
     $sliderrandomid = rand();
-    extract(shortcode_atts(array(
-        'products' => '8',
-        'cat'      => '',
-
-    ), $atts));
+    extract(shortcode_atts([
+                               'products' => '8',
+                               'cat'      => '',
+                           ], $atts));
     ob_start();
-
-    $args = array(
+    $args = [
         'post_type'   => 'product',
         'post_status' => 'publish',
         'product_cat' => $cat,
         'products'    => $products
-    );
+    ];
     ?>
     <div class="row">
         <div class="large-12 columns flip-container">
@@ -29,8 +26,7 @@ function ux_product_flip($atts, $content = NULL)
                   "pageDots": true,
                   "contain": true
               }'>
-                <?php if ($content)
-                { ?>
+                <?php if ($content) { ?>
                     <div class="row collapse">
                         <div class="large-12 columns">
                             <?php echo fixShortcode($content); ?>
@@ -75,6 +71,7 @@ function ux_product_flip($atts, $content = NULL)
     <?php
     $content = ob_get_contents();
     ob_end_clean();
+
     return $content;
 }
 

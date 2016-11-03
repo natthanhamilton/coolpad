@@ -1,12 +1,10 @@
 <?php
-
 /**
  * Single Reply
  *
- * @package bbPress
+ * @package    bbPress
  * @subpackage Theme
  */
-
 get_header(); ?>
 
 <?php
@@ -26,7 +24,7 @@ $st_forum_sidebar_position = of_get_option('st_forum_sidebar');
 
                 <?php do_action('bbp_template_notices'); ?>
 
-                <?php if (bbp_user_can_view_forum(array('forum_id' => bbp_get_reply_forum_id()))) : ?>
+                <?php if (bbp_user_can_view_forum(['forum_id' => bbp_get_reply_forum_id()])) : ?>
 
                     <?php while (have_posts()) : the_post(); ?>
 
@@ -52,8 +50,7 @@ $st_forum_sidebar_position = of_get_option('st_forum_sidebar');
             </section>
             <!-- /#content -->
 
-            <?php if ($st_forum_sidebar_position != 'off')
-            {
+            <?php if ($st_forum_sidebar_position != 'off') {
                 get_sidebar('bbpress');
             } ?>
 

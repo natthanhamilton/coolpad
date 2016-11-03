@@ -3,18 +3,12 @@
 Template name: My Account Sidebar
 This templates add My account to the sidebar. 
 */
-
-
 get_header();
-
 woocommerce_get_template('myaccount/header.php');
-
 global $flatsome_opt;
-
 ?>
 
-<?php if (has_excerpt())
-{ ?>
+<?php if (has_excerpt()) { ?>
     <div class="page-header">
         <?php the_excerpt(); ?>
     </div>
@@ -24,17 +18,15 @@ global $flatsome_opt;
     <div class="row">
         <div id="content" class="large-12 columns" role="main">
 
-            <?php if (is_user_logged_in())
-            { ?>
+            <?php if (is_user_logged_in()) { ?>
 
                 <div class="row collapse vertical-tabs">
                     <div class="large-3 columns">
-                        <?php if (is_user_logged_in())
-                        { ?>
+                        <?php if (is_user_logged_in()) { ?>
                             <div class="account-user">
                                 <?php
                                 $current_user = wp_get_current_user();
-                                $user_id = $current_user->ID;
+                                $user_id      = $current_user->ID;
                                 echo get_avatar($user_id, 60);
                                 ?>
 
@@ -48,29 +40,27 @@ global $flatsome_opt;
                         <?php } ?>
                         <div class="account-nav woocommerce-MyAccount-navigation">
                             <ul class="tabs-nav">
-                                <?php if (has_nav_menu('my_account'))
-                                { ?>
+                                <?php if (has_nav_menu('my_account')) { ?>
                                     <?php
-                                    wp_nav_menu(array(
-                                        'theme_location' => 'my_account',
-                                        'menu_class'     => 'tabs-nav',
-                                        'depth'          => 0,
-                                        'container'      => FALSE
-                                    ));
+                                    wp_nav_menu([
+                                                    'theme_location' => 'my_account',
+                                                    'menu_class'     => 'tabs-nav',
+                                                    'depth'          => 0,
+                                                    'container'      => FALSE
+                                                ]);
                                     ?>
-                                <?php }
-                                else if (! function_exists('wc_get_account_menu_items'))
-                                { ?>
-                                    <li>Define your My Account dropdown menu in <b>Appearance > Menus</b></li>
-                                <?php } ?>
+                                <?php } else {
+                                    if (!function_exists('wc_get_account_menu_items')) { ?>
+                                        <li>Define your My Account dropdown menu in <b>Appearance > Menus</b></li>
+                                    <?php }
+                                } ?>
 
-                                <?php if (function_exists('wc_get_account_menu_items') && $flatsome_opt['wc_account_links'])
-                                { ?>
+                                <?php if (function_exists('wc_get_account_menu_items') && $flatsome_opt['wc_account_links']) { ?>
                                     <?php foreach (wc_get_account_menu_items() as $endpoint => $label) : ?>
-                                    <li class="<?php echo wc_get_account_menu_item_classes($endpoint); ?>">
-                                        <a href="<?php echo esc_url(wc_get_account_endpoint_url($endpoint)); ?>"><?php echo esc_html($label); ?></a>
-                                    </li>
-                                <?php endforeach; ?>
+                                        <li class="<?php echo wc_get_account_menu_item_classes($endpoint); ?>">
+                                            <a href="<?php echo esc_url(wc_get_account_endpoint_url($endpoint)); ?>"><?php echo esc_html($label); ?></a>
+                                        </li>
+                                    <?php endforeach; ?>
                                 <?php } ?>
                             </ul>
                         </div><!-- .account-nav -->
@@ -85,22 +75,22 @@ global $flatsome_opt;
 
                                 <?php the_content(); ?>
 
-                            <?php endwhile; // end of the loop. ?>
+                            <?php endwhile; // end of the loop.
+                            ?>
 
 
                         </div><!-- .tabs-inner -->
                     </div><!-- .large-9 -->
                 </div><!-- .row .vertical-tabs -->
 
-            <?php }
-            else
-            { ?>
+            <?php } else { ?>
 
                 <?php while (have_posts()) : the_post(); ?>
 
-                <?php the_content(); ?>
+                    <?php the_content(); ?>
 
-            <?php endwhile; // end of the loop. ?>
+                <?php endwhile; // end of the loop.
+                ?>
 
             <?php } ?>
 

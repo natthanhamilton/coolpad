@@ -106,11 +106,6 @@ class WP_Filesystem_ftpsockets extends WP_Filesystem_Base {
 	}
 
 	/**
-	 * @access public
-	 */
-	public function __destruct() {
-		$this->ftp->quit();
-	}	/**
 	 * Retrieves the file contents.
 	 *
 	 * @since 2.5.0
@@ -126,8 +121,10 @@ class WP_Filesystem_ftpsockets extends WP_Filesystem_Base {
 
 		$temp = wp_tempnam( $file );
 
-		if ( ! $temphandle = fopen($temp, 'w+') )
+		if ( ! $temphandle = fopen( $temp, 'w+' ) ) {
+			unlink( $temp );
 			return false;
+		}
 
 		mbstring_binary_safe_encoding();
 
@@ -538,5 +535,10 @@ class WP_Filesystem_ftpsockets extends WP_Filesystem_Base {
 		return $ret;
 	}
 
-
+	/**
+	 * @access public
+	 */
+	public function __destruct() {
+		$this->ftp->quit();
+	}
 }

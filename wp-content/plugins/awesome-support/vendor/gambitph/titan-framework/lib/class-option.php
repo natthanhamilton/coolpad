@@ -15,9 +15,10 @@ class TitanFrameworkOption {
 	private static $rowIndex = 0;
 		/**
 	 * Default settings across all options
-	 * @var array
+	 *
+*@var array
 	 */
-	private static $defaultSettings = array(
+	private static $defaultSettings = [
 
 		'type' => 'text',
 
@@ -64,7 +65,8 @@ class TitanFrameworkOption {
 
 		/**
 		 * (Optional) CSS rules to be used with this option. Only used when the option is placed in an admin page / panel or a theme customizer section.
-		 * @since 1.0
+		 *
+*@since 1.0
 		 * @var string
 		 * @see http://www.titanframework.net/generate-css-automatically-for-your-options/
 		 */
@@ -72,21 +74,23 @@ class TitanFrameworkOption {
 
 		/**
 		 * (Optional) If true, the option will not be displayed, but will still be accessible using `getOption`. This is helpful for deprecating old settings, while still making your project backward compatible.
-		 * @since 1.8
+		 *
+*@since 1.8
 		 * @var bool
 		 */
-		'hidden' => false,
+		'hidden' => FALSE,
 
 		'example' => '', // An example value for this field, will be displayed in a <code>
-	); // One of the TYPE_* constants above
+	]; // One of the TYPE_* constants above
 	public $settings;
 public $type;
 	public $owner;
 	/**
 	 * Default settings specific for this option. This is overridden by each option class
-	 * @var array
+	 *
+*@var array
 	 */
-	public $defaultSecondarySettings = array();
+	public $defaultSecondarySettings = [];
 
 	function __construct( $settings, $owner ) {
 		$this->owner = $owner;
@@ -113,7 +117,7 @@ public $type;
 			TitanFramework::displayFrameworkError(
 				sprintf( __( 'Option type or extended class %s does not exist.', TF_I18NDOMAIN ), '<code>' . $settings['type'] . '</code>', $settings ),
 			$settings );
-			return null;
+			return NULL;
 		}
 
 		if ( class_exists( $className ) ) {
@@ -126,9 +130,9 @@ public $type;
 		return $obj;
 	}
 
-	public function getValue( $postID = null ) {
+	public function getValue( $postID = NULL ) {
 
-		$value = false;
+		$value = FALSE;
 
 		if ( empty( $this->settings['id'] ) ) {
 			return $value;
@@ -138,25 +142,25 @@ public $type;
 
 			$value = $this->getFramework()->getInternalAdminPageOption( $this->settings['id'], $this->settings['default'] );
 
-		} else if ( $this->type == self::TYPE_META ) {
+		} else {if ( $this->type == self::TYPE_META ) {
 
 			if ( empty( $postID ) ) {
 				$postID = $this->owner->postID;
 			}
 			// If no $postID is given, try and get it if we are in a loop.
-			if ( empty( $postID ) && ! is_admin() && get_post() != null ) {
+			if ( empty( $postID ) && ! is_admin() && get_post() != NULL ) {
 				$postID = get_the_ID();
 			}
 
 			// for meta options, use the default value for new posts/pages
 			if ( metadata_exists( 'post', $postID, $this->getID() ) ) {
-				$value = get_post_meta( $postID, $this->getID(), true );
+				$value = get_post_meta( $postID, $this->getID(), TRUE );
 			} else {
 				$value = $this->settings['default'];
 			}
-		} else if ( $this->type == self::TYPE_CUSTOMIZER ) {
+		} else {if ( $this->type == self::TYPE_CUSTOMIZER ) {
 			$value = get_theme_mod( $this->getID(), $this->settings['default'] );
-		}
+		}}}
 
 		/**
 		 * Allow others to change the value of the option before it gets cleaned
@@ -218,7 +222,7 @@ public $type;
 	/**
 	 *
 	 */
-	public function setValue( $value, $postID = null ) {
+	public function setValue( $value, $postID = NULL ) {
 
 		// Apply cleaning method for the value (for serialized data, slashes, etc).
 		$value = $this->cleanValueForSaving( $value );
@@ -227,27 +231,27 @@ public $type;
 
 			$this->getFramework()->setInternalAdminPageOption( $this->settings['id'], $value );
 
-		} else if ( $this->type == self::TYPE_META ) {
+		} else {if ( $this->type == self::TYPE_META ) {
 
 			if ( empty( $postID ) ) {
 				$postID = $this->owner->postID;
 			}
 			// If no $postID is given, try and get it if we are in a loop.
-			if ( empty( $postID ) && ! is_admin() && get_post() != null ) {
+			if ( empty( $postID ) && ! is_admin() && get_post() != NULL ) {
 				$postID = get_the_ID();
 			}
 
 			update_post_meta( $postID, $this->getID(), $value );
 
-		} else if ( $this->type == self::TYPE_CUSTOMIZER ) {
+		} else {if ( $this->type == self::TYPE_CUSTOMIZER ) {
 
 			set_theme_mod( $this->getID(), $value );
 
-		}
+		}}}
 
 		do_action( 'tf_set_value_' . $this->settings['type'] . '_' . $this->getOptionNamespace(), $value, $postID, $this );
 
-		return true;
+		return TRUE;
 	}
 
 	public function cleanValueForSaving( $value ) {
@@ -272,9 +276,9 @@ public $type;
 
 	/* overridden */
 
-	protected function echoOptionHeader( $showDesc = false ) {
+	protected function echoOptionHeader( $showDesc = FALSE ) {
 		// Allow overriding for custom styling
-		$useCustom = false;
+		$useCustom = FALSE;
 		$useCustom = apply_filters( 'tf_use_custom_option_header', $useCustom );
 		$useCustom = apply_filters( 'tf_use_custom_option_header_' . $this->getOptionNamespace(), $useCustom );
 		if ( $useCustom ) {
@@ -287,7 +291,7 @@ public $type;
 		$name = $this->getName();
 		$evenOdd = self::$rowIndex++ % 2 == 0 ? 'odd' : 'even';
 
-		$style = $this->getHidden() == true ? 'style="display: none"' : '';
+		$style = $this->getHidden() == TRUE ? 'style="display: none"' : '';
 
 		?>
 		<tr valign="top" class="row-<?php echo self::$rowIndex ?> <?php echo $evenOdd ?>" <?php echo $style ?>>
@@ -309,7 +313,7 @@ public $type;
 
 	protected function echoOptionHeaderBare() {
 		// Allow overriding for custom styling
-		$useCustom = false;
+		$useCustom = FALSE;
 		$useCustom = apply_filters( 'tf_use_custom_option_header', $useCustom );
 		$useCustom = apply_filters( 'tf_use_custom_option_header_' . $this->getOptionNamespace(), $useCustom );
 		if ( $useCustom ) {
@@ -322,7 +326,7 @@ public $type;
 		$name = $this->getName();
 		$evenOdd = self::$rowIndex++ % 2 == 0 ? 'odd' : 'even';
 
-		$style = $this->getHidden() == true ? 'style="display: none"' : '';
+		$style = $this->getHidden() == TRUE ? 'style="display: none"' : '';
 
 		?>
 		<tr valign="top" class="row-<?php echo self::$rowIndex ?> <?php echo $evenOdd ?>" <?php echo $style ?>>
@@ -332,9 +336,9 @@ public $type;
 
 	/* overridden */
 
-	protected function echoOptionFooter( $showDesc = true ) {
+	protected function echoOptionFooter( $showDesc = TRUE ) {
 		// Allow overriding for custom styling
-		$useCustom = false;
+		$useCustom = FALSE;
 		$useCustom = apply_filters( 'tf_use_custom_option_footer', $useCustom );
 		$useCustom = apply_filters( 'tf_use_custom_option_footer_' . $this->getOptionNamespace(), $useCustom );
 		if ( $useCustom ) {
@@ -365,9 +369,9 @@ public $type;
 
 	/* overridden */
 
-	protected function echoOptionFooterBare( $showDesc = true ) {
+	protected function echoOptionFooterBare( $showDesc = TRUE ) {
 		// Allow overriding for custom styling
-		$useCustom = false;
+		$useCustom = FALSE;
 		$useCustom = apply_filters( 'tf_use_custom_option_footer', $useCustom );
 		$useCustom = apply_filters( 'tf_use_custom_option_footer_' . $this->getOptionNamespace(), $useCustom );
 		if ( $useCustom ) {

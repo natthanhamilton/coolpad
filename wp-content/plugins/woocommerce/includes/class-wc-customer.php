@@ -1,9 +1,7 @@
 <?php
-
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly
 }
-
 
 /**
  * Customer
@@ -32,42 +30,38 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @property string $calculated_shipping
  */
 class WC_Customer {
-
 	/**
 	 * Stores customer data.
 	 *
 	 * @var array
 	 */
-	protected $_data = array();
-
+	protected $_data = [];
 	/**
 	 * Stores bool when data is changed.
 	 *
 	 * @var bool
 	 */
-	private $_changed = false;
+	private $_changed = FALSE;
 
 	/**
 	 * Constructor for the customer class loads the customer data.
 	 *
 	 */
 	public function __construct() {
-		$this->_data = (array) WC()->session->get( 'customer' );
-
+		$this->_data = (array)WC()->session->get('customer');
 		// No data - set defaults
-		if ( empty( $this->_data ) ) {
+		if (empty($this->_data)) {
 			$this->set_default_data();
 		}
-
 		// When leaving or ending page load, store data
-		add_action( 'shutdown', array( $this, 'save_data' ), 10 );
+		add_action('shutdown', [$this, 'save_data'], 10);
 	}
 
 	/**
 	 * Set default data for a customer.
 	 */
-	public function set_default_data( $get_user_profile_data = true ) {
-		$this->_data = array(
+	public function set_default_data($get_user_profile_data = TRUE) {
+		$this->_data = [
 			'postcode'            => '',
 			'city'                => '',
 			'address_1'           => '',
@@ -80,30 +74,27 @@ class WC_Customer {
 			'shipping_address_2'  => '',
 			'shipping_state'      => '',
 			'shipping_country'    => '',
-			'is_vat_exempt'       => false,
-			'calculated_shipping' => false
-		);
-
-		if ( is_user_logged_in() && $get_user_profile_data ) {
-			foreach ( $this->_data as $key => $value ) {
-				$meta_value          = get_user_meta( get_current_user_id(), ( false === strstr( $key, 'shipping_' ) ? 'billing_' : '' ) . $key, true );
+			'is_vat_exempt'       => FALSE,
+			'calculated_shipping' => FALSE
+		];
+		if (is_user_logged_in() && $get_user_profile_data) {
+			foreach ($this->_data as $key => $value) {
+				$meta_value          = get_user_meta(get_current_user_id(),
+				                                     (FALSE === strstr($key, 'shipping_') ? 'billing_' : '') . $key,
+				                                     TRUE);
 				$this->_data[ $key ] = $meta_value ? $meta_value : $this->_data[ $key ];
 			}
 		}
-
-		if ( empty( $this->_data['country'] ) ) {
+		if (empty($this->_data['country'])) {
 			$this->_data['country'] = $this->get_default_country();
 		}
-
-		if ( empty( $this->_data['shipping_country'] ) ) {
+		if (empty($this->_data['shipping_country'])) {
 			$this->_data['shipping_country'] = $this->_data['country'];
 		}
-
-		if ( empty( $this->_data['state'] ) ) {
+		if (empty($this->_data['state'])) {
 			$this->_data['state'] = $this->get_default_state();
 		}
-
-		if ( empty( $this->_data['shipping_state'] ) ) {
+		if (empty($this->_data['shipping_state'])) {
 			$this->_data['shipping_state'] = $this->_data['state'];
 		}
 	}
@@ -115,6 +106,7 @@ class WC_Customer {
 	 */
 	public function get_default_country() {
 		$default = wc_get_customer_default_location();
+
 		return $default['country'];
 	}
 
@@ -125,6 +117,7 @@ class WC_Customer {
 	 */
 	public function get_default_state() {
 		$default = wc_get_customer_default_location();
+
 		return $default['state'];
 	}
 
@@ -132,8 +125,8 @@ class WC_Customer {
 	 * Save data function.
 	 */
 	public function save_data() {
-		if ( $this->_changed ) {
-			WC()->session->set( 'customer', $this->_data );
+		if ($this->_changed) {
+			WC()->session->set('customer', $this->_data);
 		}
 	}
 
@@ -141,32 +134,36 @@ class WC_Customer {
 	 * __set function.
 	 *
 	 * @param mixed $property
+	 *
 	 * @return bool
 	 */
-	public function __isset( $property ) {
-		if ( 'address' === $property ) {
+	public function __isset($property) {
+		if ('address' === $property) {
 			$property = 'address_1';
 		}
-		if ( 'shipping_address' === $property ) {
+		if ('shipping_address' === $property) {
 			$property = 'shipping_address_1';
 		}
-		return isset( $this->_data[ $property ] );
+
+		return isset($this->_data[ $property ]);
 	}
 
 	/**
 	 * __get function.
 	 *
 	 * @param string $property
+	 *
 	 * @return string
 	 */
-	public function __get( $property ) {
-		if ( 'address' === $property ) {
+	public function __get($property) {
+		if ('address' === $property) {
 			$property = 'address_1';
 		}
-		if ( 'shipping_address' === $property ) {
+		if ('shipping_address' === $property) {
 			$property = 'shipping_address_1';
 		}
-		return isset( $this->_data[ $property ] ) ? $this->_data[ $property ] : '';
+
+		return isset($this->_data[ $property ]) ? $this->_data[ $property ] : '';
 	}
 
 	/**
@@ -175,15 +172,15 @@ class WC_Customer {
 	 * @param mixed $property
 	 * @param mixed $value
 	 */
-	public function __set( $property, $value ) {
-		if ( 'address' === $property ) {
+	public function __set($property, $value) {
+		if ('address' === $property) {
 			$property = 'address_1';
 		}
-		if ( 'shipping_address' === $property ) {
+		if ('shipping_address' === $property) {
 			$property = 'shipping_address_1';
 		}
 		$this->_data[ $property ] = $value;
-		$this->_changed = true;
+		$this->_changed           = TRUE;
 	}
 
 	/**
@@ -192,7 +189,7 @@ class WC_Customer {
 	 * @return bool
 	 */
 	public function has_calculated_shipping() {
-		return ! empty( $this->calculated_shipping );
+		return !empty($this->calculated_shipping);
 	}
 
 	/**
@@ -221,23 +218,18 @@ class WC_Customer {
 	 * @return bool
 	 */
 	public function is_customer_outside_base() {
-		list( $country, $state ) = $this->get_taxable_address();
-
-		if ( $country ) {
-
+		list($country, $state) = $this->get_taxable_address();
+		if ($country) {
 			$default = wc_get_base_location();
-
-			if ( $default['country'] !== $country ) {
-				return true;
+			if ($default['country'] !== $country) {
+				return TRUE;
 			}
-
-			if ( $default['state'] && $default['state'] !== $state ) {
-				return true;
+			if ($default['state'] && $default['state'] !== $state) {
+				return TRUE;
 			}
-
 		}
 
-		return false;
+		return FALSE;
 	}
 
 	/**
@@ -246,26 +238,25 @@ class WC_Customer {
 	 * @return array
 	 */
 	public function get_taxable_address() {
-		$tax_based_on = get_option( 'woocommerce_tax_based_on' );
-
+		$tax_based_on = get_option('woocommerce_tax_based_on');
 		// Check shipping method at this point to see if we need special handling
-		if ( true === apply_filters( 'woocommerce_apply_base_tax_for_local_pickup', true ) && sizeof( array_intersect( wc_get_chosen_shipping_method_ids(), apply_filters( 'woocommerce_local_pickup_methods', array( 'legacy_local_pickup', 'local_pickup' ) ) ) ) > 0 ) {
+		if (TRUE === apply_filters('woocommerce_apply_base_tax_for_local_pickup',
+		                           TRUE) && sizeof(array_intersect(wc_get_chosen_shipping_method_ids(),
+		                                                           apply_filters('woocommerce_local_pickup_methods',
+		                                                                         ['legacy_local_pickup', 'local_pickup']))) > 0
+		) {
 			$tax_based_on = 'base';
 		}
-
-		if ( 'base' === $tax_based_on ) {
-
+		if ('base' === $tax_based_on) {
 			$country  = WC()->countries->get_base_country();
 			$state    = WC()->countries->get_base_state();
 			$postcode = WC()->countries->get_base_postcode();
 			$city     = WC()->countries->get_base_city();
-
-		} elseif ( 'billing' === $tax_based_on ) {
+		} elseif ('billing' === $tax_based_on) {
 			$country  = $this->get_country();
 			$state    = $this->get_state();
 			$postcode = $this->get_postcode();
 			$city     = $this->get_city();
-
 		} else {
 			$country  = $this->get_shipping_country();
 			$state    = $this->get_shipping_state();
@@ -273,7 +264,7 @@ class WC_Customer {
 			$city     = $this->get_shipping_city();
 		}
 
-		return apply_filters( 'woocommerce_customer_taxable_address', array( $country, $state, $postcode, $city ) );
+		return apply_filters('woocommerce_customer_taxable_address', [$country, $state, $postcode, $city]);
 	}
 
 	/**
@@ -300,7 +291,7 @@ class WC_Customer {
 	 * @return string
 	 */
 	public function get_postcode() {
-		return empty( $this->postcode ) ? '' : wc_format_postcode( $this->postcode, $this->get_country() );
+		return empty($this->postcode) ? '' : wc_format_postcode($this->postcode, $this->get_country());
 	}
 
 	/**
@@ -336,7 +327,8 @@ class WC_Customer {
 	 * @return string
 	 */
 	public function get_shipping_postcode() {
-		return empty( $this->shipping_postcode ) ? '' : wc_format_postcode( $this->shipping_postcode, $this->get_shipping_country() );
+		return empty($this->shipping_postcode) ? ''
+			: wc_format_postcode($this->shipping_postcode, $this->get_shipping_country());
 	}
 
 	/**
@@ -353,8 +345,8 @@ class WC_Customer {
 	 *
 	 * @return bool
 	 */
-	public function is_paying_customer( $user_id ) {
-		return '1' === get_user_meta( $user_id, 'paying_customer', true );
+	public function is_paying_customer($user_id) {
+		return '1' === get_user_meta($user_id, 'paying_customer', TRUE);
 	}
 
 	/**
@@ -363,7 +355,7 @@ class WC_Customer {
 	 * @return bool
 	 */
 	public function is_vat_exempt() {
-		return ( ! empty( $this->is_vat_exempt ) ) ? true : false;
+		return (!empty($this->is_vat_exempt)) ? TRUE : FALSE;
 	}
 
 	/**
@@ -408,9 +400,9 @@ class WC_Customer {
 	 * @param string $country
 	 * @param string $state
 	 * @param string $postcode (default: '')
-	 * @param string $city (default: '')
+	 * @param string $city     (default: '')
 	 */
-	public function set_location( $country, $state, $postcode = '', $city = '' ) {
+	public function set_location($country, $state, $postcode = '', $city = '') {
 		$this->country  = $country;
 		$this->state    = $state;
 		$this->postcode = $postcode;
@@ -422,7 +414,7 @@ class WC_Customer {
 	 *
 	 * @param mixed $country
 	 */
-	public function set_country( $country ) {
+	public function set_country($country) {
 		$this->country = $country;
 	}
 
@@ -431,7 +423,7 @@ class WC_Customer {
 	 *
 	 * @param mixed $state
 	 */
-	public function set_state( $state ) {
+	public function set_state($state) {
 		$this->state = $state;
 	}
 
@@ -440,7 +432,7 @@ class WC_Customer {
 	 *
 	 * @param mixed $postcode
 	 */
-	public function set_postcode( $postcode ) {
+	public function set_postcode($postcode) {
 		$this->postcode = $postcode;
 	}
 
@@ -449,7 +441,7 @@ class WC_Customer {
 	 *
 	 * @param mixed $city
 	 */
-	public function set_city( $city ) {
+	public function set_city($city) {
 		$this->city = $city;
 	}
 
@@ -458,7 +450,7 @@ class WC_Customer {
 	 *
 	 * @param mixed $address
 	 */
-	public function set_address( $address ) {
+	public function set_address($address) {
 		$this->address_1 = $address;
 	}
 
@@ -467,7 +459,7 @@ class WC_Customer {
 	 *
 	 * @param mixed $address
 	 */
-	public function set_address_2( $address ) {
+	public function set_address_2($address) {
 		$this->address_2 = $address;
 	}
 
@@ -475,11 +467,11 @@ class WC_Customer {
 	 * Sets session data for the location.
 	 *
 	 * @param string $country
-	 * @param string $state (default: '')
+	 * @param string $state    (default: '')
 	 * @param string $postcode (default: '')
-	 * @param string $city (default: '')
+	 * @param string $city     (default: '')
 	 */
-	public function set_shipping_location( $country, $state = '', $postcode = '', $city = '' ) {
+	public function set_shipping_location($country, $state = '', $postcode = '', $city = '') {
 		$this->shipping_country  = $country;
 		$this->shipping_state    = $state;
 		$this->shipping_postcode = $postcode;
@@ -491,7 +483,7 @@ class WC_Customer {
 	 *
 	 * @param string $country
 	 */
-	public function set_shipping_country( $country ) {
+	public function set_shipping_country($country) {
 		$this->shipping_country = $country;
 	}
 
@@ -500,7 +492,7 @@ class WC_Customer {
 	 *
 	 * @param string $state
 	 */
-	public function set_shipping_state( $state ) {
+	public function set_shipping_state($state) {
 		$this->shipping_state = $state;
 	}
 
@@ -509,7 +501,7 @@ class WC_Customer {
 	 *
 	 * @param string $postcode
 	 */
-	public function set_shipping_postcode( $postcode ) {
+	public function set_shipping_postcode($postcode) {
 		$this->shipping_postcode = $postcode;
 	}
 
@@ -518,7 +510,7 @@ class WC_Customer {
 	 *
 	 * @param string $city
 	 */
-	public function set_shipping_city( $city ) {
+	public function set_shipping_city($city) {
 		$this->shipping_city = $city;
 	}
 
@@ -527,7 +519,7 @@ class WC_Customer {
 	 *
 	 * @param string $address
 	 */
-	public function set_shipping_address( $address ) {
+	public function set_shipping_address($address) {
 		$this->shipping_address_1 = $address;
 	}
 
@@ -536,7 +528,7 @@ class WC_Customer {
 	 *
 	 * @param string $address
 	 */
-	public function set_shipping_address_2( $address ) {
+	public function set_shipping_address_2($address) {
 		$this->shipping_address_2 = $address;
 	}
 
@@ -545,7 +537,7 @@ class WC_Customer {
 	 *
 	 * @param bool $is_vat_exempt
 	 */
-	public function set_is_vat_exempt( $is_vat_exempt ) {
+	public function set_is_vat_exempt($is_vat_exempt) {
 		$this->is_vat_exempt = $is_vat_exempt;
 	}
 
@@ -554,7 +546,7 @@ class WC_Customer {
 	 *
 	 * @param boolean $calculated
 	 */
-	public function calculated_shipping( $calculated = true ) {
+	public function calculated_shipping($calculated = TRUE) {
 		$this->calculated_shipping = $calculated;
 	}
 
@@ -564,12 +556,11 @@ class WC_Customer {
 	 * @return array Array of downloadable products
 	 */
 	public function get_downloadable_products() {
-		$downloads = array();
-
-		if ( is_user_logged_in() ) {
-			$downloads = wc_get_customer_available_downloads( get_current_user_id() );
+		$downloads = [];
+		if (is_user_logged_in()) {
+			$downloads = wc_get_customer_available_downloads(get_current_user_id());
 		}
 
-		return apply_filters( 'woocommerce_customer_get_downloadable_products', $downloads );
+		return apply_filters('woocommerce_customer_get_downloadable_products', $downloads);
 	}
 }

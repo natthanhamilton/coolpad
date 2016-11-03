@@ -1,13 +1,12 @@
 <?php
-
-defined( 'ABSPATH' ) or exit;
+defined('ABSPATH') or exit;
 
 /**
  * Class MC4WP_Custom_Integration
+ *
  * @ignore
  */
 class MC4WP_Custom_Integration extends MC4WP_Integration {
-
 	/**
 	 * @var string
 	 */
@@ -22,53 +21,47 @@ class MC4WP_Custom_Integration extends MC4WP_Integration {
 	protected $checkbox_name = 'mc4wp-subscribe';
 
 	/**
-	* Add hooks
-	*/
+	 * Add hooks
+	 */
 	public function add_hooks() {
-		add_action( 'init', array( $this, 'listen'), 90 );
+		add_action('init', [$this, 'listen'], 90);
 	}
 
 	/**
 	 * @return bool
 	 */
 	public function is_installed() {
-		return true;
+		return TRUE;
 	}
 
 	/**
 	 * @return array
 	 */
 	public function get_ui_elements() {
-		return array( 'lists', 'double_optin', 'update_existing', 'send_welcome', 'replace_interests' );
+		return ['lists', 'double_optin', 'update_existing', 'send_welcome', 'replace_interests'];
 	}
 
 	/**
 	 * Maybe fire a general subscription request
 	 */
 	public function listen() {
-
-		if ( ! $this->checkbox_was_checked() ) {
-			return false;
+		if (!$this->checkbox_was_checked()) {
+			return FALSE;
 		}
-
 		$data = $this->get_data();
-
 		// don't run for CF7 or Events Manager requests
 		// (since they use the same "mc4wp-subscribe" trigger)
-		$disable_triggers = array(
+		$disable_triggers = [
 			'_wpcf7' => '',
 			'action' => 'booking_add'
-		);
-
-		foreach( $disable_triggers as $trigger => $trigger_value ) {
-			if( isset( $data[ $trigger ] ) ) {
-
+		];
+		foreach ($disable_triggers as $trigger => $trigger_value) {
+			if (isset($data[ $trigger ])) {
 				$value = $data[ $trigger ];
-
 				// do nothing if trigger value is optional
 				// or if trigger value matches
-				if( empty( $trigger_value ) || $value === $trigger_value ) {
-					return false;
+				if (empty($trigger_value) || $value === $trigger_value) {
+					return FALSE;
 				}
 			}
 		}
@@ -83,14 +76,13 @@ class MC4WP_Custom_Integration extends MC4WP_Integration {
 	 * @return bool|string
 	 */
 	public function process() {
-		$parser = new MC4WP_Field_Guesser( $this->get_data() );
-		$data = $parser->combine( array( 'guessed', 'namespaced' ) );
-
+		$parser = new MC4WP_Field_Guesser($this->get_data());
+		$data   = $parser->combine(['guessed', 'namespaced']);
 		// do nothing if no email was found
-		if( empty( $data['EMAIL'] ) ) {
-			return false;
+		if (empty($data['EMAIL'])) {
+			return FALSE;
 		}
 
-		return $this->subscribe( $data['EMAIL'], $data );
+		return $this->subscribe($data['EMAIL'], $data);
 	}
 }

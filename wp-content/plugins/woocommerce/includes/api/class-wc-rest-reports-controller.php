@@ -111,7 +111,7 @@ class WC_REST_Reports_Controller extends WC_REST_Controller {
 	 * @return WP_REST_Response $response Response data.
 	 */
 	public function prepare_item_for_response($report, $request) {
-		$data = [
+		$data    = [
 			'slug'        => $report->slug,
 			'description' => $report->description,
 		];

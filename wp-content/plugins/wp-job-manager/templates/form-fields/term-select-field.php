@@ -1,29 +1,19 @@
 <?php
 // Get selected value
-if (isset($field['value']))
-{
+if (isset($field['value'])) {
     $selected = $field['value'];
-}
-elseif (is_int($field['default']))
-{
+} elseif (is_int($field['default'])) {
     $selected = $field['default'];
-}
-elseif (! empty($field['default']) && ($term = get_term_by('slug', $field['default'], $field['taxonomy'])))
-{
+} elseif (!empty($field['default']) && ($term = get_term_by('slug', $field['default'], $field['taxonomy']))) {
     $selected = $term->term_id;
-}
-else
-{
+} else {
     $selected = '';
 }
-
 // Select only supports 1 value
-if (is_array($selected))
-{
+if (is_array($selected)) {
     $selected = current($selected);
 }
-
-wp_dropdown_categories(apply_filters('job_manager_term_select_field_wp_dropdown_categories_args', array(
+wp_dropdown_categories(apply_filters('job_manager_term_select_field_wp_dropdown_categories_args', [
     'taxonomy'         => $field['taxonomy'],
     'hierarchical'     => 1,
     'show_option_all'  => FALSE,
@@ -32,6 +22,6 @@ wp_dropdown_categories(apply_filters('job_manager_term_select_field_wp_dropdown_
     'orderby'          => 'name',
     'selected'         => $selected,
     'hide_empty'       => FALSE
-), $key, $field));
-if (! empty($field['description'])) : ?>
+], $key, $field));
+if (!empty($field['description'])) : ?>
     <small class="description"><?php echo $field['description']; ?></small><?php endif; ?>

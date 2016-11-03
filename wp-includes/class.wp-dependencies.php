@@ -122,6 +122,19 @@ class WP_Dependencies {
 	}
 
 	/**
+	 * Processes a dependency.
+	 *
+	 * @access public
+	 * @since 2.6.0
+	 *
+	 * @param string $handle Name of the item. Should be unique.
+	 * @return bool True on success, false if not set.
+	 */
+	public function do_item( $handle ) {
+		return isset($this->registered[$handle]);
+	}
+
+	/**
 	 * Determines dependencies.
 	 *
 	 * Recursively builds an array of items to process taking
@@ -183,42 +196,6 @@ class WP_Dependencies {
 	}
 
 	/**
-	 * Set item group, unless already in a lower group.
-	 *
-	 * @access public
-	 * @since 2.8.0
-	 *
-	 * @param string $handle    Name of the item. Should be unique.
-	 * @param bool   $recursion Internal flag that calling function was called recursively.
-	 * @param mixed  $group     Group level.
-	 * @return bool Not already in the group or a lower group
-	 */
-	public function set_group( $handle, $recursion, $group ) {
-		$group = (int) $group;
-
-		if ( isset( $this->groups[ $handle ] ) && $this->groups[ $handle ] <= $group ) {
-			return false;
-		}
-
-		$this->groups[ $handle ] = $group;
-
-		return true;
-	}
-
-	/**
-	 * Processes a dependency.
-	 *
-	 * @access public
-	 * @since 2.6.0
-	 *
-	 * @param string $handle Name of the item. Should be unique.
-	 * @return bool True on success, false if not set.
-	 */
-	public function do_item( $handle ) {
-		return isset($this->registered[$handle]);
-	}
-
-	/**
 	 * Register an item.
 	 *
 	 * Registers the item if no item of that name already exists.
@@ -234,7 +211,7 @@ class WP_Dependencies {
 	 *                                 as a query string for cache busting purposes. If version is set to false, a version
 	 *                                 number is automatically added equal to current installed WordPress version.
 	 *                                 If set to null, no version is added.
-	 * @param mixed            $args   Optional. Custom property of the item. NOT the class property $args. Examples: $media, $in_footer.
+	 * @param mixed            $args   Optional. Custom property of the item. NOT the class property $args. Examples: $media, $in_footer. 
 	 * @return bool Whether the item has been registered. True on success, false on failure.
 	 */
 	public function add( $handle, $src, $deps = array(), $ver = false, $args = null ) {
@@ -350,6 +327,31 @@ class WP_Dependencies {
 	}
 
 	/**
+	 * Recursively search the passed dependency tree for $handle
+	 *
+	 * @since 4.0.0
+	 *
+	 * @param array  $queue  An array of queued _WP_Dependency handle objects.
+	 * @param string $handle Name of the item. Should be unique.
+	 * @return bool Whether the handle is found after recursively searching the dependency tree.
+	 */
+	protected function recurse_deps( $queue, $handle ) {
+		foreach ( $queue as $queued ) {
+			if ( ! isset( $this->registered[ $queued ] ) ) {
+				continue;
+			}
+
+			if ( in_array( $handle, $this->registered[ $queued ]->deps ) ) {
+				return true;
+			} elseif ( $this->recurse_deps( $this->registered[ $queued ]->deps, $handle ) ) {
+				return true;
+			}
+		}
+
+		return false;
+	}
+
+	/**
 	 * Query list for an item.
 	 *
 	 * @access public
@@ -387,28 +389,26 @@ class WP_Dependencies {
 	}
 
 	/**
-	 * Recursively search the passed dependency tree for $handle
+	 * Set item group, unless already in a lower group.
 	 *
-	 * @since 4.0.0
+	 * @access public
+	 * @since 2.8.0
 	 *
-	 * @param array  $queue  An array of queued _WP_Dependency handle objects.
-	 * @param string $handle Name of the item. Should be unique.
-	 * @return bool Whether the handle is found after recursively searching the dependency tree.
+	 * @param string $handle    Name of the item. Should be unique.
+	 * @param bool   $recursion Internal flag that calling function was called recursively.
+	 * @param mixed  $group     Group level.
+	 * @return bool Not already in the group or a lower group
 	 */
-	protected function recurse_deps( $queue, $handle ) {
-		foreach ( $queue as $queued ) {
-			if ( ! isset( $this->registered[ $queued ] ) ) {
-				continue;
-			}
+	public function set_group( $handle, $recursion, $group ) {
+		$group = (int) $group;
 
-			if ( in_array( $handle, $this->registered[ $queued ]->deps ) ) {
-				return true;
-			} elseif ( $this->recurse_deps( $this->registered[ $queued ]->deps, $handle ) ) {
-				return true;
-			}
+		if ( isset( $this->groups[ $handle ] ) && $this->groups[ $handle ] <= $group ) {
+			return false;
 		}
 
-		return false;
+		$this->groups[ $handle ] = $group;
+
+		return true;
 	}
 
 } // WP_Dependencies

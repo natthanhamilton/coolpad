@@ -10,39 +10,28 @@
  * happen. When this occurs the version of the template file will be bumped and
  * the readme will list any important changes.
  *
- * @see 	    https://docs.woocommerce.com/document/template-structure/
- * @author 		WooThemes
- * @package 	WooCommerce/Templates
- * @version     2.3.0
- * @see         woocommerce_breadcrumb()
+ * @see           https://docs.woocommerce.com/document/template-structure/
+ * @author        WooThemes
+ * @package       WooCommerce/Templates
+ * @version       2.3.0
+ * @see           woocommerce_breadcrumb()
  */
-
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit;
 }
-
-if ( ! empty( $breadcrumb ) ) {
-
+if (!empty($breadcrumb)) {
 	echo $wrap_before;
-
-	foreach ( $breadcrumb as $key => $crumb ) {
-
+	foreach ($breadcrumb as $key => $crumb) {
 		echo $before;
-
-		if ( ! empty( $crumb[1] ) && sizeof( $breadcrumb ) !== $key + 1 ) {
-			echo '<a href="' . esc_url( $crumb[1] ) . '">' . esc_html( $crumb[0] ) . '</a>';
+		if (!empty($crumb[1]) && sizeof($breadcrumb) !== $key + 1) {
+			echo '<a href="' . esc_url($crumb[1]) . '">' . esc_html($crumb[0]) . '</a>';
 		} else {
-			echo esc_html( $crumb[0] );
+			echo esc_html($crumb[0]);
 		}
-
 		echo $after;
-
-		if ( sizeof( $breadcrumb ) !== $key + 1 ) {
+		if (sizeof($breadcrumb) !== $key + 1) {
 			echo $delimiter;
 		}
-
 	}
-
 	echo $wrap_after;
-
 }

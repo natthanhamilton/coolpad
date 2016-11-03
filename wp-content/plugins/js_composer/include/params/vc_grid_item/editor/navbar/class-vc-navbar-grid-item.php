@@ -26,15 +26,6 @@ class Vc_Navbar_Grid_Item extends Vc_Navbar {
 		. __( 'Templates', 'js_composer' ) . '"></a></li>';
 	}
 
-	/**
-	 * @return string
-	 */
-	public function getControlSaveBackend() {
-		return '<li class="vc_pull-right vc_save-backend">'
-		       . '<a class="vc_btn vc_btn-sm vc_navbar-btn vc_btn-primary vc_control-save" id="wpb-save-post">' . __( 'Update', 'js_composer' ) . '</a>'
-		       . '</li>';
-	}
-
 	public function getControlPreviewTemplate() {
 		return '<li class="vc_pull-right">'
 		       . '<a href="#" class="vc_btn vc_btn-grey vc_btn-sm vc_navbar-btn" data-vc-navbar-control="preview">' . __( 'Preview', 'js_composer' ) . '</a>'
@@ -46,6 +37,15 @@ class Vc_Navbar_Grid_Item extends Vc_Navbar {
 		       . '<a data-vc-navbar-control="edit" class="vc_icon-btn vc_post-settings" title="'
 		       . __( 'Grid element settings', 'js_composer' ) . '">'
 		       . '</a>'
+		       . '</li>';
+	}
+
+	/**
+	 * @return string
+	 */
+	public function getControlSaveBackend() {
+		return '<li class="vc_pull-right vc_save-backend">'
+		       . '<a class="vc_btn vc_btn-sm vc_navbar-btn vc_btn-primary vc_control-save" id="wpb-save-post">' . __( 'Update', 'js_composer' ) . '</a>'
 		       . '</li>';
 	}
 

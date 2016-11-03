@@ -1,39 +1,66 @@
-(function () { var require = undefined; var define = undefined; (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-'use strict';
+(function () {
+    var require = undefined;
+    var define = undefined;
+    (function e(t, n, r) {
+        function s(o, u) {
+            if (!n[o]) {
+                if (!t[o]) {
+                    var a = typeof require == "function" && require;
+                    if (!u && a)return a(o, !0);
+                    if (i)return i(o, !0);
+                    var f = new Error("Cannot find module '" + o + "'");
+                    throw f.code = "MODULE_NOT_FOUND", f
+                }
+                var l = n[o] = {exports: {}};
+                t[o][0].call(l.exports, function (e) {
+                    var n = t[o][1][e];
+                    return s(n ? n : e)
+                }, l, l.exports, e, t, n, r)
+            }
+            return n[o].exports
+        }
 
-var settings = mc4wp.settings;
-var events = mc4wp.events;
-var notice = document.getElementById('notice-additional-fields');
+        var i = typeof require == "function" && require;
+        for (var o = 0; o < r.length; o++)s(r[o]);
+        return s
+    })({
+        1: [function (require, module, exports) {
+            'use strict';
 
-function checkRequiredListFields( ) {
+            var settings = mc4wp.settings;
+            var events = mc4wp.events;
+            var notice = document.getElementById('notice-additional-fields');
 
-	var lists = settings.getSelectedLists();
+            function checkRequiredListFields() {
 
-	var showNotice = false;
-	var allowedFields = [ 'EMAIL', 'FNAME', 'NAME', 'LNAME' ];
+                var lists = settings.getSelectedLists();
 
-	loop:
-	for( var i=0; i<lists.length; i++) {
-		var list = lists[i];
+                var showNotice = false;
+                var allowedFields = ['EMAIL', 'FNAME', 'NAME', 'LNAME'];
 
-		for( var j=0; j<list.merge_vars.length; j++) {
-			var f = list.merge_vars[j];
+                loop:
+                    for (var i = 0; i < lists.length; i++) {
+                        var list = lists[i];
 
-			if(f.required && allowedFields.indexOf(f.tag) < 0) {
-				showNotice = true;
-				break loop;
-			}
-		}
-	}
+                        for (var j = 0; j < list.merge_vars.length; j++) {
+                            var f = list.merge_vars[j];
 
-	notice.style.display = showNotice ? '' : 'none';
-}
+                            if (f.required && allowedFields.indexOf(f.tag) < 0) {
+                                showNotice = true;
+                                break loop;
+                            }
+                        }
+                    }
 
-if( notice ) {
-	checkRequiredListFields();
-	events.on('selectedLists.change', checkRequiredListFields );
-}
+                notice.style.display = showNotice ? '' : 'none';
+            }
+
+            if (notice) {
+                checkRequiredListFields();
+                events.on('selectedLists.change', checkRequiredListFields);
+            }
 
 
-},{}]},{},[1]);
- })();
+        }, {}]
+    }, {}, [1]);
+})();

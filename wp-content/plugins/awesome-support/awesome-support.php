@@ -9,24 +9,16 @@
  * @wordpress-plugin
  * Plugin Name:       Awesome Support
  * Plugin URI:        https://getawesomesupport.com
- * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           3.3.1
- * Author:            ThemeAvenue
- * Author URI:        http://themeavenue.net
- * Text Domain:       awesome-support
- * License:           GPL-2.0+
- * License URI:       http://www.gnu.org/licenses/gpl-2.0.txt
- * Domain Path:       /languages
+ * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction
+ * by providing a unique customer support experience. Version:           3.3.1 Author:            ThemeAvenue Author
+ * URI:        http://themeavenue.net Text Domain:       awesome-support License:           GPL-2.0+ License URI:
+ * http://www.gnu.org/licenses/gpl-2.0.txt Domain Path:       /languages
  */
-
 // If this file is called directly, abort.
-if (! defined('WPINC'))
-{
+if (!defined('WPINC')) {
     die;
 }
-
-if (! class_exists('Awesome_Support')):
-
+if (!class_exists('Awesome_Support')):
     /**
      * Main Awesome Support class
      *
@@ -36,13 +28,11 @@ if (! class_exists('Awesome_Support')):
      * @since 3.2.5
      */
     final class Awesome_Support {
-
         /**
          * @var Awesome_Support Holds the unique instance of Awesome Support
          * @since 3.2.5
          */
         private static $instance;
-
         /**
          * Possible error message.
          *
@@ -50,7 +40,6 @@ if (! class_exists('Awesome_Support')):
          * @var null|WP_Error
          */
         protected $error = NULL;
-
         /**
          * Minimum version of WordPress required ot run the plugin
          *
@@ -58,7 +47,6 @@ if (! class_exists('Awesome_Support')):
          * @var string
          */
         public $wordpress_version_required = '3.8';
-
         /**
          * Required version of PHP.
          *
@@ -69,7 +57,6 @@ if (! class_exists('Awesome_Support')):
          * @var string
          */
         public $php_version_required = '5.2';
-
         /**
          * Holds the WPAS_Custom_Fields instance
          *
@@ -77,15 +64,13 @@ if (! class_exists('Awesome_Support')):
          * @var WPAS_Custom_Fields
          */
         public $custom_fields;
-
         /**
          * List of registered addons
          *
          * @since 3.3
          * @var array
          */
-        public $addons = array();
-
+        public $addons = [];
         /**
          * Admin Notices object
          *
@@ -93,7 +78,6 @@ if (! class_exists('Awesome_Support')):
          * @since 3.1.5
          */
         public $admin_notices;
-
         /**
          * Session object
          *
@@ -101,7 +85,6 @@ if (! class_exists('Awesome_Support')):
          * @var WPAS_Session $session
          */
         public $session;
-
         /**
          * Products synchronization object
          *
@@ -118,17 +101,13 @@ if (! class_exists('Awesome_Support')):
          * @since     3.2.5
          * @return object Awesome_Support Unique instance of Awesome Support
          */
-        public static function instance()
-        {
-
-            if (! isset(self::$instance) && ! (self::$instance instanceof Awesome_Support))
-            {
+        public static function instance() {
+            if (!isset(self::$instance) && !(self::$instance instanceof Awesome_Support)) {
                 self::$instance = new Awesome_Support;
                 self::$instance->init();
             }
 
             return self::$instance;
-
         }
 
         /**
@@ -137,57 +116,47 @@ if (! class_exists('Awesome_Support')):
          * @since 3.3
          * @return void
          */
-        private function init()
-        {
-
+        private function init() {
             // First of all we need the constants
             self::$instance->setup_constants();
-
             // Make sure the WordPress version is recent enough
-            if (! self::$instance->is_version_compatible())
-            {
-                self::$instance->add_error(sprintf(__('Awesome Support requires WordPress version %s or above. Please update WordPress to run this plugin.', 'awesome-support'), self::$instance->wordpress_version_required));
+            if (!self::$instance->is_version_compatible()) {
+                self::$instance->add_error(sprintf(__('Awesome Support requires WordPress version %s or above. Please update WordPress to run this plugin.',
+                                                      'awesome-support'), self::$instance->wordpress_version_required));
             }
-
             // Make sure we have a version of PHP that's not too old
-            if (! self::$instance->is_php_version_enough())
-            {
-                self::$instance->add_error(sprintf(__('Awesome Support requires PHP version %s or above. Read more information about <a %s>how you can update</a>.', 'awesome-support'), self::$instance->wordpress_version_required, 'a href="http://www.wpupdatephp.com/update/" target="_blank"'));
+            if (!self::$instance->is_php_version_enough()) {
+                self::$instance->add_error(sprintf(__('Awesome Support requires PHP version %s or above. Read more information about <a %s>how you can update</a>.',
+                                                      'awesome-support'), self::$instance->wordpress_version_required,
+                                                   'a href="http://www.wpupdatephp.com/update/" target="_blank"'));
             }
-
             // Check that the vendor directory is present
-            if (! self::$instance->dependencies_loaded())
-            {
-                self::$instance->add_error(sprintf(__('Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href="%s" class="thickbox">install the production version</a> of this plugin instead.', 'awesome-support'), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url(add_query_arg(array(
-                    'tab'       => 'plugin-information',
-                    'plugin'    => 'awesome-support',
-                    'TB_iframe' => 'true',
-                    'width'     => '772',
-                    'height'    => '935'
-                ), admin_url('plugin-install.php')))));
+            if (!self::$instance->dependencies_loaded()) {
+                self::$instance->add_error(sprintf(__('Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href="%s" class="thickbox">install the production version</a> of this plugin instead.',
+                                                      'awesome-support'),
+                                                   '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>',
+                                                   esc_url(add_query_arg([
+                                                                             'tab'       => 'plugin-information',
+                                                                             'plugin'    => 'awesome-support',
+                                                                             'TB_iframe' => 'true',
+                                                                             'width'     => '772',
+                                                                             'height'    => '935'
+                                                                         ], admin_url('plugin-install.php')))));
             }
-
             // If we have any error, don't load the plugin
-            if (is_a(self::$instance->error, 'WP_Error'))
-            {
-                add_action('admin_notices', array(self::$instance, 'display_error'), 10, 0);
+            if (is_a(self::$instance->error, 'WP_Error')) {
+                add_action('admin_notices', [self::$instance, 'display_error'], 10, 0);
+
                 return;
             }
-
             self::$instance->includes();
-            self::$instance->session = new WPAS_Session();
+            self::$instance->session       = new WPAS_Session();
             self::$instance->custom_fields = new WPAS_Custom_Fields;
             self::$instance->maybe_setup();
-
-            if (is_admin())
-            {
-
+            if (is_admin()) {
                 self::$instance->includes_admin();
                 self::$instance->admin_notices = new AS_Admin_Notices();
-
-                if (! defined('DOING_AJAX') || ! DOING_AJAX)
-                {
-
+                if (!defined('DOING_AJAX') || !DOING_AJAX) {
                     /**
                      * Redirect to about page.
                      *
@@ -195,26 +164,20 @@ if (! class_exists('Awesome_Support')):
                      * if the install fails the first time this will create a redirect loop
                      * on the about page.
                      */
-                    if (TRUE === boolval(get_option('wpas_redirect_about', FALSE)))
-                    {
-                        add_action('init', array(self::$instance, 'redirect_to_about'));
+                    if (TRUE === boolval(get_option('wpas_redirect_about', FALSE))) {
+                        add_action('init', [self::$instance, 'redirect_to_about']);
                     }
-
-                    add_action('plugins_loaded', array('WPAS_Upgrade', 'get_instance'), 11, 0);
-                    add_action('plugins_loaded', array('WPAS_Tickets_List', 'get_instance'), 11, 0);
-                    add_action('plugins_loaded', array('WPAS_User', 'get_instance'), 11, 0);
-                    add_action('plugins_loaded', array('WPAS_Titan', 'get_instance'), 11, 0);
-                    add_action('plugins_loaded', array('WPAS_Help', 'get_instance'), 11, 0);
-
+                    add_action('plugins_loaded', ['WPAS_Upgrade', 'get_instance'], 11, 0);
+                    add_action('plugins_loaded', ['WPAS_Tickets_List', 'get_instance'], 11, 0);
+                    add_action('plugins_loaded', ['WPAS_User', 'get_instance'], 11, 0);
+                    add_action('plugins_loaded', ['WPAS_Titan', 'get_instance'], 11, 0);
+                    add_action('plugins_loaded', ['WPAS_Help', 'get_instance'], 11, 0);
                 }
-
             }
-
-            add_action('plugins_loaded', array('WPAS_File_Upload', 'get_instance'), 11, 0);
-            add_action('plugins_loaded', array(self::$instance, 'load_plugin_textdomain'));
-            add_action('init', array(self::$instance, 'load_theme_functions'));
-            add_action('plugins_loaded', array(self::$instance, 'remote_notifications'), 15, 0);
-
+            add_action('plugins_loaded', ['WPAS_File_Upload', 'get_instance'], 11, 0);
+            add_action('plugins_loaded', [self::$instance, 'load_plugin_textdomain']);
+            add_action('init', [self::$instance, 'load_theme_functions']);
+            add_action('plugins_loaded', [self::$instance, 'remote_notifications'], 15, 0);
         }
 
         /**
@@ -226,8 +189,7 @@ if (! class_exists('Awesome_Support')):
          * @since 3.2.5
          * @return void
          */
-        public function __clone()
-        {
+        public function __clone() {
             // Cloning instances of the class is forbidden
             _doing_it_wrong(__FUNCTION__, __('Cheatin&#8217; huh?', 'awesome-support'), '3.2.5');
         }
@@ -238,8 +200,7 @@ if (! class_exists('Awesome_Support')):
          * @since 3.2.5
          * @return void
          */
-        public function __wakeup()
-        {
+        public function __wakeup() {
             // Unserializing instances of the class is forbidden
             _doing_it_wrong(__FUNCTION__, __('Cheatin&#8217; huh?', 'awesome-support'), '3.2.5');
         }
@@ -250,8 +211,7 @@ if (! class_exists('Awesome_Support')):
          * @since 3.2.5
          * @return void
          */
-        private function setup_constants()
-        {
+        private function setup_constants() {
             define('WPAS_VERSION', '3.3.1');
             define('WPAS_DB_VERSION', '1');
             define('WPAS_URL', trailingslashit(plugin_dir_url(__FILE__)));
@@ -270,16 +230,12 @@ if (! class_exists('Awesome_Support')):
          * @since  3.0.2
          * @return boolean True of dependencies are here, false otherwise
          */
-        private function dependencies_loaded()
-        {
-
-            if (! is_dir(WPAS_PATH . 'vendor'))
-            {
+        private function dependencies_loaded() {
+            if (!is_dir(WPAS_PATH . 'vendor')) {
                 return FALSE;
             }
 
             return TRUE;
-
         }
 
         /**
@@ -288,21 +244,15 @@ if (! class_exists('Awesome_Support')):
          * @since  3.3
          * @return boolean
          */
-        private function is_version_compatible()
-        {
-
-            if (empty(self::$instance->wordpress_version_required))
-            {
+        private function is_version_compatible() {
+            if (empty(self::$instance->wordpress_version_required)) {
                 return TRUE;
             }
-
-            if (version_compare(get_bloginfo('version'), self::$instance->wordpress_version_required, '<'))
-            {
+            if (version_compare(get_bloginfo('version'), self::$instance->wordpress_version_required, '<')) {
                 return FALSE;
             }
 
             return TRUE;
-
         }
 
         /**
@@ -311,24 +261,18 @@ if (! class_exists('Awesome_Support')):
          * @since  3.3
          * @return boolean
          */
-        private function is_php_version_enough()
-        {
-
+        private function is_php_version_enough() {
             /**
              * No version set, we assume everything is fine.
              */
-            if (empty(self::$instance->php_version_required))
-            {
+            if (empty(self::$instance->php_version_required)) {
                 return TRUE;
             }
-
-            if (version_compare(phpversion(), self::$instance->php_version_required, '<'))
-            {
+            if (version_compare(phpversion(), self::$instance->php_version_required, '<')) {
                 return FALSE;
             }
 
             return TRUE;
-
         }
 
         /**
@@ -343,16 +287,11 @@ if (! class_exists('Awesome_Support')):
          *
          * @return void
          */
-        private function add_error($message)
-        {
-
-            if (! is_object($this->error) || ! is_a($this->error, 'WP_Error'))
-            {
+        private function add_error($message) {
+            if (!is_object($this->error) || !is_a($this->error, 'WP_Error')) {
                 $this->error = new WP_Error();
             }
-
             $this->error->add('addon_error', $message);
-
         }
 
         /**
@@ -364,30 +303,22 @@ if (! class_exists('Awesome_Support')):
          * @since  3.3
          * @return void
          */
-        public function display_error()
-        {
-
-            if (! is_a($this->error, 'WP_Error'))
-            {
+        public function display_error() {
+            if (!is_a($this->error, 'WP_Error')) {
                 return;
             }
-
             $message = self::$instance->error->get_error_messages(); ?>
 
             <div class="error">
                 <p>
                     <?php
-                    if (count($message) > 1)
-                    {
+                    if (count($message) > 1) {
                         echo '<ul>';
-                        foreach ($message as $msg)
-                        {
+                        foreach ($message as $msg) {
                             echo "<li>$msg</li>";
                         }
                         echo '</li>';
-                    }
-                    else
-                    {
+                    } else {
                         echo $message[0];
                     }
                     ?>
@@ -403,10 +334,9 @@ if (! class_exists('Awesome_Support')):
          *
          * @return void
          */
-        public function redirect_to_about()
-        {
+        public function redirect_to_about() {
             delete_option('wpas_redirect_about');
-            wp_redirect(add_query_arg(array('post_type' => 'ticket', 'page' => 'wpas-about'), admin_url('edit.php')));
+            wp_redirect(add_query_arg(['post_type' => 'ticket', 'page' => 'wpas-about'], admin_url('edit.php')));
             exit;
         }
 
@@ -416,9 +346,7 @@ if (! class_exists('Awesome_Support')):
          * @since 3.2.5
          * @return void
          */
-        private function includes()
-        {
-
+        private function includes() {
             require(WPAS_PATH . 'includes/functions-fallback.php');
             require(WPAS_PATH . 'includes/class-logger.php');
             require(WPAS_PATH . 'includes/integrations/ecommerce.php');
@@ -452,12 +380,9 @@ if (! class_exists('Awesome_Support')):
             require(WPAS_PATH . 'includes/class-member-user.php');
             require(WPAS_PATH . 'includes/class-wpas-session.php');
             require(WPAS_PATH . 'includes/install.php');
-
-            if (! defined('DOING_AJAX') || ! DOING_AJAX)
-            {
+            if (!defined('DOING_AJAX') || !DOING_AJAX) {
                 require(WPAS_PATH . 'includes/functions-admin-bar.php');
             }
-
         }
 
         /**
@@ -466,15 +391,10 @@ if (! class_exists('Awesome_Support')):
          * @since 3.2.5
          * @return void
          */
-        private function includes_admin()
-        {
-
+        private function includes_admin() {
             require(WPAS_PATH . 'includes/admin/functions-notices.php');
-
             // We don't need all this during Ajax processing
-            if (! defined('DOING_AJAX') || ! DOING_AJAX)
-            {
-
+            if (!defined('DOING_AJAX') || !DOING_AJAX) {
                 require(WPAS_PATH . 'includes/admin/functions-menu.php');
                 require(WPAS_PATH . 'includes/admin/functions-post.php');
                 require(WPAS_PATH . 'includes/admin/functions-tools.php');
@@ -488,12 +408,9 @@ if (! class_exists('Awesome_Support')):
                 require(WPAS_PATH . 'includes/admin/class-admin-titan.php');
                 require(WPAS_PATH . 'includes/admin/class-admin-help.php');
                 require(WPAS_PATH . 'includes/admin/upgrade/class-upgrade.php');
-
-                if (! class_exists('TAV_Remote_Notification_Client'))
-                {
+                if (!class_exists('TAV_Remote_Notification_Client')) {
                     require(WPAS_PATH . 'includes/class-remote-notification-client.php');
                 }
-
                 /* Load settings files */
                 require(WPAS_PATH . 'includes/admin/settings/functions-settings.php');
                 require(WPAS_PATH . 'includes/admin/settings/settings-general.php');
@@ -501,9 +418,7 @@ if (! class_exists('Awesome_Support')):
                 require(WPAS_PATH . 'includes/admin/settings/settings-notifications.php');
                 require(WPAS_PATH . 'includes/admin/settings/settings-advanced.php');
                 require(WPAS_PATH . 'includes/admin/settings/settings-licenses.php');
-
             }
-
         }
 
         /**
@@ -513,15 +428,11 @@ if (! class_exists('Awesome_Support')):
          * We will automatically create the "special" pages: tickets list and
          * ticket submission.
          */
-        private function maybe_setup()
-        {
-
-            if ('pending' === get_option('wpas_setup', FALSE))
-            {
+        private function maybe_setup() {
+            if ('pending' === get_option('wpas_setup', FALSE)) {
                 add_action('admin_init', 'wpas_create_pages', 11, 0);
                 add_action('admin_init', 'wpas_flush_rewrite_rules', 11, 0);
             }
-
             /**
              * Ask for products support.
              *
@@ -534,15 +445,11 @@ if (! class_exists('Awesome_Support')):
              * the first activation of the plugin and products support was previously enabled
              * (products support is disabled by default). In this case we don't ask again.
              */
-            if ('pending' === get_option('wpas_support_products'))
-            {
-                if (! isset($_GET['page']) || isset($_GET['page']) && 'wpas-about' !== $_GET['page'])
-                {
+            if ('pending' === get_option('wpas_support_products')) {
+                if (!isset($_GET['page']) || isset($_GET['page']) && 'wpas-about' !== $_GET['page']) {
                     add_action('admin_notices', 'wpas_ask_support_products');
                 }
-
             }
-
         }
 
         /**
@@ -559,31 +466,22 @@ if (! class_exists('Awesome_Support')):
          * @since    1.0.0
          * @return boolean True if the language file was loaded, false otherwise
          */
-        public function load_plugin_textdomain()
-        {
-
-            $lang_dir = WPAS_ROOT . 'languages/';
-            $lang_path = WPAS_PATH . 'languages/';
-            $locale = apply_filters('plugin_locale', get_locale(), 'awesome-support');
-            $mofile = "awesome-support-$locale.mo";
+        public function load_plugin_textdomain() {
+            $lang_dir       = WPAS_ROOT . 'languages/';
+            $lang_path      = WPAS_PATH . 'languages/';
+            $locale         = apply_filters('plugin_locale', get_locale(), 'awesome-support');
+            $mofile         = "awesome-support-$locale.mo";
             $glotpress_file = WP_LANG_DIR . '/plugins/awesome-support/' . $mofile;
-
             // Look for the GlotPress language pack first of all
-            if (file_exists($glotpress_file))
-            {
+            if (file_exists($glotpress_file)) {
                 $language = load_textdomain('awesome-support', $glotpress_file);
-            }
-            elseif (file_exists($lang_path . $mofile))
-            {
+            } elseif (file_exists($lang_path . $mofile)) {
                 $language = load_textdomain('awesome-support', $lang_path . $mofile);
-            }
-            else
-            {
+            } else {
                 $language = load_plugin_textdomain('awesome-support', FALSE, $lang_dir);
             }
 
             return $language;
-
         }
 
         /**
@@ -592,8 +490,7 @@ if (! class_exists('Awesome_Support')):
          * @since 3.2.0
          * @return void
          */
-        public function load_theme_functions()
-        {
+        public function load_theme_functions() {
             wpas_get_template('functions');
         }
 
@@ -608,18 +505,13 @@ if (! class_exists('Awesome_Support')):
          * @link   https://wordpress.org/plugins/remote-dashboard-notifications/
          * @return void
          */
-        public function remote_notifications()
-        {
-            if (is_admin() && function_exists('rdnc_add_notification') && (! defined('WPAS_REMOTE_NOTIFICATIONS_OFF') || TRUE !== WPAS_REMOTE_NOTIFICATIONS_OFF))
-            {
+        public function remote_notifications() {
+            if (is_admin() && function_exists('rdnc_add_notification') && (!defined('WPAS_REMOTE_NOTIFICATIONS_OFF') || TRUE !== WPAS_REMOTE_NOTIFICATIONS_OFF)) {
                 rdnc_add_notification(89, '01710ef695c7a7fa', 'https://getawesomesupport.com');
             }
         }
-
     }
-
 endif;
-
 /**
  * The main function responsible for returning the unique Awesome Support instance
  *
@@ -629,8 +521,7 @@ endif;
  * @since 3.1.5
  * @return object Awesome_Support
  */
-function WPAS()
-{
+function WPAS() {
     return Awesome_Support::instance();
 }
 

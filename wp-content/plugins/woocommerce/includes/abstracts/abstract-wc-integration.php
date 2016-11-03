@@ -1,6 +1,5 @@
 <?php
-
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit;
 }
 
@@ -17,21 +16,21 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @author   WooThemes
  */
 abstract class WC_Integration extends WC_Settings_API {
-
 	/**
 	 * yes or no based on whether the integration is enabled.
+	 *
 	 * @var string
 	 */
 	public $enabled = 'yes';
-
 	/**
 	 * Integration title.
+	 *
 	 * @var string
 	 */
 	public $method_title = '';
-
 	/**
 	 * Integration description.
+	 *
 	 * @var string
 	 */
 	public $method_description = '';
@@ -40,26 +39,28 @@ abstract class WC_Integration extends WC_Settings_API {
 	 * Output the gateway settings screen.
 	 */
 	public function admin_options() {
-		echo '<h2>' . esc_html( $this->get_method_title() ) . '</h2>';
-		echo wp_kses_post( wpautop( $this->get_method_description() ) );
-		echo '<div><input type="hidden" name="section" value="' . esc_attr( $this->id ) . '" /></div>';
+		echo '<h2>' . esc_html($this->get_method_title()) . '</h2>';
+		echo wp_kses_post(wpautop($this->get_method_description()));
+		echo '<div><input type="hidden" name="section" value="' . esc_attr($this->id) . '" /></div>';
 		parent::admin_options();
 	}
 
 	/**
 	 * Return the title for admin screens.
+	 *
 	 * @return string
 	 */
 	public function get_method_title() {
-		return apply_filters( 'woocommerce_integration_title', $this->method_title, $this );
+		return apply_filters('woocommerce_integration_title', $this->method_title, $this);
 	}
 
 	/**
 	 * Return the description for admin screens.
+	 *
 	 * @return string
 	 */
 	public function get_method_description() {
-		return apply_filters( 'woocommerce_integration_description', $this->method_description, $this );
+		return apply_filters('woocommerce_integration_description', $this->method_description, $this);
 	}
 
 	/**
@@ -67,6 +68,6 @@ abstract class WC_Integration extends WC_Settings_API {
 	 */
 	public function init_settings() {
 		parent::init_settings();
-		$this->enabled  = ! empty( $this->settings['enabled'] ) && 'yes' === $this->settings['enabled'] ? 'yes' : 'no';
+		$this->enabled = !empty($this->settings['enabled']) && 'yes' === $this->settings['enabled'] ? 'yes' : 'no';
 	}
 }

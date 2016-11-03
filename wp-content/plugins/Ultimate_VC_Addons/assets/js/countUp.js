@@ -1,8 +1,8 @@
 /*
-    countUp.js
-    by @inorganik
-    v 1.1.0
-*/
+ countUp.js
+ by @inorganik
+ v 1.1.0
+ */
 // target = id of html element or var of previously selected html element where counting occurs
 // startVal = the value you want to begin at
 // endVal = the value you want to arrive at
@@ -12,33 +12,35 @@
 function countUp(target, startVal, endVal, decimals, duration, options) {
     // default options
     this.options = options || {
-        useEasing : true, // toggle easing
-        useGrouping : true, // 1,000,000 vs 1000000
-        separator : ',', // character to use as a separator
-        decimal : '.' // character to use as a decimal
-    }
+            useEasing: true, // toggle easing
+            useGrouping: true, // 1,000,000 vs 1000000
+            separator: ',', // character to use as a separator
+            decimal: '.' // character to use as a decimal
+        }
     // make sure requestAnimationFrame and cancelAnimationFrame are defined
     // polyfill for browsers without native support
     // by Opera engineer Erik Möller
     var lastTime = 0;
     var vendors = ['webkit', 'moz', 'ms'];
-    for(var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
-        window.requestAnimationFrame = window[vendors[x]+'RequestAnimationFrame'];
+    for (var x = 0; x < vendors.length && !window.requestAnimationFrame; ++x) {
+        window.requestAnimationFrame = window[vendors[x] + 'RequestAnimationFrame'];
         window.cancelAnimationFrame =
-          window[vendors[x]+'CancelAnimationFrame'] || window[vendors[x]+'CancelRequestAnimationFrame'];
+            window[vendors[x] + 'CancelAnimationFrame'] || window[vendors[x] + 'CancelRequestAnimationFrame'];
     }
     if (!window.requestAnimationFrame) {
-        window.requestAnimationFrame = function(callback, element) {
+        window.requestAnimationFrame = function (callback, element) {
             var currTime = new Date().getTime();
             var timeToCall = Math.max(0, 16 - (currTime - lastTime));
-            var id = window.setTimeout(function() { callback(currTime + timeToCall); },
-              timeToCall);
+            var id = window.setTimeout(function () {
+                    callback(currTime + timeToCall);
+                },
+                timeToCall);
             lastTime = currTime + timeToCall;
             return id;
         }
     }
     if (!window.cancelAnimationFrame) {
-        window.cancelAnimationFrame = function(id) {
+        window.cancelAnimationFrame = function (id) {
             clearTimeout(id);
         }
     }
@@ -56,10 +58,10 @@ function countUp(target, startVal, endVal, decimals, duration, options) {
     this.dec = Math.pow(10, this.decimals);
     this.duration = duration * 1000 || 2000;
     // Robert Penner's easeOutExpo
-    this.easeOutExpo = function(t, b, c, d) {
+    this.easeOutExpo = function (t, b, c, d) {
         return c * (-Math.pow(2, -10 * t / d) + 1) * 1024 / 1023 + b;
     }
-    this.count = function(timestamp) {
+    this.count = function (timestamp) {
         if (self.startTime === null) self.startTime = timestamp;
         self.timestamp = timestamp;
         var progress = timestamp - self.startTime;
@@ -81,7 +83,7 @@ function countUp(target, startVal, endVal, decimals, duration, options) {
             }
         }
         // decimal
-        self.frameVal = Math.round(self.frameVal*self.dec)/self.dec;
+        self.frameVal = Math.round(self.frameVal * self.dec) / self.dec;
         // don't go past endVal since progress can exceed duration in the last frame
         if (self.countDown) {
             self.frameVal = (self.frameVal < self.endVal) ? self.endVal : self.frameVal;
@@ -96,8 +98,8 @@ function countUp(target, startVal, endVal, decimals, duration, options) {
         } else {
             if (self.callback != null) self.callback();
         }
-    }  
-    this.start = function(callback) {
+    }
+    this.start = function (callback) {
         self.callback = callback;
         // make sure values are valid
         if (!isNaN(self.endVal) && !isNaN(self.startVal)) {
@@ -108,21 +110,21 @@ function countUp(target, startVal, endVal, decimals, duration, options) {
         }
         return false;
     }
-    this.stop = function() {
+    this.stop = function () {
         cancelAnimationFrame(self.rAF);
     }
-    this.reset = function() {
+    this.reset = function () {
         self.startTime = null;
         cancelAnimationFrame(self.rAF);
         self.d.innerHTML = self.formatNumber(self.startVal.toFixed(self.decimals));
     }
-    this.resume = function() {
+    this.resume = function () {
         self.startTime = null;
         self.duration = self.remaining;
         self.startVal = self.frameVal;
         requestAnimationFrame(self.count);
     }
-    this.formatNumber = function(nStr) {
+    this.formatNumber = function (nStr) {
         nStr += '';
         var x, x1, x2, rgx;
         x = nStr.split('.');

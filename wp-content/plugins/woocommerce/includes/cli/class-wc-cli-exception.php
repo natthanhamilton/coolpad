@@ -9,13 +9,11 @@
  * @category CLI
  * @author   WooThemes
  */
-
-if ( ! defined( 'ABSPATH' ) ) {
+if (!defined('ABSPATH')) {
 	exit; // Exit if accessed directly
 }
 
 class WC_CLI_Exception extends Exception {
-
 	/** @var string sanitized error code */
 	protected $error_code;
 
@@ -26,12 +24,13 @@ class WC_CLI_Exception extends Exception {
 	 * error message - friendly message, e.g. 'Product ID is invalid'
 	 *
 	 * @since 2.5.0
+	 *
 	 * @param string $error_code
 	 * @param string $error_message user-friendly translated error message
 	 */
-	public function __construct( $error_code, $error_message ) {
+	public function __construct($error_code, $error_message) {
 		$this->error_code = $error_code;
-		parent::__construct( $error_message );
+		parent::__construct($error_message);
 	}
 
 	/**

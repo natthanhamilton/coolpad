@@ -1,0 +1,75 @@
+.vc_ui-template-preview .vc_welcome {
+  display: none;
+}
+.vc_ui-template-preview .wpb_vc_tta_tabs .vc_controls,
+.vc_ui-template-preview .wpb_vc_tta_pageable .vc_controls,
+.vc_ui-template-preview .wpb_vc_tta_tour .vc_controls,
+.vc_ui-template-preview .wpb_vc_tta_accordion .vc_controls,
+.vc_ui-template-preview .wpb_vc_tta_section .vc_tta-panel-body .vc_controls {
+  display: none;
+}
+.vc_ui-template-preview .postbox {
+  border-color: transparent;
+  margin-bottom: 0;
+  box-shadow: none;
+}
+.vc_ui-template-preview .vc_ui-templates-preview-design-helper {
+  position: relative;
+  height: auto;
+}
+.vc_ui-template-preview .vc_ui-templates-preview-design-helper .vc_row_color,
+.vc_ui-template-preview .vc_ui-templates-preview-design-helper .vc_row_image {
+  float: right;
+  margin-top: 3px;
+  width: 16px;
+  height: 16px;
+  display: block;
+  margin-right: 3px;
+  border-radius: 8px;
+  background-size: cover;
+}
+.vc_ui-template-preview .wpb_vc_column_inner > .vc_controls:last-child {
+  display: none;
+}
+.vc_ui-template-preview .vc_gitem-content > .vc_row {
+  display: flex;
+  flex-flow: row nowrap;
+  justify-content: center;
+  align-items: flex-start;
+  align-content: flex-start;
+}
+.vc_ui-template-preview .vc_gitem-content > .vc_row::before,
+.vc_ui-template-preview .vc_gitem-content > .vc_row::after {
+  width: 0;
+}
+.vc_ui-template-preview .vc_gitem-content > .vc_row .vc_gitem-add-c-left:empty,
+.vc_ui-template-preview .vc_gitem-content > .vc_row .vc_gitem-add-c-right:empty,
+.vc_ui-template-preview .vc_gitem-content > .vc_row .vc_gitem-add-c-top:empty,
+.vc_ui-template-preview .vc_gitem-content > .vc_row .vc_gitem-add-c-bottom:empty {
+  display: none;
+}
+.vc_ui-template-preview .vc_gitem-content > .vc_row .vc_gitem-ab-zone,
+.vc_ui-template-preview .vc_gitem-content > .vc_row .vc_gitem-add-c-left,
+.vc_ui-template-preview .vc_gitem-content > .vc_row .vc_gitem-add-c-right,
+.vc_ui-template-preview .vc_gitem-content > .vc_row .vc_gitem-add-c-top,
+.vc_ui-template-preview .vc_gitem-content > .vc_row .vc_gitem-add-c-bottom {
+  width: 50%;
+  max-width: 400px;
+}
+.vc_ui-template-preview .vc_gitem-content > .vc_row .vc_gitem-add-c-top,
+.vc_ui-template-preview .vc_gitem-content > .vc_row .vc_gitem-add-c-bottom {
+  margin-left: 0;
+}
+.vc_general-template-preview {
+  height: auto;
+}
+.vc_general-template-preview #wpbody-content {
+  padding-bottom: 0;
+}
+.vc_general-template-preview #wpbody {
+  padding: 0;
+}
+.vc_general-template-preview #update-nag,
+.vc_general-template-preview .update-nag {
+  display: none;
+}

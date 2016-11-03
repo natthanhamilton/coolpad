@@ -23,11 +23,11 @@ class WC_API_Server {
 	const METHOD_PUT    = 4;
 	const METHOD_PATCH  = 8;
 	const METHOD_DELETE = 16;
-	const READABLE   = 1;  // GET
-	const CREATABLE  = 2;  // POST
-	const EDITABLE   = 14; // POST | PUT | PATCH
-	const DELETABLE  = 16; // DELETE
-	const ALLMETHODS = 31; // GET | POST | PUT | PATCH | DELETE
+	const READABLE      = 1;  // GET
+	const CREATABLE     = 2;  // POST
+	const EDITABLE      = 14; // POST | PUT | PATCH
+	const DELETABLE     = 16; // DELETE
+	const ALLMETHODS    = 31; // GET | POST | PUT | PATCH | DELETE
 	/**
 	 * Does the endpoint accept a raw request body?
 	 */
@@ -301,7 +301,7 @@ class WC_API_Server {
 				$args['_path']    = $this->path;
 				$args['_headers'] = $this->headers;
 				$args['_files']   = $this->files;
-				$args = apply_filters('woocommerce_api_dispatch_args', $args, $callback);
+				$args             = apply_filters('woocommerce_api_dispatch_args', $args, $callback);
 				// Allow plugins to halt the request via this filter
 				if (is_wp_error($args)) {
 					return $args;
@@ -497,7 +497,7 @@ class WC_API_Server {
 		]];
 		// Find the available routes
 		foreach ($this->get_routes() as $route => $callbacks) {
-			$data = [];
+			$data  = [];
 			$route = preg_replace('#\(\?P(<\w+?>).*?\)#', '$1', $route);
 			foreach (self::$method_map as $name => $bitmask) {
 				foreach ($callbacks as $callback) {

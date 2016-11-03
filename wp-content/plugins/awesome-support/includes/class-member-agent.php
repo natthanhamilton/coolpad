@@ -8,8 +8,7 @@
  * @link      http://themeavenue.net
  * @copyright 2014 ThemeAvenue
  */
-
-add_action( 'wpas_ticket_assignee_changed', 'wpas_update_ticket_count_on_transfer', 10, 2 );
+add_action('wpas_ticket_assignee_changed', 'wpas_update_ticket_count_on_transfer', 10, 2);
 /**
  * Update the open agent tickets count when a ticket is transferred from one agent to another
  *
@@ -22,15 +21,12 @@ add_action( 'wpas_ticket_assignee_changed', 'wpas_update_ticket_count_on_transfe
  *
  * @return void
  */
-function wpas_update_ticket_count_on_transfer( $agent_id, $previous_agent_id ) {
-
-	$agent_prev = new WPAS_Member_Agent( $previous_agent_id );
+function wpas_update_ticket_count_on_transfer($agent_id, $previous_agent_id) {
+	$agent_prev = new WPAS_Member_Agent($previous_agent_id);
 	$agent_prev->ticket_minus();
-
 }
 
 class WPAS_Member_Agent extends WPAS_Member {
-
 	/**
 	 * Agent's departments
 	 *
@@ -39,8 +35,8 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 */
 	protected $department;
 
-	public function __construct( $user ) {
-		parent::__construct( $user );
+	public function __construct($user) {
+		parent::__construct($user);
 	}
 
 	/**
@@ -50,17 +46,15 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 * @return bool|WP_Error
 	 */
 	public function is_agent() {
-
-		if ( false === $this->is_member() ) {
-			return new WP_Error( 'user_not_exists', sprintf( __( 'The user with ID %d does not exist', 'awesome-support' ), $this->user_id ) );
+		if (FALSE === $this->is_member()) {
+			return new WP_Error('user_not_exists',
+			                    sprintf(__('The user with ID %d does not exist', 'awesome-support'), $this->user_id));
+		}
+		if (FALSE === $this->has_cap('edit_ticket')) {
+			return new WP_Error('user_not_agent', __('The user exists but is not a support agent', 'awesome-support'));
 		}
 
-		if ( false === $this->has_cap( 'edit_ticket' ) ) {
-			return new WP_Error( 'user_not_agent', __( 'The user exists but is not a support agent', 'awesome-support' ) );
-		}
-
-		return true;
-
+		return TRUE;
 	}
 
 	/**
@@ -70,10 +64,9 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 * @return bool
 	 */
 	public function can_be_assigned() {
+		$can = esc_attr(get_user_meta($this->user_id, 'wpas_can_be_assigned', TRUE));
 
-		$can = esc_attr( get_user_meta( $this->user_id, 'wpas_can_be_assigned', true ) );
-
-		return empty( $can ) ? false : true;
+		return empty($can) ? FALSE : TRUE;
 	}
 
 	/**
@@ -85,15 +78,12 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 *
 	 * @return int Number of open tickets
 	 */
-	public function ticket_plus( $num = 1 ) {
-
-		$count = (int) $this->open_tickets();
+	public function ticket_plus($num = 1) {
+		$count = (int)$this->open_tickets();
 		$count = $count + $num;
-
-		update_user_meta( $this->user_id, 'wpas_open_tickets', $count );
+		update_user_meta($this->user_id, 'wpas_open_tickets', $count);
 
 		return $count;
-
 	}
 
 	/**
@@ -103,17 +93,15 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 * @return int
 	 */
 	public function open_tickets() {
-
 		// Deactivate this for now as it is not reliable enough. Needs more work. Ticket count not correctly updated in certain situations, like when a ticket is transferred from an agent to another
 //		$count = get_user_meta( $this->user_id, 'wpas_open_tickets', true );
-		$count = false;
-		if ( false === $count ) {
-			$count = count( $this->get_open_tickets() );
-			update_user_meta( $this->user_id, 'wpas_open_tickets', $count );
+		$count = FALSE;
+		if (FALSE === $count) {
+			$count = count($this->get_open_tickets());
+			update_user_meta($this->user_id, 'wpas_open_tickets', $count);
 		}
 
 		return $count;
-
 	}
 
 	/**
@@ -123,19 +111,16 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 * @return array
 	 */
 	public function get_open_tickets() {
-
-		$args                 = array();
-		$args['meta_query'][] = array(
-				'key'     => '_wpas_assignee',
-				'value'   => $this->user_id,
-				'compare' => '=',
-				'type'    => 'NUMERIC',
-		);
-
-		$open_tickets = wpas_get_tickets( 'open', $args );
+		$args                 = [];
+		$args['meta_query'][] = [
+			'key'     => '_wpas_assignee',
+			'value'   => $this->user_id,
+			'compare' => '=',
+			'type'    => 'NUMERIC',
+		];
+		$open_tickets = wpas_get_tickets('open', $args);
 
 		return $open_tickets;
-
 	}
 
 	/**
@@ -147,15 +132,12 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 *
 	 * @return int Number of open tickets
 	 */
-	public function ticket_minus( $num = 1 ) {
-
-		$count = (int) $this->open_tickets();
+	public function ticket_minus($num = 1) {
+		$count = (int)$this->open_tickets();
 		$count = $count - $num;
-
-		update_user_meta( $this->user_id, 'wpas_open_tickets', $count );
+		update_user_meta($this->user_id, 'wpas_open_tickets', $count);
 
 		return $count;
-
 	}
 
 	/**
@@ -167,14 +149,12 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 *
 	 * @return bool
 	 */
-	public function belongs_department( $term_id ) {
-
-		if ( false === $this->in_department() ) {
-			return false;
+	public function belongs_department($term_id) {
+		if (FALSE === $this->in_department()) {
+			return FALSE;
 		}
 
-		return in_array( $term_id, $this->in_department() ) ? true : false;
-
+		return in_array($term_id, $this->in_department()) ? TRUE : FALSE;
 	}
 
 	/**
@@ -184,23 +164,16 @@ class WPAS_Member_Agent extends WPAS_Member {
 	 * @return bool|array
 	 */
 	public function in_department() {
-
-		if ( false === wpas_get_option( 'departments', false ) ) {
-			return false;
+		if (FALSE === wpas_get_option('departments', FALSE)) {
+			return FALSE;
 		}
-
-		if ( is_null( $this->department ) ) {
-
-			$this->department = get_the_author_meta( 'wpas_department', $this->user_id );
-
-			if ( empty( $this->department ) ) {
-				$this->department = array();
+		if (is_null($this->department)) {
+			$this->department = get_the_author_meta('wpas_department', $this->user_id);
+			if (empty($this->department)) {
+				$this->department = [];
 			}
-
 		}
 
-		return apply_filters( 'wpas_agent_department', $this->department, $this->user_id );
-
+		return apply_filters('wpas_agent_department', $this->department, $this->user_id);
 	}
-
 }

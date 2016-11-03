@@ -82,6 +82,61 @@ class Text_Diff_Engine_string {
     }
 
     /**
+     * Parses an array containing the unified diff.
+     *
+     * @param array $diff  Array of lines.
+     *
+     * @return array  List of all diff operations.
+     */
+    function parseUnifiedDiff($diff)
+    {
+        $edits = array();
+        $end = count($diff) - 1;
+        for ($i = 0; $i < $end;) {
+            $diff1 = array();
+            switch (substr($diff[$i], 0, 1)) {
+            case ' ':
+                do {
+                    $diff1[] = substr($diff[$i], 1);
+                } while (++$i < $end && substr($diff[$i], 0, 1) == ' ');
+                $edits[] = new Text_Diff_Op_copy($diff1);
+                break;
+
+            case '+':
+                // get all new lines
+                do {
+                    $diff1[] = substr($diff[$i], 1);
+                } while (++$i < $end && substr($diff[$i], 0, 1) == '+');
+                $edits[] = new Text_Diff_Op_add($diff1);
+                break;
+
+            case '-':
+                // get changed or removed lines
+                $diff2 = array();
+                do {
+                    $diff1[] = substr($diff[$i], 1);
+                } while (++$i < $end && substr($diff[$i], 0, 1) == '-');
+
+                while ($i < $end && substr($diff[$i], 0, 1) == '+') {
+                    $diff2[] = substr($diff[$i++], 1);
+                }
+                if (count($diff2) == 0) {
+                    $edits[] = new Text_Diff_Op_delete($diff1);
+                } else {
+                    $edits[] = new Text_Diff_Op_change($diff1, $diff2);
+                }
+                break;
+
+            default:
+                $i++;
+                break;
+            }
+        }
+
+        return $edits;
+    }
+
+    /**
      * Parses an array containing the context diff.
      *
      * @param array $diff  Array of lines.
@@ -184,61 +239,6 @@ class Text_Diff_Engine_string {
                     $edits[] = new Text_Diff_Op_delete($diff2);
                     break;
                 }
-            }
-        }
-
-        return $edits;
-    }
-
-    /**
-     * Parses an array containing the unified diff.
-     *
-     * @param array $diff  Array of lines.
-     *
-     * @return array  List of all diff operations.
-     */
-    function parseUnifiedDiff($diff)
-    {
-        $edits = array();
-        $end = count($diff) - 1;
-        for ($i = 0; $i < $end;) {
-            $diff1 = array();
-            switch (substr($diff[$i], 0, 1)) {
-            case ' ':
-                do {
-                    $diff1[] = substr($diff[$i], 1);
-                } while (++$i < $end && substr($diff[$i], 0, 1) == ' ');
-                $edits[] = new Text_Diff_Op_copy($diff1);
-                break;
-
-            case '+':
-                // get all new lines
-                do {
-                    $diff1[] = substr($diff[$i], 1);
-                } while (++$i < $end && substr($diff[$i], 0, 1) == '+');
-                $edits[] = new Text_Diff_Op_add($diff1);
-                break;
-
-            case '-':
-                // get changed or removed lines
-                $diff2 = array();
-                do {
-                    $diff1[] = substr($diff[$i], 1);
-                } while (++$i < $end && substr($diff[$i], 0, 1) == '-');
-
-                while ($i < $end && substr($diff[$i], 0, 1) == '+') {
-                    $diff2[] = substr($diff[$i++], 1);
-                }
-                if (count($diff2) == 0) {
-                    $edits[] = new Text_Diff_Op_delete($diff1);
-                } else {
-                    $edits[] = new Text_Diff_Op_change($diff1, $diff2);
-                }
-                break;
-
-            default:
-                $i++;
-                break;
             }
         }
 

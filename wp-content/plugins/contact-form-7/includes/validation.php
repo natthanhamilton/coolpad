@@ -1,103 +1,74 @@
 <?php
 
 class WPCF7_Validation implements ArrayAccess {
-    private $invalid_fields = array();
-    private $container = array();
+    private $invalid_fields = [];
+    private $container      = [];
 
-    public function __construct()
-    {
-        $this->container = array(
+    public function __construct() {
+        $this->container = [
             'valid'  => TRUE,
-            'reason' => array(),
-            'idref'  => array());
+            'reason' => [],
+            'idref'  => []];
     }
 
-    public function get_invalid_fields()
-    {
+    public function get_invalid_fields() {
         return $this->invalid_fields;
     }
 
-    public function offsetSet($offset, $value)
-    {
-        if (isset($this->container[$offset]))
-        {
-            $this->container[$offset] = $value;
+    public function offsetSet($offset, $value) {
+        if (isset($this->container[ $offset ])) {
+            $this->container[ $offset ] = $value;
         }
-
-        if ('reason' == $offset && is_array($value))
-        {
-            foreach ($value as $k => $v)
-            {
+        if ('reason' == $offset && is_array($value)) {
+            foreach ($value as $k => $v) {
                 $this->invalidate($k, $v);
             }
         }
     }
 
-    public function invalidate($context, $message)
-    {
-        if ($context instanceof WPCF7_Shortcode)
-        {
+    public function invalidate($context, $message) {
+        if ($context instanceof WPCF7_Shortcode) {
             $tag = $context;
-        }
-        elseif (is_array($context))
-        {
+        } elseif (is_array($context)) {
             $tag = new WPCF7_Shortcode($context);
+        } elseif (is_string($context)) {
+            $tags = wpcf7_scan_shortcode(['name' => trim($context)]);
+            $tag  = $tags ? new WPCF7_Shortcode($tags[0]) : NULL;
         }
-        elseif (is_string($context))
-        {
-            $tags = wpcf7_scan_shortcode(array('name' => trim($context)));
-            $tag = $tags ? new WPCF7_Shortcode($tags[0]) : NULL;
-        }
-
-        $name = ! empty($tag) ? $tag->name : NULL;
-
-        if (empty($name) || ! wpcf7_is_name($name))
-        {
+        $name = !empty($tag) ? $tag->name : NULL;
+        if (empty($name) || !wpcf7_is_name($name)) {
             return;
         }
-
-        if ($this->is_valid($name))
-        {
+        if ($this->is_valid($name)) {
             $id = $tag->get_id_option();
-
-            if (empty($id) || ! wpcf7_is_name($id))
-            {
+            if (empty($id) || !wpcf7_is_name($id)) {
                 $id = NULL;
             }
-
-            $this->invalid_fields[$name] = array(
+            $this->invalid_fields[ $name ] = [
                 'reason' => (string)$message,
-                'idref'  => $id);
+                'idref'  => $id];
         }
     }
 
-    public function is_valid($name = NULL)
-    {
-        if (! empty($name))
-        {
-            return ! isset($this->invalid_fields[$name]);
-        }
-        else
-        {
+    public function is_valid($name = NULL) {
+        if (!empty($name)) {
+            return !isset($this->invalid_fields[ $name ]);
+        } else {
             return empty($this->invalid_fields);
         }
     }
 
-    public function offsetGet($offset)
-    {
-        if (isset($this->container[$offset]))
-        {
-            return $this->container[$offset];
+    public function offsetGet($offset) {
+        if (isset($this->container[ $offset ])) {
+            return $this->container[ $offset ];
         }
     }
 
-    public function offsetExists($offset)
-    {
-        return isset($this->container[$offset]);
+    public function offsetExists($offset) {
+        return isset($this->container[ $offset ]);
     }
 
-    public function offsetUnset($offset)
-    {
+    public function offsetUnset($offset) {
     }
 }
 

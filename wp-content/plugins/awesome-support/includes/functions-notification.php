@@ -6,13 +6,10 @@
  *
  * @since 3.2
  */
-
 /* Exit if accessed directly */
-if (! defined('ABSPATH'))
-{
+if (!defined('ABSPATH')) {
     exit;
 }
-
 /**
  * Set the notifications session
  *
@@ -22,9 +19,8 @@ if (! defined('ABSPATH'))
  *
  * @return void
  */
-function wpas_set_notifications($group = 'notifications')
-{
-    WPAS()->session->add($group, array());
+function wpas_set_notifications($group = 'notifications') {
+    WPAS()->session->add($group, []);
 }
 
 /**
@@ -32,27 +28,21 @@ function wpas_set_notifications($group = 'notifications')
  *
  * @since 3.2
  *
- * @param string $id ID of the notification to add
+ * @param string $id      ID of the notification to add
  * @param string $message notification message
- * @param string $group Notification group to add the message into
+ * @param string $group   Notification group to add the message into
+ *
  * @return void
  */
-function wpas_add_notification($id, $message, $group = 'notifications')
-{
-
+function wpas_add_notification($id, $message, $group = 'notifications') {
     $notifications = WPAS()->session->get($group);
-    $id = sanitize_text_field($id);
-    $message = wp_kses_post($message);
-
-    if (FALSE === $notifications)
-    {
+    $id            = sanitize_text_field($id);
+    $message       = wp_kses_post($message);
+    if (FALSE === $notifications) {
         wpas_set_notifications();
     }
-
-    $notifications[$id] = $message;
-
+    $notifications[ $id ] = $message;
     WPAS()->session->add($group, $notifications);
-
 }
 
 /**
@@ -60,26 +50,21 @@ function wpas_add_notification($id, $message, $group = 'notifications')
  *
  * @since 3.2
  *
- * @param  string $id ID of the notification to get
- * @param mixed $default Default value to return if notification doesn't exist
- * @param string $group Notification group to look into
+ * @param  string $id      ID of the notification to get
+ * @param mixed   $default Default value to return if notification doesn't exist
+ * @param string  $group   Notification group to look into
  *
  * @return mixed
  */
-function wpas_get_notification($id, $default = FALSE, $group = 'notifications')
-{
-
-    $value = $default;
+function wpas_get_notification($id, $default = FALSE, $group = 'notifications') {
+    $value         = $default;
     $notifications = WPAS()->session->get($group);
-    $id = sanitize_text_field($id);
-
-    if (is_array($notifications) && array_key_exists($id, $notifications))
-    {
-        $value = $notifications[$id];
+    $id            = sanitize_text_field($id);
+    if (is_array($notifications) && array_key_exists($id, $notifications)) {
+        $value = $notifications[ $id ];
     }
 
     return $value;
-
 }
 
 /**
@@ -91,8 +76,7 @@ function wpas_get_notification($id, $default = FALSE, $group = 'notifications')
  *
  * @return array
  */
-function wpas_get_notifications($group = 'notifications')
-{
+function wpas_get_notifications($group = 'notifications') {
     return WPAS()->session->get($group);
 }
 
@@ -101,25 +85,18 @@ function wpas_get_notifications($group = 'notifications')
  *
  * @since 3.2
  *
- * @param string $id ID of the notification to remove
+ * @param string $id    ID of the notification to remove
  * @param string $group Notification group to look into
  *
  * @return void
  */
-function wpas_clean_notification($id, $group)
-{
-
-    if (FALSE === wpas_get_notification($id))
-    {
+function wpas_clean_notification($id, $group) {
+    if (FALSE === wpas_get_notification($id)) {
         return;
     }
-
     $notifications = wpas_get_notifications();
-
-    unset($notifications[$id]);
-
+    unset($notifications[ $id ]);
     WPAS()->session->add($group, $notifications);
-
 }
 
 /**
@@ -131,8 +108,7 @@ function wpas_clean_notification($id, $group)
  *
  * @return void
  */
-function wpas_clean_notifications($group = 'notifications')
-{
+function wpas_clean_notifications($group = 'notifications') {
     WPAS()->session->clean($group);
 }
 
@@ -142,46 +118,30 @@ function wpas_clean_notifications($group = 'notifications')
  * @since 3.2
  *
  * @param string $group Group of notifications to lookup
- * @param string $type Type of markup to use
+ * @param string $type  Type of markup to use
  *
  * @return string
  */
-function wpas_get_display_notifications($group = 'notifications', $type = 'success')
-{
-
+function wpas_get_display_notifications($group = 'notifications', $type = 'success') {
     $notifications = wpas_get_notifications($group);
-    $text = '';
-
-    if (! is_array($notifications))
-    {
+    $text          = '';
+    if (!is_array($notifications)) {
         $text = $notifications;
-    }
-    else
-    {
-        if (count($notifications) >= 2)
-        {
-
-            $messages = array();
-
-            foreach ($notifications as $id => $message)
-            {
+    } else {
+        if (count($notifications) >= 2) {
+            $messages = [];
+            foreach ($notifications as $id => $message) {
                 array_push($messages, wpas_readable_notification_message($message));
             }
-
             $text = implode('<br>', $messages);
-
-        }
-        else
-        {
-            foreach ($notifications as $id => $message)
-            {
+        } else {
+            foreach ($notifications as $id => $message) {
                 $text = wpas_readable_notification_message($message);
             }
         }
     }
 
     return wpas_get_notification_markup($type, $text);
-
 }
 
 /**
@@ -193,23 +153,16 @@ function wpas_get_display_notifications($group = 'notifications', $type = 'succe
  *
  * @return string Readable message
  */
-function wpas_readable_notification_message($message)
-{
-
-    if (! is_array($message))
-    {
+function wpas_readable_notification_message($message) {
+    if (!is_array($message)) {
         return $message;
     }
-
-    $messages = array();
-
-    foreach ($message as $key => $value)
-    {
+    $messages = [];
+    foreach ($message as $key => $value) {
         array_push($messages, wpas_readable_notification_message($value));
     }
 
     return implode('<br>', $messages);
-
 }
 
 add_action('wpas_before_template', 'wpas_display_notifications', 10, 3);
@@ -219,8 +172,7 @@ add_action('wpas_before_template', 'wpas_display_notifications', 10, 3);
  * @since 3.2
  * @return string Readable notifications
  */
-function wpas_display_notifications()
-{
+function wpas_display_notifications() {
     echo wpas_get_display_notifications();
     wpas_clean_notifications();
 }

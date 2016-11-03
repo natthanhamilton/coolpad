@@ -6,13 +6,10 @@
  * @link      http://themeavenue.net
  * @copyright 2015 ThemeAvenue
  */
-
 // If this file is called directly, abort.
-if (! defined('WPINC'))
-{
+if (!defined('WPINC')) {
     die;
 }
-
 add_action('wpas_do_admin_close_ticket', 'wpas_admin_action_close_ticket');
 /**
  * Close a ticket
@@ -23,46 +20,32 @@ add_action('wpas_do_admin_close_ticket', 'wpas_admin_action_close_ticket');
  *
  * @return void
  */
-function wpas_admin_action_close_ticket($data)
-{
-
+function wpas_admin_action_close_ticket($data) {
     global $pagenow;
-
-    if (! is_admin())
-    {
+    if (!is_admin()) {
         return;
     }
-
-    if (! isset($data['post']))
-    {
+    if (!isset($data['post'])) {
         return;
     }
-
     $post_id = (int)$data['post'];
-
     wpas_close_ticket($post_id);
-
     // Read-only redirect
-    if ('post.php' === $pagenow)
-    {
-        $redirect_to = add_query_arg(array(
-            'action'       => 'edit',
-            'post'         => $post_id,
-            'wpas-message' => 'closed'
-        ), admin_url('post.php'));
+    if ('post.php' === $pagenow) {
+        $redirect_to = add_query_arg([
+                                         'action'       => 'edit',
+                                         'post'         => $post_id,
+                                         'wpas-message' => 'closed'
+                                     ], admin_url('post.php'));
+    } else {
+        $redirect_to = add_query_arg([
+                                         'post_type'    => 'ticket',
+                                         'post'         => $post_id,
+                                         'wpas-message' => 'closed'
+                                     ], admin_url('edit.php'));
     }
-    else
-    {
-        $redirect_to = add_query_arg(array(
-            'post_type'    => 'ticket',
-            'post'         => $post_id,
-            'wpas-message' => 'closed'
-        ), admin_url('edit.php'));
-    }
-
     wp_redirect(wp_sanitize_redirect($redirect_to));
     exit;
-
 }
 
 add_action('wpas_do_admin_open_ticket', 'wpas_admin_action_open_ticket');
@@ -75,33 +58,23 @@ add_action('wpas_do_admin_open_ticket', 'wpas_admin_action_open_ticket');
  *
  * @return void
  */
-function wpas_admin_action_open_ticket($data)
-{
-
-    if (! is_admin())
-    {
+function wpas_admin_action_open_ticket($data) {
+    if (!is_admin()) {
         return;
     }
-
-    if (! isset($data['post']))
-    {
+    if (!isset($data['post'])) {
         return;
     }
-
     $post_id = (int)$data['post'];
-
     wpas_reopen_ticket($post_id);
-
     // Read-only redirect
-    $redirect_to = add_query_arg(array(
-        'action'       => 'edit',
-        'post'         => $post_id,
-        'wpas-message' => 'opened'
-    ), admin_url('post.php'));
-
+    $redirect_to = add_query_arg([
+                                     'action'       => 'edit',
+                                     'post'         => $post_id,
+                                     'wpas-message' => 'opened'
+                                 ], admin_url('post.php'));
     wp_redirect(wp_sanitize_redirect($redirect_to));
     exit;
-
 }
 
 add_action('wpas_do_admin_trash_reply', 'wpas_admin_action_trash_reply');
@@ -114,32 +87,22 @@ add_action('wpas_do_admin_trash_reply', 'wpas_admin_action_trash_reply');
  *
  * @return void
  */
-function wpas_admin_action_trash_reply($data)
-{
-
-    if (! is_admin())
-    {
+function wpas_admin_action_trash_reply($data) {
+    if (!is_admin()) {
         return;
     }
-
-    if (! isset($data['reply_id']))
-    {
+    if (!isset($data['reply_id'])) {
         return;
     }
-
     $reply_id = (int)$data['reply_id'];
-
     wp_trash_post($reply_id, FALSE);
-
     // Read-only redirect
-    $redirect_to = add_query_arg(array(
-        'action' => 'edit',
-        'post'   => $data['post'],
-    ), admin_url('post.php'));
-
+    $redirect_to = add_query_arg([
+                                     'action' => 'edit',
+                                     'post'   => $data['post'],
+                                 ], admin_url('post.php'));
     wp_redirect(wp_sanitize_redirect("$redirect_to#wpas-post-$reply_id"));
     exit;
-
 }
 
 add_action('wpas_do_admin_products_option', 'wpas_admin_action_set_products_option');
@@ -152,47 +115,32 @@ add_action('wpas_do_admin_products_option', 'wpas_admin_action_set_products_opti
  *
  * @return void
  */
-function wpas_admin_action_set_products_option($data)
-{
-
-    if (! is_admin())
-    {
+function wpas_admin_action_set_products_option($data) {
+    if (!is_admin()) {
         return;
     }
-
-    if (! isset($data['products']))
-    {
+    if (!isset($data['products'])) {
         return;
     }
-
-    $products = $data['products'];
-    $redirect_to = remove_query_arg(array(
-        'wpas-do',
-        'wpas-do-nonce',
-        'products'
-    ), wpas_get_current_admin_url());
-
+    $products    = $data['products'];
+    $redirect_to = remove_query_arg([
+                                        'wpas-do',
+                                        'wpas-do-nonce',
+                                        'products'
+                                    ], wpas_get_current_admin_url());
     // Delete the option that triggers the products setting notice
     delete_option('wpas_support_products');
-
     // If the user needs multiple products we need to update the plugin options
-    if ('multiple' === $products)
-    {
-
-        $options = maybe_unserialize(get_option('wpas_options'));
+    if ('multiple' === $products) {
+        $options                     = maybe_unserialize(get_option('wpas_options'));
         $options['support_products'] = '1';
-
         update_option('wpas_options', serialize($options));
-
         // We redirect to the products taxonomy screen
-        $redirect_to = add_query_arg(array(
-            'taxonomy'  => 'product',
-            'post_type' => 'ticket'
-        ), admin_url('edit-tags.php'));
-
+        $redirect_to = add_query_arg([
+                                         'taxonomy'  => 'product',
+                                         'post_type' => 'ticket'
+                                     ], admin_url('edit-tags.php'));
     }
-
     wp_redirect(wp_sanitize_redirect($redirect_to));
     exit;
-
 }

@@ -8,11 +8,9 @@
  * @link      http://themeavenue.net
  * @copyright 2014 ThemeAvenue
  */
-
 // If this file is called directly, abort.
-if (! defined('WPINC'))
-{
-    die;
+if (!defined('WPINC')) {
+	die;
 }
 
 /**
@@ -24,10 +22,7 @@ if (! defined('WPINC'))
  * @since 3.3
  */
 class WPAS_Member_User extends WPAS_Member {
-
-    public function __construct($user)
-    {
-        parent::__construct($user);
-    }
-
+	public function __construct($user) {
+		parent::__construct($user);
+	}
 }

@@ -10,7 +10,6 @@
  * @copyright 2014 ThemeAvenue
  */
 class WPAS_Help {
-
     /**
      * Instance of this class.
      *
@@ -19,11 +18,10 @@ class WPAS_Help {
      */
     protected static $instance = NULL;
 
-    public function __construct()
-    {
-        add_filter('contextual_help', array($this, 'settings_general_contextual_help'), 10, 3);
-        add_filter('contextual_help', array($this, 'settings_notifications_contextual_help'), 10, 3);
-        add_filter('contextual_help', array($this, 'settings_advanced_contextual_help'), 10, 3);
+    public function __construct() {
+        add_filter('contextual_help', [$this, 'settings_general_contextual_help'], 10, 3);
+        add_filter('contextual_help', [$this, 'settings_notifications_contextual_help'], 10, 3);
+        add_filter('contextual_help', [$this, 'settings_advanced_contextual_help'], 10, 3);
     }
 
     /**
@@ -32,12 +30,9 @@ class WPAS_Help {
      * @since     3.0.0
      * @return    object    A single instance of this class.
      */
-    public static function get_instance()
-    {
-
+    public static function get_instance() {
         // If the single instance hasn't been set, set it now.
-        if (NULL == self::$instance)
-        {
+        if (NULL == self::$instance) {
             self::$instance = new self;
         }
 
@@ -50,33 +45,29 @@ class WPAS_Help {
      * @since  1.0.0
      * @return void
      */
-    public function settings_general_contextual_help()
-    {
-
-        if (! isset($_GET['post_type']) || 'ticket' !== $_GET['post_type'] || isset($_GET['tab']) && 'general' !== $_GET['tab'])
-        {
+    public function settings_general_contextual_help() {
+        if (!isset($_GET['post_type']) || 'ticket' !== $_GET['post_type'] || isset($_GET['tab']) && 'general' !== $_GET['tab']) {
             return;
         }
-
         $screen = get_current_screen();
-
-        $screen->add_help_tab(array(
-            'id'      => 'multiple_products',
-            'title'   => __('Multiple Products', 'awesome-support'),
-            'content' => __('<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>', 'awesome-support')
-        ));
-
-        $screen->add_help_tab(array(
-            'id'      => 'default_assignee',
-            'title'   => __('Default Assignee', 'awesome-support'),
-            'content' => __('<h2>Default Assignee</h2><p>Even though the plugin will try to assign new tickets to the less busy agent, we need to know who to assign to in case we can\'t find a perfect fit for the new tickets.</p>', 'awesome-support')
-        ));
-
-        $screen->add_help_tab(array(
-            'id'      => 'allow_registrations',
-            'title'   => __('Allow Registrations', 'awesome-support'),
-            'content' => __('<h2>Allow Registrations</h2><p>You WordPress site can be set to accept new registrations or not. By default, it doesn\'t. However, with closed registrations, this plugin becomes useless. This is why we added a separate setting to allow registrations. Users registering through Awesome Support will be given a specific role (<code>Support User</code>) with very limited privileges.</p><p>If you allow registrations through the plugin but not through WordPress, users will only be able to register through our registration form.</p>', 'awesome-support')
-        ));
+        $screen->add_help_tab([
+                                  'id'      => 'multiple_products',
+                                  'title'   => __('Multiple Products', 'awesome-support'),
+                                  'content' => __('<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>',
+                                                  'awesome-support')
+                              ]);
+        $screen->add_help_tab([
+                                  'id'      => 'default_assignee',
+                                  'title'   => __('Default Assignee', 'awesome-support'),
+                                  'content' => __('<h2>Default Assignee</h2><p>Even though the plugin will try to assign new tickets to the less busy agent, we need to know who to assign to in case we can\'t find a perfect fit for the new tickets.</p>',
+                                                  'awesome-support')
+                              ]);
+        $screen->add_help_tab([
+                                  'id'      => 'allow_registrations',
+                                  'title'   => __('Allow Registrations', 'awesome-support'),
+                                  'content' => __('<h2>Allow Registrations</h2><p>You WordPress site can be set to accept new registrations or not. By default, it doesn\'t. However, with closed registrations, this plugin becomes useless. This is why we added a separate setting to allow registrations. Users registering through Awesome Support will be given a specific role (<code>Support User</code>) with very limited privileges.</p><p>If you allow registrations through the plugin but not through WordPress, users will only be able to register through our registration form.</p>',
+                                                  'awesome-support')
+                              ]);
     }
 
     /**
@@ -85,41 +76,34 @@ class WPAS_Help {
      * @since  1.0.0
      * @return void
      */
-    public function settings_notifications_contextual_help()
-    {
-
-        if (! isset($_GET['post_type']) || 'ticket' !== $_GET['post_type'] || ! isset($_GET['tab']) || 'email' !== $_GET['tab'])
-        {
+    public function settings_notifications_contextual_help() {
+        if (!isset($_GET['post_type']) || 'ticket' !== $_GET['post_type'] || !isset($_GET['tab']) || 'email' !== $_GET['tab']) {
             return;
         }
-
         /**
          * Gather the list of e-mail template tags and their description
          */
         $list_tags = WPAS_Email_Notification::get_tags();
-
-        $tags = '<table class="widefat"><thead><th class="row-title">' . __('Tag', 'awesome-support') . '</th><th>' . __('Description', 'awesome-support') . '</th></thead><tbody>';
-
-        foreach ($list_tags as $the_tag)
-        {
+        $tags = '<table class="widefat"><thead><th class="row-title">' . __('Tag',
+                                                                            'awesome-support') . '</th><th>' . __('Description',
+                                                                                                                  'awesome-support') . '</th></thead><tbody>';
+        foreach ($list_tags as $the_tag) {
             $tags .= '<tr><td class="row-title"><strong>' . $the_tag['tag'] . '</strong></td><td>' . $the_tag['desc'] . '</td></tr>';
         }
-
         $tags .= '</tbody></table>';
-
         $screen = get_current_screen();
-
-        $screen->add_help_tab(array(
-            'id'      => 'general',
-            'title'   => __('General Settings', 'awesome-support'),
-            'content' => __('<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>', 'awesome-support')
-        ));
-
-        $screen->add_help_tab(array(
-            'id'      => 'template-tags',
-            'title'   => __('Email Template Tags', 'awesome-support'),
-            'content' => sprintf(__('<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add ticket-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s', 'awesome-support'), $tags)
-        ));
+        $screen->add_help_tab([
+                                  'id'      => 'general',
+                                  'title'   => __('General Settings', 'awesome-support'),
+                                  'content' => __('<h2>Multiple Products</h2><p>The plugin can handle single product and multiple products support. If you do need to provide support for multiple products it is very important that you do NOT use a custom field or taxonomy and use the &laquo;Multiple Products&raquo; option instead.</p><p>The reason why it is so important is that many addons for Awesome Support are using the built-in products management system to work properly.</p>',
+                                                  'awesome-support')
+                              ]);
+        $screen->add_help_tab([
+                                  'id'      => 'template-tags',
+                                  'title'   => __('Email Template Tags', 'awesome-support'),
+                                  'content' => sprintf(__('<p>When setting up your e-mails templates, you can use a certain number of template tags allowing you to dynamically add ticket-related information at the moment the e-mail is sent. Here is the list of available tags:</p>%s',
+                                                          'awesome-support'), $tags)
+                              ]);
     }
 
     /**
@@ -128,22 +112,16 @@ class WPAS_Help {
      * @since  1.0.0
      * @return void
      */
-    public function settings_advanced_contextual_help()
-    {
-
-        if (! isset($_GET['post_type']) || 'ticket' !== $_GET['post_type'] || ! isset($_GET['tab']) || 'advanced' !== $_GET['tab'])
-        {
+    public function settings_advanced_contextual_help() {
+        if (!isset($_GET['post_type']) || 'ticket' !== $_GET['post_type'] || !isset($_GET['tab']) || 'advanced' !== $_GET['tab']) {
             return;
         }
-
         $screen = get_current_screen();
-
-        $screen->add_help_tab(array(
-            'id'      => 'custom_login',
-            'title'   => __('Custom Login Page', 'awesome-support'),
-            'content' => __('<h2>Multiple Products</h2><p>This can be a dangerous setting. It is here to allow advanced users to create their own login / registration page. If you don\'t like our login form, you can replace it by your own.</p><p>To do so, create a new page containing the form (either with the use of a shortcode or a page template), then set this newly created page as the "Custom Login / Registration Page" in the setting below.</p><p><strong>Beware</strong>, setting a wrong page as the custom login page can either show a blank page or create an infinite loop.</p>', 'awesome-support')
-        ));
-
+        $screen->add_help_tab([
+                                  'id'      => 'custom_login',
+                                  'title'   => __('Custom Login Page', 'awesome-support'),
+                                  'content' => __('<h2>Multiple Products</h2><p>This can be a dangerous setting. It is here to allow advanced users to create their own login / registration page. If you don\'t like our login form, you can replace it by your own.</p><p>To do so, create a new page containing the form (either with the use of a shortcode or a page template), then set this newly created page as the "Custom Login / Registration Page" in the setting below.</p><p><strong>Beware</strong>, setting a wrong page as the custom login page can either show a blank page or create an infinite loop.</p>',
+                                                  'awesome-support')
+                              ]);
     }
-
 }

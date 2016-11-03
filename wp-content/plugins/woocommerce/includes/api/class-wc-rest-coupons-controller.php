@@ -115,7 +115,7 @@ class WC_REST_Coupons_Controller extends WC_REST_Posts_Controller {
 	 * @return array
 	 */
 	public function get_collection_params() {
-		$params = parent::get_collection_params();
+		$params         = parent::get_collection_params();
 		$params['code'] = [
 			'description'       => __('Limit result set to resources with a specific code.', 'woocommerce'),
 			'type'              => 'string',
@@ -138,10 +138,10 @@ class WC_REST_Coupons_Controller extends WC_REST_Posts_Controller {
 		global $wpdb;
 		// Get the coupon code.
 		$code
-			= $wpdb->get_var($wpdb->prepare("SELECT post_title FROM $wpdb->posts WHERE id = %s AND post_type = 'shop_coupon' AND post_status = 'publish'",
-			                                $post->ID));
-		$coupon = new WC_Coupon($code);
-		$data = [
+			     = $wpdb->get_var($wpdb->prepare("SELECT post_title FROM $wpdb->posts WHERE id = %s AND post_type = 'shop_coupon' AND post_status = 'publish'",
+			                                     $post->ID));
+		$coupon  = new WC_Coupon($code);
+		$data    = [
 			'id'                          => $coupon->id,
 			'code'                        => $coupon->code,
 			'date_created'                => wc_rest_prepare_date_response($post->post_date_gmt),
@@ -411,7 +411,7 @@ class WC_REST_Coupons_Controller extends WC_REST_Posts_Controller {
 	 * @return bool|WP_Error
 	 */
 	protected function add_post_meta_fields($post, $request) {
-		$data = array_filter($request->get_params());
+		$data     = array_filter($request->get_params());
 		$defaults = [
 			'discount_type'               => 'fixed_cart',
 			'amount'                      => 0,
@@ -432,7 +432,7 @@ class WC_REST_Coupons_Controller extends WC_REST_Posts_Controller {
 			'email_restrictions'          => [],
 			'description'                 => ''
 		];
-		$data = wp_parse_args($data, $defaults);
+		$data     = wp_parse_args($data, $defaults);
 		// Set coupon meta.
 		update_post_meta($post->ID, 'discount_type', $data['discount_type']);
 		update_post_meta($post->ID, 'coupon_amount', wc_format_decimal($data['amount']));
@@ -554,8 +554,8 @@ class WC_REST_Coupons_Controller extends WC_REST_Posts_Controller {
 		global $wpdb;
 		if (!empty($request['code'])) {
 			$id
-				= $wpdb->get_var($wpdb->prepare("SELECT id FROM $wpdb->posts WHERE post_title = %s AND post_type = 'shop_coupon' AND post_status = 'publish'",
-				                                $request['code']));
+				              = $wpdb->get_var($wpdb->prepare("SELECT id FROM $wpdb->posts WHERE post_title = %s AND post_type = 'shop_coupon' AND post_status = 'publish'",
+				                                              $request['code']));
 			$args['post__in'] = [$id];
 		}
 
