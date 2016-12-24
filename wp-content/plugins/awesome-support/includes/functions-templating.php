@@ -139,7 +139,7 @@ function wpas_get_theme() {
  *
  * @return boolean True if a template is loaded, false otherwise
  */
-function wpas_get_template( $name, $args = [] ) {
+function wpas_get_template( $name, $args = array() ) {
 
 	if ( $args && is_array( $args ) ) {
 		extract( $args );
@@ -148,7 +148,7 @@ function wpas_get_template( $name, $args = [] ) {
 	$template = wpas_locate_template( $name );
 
 	if ( ! file_exists( $template ) ) {
-		return FALSE;
+		return false;
 	}
 
 	$template = apply_filters( 'wpas_get_template', $template, $name, $args );
@@ -159,7 +159,7 @@ function wpas_get_template( $name, $args = [] ) {
 
 	do_action( 'wpas_after_template', $name, $template, $args );
 
-	return TRUE;
+	return true;
 
 }
 
@@ -183,9 +183,9 @@ function wpas_locate_template( $name ) {
 	$filename = "$name.php";
 
 	$template = locate_template(
-		[
+		array(
 			WPAS_TEMPLATE_PATH . $filename
-		]
+		)
 	);
 
 	if ( ! $template ) {
@@ -207,10 +207,10 @@ function wpas_get_theme_stylesheet() {
 	$theme = wpas_get_theme();
 
 	$template = locate_template(
-		[
+		array(
 			WPAS_TEMPLATE_PATH . 'style.css',
 			WPAS_TEMPLATE_PATH . 'css/style.css',
-		]
+		)
 	);
 
 	if ( ! $template ) {
@@ -250,50 +250,48 @@ function wpas_get_theme_stylesheet_uri() {
  * Get the ticket header.
  *
  * @since  3.0.0
- *
-*@param  array  $args Additional parameters
- *
-*@return void
+ * @param  array  $args Additional parameters
+ * @return void
  */
-function wpas_ticket_header( $args = [] ) {
+function wpas_ticket_header( $args = array() ) {
 
 	global $post;
 
-	$default = [
+	$default = array(
 		'container'       => '',
 		'container_id'    => '',
 		'container_class' => '',
 		'table_id'        => "header-ticket-$post->ID",
 		'table_class'     => 'wpas-table wpas-ticket-details-header',
-	];
+	);
 
 	$args = wp_parse_args( $args, $default );
 
 	$custom_fields = WPAS()->custom_fields->get_custom_fields();
 
-	$columns = [
+	$columns = array(
 		'id'     => __( 'ID', 'awesome-support' ),
 		'status' => __( 'Status', 'awesome-support' ),
 		'date'   => __( 'Date', 'awesome-support' )
-	];
+	);
 
-	$columns_callbacks = [
+	$columns_callbacks = array(
 		'id'     => 'id',
 		'status' => 'wpas_cf_display_status',
 		'date'   => 'date',
-	];
+	);
 
 	foreach ( $custom_fields as $field ) {
 
 		/* Don't display core fields */
-		if ( TRUE === $field['args']['core'] ) {
+		if ( true === $field['args']['core'] ) {
 			continue;
 		}
 
 		/* Don't display fields that aren't specifically designed to */
-		if ( TRUE === $field['args']['show_column'] ) {
+		if ( true === $field['args']['show_column'] ) {
 			$columns[$field['name']]           = !empty( $field['args']['title'] ) ? sanitize_text_field( $field['args']['title'] ) : wpas_get_title_from_id( $field['name'] );
-			$columns_callbacks[$field['name']] = ( 'taxonomy' === $field['args']['field_type'] && TRUE === $field['args']['taxo_std'] ) ? 'taxonomy' : $field['args']['column_callback'];
+			$columns_callbacks[$field['name']] = ( 'taxonomy' === $field['args']['field_type'] && true === $field['args']['taxo_std'] ) ? 'taxonomy' : $field['args']['column_callback'];
 		}
 
 	}
@@ -316,7 +314,7 @@ function wpas_ticket_header( $args = [] ) {
 				<tr>
 					<?php foreach ( $columns_callbacks as $column => $callback ): ?>
 						<td>
-							<?php wpas_get_tickets_list_column_content( $column, [ 'callback' => $callback ] ); ?>
+							<?php wpas_get_tickets_list_column_content( $column, array( 'callback' => $callback ) ); ?>
 						</td>
 					<?php endforeach; ?>
 				</tr>
@@ -331,19 +329,17 @@ function wpas_ticket_header( $args = [] ) {
  * Display the reply form.
  *
  * @since  3.0.0
- *
-*@param  array  $args Additional arguments
- *
-*@return void
+ * @param  array  $args Additional arguments
+ * @return void
  */
-function wpas_get_reply_form( $args = [] ) {
+function wpas_get_reply_form( $args = array() ) {
 
 	global $wp_query;
 
 	$post_id = $wp_query->post->ID;
 	$status  = wpas_get_ticket_status( $post_id );
 
-	$defaults = [
+	$defaults = array(
 		'form_id'         => 'wpas-new-reply',
 		'form_class'      => 'wpas-form',
 		'container'       => 'div',
@@ -352,7 +348,7 @@ function wpas_get_reply_form( $args = [] ) {
 		'textarea_before' => '',
 		'textarea_after'  => '',
 		'textarea_class'  => 'wpas-form-control wpas-wysiwyg',
-	];
+	);
 
 	$args = wp_parse_args( $args, $defaults );
 
@@ -382,7 +378,7 @@ function wpas_get_reply_form( $args = [] ) {
 	 * Check if the ticket is currently open and if the current user
 	 * is allowed to post a reply.
 	 */
-	elseif( 'open' === $status && TRUE === wpas_can_reply_ticket() ): ?>
+	elseif( 'open' === $status && true === wpas_can_reply_ticket() ): ?>
 
 		<form id="<?php echo $args['form_id']; ?>" class="<?php echo $form_class; ?>" method="post" action="<?php echo get_permalink( $post_id ); ?>" enctype="multipart/form-data">
 
@@ -400,20 +396,20 @@ function wpas_get_reply_form( $args = [] ) {
 					/**
 					 * Load the visual editor if enabled
 					 */
-					if( TRUE === boolval( wpas_get_option( 'frontend_wysiwyg_editor' ) ) ) {
+					if( true === boolval( wpas_get_option( 'frontend_wysiwyg_editor' ) ) ) {
 
-						$editor_defaults = apply_filters( 'wpas_ticket_editor_args', [
-							'media_buttons' => FALSE,
+						$editor_defaults = apply_filters( 'wpas_ticket_editor_args', array(
+							'media_buttons' => false,
 							'textarea_name' => 'wpas_user_reply',
 							'textarea_rows' => 10,
 							'tabindex'      => 2,
 							'editor_class'  => $args['textarea_class'],
-							'quicktags'     => FALSE,
-							'tinymce'       => [
+							'quicktags'     => false,
+							'tinymce'       => array(
 								'toolbar1' => 'bold,italic,underline,strikethrough,hr,|,bullist,numlist,|,link,unlink',
 								'toolbar2' => ''
-							],
-						] );
+							),
+						) );
 
 						wp_editor( '', 'wpas-reply-wysiwyg', apply_filters( 'wpas_reply_wysiwyg_args', $editor_defaults ) );
 
@@ -430,9 +426,9 @@ function wpas_get_reply_form( $args = [] ) {
 						 * @since  3.0.0
 						 * @var boolean
 						 */
-						$can_submit_empty = apply_filters( 'wpas_can_reply_be_empty', FALSE );
+						$can_submit_empty = apply_filters( 'wpas_can_reply_be_empty', false );
 						?>
-						<textarea class="form-control" rows="10" name="wpas_user_reply" rows="6" id="wpas-reply-textarea" placeholder="<?php _e( 'Type your reply here.', 'awesome-support' ); ?>" <?php if ( FALSE === $can_submit_empty ): ?>required="required"<?php endif; ?>></textarea>
+						<textarea class="form-control" rows="10" name="wpas_user_reply" rows="6" id="wpas-reply-textarea" placeholder="<?php _e( 'Type your reply here.', 'awesome-support' ); ?>" <?php if ( false === $can_submit_empty ): ?>required="required"<?php endif; ?>></textarea>
 					<?php }
 				
 				echo $args['textarea_after']; ?>
@@ -466,9 +462,9 @@ function wpas_get_reply_form( $args = [] ) {
 			<input type="hidden" name="ticket_id" value="<?php echo $post_id; ?>" />
 
 			<?php
-			wp_nonce_field( 'send_reply', 'client_reply', FALSE, TRUE );
+			wp_nonce_field( 'send_reply', 'client_reply', false, true );
 			wpas_do_field( 'submit_new_reply' );
-			wpas_make_button( __( 'Reply', 'awesome-support' ), [ 'name' => 'wpas-submit', 'onsubmit' => __( 'Please Wait...', 'awesome-support' ) ] );
+			wpas_make_button( __( 'Reply', 'awesome-support' ), array( 'name' => 'wpas-submit', 'onsubmit' => __( 'Please Wait...', 'awesome-support' ) ) );
 
 			/**
 			 * wpas_ticket_details_reply_close_checkbox_after hook
@@ -484,8 +480,8 @@ function wpas_get_reply_form( $args = [] ) {
 	/**
 	 * This case is an agent viewing the ticket from the front-end. All actions are tracked in the back-end only, that's why we prevent agents from replying through the front-end.
 	 */
-	elseif( 'open' === $status && FALSE === wpas_can_reply_ticket() ):
-		echo wpas_get_notification_markup( 'info', sprintf( __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'awesome-support' ), add_query_arg( [ 'post' => $post_id, 'action' => 'edit' ], admin_url( 'post.php' ) ) ) );
+	elseif( 'open' === $status && false === wpas_can_reply_ticket() ):
+		echo wpas_get_notification_markup( 'info', sprintf( __( 'To reply to this ticket, please <a href="%s">go to your admin panel</a>.', 'awesome-support' ), add_query_arg( array( 'post' => $post_id, 'action' => 'edit' ), admin_url( 'post.php' ) ) ) );
 	else:
 		echo wpas_get_notification_markup( 'info', __( 'You are not allowed to reply to this ticket.', 'awesome-support' ) );
 	endif;
@@ -508,7 +504,7 @@ function wpas_get_reply_form( $args = [] ) {
  *
  * @return string             The URL to trigger re-opening the ticket
  */
-function wpas_get_reopen_url( $ticket_id = NULL ) {
+function wpas_get_reopen_url( $ticket_id = null ) {
 
 	global $wp_query;
 
@@ -516,7 +512,7 @@ function wpas_get_reopen_url( $ticket_id = NULL ) {
 		$ticket_id = intval( $wp_query->post->ID );
 	}
 
-	$url = wpas_do_url( get_permalink( $ticket_id ), 'reopen_ticket', [ 'ticket_id' => $ticket_id ] );
+	$url = wpas_do_url( get_permalink( $ticket_id ), 'reopen_ticket', array( 'ticket_id' => $ticket_id ) );
 
 	return apply_filters( 'wpas_reopen_url', esc_url( $url ), $ticket_id );
 
@@ -555,36 +551,36 @@ function wpas_get_tickets_list_columns() {
 
 	$custom_fields = WPAS()->custom_fields->get_custom_fields();
 
-	$columns = [
-		'status' => [
+	$columns = array(
+		'status' => array(
 			'title'             => __( 'Status', 'awesome-support' ),
 			'callback'          => 'wpas_cf_display_status',
-			'column_attributes' => [ 'head' => [ 'sort-ignore' => TRUE ] ]
-		],
-		'title'  => [ 'title' => __( 'Title', 'awesome-support' ), 'callback' => 'title' ],
-		'date'   => [
+			'column_attributes' => array( 'head' => array( 'sort-ignore' => true ) )
+		),
+		'title'  => array( 'title' => __( 'Title', 'awesome-support' ), 'callback' => 'title' ),
+		'date'   => array(
 			'title'             => __( 'Date', 'awesome-support' ),
 			'callback'          => 'date',
-			'column_attributes' => [
-				'head' => [ 'type' => 'numeric', 'sort-initial' => 'descending' ],
-				'body' => [ 'value' => 'wpas_get_the_time_timestamp' ]
-			]
-		],
-	];
+			'column_attributes' => array(
+				'head' => array( 'type' => 'numeric', 'sort-initial' => 'descending' ),
+				'body' => array( 'value' => 'wpas_get_the_time_timestamp' )
+			)
+		),
+	);
 
 	foreach ( $custom_fields as $field ) {
 
 		/* Don't display core fields */
-		if ( TRUE === $field['args']['core'] ) {
+		if ( true === $field['args']['core'] ) {
 			continue;
 		}
 
 		/* Don't display fields that aren't specifically designed to */
-		if ( TRUE === $field['args']['show_column'] ) {
+		if ( true === $field['args']['show_column'] ) {
 
 			$column_title              = apply_filters( 'wpas_custom_column_title', wpas_get_field_title( $field ), $field );
-			$column_callback           = ( 'taxonomy' === $field['args']['field_type'] && TRUE === $field['args']['taxo_std'] ) ? 'taxonomy' : $field['args']['column_callback'];
-			$columns[ $field['name'] ] = [ 'title' => $column_title, 'callback' => $column_callback ];
+			$column_callback           = ( 'taxonomy' === $field['args']['field_type'] && true === $field['args']['taxo_std'] ) ? 'taxonomy' : $field['args']['column_callback'];
+			$columns[ $field['name'] ] = array( 'title' => $column_title, 'callback' => $column_callback );
 
 			if ( ! empty( $field['args']['column_attributes'] ) && is_array( $field['args']['column_attributes'] ) ) {
 				$columns[ $field['name'] ] = $field['args']['column_attributes'];
@@ -631,7 +627,7 @@ function wpas_get_tickets_list_column_content( $column_id, $column ) {
 
 			// If the replies are displayed from the oldest to the newest we want to link directly to the latest reply in case there are multiple reply pages
 			if ( 'ASC' === wpas_get_option( 'replies_order', 'ASC' ) ) {
-				$last_reply = wpas_get_replies( get_the_ID(), [ 'read', 'unread' ], [ 'posts_per_page' => 1, 'order' => 'DESC' ] );
+				$last_reply = wpas_get_replies( get_the_ID(), array( 'read', 'unread' ), array( 'posts_per_page' => 1, 'order' => 'DESC' ) );
 				$link       = ! empty( $last_reply ) ? wpas_get_reply_link( $last_reply[0]->ID ) : get_permalink( get_the_ID() );
 			} else {
 				$link = get_permalink( get_the_ID() );
@@ -647,7 +643,7 @@ function wpas_get_tickets_list_column_content( $column_id, $column ) {
 		case 'taxonomy':
 
 			$terms = get_the_terms( get_the_ID(), $column_id );
-			$list  = [];
+			$list  = array();
 
 			if ( empty( $terms ) ) {
 				continue;
@@ -728,7 +724,7 @@ function wpas_get_offset_html5() {
 function wpas_show_taxonomy_column( $field, $post_id, $separator = ', ' ) {
 
 	$terms = get_the_terms( $post_id, $field );
-	$list  = [];
+	$list  = array();
 
 	if ( ! is_array( $terms ) ) {
 		echo '';
@@ -789,15 +785,15 @@ function wpas_cf_display_status( $name, $post_id ) {
 			$color = wpas_get_option( "color_$status", '#169baa' );
 			$tag   = "<span class='wpas-label' style='background-color:$color;'>$label</span>";
 		} else {
-			$defaults = [
+			$defaults = array(
 				'queued'     => '#1e73be',
 				'processing' => '#a01497',
 				'hold'       => '#b56629'
-			];
+			);
 			$label    = $custom_status[ $post_status ];
-			$color    = wpas_get_option( "color_$post_status", FALSE );
+			$color    = wpas_get_option( "color_$post_status", false );
 
-			if ( FALSE === $color ) {
+			if ( false === $color ) {
 				if ( isset( $defaults[ $post_status ] ) ) {
 					$color = $defaults[ $post_status ];
 				} else {
@@ -829,11 +825,11 @@ function wpas_get_notification_markup( $type = 'info', $message = '' ) {
 		return '';
 	}
 
-	$classes = apply_filters( 'wpas_notification_classes', [
+	$classes = apply_filters( 'wpas_notification_classes', array(
 		'success' => 'wpas-alert wpas-alert-success',
 		'failure' => 'wpas-alert wpas-alert-danger',
 		'info'    => 'wpas-alert wpas-alert-info',
-	] );
+	) );
 
 	if ( ! array_key_exists( $type, $classes ) ) {
 		$type = 'info';
@@ -907,7 +903,7 @@ function wpas_pagination_link( $direction = 'next', $posts = 0 ) {
  *
  * @return string
  */
-function wpas_prev_page_link( $label = '', $echo = TRUE ) {
+function wpas_prev_page_link( $label = '', $echo = true ) {
 
 	if ( empty( $label ) ) {
 		$label = '< ' . __( 'Previous Page', 'awesome-support' );
@@ -919,7 +915,7 @@ function wpas_prev_page_link( $label = '', $echo = TRUE ) {
 		$link = "<a href='$link'>$label</a>";
 	}
 
-	if ( TRUE === $echo ) {
+	if ( true === $echo ) {
 		echo $link;
 	} else {
 		return $link;
@@ -940,7 +936,7 @@ function wpas_prev_page_link( $label = '', $echo = TRUE ) {
  *
  * @return string
  */
-function wpas_next_page_link( $label = '', $posts = 0, $echo = TRUE ) {
+function wpas_next_page_link( $label = '', $posts = 0, $echo = true ) {
 
 	if ( empty( $label ) ) {
 		$label = __( 'Next Page', 'awesome-support' ) . ' >';
@@ -952,7 +948,7 @@ function wpas_next_page_link( $label = '', $posts = 0, $echo = TRUE ) {
 		$link = "<a href='$link'>$label</a>";
 	}
 
-	if ( TRUE === $echo ) {
+	if ( true === $echo ) {
 		echo $link;
 	} else {
 		return $link;
@@ -1022,15 +1018,15 @@ function wpas_terms_and_conditions_checkbox() {
 		return;
 	}
 
-	$terms = new WPAS_Custom_Field( 'terms', [
+	$terms = new WPAS_Custom_Field( 'terms', array(
 		'name' => 'terms',
-		'args' => [
-			'required'   => TRUE,
+		'args' => array(
+			'required'   => true,
 			'field_type' => 'checkbox',
 			'sanitize'   => 'sanitize_text_field',
-			'options'    => [ '1' => sprintf( __( 'I accept the %sterms and conditions%s', 'awesome-support' ), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ) ],
-		]
-	] );
+			'options'    => array( '1' => sprintf( __( 'I accept the %sterms and conditions%s', 'awesome-support' ), '<a href="#wpas-modalterms" class="wpas-modal-trigger">', '</a>' ) ),
+		)
+	) );
 
 	echo $terms->get_output();
 
@@ -1052,17 +1048,17 @@ add_action( 'wpas_after_template', 'wpas_terms_and_conditions_modal', 10, 3 );
 function wpas_terms_and_conditions_modal( $name ) {
 
 	if ( 'registration' !== $name ) {
-		return FALSE;
+		return false;
 	}
 
 	$terms = wpas_get_option( 'terms_conditions', '' );
 
 	if ( empty( $terms ) ) {
-		return FALSE;
+		return false;
 	}
 
 	echo '<div style="display: none;"><div id="wpas-modalterms">' . wpautop( wp_kses_post( $terms ) ) . '</div></div>';
 
-	return TRUE;
+	return true;
 
 }

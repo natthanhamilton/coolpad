@@ -1,7 +1,7 @@
 @import '../../variables';
 
 #gallery {
-  @media only screen and (min-width: @break-sm) {
+  @media only screen and (min-width: @break-md) {
     padding-top: 115px;
   }
   .thumbs {
@@ -11,28 +11,28 @@
     text-align: right;
 
     padding-right: 60px;
-    @media only screen and (min-width: @break-md) and (max-width: @break-lg) {
+    @media only screen and (min-width: @break-lg) and (max-width: @break-xl) {
+      padding-right: 60px;
+    }
+    @media only screen and (max-width: @break-lg) {
       padding-right: 60px;
     }
     @media only screen and (max-width: @break-md) {
-      padding-right: 60px;
-    }
-    @media only screen and (max-width: @break-sm) {
       padding-right: 40px;
     }
-    @media only screen and (max-width: @break-middle) {
+    @media only screen and (max-width: @break-sm) {
       padding-right: 0;
     }
   }
   .slider {
     padding-left: 60px;
-    @media only screen and (min-width: @break-md) and (max-width: @break-lg) {
+    @media only screen and (min-width: @break-lg) and (max-width: @break-xl) {
       padding-left: 20px;
     }
-    @media only screen and (max-width: @break-md) {
+    @media only screen and (max-width: @break-lg) {
       padding-left: 0;
     }
-    @media only screen and (max-width: @break-sm) {
+    @media only screen and (max-width: @break-md) {
       padding-left: 0;
     }
     @media only screen and (max-width: @break-xs) {
@@ -75,13 +75,13 @@
 
         width: 110px;
         height: 110px;
-        @media only screen and (max-width: @break-middle) {
+        @media only screen and (max-width: @break-sm) {
           width: 55px;
           height: 55px;
         }
         img {
           height: 100px;
-          @media only screen and (max-width: @break-middle) {
+          @media only screen and (max-width: @break-sm) {
             height: 40px;
           }
         }

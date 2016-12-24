@@ -40,6 +40,6 @@
   "dependencies": {
     "ace-builds": "~1.2",
     "wp-color-picker-alpha": "23r9i0/wp-color-picker-alpha",
-    "jqueryui-timepicker-addon": "~1.5"
+	"jqueryui-timepicker-addon": "~1.5"
   }
 }

@@ -54,8 +54,9 @@ function pr_shortcode()
     $args   = [
         'post_type'   => 'pr',
         'post_status' => 'publish',
-        'orderby' => 'DESC',
-        'posts_per_page'=>8
+        'posts_per_page' => '6',
+        'orderby', 'date',
+        'order', 'DESC'
     ];
     $posts  = get_posts($args);
     foreach ($posts as $post) {
@@ -65,9 +66,9 @@ function pr_shortcode()
         } else {
             $image = '';
         }
-        $string .= '<div class="col-xs-12 col-sm-4 col-md-3">';
+        $string .= '<div class="col-sm-4">';
         $string .= '<a href="' . get_permalink( $post->ID ) . '">';
-        $string .= "<div class='tile-title' style='background-image: url(" . $image . ")'>";
+        $string .= "<div class='tile-title' style='background-image: url(" . $image . "')>";
         $string .= $post->post_title;
         $string .= '</div>';
         $string .= '</a>';

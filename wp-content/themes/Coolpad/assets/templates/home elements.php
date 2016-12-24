@@ -196,3 +196,5 @@
 		<iframe src="https://www.youtube.com/embed/_X47_X9kr18" frameborder="0" allowfullscreen></iframe>
 	</div>
 </div>
+
+<div id="hero" style="background-image: url('assets/images/homepagebanner.jpg')"></div>

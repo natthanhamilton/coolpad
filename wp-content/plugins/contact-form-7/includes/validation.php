@@ -1,75 +1,79 @@
 <?php
 
 class WPCF7_Validation implements ArrayAccess {
-    private $invalid_fields = [];
-    private $container      = [];
+	private $invalid_fields = array();
+	private $container = array();
 
-    public function __construct() {
-        $this->container = [
-            'valid'  => TRUE,
-            'reason' => [],
-            'idref'  => []];
-    }
+	public function __construct() {
+		$this->container = array(
+			'valid' => true,
+			'reason' => array(),
+			'idref' => array() );
+	}
 
-    public function get_invalid_fields() {
-        return $this->invalid_fields;
-    }
+	public function invalidate( $context, $message ) {
+		if ( $context instanceof WPCF7_FormTag ) {
+			$tag = $context;
+		} elseif ( is_array( $context ) ) {
+			$tag = new WPCF7_FormTag( $context );
+		} elseif ( is_string( $context ) ) {
+			$tags = wpcf7_scan_form_tags( array( 'name' => trim( $context ) ) );
+			$tag = $tags ? new WPCF7_FormTag( $tags[0] ) : null;
+		}
 
-    public function offsetSet($offset, $value) {
-        if (isset($this->container[ $offset ])) {
-            $this->container[ $offset ] = $value;
-        }
-        if ('reason' == $offset && is_array($value)) {
-            foreach ($value as $k => $v) {
-                $this->invalidate($k, $v);
-            }
-        }
-    }
+		$name = ! empty( $tag ) ? $tag->name : null;
 
-    public function invalidate($context, $message) {
-        if ($context instanceof WPCF7_Shortcode) {
-            $tag = $context;
-        } elseif (is_array($context)) {
-            $tag = new WPCF7_Shortcode($context);
-        } elseif (is_string($context)) {
-            $tags = wpcf7_scan_shortcode(['name' => trim($context)]);
-            $tag  = $tags ? new WPCF7_Shortcode($tags[0]) : NULL;
-        }
-        $name = !empty($tag) ? $tag->name : NULL;
-        if (empty($name) || !wpcf7_is_name($name)) {
-            return;
-        }
-        if ($this->is_valid($name)) {
-            $id = $tag->get_id_option();
-            if (empty($id) || !wpcf7_is_name($id)) {
-                $id = NULL;
-            }
-            $this->invalid_fields[ $name ] = [
-                'reason' => (string)$message,
-                'idref'  => $id];
-        }
-    }
+		if ( empty( $name ) || ! wpcf7_is_name( $name ) ) {
+			return;
+		}
 
-    public function is_valid($name = NULL) {
-        if (!empty($name)) {
-            return !isset($this->invalid_fields[ $name ]);
-        } else {
-            return empty($this->invalid_fields);
-        }
-    }
+		if ( $this->is_valid( $name ) ) {
+			$id = $tag->get_id_option();
 
-    public function offsetGet($offset) {
-        if (isset($this->container[ $offset ])) {
-            return $this->container[ $offset ];
-        }
-    }
+			if ( empty( $id ) || ! wpcf7_is_name( $id ) ) {
+				$id = null;
+			}
 
-    public function offsetExists($offset) {
-        return isset($this->container[ $offset ]);
-    }
+			$this->invalid_fields[$name] = array(
+				'reason' => (string) $message,
+				'idref' => $id );
+		}
+	}
 
-    public function offsetUnset($offset) {
-    }
+	public function is_valid( $name = null ) {
+		if ( ! empty( $name ) ) {
+			return ! isset( $this->invalid_fields[$name] );
+		} else {
+			return empty( $this->invalid_fields );
+		}
+	}
+
+	public function get_invalid_fields() {
+		return $this->invalid_fields;
+	}
+
+	public function offsetSet( $offset, $value ) {
+		if ( isset( $this->container[$offset] ) ) {
+			$this->container[$offset] = $value;
+		}
+
+		if ( 'reason' == $offset && is_array( $value ) ) {
+			foreach ( $value as $k => $v ) {
+				$this->invalidate( $k, $v );
+			}
+		}
+	}
+
+	public function offsetGet( $offset ) {
+		if ( isset( $this->container[$offset] ) ) {
+			return $this->container[$offset];
+		}
+	}
+
+	public function offsetExists( $offset ) {
+		return isset( $this->container[$offset] );
+	}
+
+	public function offsetUnset( $offset ) {
+	}
 }
-
-?>

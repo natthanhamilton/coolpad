@@ -1,5 +1,89 @@
 @import '../variables';
 
+.hero {
+  height: 100vh;
+  width: 100vw;
+  background-size: cover;
+  background-position: 50% 50%;
+  background-repeat: no-repeat;
+}
+
+#home-cover {
+  .logo,
+  .details {
+    padding-bottom: 50px;
+  }
+  p {
+    //font-size: 27px;
+    font-weight: 300;
+    color: #aaaaaa;
+    padding-left: 15px;
+  }
+  a {
+    margin-bottom: 21px;
+  }
+}
+
+#home-tiles {
+  @padding: 5px;
+  @height: 162px;
+  @width: 100%;
+  @media only screen and (min-width: @break-md) {
+    margin: @padding;
+  }
+  .tile {
+    @media only screen and (min-width: @break-md) {
+      padding: @padding;
+    }
+  }
+  .tile-1 {
+    background-color: #2f355e;
+    .vertical-center;
+    height: @height;
+    width: @width;
+  }
+  .tile-2 {
+    background: linear-gradient(to top, #c4d600, #8d9a00 76%, #c4d600);
+    background: -webkit-linear-gradient(top, #c4d600, #8d9a00 76%, #c4d600);
+    .vertical-center;
+    height: @height;
+    width: @width;
+  }
+  .tile-3 {
+    .vertical-center;
+    height: @height;
+    width: @width;
+    background-position: 50% 50%;
+    background-size: cover;
+    .text {
+      display: inline-block;
+
+      font-size: 36px;
+      font-weight: 300;
+      line-height: 1.17;
+      color: #ffffff;
+    }
+    .icon {
+      display: inline-block;
+      bottom: 25px;
+      position: relative;
+      left: 20px;
+      .fa {
+        color: #fff;
+        font-size: 18px;
+        .vertical-center;
+        padding: 8px 14px;
+        border-radius: 50%;
+        border: solid 1.4px #fefefe;
+      }
+    }
+  }
+}
+
+/*
+
+OLD
+
 #home-cover {
   #slider {
     .left,
@@ -40,7 +124,7 @@
             .center;
             .block;
             a {
-              .font-family-book;
+
               font-size: 28px;
             }
           }
@@ -50,68 +134,12 @@
   }
 }
 
-#home-tiles {
-  @padding: 5px;
-  @height: 162px;
-  @width: 100%;
-  @media only screen and (min-width: @break-sm) {
-    margin: @padding;
-  }
-  .tile {
-    @media only screen and (min-width: @break-sm) {
-      padding: @padding;
-    }
-  }
-  .tile-1 {
-    background-color: #2f355e;
-    .vertical-center;
-    height: @height;
-    width: @width;
-  }
-  .tile-2 {
-    background: linear-gradient(to top, #c4d600, #8d9a00 76%, #c4d600);
-    background: -webkit-linear-gradient(top, #c4d600, #8d9a00 76%, #c4d600);
-    .vertical-center;
-    height: @height;
-    width: @width;
-  }
-  .tile-3 {
-    .vertical-center;
-    height: @height;
-    width: @width;
-    background-position: 50% 50%;
-    background-size: cover;
-    .text {
-      display: inline-block;
-      .font-family-light;
-      font-size: 36px;
-      font-weight: 300;
-      line-height: 1.17;
-      color: #ffffff;
-    }
-    .icon {
-      display: inline-block;
-      bottom: 25px;
-      position: relative;
-      left: 20px;
-      .fa {
-        color: #fff;
-        font-size: 18px;
-        .vertical-center;
-        padding: 8px 14px;
-        border-radius: 50%;
-        border: solid 1.4px #fefefe;
-      }
-    }
-  }
-}
-
 #home-new {
-  @media only screen and (min-width: @break-sm) {
+  @media only screen and (min-width: @break-md) {
     height: 600px;
     .vertical-center;
   }
-  @media only screen and (max-width: @break-sm) {
+  @media only screen and (max-width: @break-md) {
     .vc_column_container {
       width: 100% !important;
     }
@@ -126,7 +154,7 @@
 
     .image {
       .wpb_single_image {
-        @media only screen and (min-width: @break-lg) {
+        @media only screen and (min-width: @break-xl) {
           text-align: right;
         }
       }
@@ -134,28 +162,28 @@
   }
   .title {
     .block;
-    .font-family-book;
+
     font-size: 48px;
     font-weight: 300;
     line-height: 1.25;
     color: @color-charcoal-grey;
 
     text-align: center;
-    @media only screen and (min-width: @break-lg) {
+    @media only screen and (min-width: @break-xl) {
       text-align: left;
     }
   }
   .description {
     .block;
     margin: 24px 0;
-    .font-family-light;
+
     font-size: 24px;
     font-weight: 300;
     line-height: 1.5;
     color: @color-charcoal-grey;
 
     text-align: center;
-    @media only screen and (min-width: @break-lg) {
+    @media only screen and (min-width: @break-xl) {
       text-align: left;
     }
   }
@@ -163,11 +191,11 @@
     .block;
 
     text-align: center;
-    @media only screen and (min-width: @break-lg) {
+    @media only screen and (min-width: @break-xl) {
       text-align: left;
     }
     a {
-      .font-family-book;
+
       font-size: 28px;
       font-weight: normal;
       color: @color-charcoal-grey !important;
@@ -180,43 +208,43 @@
   background-position: 50% 50%;
   background-size: cover;
   .wrapper {
-    @media only screen and (min-width: @break-middle) {
+    @media only screen and (min-width: @break-sm) {
       height: @height-lg;
       .vertical;
     }
-    @media only screen and (max-width: @break-middle) {
+    @media only screen and (max-width: @break-sm) {
       .flexbox;
     }
     .left-div {
       height: 100%;
-      @media only screen and (min-width: @break-middle) {
+      @media only screen and (min-width: @break-sm) {
         .vertical-center;
       }
-      @media only screen and (min-width: @break-middle) and (max-width: @break-sm) {
+      @media only screen and (min-width: @break-sm) and (max-width: @break-md) {
         width: 50%;
         padding: 60px 0 90px 0;
       }
-      @media only screen and (max-width: @break-middle) {
+      @media only screen and (max-width: @break-sm) {
         padding-bottom: 44px;
         .flexbox-div(2);
       }
       .image {
         .center;
-        @media only screen  and (min-width: @break-middle) {
+        @media only screen  and (min-width: @break-sm) {
           .right;
         }
       }
       .title {
-        .font-family-book;
+
         font-size: 48px;
         font-weight: normal;
         line-height: 1.25;
         margin-top: 40px;
         .center;
-        @media only screen  and (max-width: @break-sm) {
+        @media only screen  and (max-width: @break-md) {
           font-size: 36px;
         }
-        @media only screen  and (min-width: @break-middle) {
+        @media only screen  and (min-width: @break-sm) {
           .right;
         }
       }
@@ -226,13 +254,13 @@
         line-height: 1.5;
         margin: 20px 0 36px 0;
         .center;
-        @media only screen  and (min-width: @break-middle) {
+        @media only screen  and (min-width: @break-sm) {
           .right;
         }
       }
       .buy {
         .center;
-        @media only screen  and (min-width: @break-middle) {
+        @media only screen  and (min-width: @break-sm) {
           .right;
         }
         a {
@@ -241,11 +269,11 @@
       }
     }
     .center-div {
-      @media only screen and (min-width: @break-middle) and (max-width: @break-sm) {
+      @media only screen and (min-width: @break-sm) and (max-width: @break-md) {
         width: 50%;
         padding: 60px 0 90px 0;
       }
-      @media only screen  and (max-width: @break-middle) {
+      @media only screen  and (max-width: @break-sm) {
         padding: 30px 0 16px 0;
         .flexbox-div(1);
       }
@@ -257,7 +285,7 @@
       }
     }
     .right-div {
-      @media only screen and (max-width: @break-sm) {
+      @media only screen and (max-width: @break-md) {
         display: none;
       }
       .vertical-center;
@@ -287,7 +315,7 @@
 #home-phones {
   width: 100%;
   .vc_col-sm-3 {
-    @media only screen and (min-width: @break-middle) and (max-width: @break-sm) {
+    @media only screen and (min-width: @break-sm) and (max-width: @break-md) {
       width: 50% !important;
       float: left;
     }
@@ -295,7 +323,7 @@
   .wrapper {
     height: 100%;
     .title p {
-      .font-family-light;
+
       .center;
       font-size: 48px;
       line-height: 1.5;
@@ -306,7 +334,7 @@
       margin-bottom: 20px;
       height: 455px !important;
       .name p {
-        .font-family-medium;
+
         .center;
         font-size: 36px;
         font-weight: 500;
@@ -344,7 +372,7 @@
       width: 660px;
       .title {
         .center;
-        .font-family-book;
+
         font-size: 64px;
         line-height: 1.13;
       }
@@ -356,7 +384,7 @@
       .buy {
         .center;
         a {
-          .font-family-book;
+
           font-size: 28px;
           color: @color-charcoal-grey !important;
         }
@@ -367,3 +395,4 @@
     }
   }
 }
+ */

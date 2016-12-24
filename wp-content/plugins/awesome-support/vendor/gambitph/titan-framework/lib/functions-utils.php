@@ -1,23 +1,26 @@
 <?php
-// @see	http://bavotasan.com/2011/convert-hex-color-to-rgb-using-php/
-if (!function_exists('tf_hex2rgb')) {
-    function tf_hex2rgb($hex) {
-        $hex = str_replace('#', '', $hex);
-        if (strlen($hex) == 3) {
-            $r = hexdec(substr($hex, 0, 1) . substr($hex, 0, 1));
-            $g = hexdec(substr($hex, 1, 1) . substr($hex, 1, 1));
-            $b = hexdec(substr($hex, 2, 1) . substr($hex, 2, 1));
-        } else {
-            $r = hexdec(substr($hex, 0, 2));
-            $g = hexdec(substr($hex, 2, 2));
-            $b = hexdec(substr($hex, 4, 2));
-        }
-        $rgb = [$r, $g, $b];
 
-        // return implode(",", $rgb); // returns the rgb values separated by commas
-        return $rgb; // returns an array with the rgb values
-    }
+// @see	http://bavotasan.com/2011/convert-hex-color-to-rgb-using-php/
+if ( ! function_exists( 'tf_hex2rgb' ) ) {
+	function tf_hex2rgb( $hex ) {
+		$hex = str_replace( '#', '', $hex );
+
+		if ( strlen( $hex ) == 3 ) {
+			$r = hexdec( substr( $hex,0,1 ).substr( $hex,0,1 ) );
+			$g = hexdec( substr( $hex,1,1 ).substr( $hex,1,1 ) );
+			$b = hexdec( substr( $hex,2,1 ).substr( $hex,2,1 ) );
+		} else {
+			$r = hexdec( substr( $hex,0,2 ) );
+			$g = hexdec( substr( $hex,2,2 ) );
+			$b = hexdec( substr( $hex,4,2 ) );
+		}
+		$rgb = array( $r, $g, $b );
+		// return implode(",", $rgb); // returns the rgb values separated by commas
+		return $rgb; // returns an array with the rgb values
+	}
 }
+
+
 /**
  * Performs an add_action only once. Helpful for factory constructors where an action only
  * needs to be added once. Because of this, there will be no need to do a static variable that
@@ -36,26 +39,31 @@ if (!function_exists('tf_hex2rgb')) {
  *
  * @return true Will always return true.
  */
-function tf_add_action_once($tag, $function_to_add, $priority = 10, $accepted_args = 1) {
-    global $_gambitFiltersRan;
-    if (!isset($_gambitFiltersRan)) {
-        $_gambitFiltersRan = [];
-    }
-    // Since references to $this produces a unique id, just use the class for identification purposes
-    $idxFunc = $function_to_add;
-    if (is_array($function_to_add)) {
-        if (!is_string($function_to_add[0])) {
-            $idxFunc[0] = get_class($function_to_add[0]);
-        }
-    }
-    $idx = $tag . ':' . _wp_filter_build_unique_id($tag, $idxFunc, $priority);
-    if (!in_array($idx, $_gambitFiltersRan)) {
-        add_action($tag, $function_to_add, $priority, $accepted_args);
-    }
-    $_gambitFiltersRan[] = $idx;
+function tf_add_action_once( $tag, $function_to_add, $priority = 10, $accepted_args = 1 ) {
+	global $_gambitFiltersRan;
 
-    return TRUE;
+	if ( ! isset( $_gambitFiltersRan ) ) {
+		$_gambitFiltersRan = array();
+	}
+
+	// Since references to $this produces a unique id, just use the class for identification purposes
+	$idxFunc = $function_to_add;
+	if ( is_array( $function_to_add ) ) {
+		if ( ! is_string( $function_to_add[0] ) ) {
+			$idxFunc[0] = get_class( $function_to_add[0] );
+		}
+	}
+	$idx = $tag . ':' . _wp_filter_build_unique_id( $tag, $idxFunc, $priority );
+
+	if ( ! in_array( $idx, $_gambitFiltersRan ) ) {
+		add_action( $tag, $function_to_add, $priority, $accepted_args );
+	}
+
+	$_gambitFiltersRan[] = $idx;
+
+	return true;
 }
+
 
 /**
  * Performs an add_filter only once. Helpful for factory constructors where an action only
@@ -75,23 +83,27 @@ function tf_add_action_once($tag, $function_to_add, $priority = 10, $accepted_ar
  *
  * @return true
  */
-function tf_add_filter_once($tag, $function_to_add, $priority = 10, $accepted_args = 1) {
-    global $_gambitFiltersRan;
-    if (!isset($_gambitFiltersRan)) {
-        $_gambitFiltersRan = [];
-    }
-    // Since references to $this produces a unique id, just use the class for identification purposes
-    $idxFunc = $function_to_add;
-    if (is_array($function_to_add)) {
-        if (!is_string($function_to_add[0])) {
-            $idxFunc[0] = get_class($function_to_add[0]);
-        }
-    }
-    $idx = $tag . ':' . _wp_filter_build_unique_id($tag, $idxFunc, $priority);
-    if (!in_array($idx, $_gambitFiltersRan)) {
-        add_filter($tag, $function_to_add, $priority, $accepted_args);
-    }
-    $_gambitFiltersRan[] = $idx;
+function tf_add_filter_once( $tag, $function_to_add, $priority = 10, $accepted_args = 1 ) {
+	global $_gambitFiltersRan;
 
-    return TRUE;
+	if ( ! isset( $_gambitFiltersRan ) ) {
+		$_gambitFiltersRan = array();
+	}
+
+	// Since references to $this produces a unique id, just use the class for identification purposes
+	$idxFunc = $function_to_add;
+	if ( is_array( $function_to_add ) ) {
+		if ( ! is_string( $function_to_add[0] ) ) {
+			$idxFunc[0] = get_class( $function_to_add[0] );
+		}
+	}
+	$idx = $tag . ':' . _wp_filter_build_unique_id( $tag, $idxFunc, $priority );
+
+	if ( ! in_array( $idx, $_gambitFiltersRan ) ) {
+		add_filter( $tag, $function_to_add, $priority, $accepted_args );
+	}
+
+	$_gambitFiltersRan[] = $idx;
+
+	return true;
 }

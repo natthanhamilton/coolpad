@@ -1,4 +1,4 @@
-@import '../../../Coolpad/less/variables';
+@import '../../../Coolpad/assets/less/variables';
 
 #product-cover {
   background-size: cover;
@@ -27,7 +27,6 @@
         padding-top: 30%;
         position: relative;
         p {
-          .font-family-light;
           line-height: 1.1;
           text-align: left;
           color: #ffffff;
@@ -35,7 +34,7 @@
           // Responsive elements
           font-size: 80px;
           padding-bottom: 22px;
-          @media only screen and (max-width: @break-md) {
+          @media only screen and (max-width: @break-lg) {
             font-size: 60px;
             padding-bottom: 8px;
           }
@@ -50,12 +49,12 @@
         right: 20px;
         top: -260px;
         height: 550px;
-        @media only screen and (max-width: @break-md) {
+        @media only screen and (max-width: @break-lg) {
           height: 500px;
           right: 0;
           top: -210px;
         }
-        @media only screen and (max-width: @break-sm) {
+        @media only screen and (max-width: @break-md) {
           display: none;
         }
       }

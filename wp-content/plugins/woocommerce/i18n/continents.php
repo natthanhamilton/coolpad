@@ -9,13 +9,15 @@
  * @package     WooCommerce/i18n
  * @version     2.5.0
  */
-if (!defined('ABSPATH')) {
+
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-return [
-	'AF' => [
-		'name'      => __('Africa', 'woocommerce'),
-		'countries' => [
+
+return array(
+	'AF' => array(
+		'name'      => __( 'Africa', 'woocommerce' ),
+		'countries' => array(
 			'AO',
 			'BF',
 			'BI',
@@ -74,21 +76,21 @@ return [
 			'ZA',
 			'ZM',
 			'ZW',
-		],
-	],
-	'AN' => [
-		'name'      => __('Antarctica', 'woocommerce'),
-		'countries' => [
+		),
+	),
+	'AN' => array(
+		'name'      => __( 'Antarctica', 'woocommerce' ),
+		'countries' => array(
 			'AQ',
 			'BV',
 			'GS',
 			'HM',
 			'TF',
-		],
-	],
-	'AS' => [
-		'name'      => __('Asia', 'woocommerce'),
-		'countries' => [
+		),
+	),
+	'AS' => array(
+		'name'      => __( 'Asia', 'woocommerce' ),
+		'countries' => array(
 			'AE',
 			'AF',
 			'AM',
@@ -142,11 +144,11 @@ return [
 			'UZ',
 			'VN',
 			'YE',
-		],
-	],
-	'EU' => [
-		'name'      => __('Europe', 'woocommerce'),
-		'countries' => [
+		),
+	),
+	'EU' => array(
+		'name'      => __( 'Europe', 'woocommerce' ),
+		'countries' => array(
 			'AD',
 			'AL',
 			'AT',
@@ -199,11 +201,11 @@ return [
 			'TR',
 			'UA',
 			'VA',
-		],
-	],
-	'NA' => [
-		'name'      => __('North America', 'woocommerce'),
-		'countries' => [
+		),
+	),
+	'NA' => array(
+		'name'      => __( 'North America', 'woocommerce' ),
+		'countries' => array(
 			'AG',
 			'AI',
 			'AN',
@@ -246,11 +248,11 @@ return [
 			'VC',
 			'VG',
 			'VI',
-		],
-	],
-	'OC' => [
-		'name'      => __('Oceania', 'woocommerce'),
-		'countries' => [
+		),
+	),
+	'OC' => array(
+		'name'      => __( 'Oceania', 'woocommerce' ),
+		'countries' => array(
 			'AS',
 			'AU',
 			'CK',
@@ -277,11 +279,11 @@ return [
 			'VU',
 			'WF',
 			'WS',
-		],
-	],
-	'SA' => [
-		'name'      => __('South America', 'woocommerce'),
-		'countries' => [
+		),
+	),
+	'SA' => array(
+		'name'      => __( 'South America', 'woocommerce' ),
+		'countries' => array(
 			'AR',
 			'BO',
 			'BR',
@@ -296,6 +298,6 @@ return [
 			'SR',
 			'UY',
 			'VE',
-		],
-	],
-];
+		),
+	),
+);

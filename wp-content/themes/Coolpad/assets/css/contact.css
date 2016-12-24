@@ -546,20 +546,20 @@ Fix img-responsive issue
 /*
 #addresses {
   margin: 0 275px;
-  @media only screen and (max-width: @break-md) {
+  @media only screen and (max-width: @break-lg) {
     margin: 0 130px;
   }
-  @media only screen and (max-width: @break-sm) {
+  @media only screen and (max-width: @break-md) {
     margin: 0 75px;
   }
-  @media only screen and (max-width: @break-middle) {
+  @media only screen and (max-width: @break-sm) {
     margin: 0 32px;
   }
   @media only screen and (max-width: @break-xs) {
     margin: 0 16px;
   }
   .vc_col-sm-6 {
-    @media only screen and (max-width: @break-sm) {
+    @media only screen and (max-width: @break-md) {
       width: 100%
     }
   }

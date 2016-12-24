@@ -1,22 +1,14 @@
 @import '../variables';
 
 .btn {
-  border-radius: 20px !important;
-  .font-family-book;
+  border-radius: 9px !important;
+
   color: #ffffff !important;
   outline: 0 !important;
   line-height: normal !important;
   &:hover, &:focus {
     outline: 0;
     color: #fff;
-  }
-
-  font-size: 24px;
-  @media only screen and (max-width: @break-sm) {
-    font-size: 18px;
-  }
-  @media only screen and (max-width: @break-middle) {
-    font-size: 14px;
   }
 }
 
@@ -51,6 +43,19 @@
     background-color: @color !important;
     border: solid 2px @color !important;
     .hover-transition;
+  }
+}
+
+.btn-dark {
+  border: solid 2px rgba(41, 47, 51, 1) !important;
+  &:hover {
+    border: solid 2px rgba(41, 47, 51, 0.7) !important;
+  }
+}
+.btn-light {
+  border: solid 2px rgba(255, 255, 255, 1) !important;
+  &:hover {
+    border: solid 2px rgba(255, 255, 255, 0.7) !important;
   }
 }
 

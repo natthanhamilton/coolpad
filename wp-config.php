@@ -18,17 +18,11 @@
  * @package WordPress
  */
 // ** MySQL settings - You can get this info from your web host ** //
-/** The name of the database for WordPress */
 define('DB_NAME', 'wp_coolpad');
-/** MySQL database username */
 define('DB_USER', 'root');
-/** MySQL database password */
 define('DB_PASSWORD', '');
-/** MySQL hostname */
 define('DB_HOST', 'localhost');
-/** Database Charset to use in creating database tables. */
 define('DB_CHARSET', 'utf8mb4');
-/** The Database Collate type. Don't change this if in doubt. */
 define('DB_COLLATE', '');
 /**#@+
  * Authentication Unique Keys and Salts.
@@ -69,6 +63,7 @@ $table_prefix = 'wp_';
  * @link https://codex.wordpress.org/Debugging_in_WordPress
  */
 define('WP_DEBUG', FALSE);
+
 /* Multisite */
 define('WP_ALLOW_MULTISITE', TRUE);
 define('MULTISITE', TRUE);
@@ -77,6 +72,7 @@ define('DOMAIN_CURRENT_SITE', 'localhost');
 define('PATH_CURRENT_SITE', '/coolpad/');
 define('SITE_ID_CURRENT_SITE', 1);
 define('BLOG_ID_CURRENT_SITE', 1);
+
 /* That's all, stop editing! Happy blogging. */
 /** Absolute path to the WordPress directory. */
 if (!defined('ABSPATH')) {

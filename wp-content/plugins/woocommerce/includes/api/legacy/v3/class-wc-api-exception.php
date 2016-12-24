@@ -9,11 +9,13 @@
  * @package     WooCommerce/API
  * @since       2.2
  */
-if (!defined('ABSPATH')) {
+
+if ( ! defined( 'ABSPATH' ) ) {
 	exit; // Exit if accessed directly
 }
 
 class WC_API_Exception extends Exception {
+
 	/** @var string sanitized error code */
 	protected $error_code;
 
@@ -25,14 +27,13 @@ class WC_API_Exception extends Exception {
 	 * http status code - proper HTTP status code to respond with, e.g. 400
 	 *
 	 * @since 2.2
-	 *
 	 * @param string $error_code
-	 * @param string $error_message    user-friendly translated error message
-	 * @param int    $http_status_code HTTP status code to respond with
+	 * @param string $error_message user-friendly translated error message
+	 * @param int $http_status_code HTTP status code to respond with
 	 */
-	public function __construct($error_code, $error_message, $http_status_code) {
+	public function __construct( $error_code, $error_message, $http_status_code ) {
 		$this->error_code = $error_code;
-		parent::__construct($error_message, $http_status_code);
+		parent::__construct( $error_message, $http_status_code );
 	}
 
 	/**

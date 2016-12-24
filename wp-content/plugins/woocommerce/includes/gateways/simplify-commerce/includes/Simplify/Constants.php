@@ -26,22 +26,27 @@
  * SUCH DAMAGE.
  */
 
+
 /**
  * Constant values.
  */
-class Simplify_Constants {
+class Simplify_Constants
+{
 	/**
 	 * @var string VERSION SDK version information.
 	 */
 	const VERSION = '1.2.0';
+
 	/**
 	 * @var string API_BASE_LIVE_URL URL for the live API endpoint
 	 */
 	const API_BASE_LIVE_URL = 'https://api.simplify.com/v1/api';
+
 	/**
 	 * @var string API_BASE_SANDBOX_URL URL for the sandbox API endpoint
 	 */
 	const API_BASE_SANDBOX_URL = 'https://sandbox.simplify.com/v1/api';
+
 	/**
 	 * @var string OAUTH_BASE_URL URL for the oauth enpoint
 	 */

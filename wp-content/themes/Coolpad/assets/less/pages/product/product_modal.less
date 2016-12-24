@@ -2,32 +2,32 @@
 
 #buy_now {
   .wrapper {
-    @media only screen and (min-width: @break-middle) {
+    @media only screen and (min-width: @break-sm) {
       .vertical-center;
       width: 100%;
       height: 100%;
     }
-    @media only screen and (max-width: @break-middle) {
+    @media only screen and (max-width: @break-sm) {
       margin-top: 110px;
       position: relative;
       width: auto;
     }
   }
   .title {
-    .font-family-light;
+
     .center;
     display: block;
     color: @color-charcoal-grey;
     font-weight: 300;
 
     font-size: 54px;
-    @media only screen and (max-width: @break-md) {
+    @media only screen and (max-width: @break-lg) {
       font-size: 48px;
     }
-    @media only screen and (max-width: @break-sm) {
+    @media only screen and (max-width: @break-md) {
       font-size: 36px;
     }
-    @media only screen and (max-width: @break-middle) {
+    @media only screen and (max-width: @break-sm) {
       font-size: 24px;
     }
   }
@@ -41,51 +41,51 @@
       margin-bottom: -7px;
       img {
         // starting height from CDN is 40px
-        @media only screen and (max-width: @break-md) {
+        @media only screen and (max-width: @break-lg) {
           height: 33px;
         }
-        @media only screen and (max-width: @break-sm) {
+        @media only screen and (max-width: @break-md) {
           height: 25px;
         }
-        @media only screen and (max-width: @break-middle) {
+        @media only screen and (max-width: @break-sm) {
           height: 17px;
         }
       }
     }
     .name {
       display: inline-block;
-      .font-family-medium;
+
       font-weight: 500;
       color: @color-daybreak-blue;
 
       font-size: 72px;
-      @media only screen and (max-width: @break-md) {
+      @media only screen and (max-width: @break-lg) {
         font-size: 64px;
       }
-      @media only screen and (max-width: @break-sm) {
+      @media only screen and (max-width: @break-md) {
         font-size: 48px;
       }
-      @media only screen and (max-width: @break-middle) {
+      @media only screen and (max-width: @break-sm) {
         font-size: 30px;
       }
     }
   }
   .select {
     display: block;
-    .font-family-light;
+
     text-align: center;
     color: @color-charcoal-grey;
     margin: 40px 0 25px 0; // Total margin bottom is 50, but 25 of that is coming from the where_to_buy section
     font-weight: 300;
 
     font-size: 36px;
-    @media only screen and (max-width: @break-md) {
+    @media only screen and (max-width: @break-lg) {
       font-size: 28px;
     }
-    @media only screen and (max-width: @break-sm) {
+    @media only screen and (max-width: @break-md) {
       font-size: 24px;
     }
-    @media only screen and (max-width: @break-middle) {
+    @media only screen and (max-width: @break-sm) {
       font-size: 20px;
     }
   }
@@ -106,13 +106,13 @@
 
       padding: 60px 30px;
       margin: 25px;
-      @media only screen and (max-width: @break-md) {
+      @media only screen and (max-width: @break-lg) {
         padding: 50px 28px;
       }
-      @media only screen and (max-width: @break-sm) {
+      @media only screen and (max-width: @break-md) {
         padding: 40px 24px;
       }
-      @media only screen and (max-width: @break-middle) {
+      @media only screen and (max-width: @break-sm) {
         padding: 30px 20px;
         margin: 20px;
       }
@@ -121,13 +121,13 @@
       }
       img {
         max-width: 200px;
-        @media only screen and (max-width: @break-md) {
+        @media only screen and (max-width: @break-lg) {
           max-width: 176px;
         }
-        @media only screen and (max-width: @break-sm) {
+        @media only screen and (max-width: @break-md) {
           max-width: 146px;
         }
-        @media only screen and (max-width: @break-middle) {
+        @media only screen and (max-width: @break-sm) {
           max-width: 116px;
         }
       }

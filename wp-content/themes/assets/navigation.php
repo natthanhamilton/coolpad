@@ -1,81 +1,77 @@
-<nav class="navbar" id="main_nav">
-	<div class=container>
-		<div class=navbar-header>
-			<button type="button" class="navbar-toggle menu-lg" data-toggle=collapse data-target="#navigation">
-				<span class=sr-only>Toggle navigation</span>
-				<span class=icon-bar></span><span class=icon-bar></span><span class=icon-bar></span>
-			</button>
-			<a class="navbar-brand navbar-left brand-small" href="http://coolpad.us/">
-				<img class="img-responsive"
-				     src="http://res.cloudinary.com/coolpad/image/upload/c_scale,h_20/v1462471233/logos/Coolpad.jpg"
-				     alt="Coolpad Americas">
-			</a>
-		</div>
-		<div class="collapse navbar-collapse" id=navigation>
-			<ul class="nav navbar-nav">
-				<li>
-					<a class="navbar-brand brand-large" href="http://coolpad.us/">
-						<img class="img-responsive"
-						     src="http://res.cloudinary.com/coolpad/image/upload/c_scale,h_20/v1462471233/logos/Coolpad.jpg"
-						     alt="Coolpad Americas">
-					</a>
-				</li>
-				<li class="dropdown-full no-shadow no-border-radius">
-					<a data-toggle=dropdown href="javascript:void(0);" class=dropdown-toggle>Phones</a>
-					<div class="dropdown-menu row">
-						<ul class=row>
-							<li class="col-sm-4">
-								<a href="http://coolpad.us/products/tattoo">
-									<div class="image">
-										<img class="img-responsive"
-										     src="http://res.cloudinary.com/coolpad/image/upload/v1467700465/phones/tattoo-front.png"
-										     alt="Coolpad Tattoo">
-									</div>
-									Coolpad Tattoo
-										<span class="desc">
-											For Style
-										</span>
-								</a>
-							</li>
-							<li class="col-sm-4">
-								<a href="http://coolpad.us/products/catalyst">
-									<div class="image">
-										<img class="img-responsive"
-										     src="http://res.cloudinary.com/coolpad/image/upload/v1467700465/phones/catalyst-front.png"
-										     alt="Coolpad Catalyst">
-									</div>
-									Coolpad Catalyst
-										<span class="desc">
-											For Change
-										</span>
-								</a>
-							</li>
-							<li class="col-sm-4">
-								<a href="http://coolpad.us/products/rogue">
-									<div class="image">
-										<img class="img-responsive"
-										     src="http://res.cloudinary.com/coolpad/image/upload/v1467700465/phones/rogue-front.png"
-										     alt="Coolpad Rogue">
-									</div>
-									Coolpad Rogue
-										<span class="desc">
-											For Spirit
-										</span>
-								</a>
-							</li>
-						</ul>
-					</div>
-				</li>
-				<li class="dropdown">
-					<a href="javascript:void(0);" data-toggle="dropdown" class="dropdown-toggle">About</a>
-					<div class="dropdown-menu">
-						<ul>
-							<li><a href="http://coolpad.us/about">Our Story</a></li>
-							<li><a href="http://coolpad.us/news">Coolpad News</a></li>
-							<li><a href="http://coolpad.us/careers">Careers</a></li>
-							<li><a href="http://coolpad.us/contact">Contact Us</a></li>
-						</ul>
-					</div>
-				</li>
-				<li><a href="http://support.coolpad.us/">Support</a></li>
-				<li><a href="http://store.coolpad.us/">Store</a></li>
+<!-- Navigation -->
+<nav class="navbar dropdown-onhover no-fix no-border" role=navigation id="topnav-transparent">
+        <div class="navbar-header vertical-center" style="padding-top: 8px">
+            <ul class="nav navbar-nav navbar-left">
+                <!-- Side navigation toggle -->
+                <li>
+                </li>
+            <li><a class="navbar-brand navbar-left" href="http://coolpad.us/">
+                <img class="img-responsive"
+                     src="http://res.cloudinary.com/coolpad/image/upload/v1480838252/logos/Coolpad-white.png"
+                     alt="Coolpad Americas">
+            </a></li>
+            </ul>
+        </div>
+        <div class="collapse navbar-collapse">
+            <ul class="nav navbar-nav navbar-left">
+                <li class="navbar-brand"><a href="http://coolpad.us/">
+                    <img class="img-responsive"
+                         src="http://res.cloudinary.com/coolpad/image/upload/v1480838252/logos/Coolpad-white.png"
+                         alt="Coolpad Americas">
+                </a></li>
+                <li class="dropdown-full no-shadow">
+                    <a href="#" class="dropdown-toggle top-level">Phones</a>
+                    <div class="dropdown-menu row vertical-center">
+                        <wrapper>
+                            <ul class=row>
+                                <li class="col-xs-6 col-sm-2">
+                                    <a href="http://coolpad.us/products/catalyst">
+                                        <div class="image">
+                                            <img class="img-responsive"
+                                                 src="http://res.cloudinary.com/coolpad/image/upload/v1480838344/phones/Conjr.png"
+                                                 alt="Coolpad Conjr">
+                                        </div>
+                                        Coolpad Conjr
+                                    </a>
+                                </li>
+                                <li class="col-xs-6 col-sm-2">
+                                    <a href="http://coolpad.us/products/catalyst">
+                                        <div class="image">
+                                            <img class="img-responsive"
+                                                 src="http://res.cloudinary.com/coolpad/image/upload/v1480838344/phones/Catalyst.png"
+                                                 alt="Coolpad catalyst">
+                                        </div>
+                                        Coolpad catalyst
+                                    </a>
+                                </li>
+                                <li class="col-xs-6 col-sm-2">
+                                    <a href="http://coolpad.us/products/tattoo">
+                                        <div class="image">
+                                            <img class="img-responsive"
+                                                 src="http://res.cloudinary.com/coolpad/image/upload/v1480838344/phones/Tattoo.png"
+                                                 alt="Coolpad Tattoo">
+                                        </div>
+                                        Coolpad Tattoo
+                                    </a>
+                                </li>
+                                <li class="col-xs-6 col-sm-2">
+                                    <a href="http://coolpad.us/products/rogue">
+                                        <div class="image">
+                                            <img class="img-responsive"
+                                                 src="http://res.cloudinary.com/coolpad/image/upload/v1480838344/phones/Rogue.png"
+                                                 alt="Coolpad Rogue">
+                                        </div>
+                                        Coolpad Rogue
+                                    </a>
+                                </li>
+                            </ul>
+                        </wrapper>
+                    </div>
+                </li>
+                <li><a href="http://coolpad.us/about">About</a></li>
+                <li><a href="http://coolpad.us/blogs">News</a></li>
+                <li><a href="http://support.coolpad.us/">Support</a></li>
+                <li><a href="http://store.coolpad.us/">Store</a></li>
+            </ul>
+            <ul class="nav navbar-nav navbar-right">
+

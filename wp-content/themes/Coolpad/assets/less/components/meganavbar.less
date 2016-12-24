@@ -2195,7 +2195,7 @@ li.products {
         text-align: left;
         .title {
           margin-bottom: 10px;
-          .font-family-medium;
+
           font-size: 16px;
           line-height: 1.5;
           color: #ffffff;
@@ -2203,7 +2203,7 @@ li.products {
           text-align: left;
         }
         .description {
-          .font-family-light;
+
           font-size: 16px;
           line-height: 1.5;
           color: #ffffff;
@@ -2217,7 +2217,7 @@ li.products {
 
 .navbar {
   z-index: 1040;
-  @media only screen and (max-width: @break-sm) {
+  @media only screen and (max-width: @break-md) {
     border: none;
   }
   .navbar-header {
@@ -2225,12 +2225,12 @@ li.products {
   margin-bottom: 0 !important;
   .container {
     .center;
-    @media only screen and (min-width: @break-sm) {
+    @media only screen and (min-width: @break-md) {
       width: 100%;
       .vertical-center;
     }
     .navbar-collapse {
-      @media only screen and (max-width: @break-sm) {
+      @media only screen and (max-width: @break-md) {
         position: absolute;
         width: 100%;
         background-color: #fff;
@@ -2239,17 +2239,21 @@ li.products {
     ul {
       li {
         a {
-          .font-family-light;
+
           font-size: 16px;
           color: #3b3fb6;
+          &:hover {
+            background-color: @color-daybreak-blue;
+            color: #fff;
+          }
           // Responsive elements
           padding: 17px 35px 14px 35px;
-          @media only screen and (min-width: @break-sm) and (max-width: @break-md) {
+          @media only screen and (min-width: @break-md) and (max-width: @break-lg) {
             padding: 19px 18px 13px 18px;
           }
         }
         .navbar-brand {
-          @media only screen and (max-width: @break-sm) {
+          @media only screen and (max-width: @break-md) {
             display: none;
           }
         }
@@ -2281,25 +2285,25 @@ li.products {
       }
     }
     .col-sm-3 {
-      @media only screen and (min-width: @break-middle) and (max-width: @break-sm) {
+      @media only screen and (min-width: @break-sm) and (max-width: @break-md) {
         width: 50%;
         float: left;;
       }
     }
   }
   .brand-small {
-    @media only screen and (max-width: @break-sm) {
+    @media only screen and (max-width: @break-md) {
       display: block;
     }
-    @media only screen and (min-width: @break-sm) {
+    @media only screen and (min-width: @break-md) {
       display: none;
     }
   }
   .brand-large {
-    @media only screen and (max-width: @break-sm) {
+    @media only screen and (max-width: @break-md) {
       display: none;
     }
-    @media only screen and (min-width: @break-sm) {
+    @media only screen and (min-width: @break-md) {
       display: block;
     }
   }

@@ -24,28 +24,28 @@ class WC_Admin_Settings {
 	 *
 	 * @var array
 	 */
-	private static $settings = [];
+	private static $settings = array();
 
 	/**
 	 * Error messages.
 	 *
 	 * @var array
 	 */
-	private static $errors   = [];
+	private static $errors   = array();
 
 	/**
 	 * Update messages.
 	 *
 	 * @var array
 	 */
-	private static $messages = [];
+	private static $messages = array();
 
 	/**
 	 * Include the settings page classes.
 	 */
 	public static function get_settings_pages() {
 		if ( empty( self::$settings ) ) {
-			$settings = [];
+			$settings = array();
 
 			include_once( 'settings/class-wc-settings-page.php' );
 
@@ -94,8 +94,7 @@ class WC_Admin_Settings {
 
 	/**
 	 * Add a message.
-	 *
-*@param string $text
+	 * @param string $text
 	 */
 	public static function add_message( $text ) {
 		self::$messages[] = $text;
@@ -103,8 +102,7 @@ class WC_Admin_Settings {
 
 	/**
 	 * Add an error.
-	 *
-*@param string $text
+	 * @param string $text
 	 */
 	public static function add_error( $text ) {
 		self::$errors[] = $text;
@@ -112,8 +110,7 @@ class WC_Admin_Settings {
 
 	/**
 	 * Output messages + errors.
-	 *
-*@return string
+	 * @return string
 	 */
 	public static function show_messages() {
 		if ( sizeof( self::$errors ) > 0 ) {
@@ -139,11 +136,11 @@ class WC_Admin_Settings {
 
 		do_action( 'woocommerce_settings_start' );
 
-		wp_enqueue_script( 'woocommerce_settings', WC()->plugin_url() . '/assets/js/admin/settings' . $suffix . '.js', [ 'jquery', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'iris', 'select2' ], WC()->version, TRUE );
+		wp_enqueue_script( 'woocommerce_settings', WC()->plugin_url() . '/assets/js/admin/settings' . $suffix . '.js', array( 'jquery', 'jquery-ui-datepicker', 'jquery-ui-sortable', 'iris', 'select2' ), WC()->version, true );
 
-		wp_localize_script( 'woocommerce_settings', 'woocommerce_settings_params', [
+		wp_localize_script( 'woocommerce_settings', 'woocommerce_settings_params', array(
 			'i18n_nav_warning' => __( 'The changes you made will be lost if you navigate away from this page.', 'woocommerce' )
-		] );
+		) );
 
 		// Include settings pages
 		self::get_settings_pages();
@@ -167,7 +164,7 @@ class WC_Admin_Settings {
 		}
 
 		// Get tabs for the settings page
-		$tabs = apply_filters( 'woocommerce_settings_tabs_array', [] );
+		$tabs = apply_filters( 'woocommerce_settings_tabs_array', array() );
 
 		include 'views/html-admin-settings.php';
 	}
@@ -176,8 +173,7 @@ class WC_Admin_Settings {
 	 * Get a setting from the settings API.
 	 *
 	 * @param mixed $option_name
-	 *
-*@return string
+	 * @return string
 	 */
 	public static function get_option( $option_name, $default = '' ) {
 		// Array value
@@ -196,12 +192,12 @@ class WC_Admin_Settings {
 			if ( isset( $option_values[ $key ] ) ) {
 				$option_value = $option_values[ $key ];
 			} else {
-				$option_value = NULL;
+				$option_value = null;
 			}
 
 		// Single value
 		} else {
-			$option_value = get_option( $option_name, NULL );
+			$option_value = get_option( $option_name, null );
 		}
 
 		if ( is_array( $option_value ) ) {
@@ -210,7 +206,7 @@ class WC_Admin_Settings {
 			$option_value = stripslashes( $option_value );
 		}
 
-		return $option_value === NULL ? $default : $option_value;
+		return $option_value === null ? $default : $option_value;
 	}
 
 	/**
@@ -244,14 +240,14 @@ class WC_Admin_Settings {
 				$value['desc'] = '';
 			}
 			if ( ! isset( $value['desc_tip'] ) ) {
-				$value['desc_tip'] = FALSE;
+				$value['desc_tip'] = false;
 			}
 			if ( ! isset( $value['placeholder'] ) ) {
 				$value['placeholder'] = '';
 			}
 
 			// Custom attribute handling
-			$custom_attributes = [];
+			$custom_attributes = array();
 
 			if ( ! empty( $value['custom_attributes'] ) && is_array( $value['custom_attributes'] ) ) {
 				foreach ( $value['custom_attributes'] as $attribute => $attribute_value ) {
@@ -383,7 +379,7 @@ class WC_Admin_Settings {
 										<option value="<?php echo esc_attr( $key ); ?>" <?php
 
 											if ( is_array( $option_value ) ) {
-												selected( in_array( $key, $option_value ), TRUE );
+												selected( in_array( $key, $option_value ), true );
 											} else {
 												selected( $option_value, $key );
 											}
@@ -438,13 +434,13 @@ class WC_Admin_Settings {
 				case 'checkbox' :
 
 					$option_value    = self::get_option( $value['id'], $value['default'] );
-					$visbility_class = [];
+					$visbility_class = array();
 
 					if ( ! isset( $value['hide_if_checked'] ) ) {
-						$value['hide_if_checked'] = FALSE;
+						$value['hide_if_checked'] = false;
 					}
 					if ( ! isset( $value['show_if_checked'] ) ) {
-						$value['show_if_checked'] = FALSE;
+						$value['show_if_checked'] = false;
 					}
 					if ( 'yes' == $value['hide_if_checked'] || 'yes' == $value['show_if_checked'] ) {
 						$visbility_class[] = 'hidden_option';
@@ -533,16 +529,16 @@ class WC_Admin_Settings {
 				// Single page selects
 				case 'single_select_page' :
 
-					$args = [
+					$args = array(
 						'name'             => $value['id'],
 						'id'               => $value['id'],
 						'sort_column'      => 'menu_order',
 						'sort_order'       => 'ASC',
 						'show_option_none' => ' ',
 						'class'            => $value['class'],
-						'echo'             => FALSE,
+						'echo'             => false,
 						'selected'         => absint( self::get_option( $value['id'] ) )
-					];
+					);
 
 					if ( isset( $value['args'] ) ) {
 						$args = wp_parse_args( $value['args'], $args );
@@ -602,7 +598,7 @@ class WC_Admin_Settings {
 								<?php
 									if ( ! empty( $countries ) ) {
 										foreach ( $countries as $key => $val ) {
-											echo '<option value="' . esc_attr( $key ) . '" ' . selected( in_array( $key, $selections ), TRUE, FALSE ).'>' . $val . '</option>';
+											echo '<option value="' . esc_attr( $key ) . '" ' . selected( in_array( $key, $selections ), true, false ).'>' . $val . '</option>';
 										}
 									}
 								?>
@@ -625,14 +621,13 @@ class WC_Admin_Settings {
 	 * settings types.
 	 *
 	 * @param  array $value The form field value array
-	 *
-*@return array The description and tip as a 2 element array
+	 * @return array The description and tip as a 2 element array
 	 */
 	public static function get_field_description( $value ) {
 		$description  = '';
 		$tooltip_html = '';
 
-		if ( TRUE === $value['desc_tip'] ) {
+		if ( true === $value['desc_tip'] ) {
 			$tooltip_html = $value['desc'];
 		} elseif ( ! empty( $value['desc_tip'] ) ) {
 			$description  = $value['desc'];
@@ -641,24 +636,24 @@ class WC_Admin_Settings {
 			$description  = $value['desc'];
 		}
 
-		if ( $description && in_array( $value['type'], [ 'textarea', 'radio' ] ) ) {
+		if ( $description && in_array( $value['type'], array( 'textarea', 'radio' ) ) ) {
 			$description = '<p style="margin-top:0">' . wp_kses_post( $description ) . '</p>';
-		} elseif ( $description && in_array( $value['type'], [ 'checkbox' ] ) ) {
+		} elseif ( $description && in_array( $value['type'], array( 'checkbox' ) ) ) {
 			$description = wp_kses_post( $description );
 		} elseif ( $description ) {
 			$description = '<span class="description">' . wp_kses_post( $description ) . '</span>';
 		}
 
-		if ( $tooltip_html && in_array( $value['type'], [ 'checkbox' ] ) ) {
+		if ( $tooltip_html && in_array( $value['type'], array( 'checkbox' ) ) ) {
 			$tooltip_html = '<p class="description">' . $tooltip_html . '</p>';
 		} elseif ( $tooltip_html ) {
 			$tooltip_html = wc_help_tip( $tooltip_html );
 		}
 
-		return [
+		return array(
 			'description'  => $description,
 			'tooltip_html' => $tooltip_html
-		];
+		);
 	}
 
 	/**
@@ -667,16 +662,15 @@ class WC_Admin_Settings {
 	 * Loops though the woocommerce options array and outputs each field.
 	 *
 	 * @param array $options Options array to output
-	 *
-*@return bool
+	 * @return bool
 	 */
 	public static function save_fields( $options ) {
 		if ( empty( $_POST ) ) {
-			return FALSE;
+			return false;
 		}
 
 		// Options to update will be stored here and saved later.
-		$update_options = [];
+		$update_options = array();
 
 		// Loop options and get values to save.
 		foreach ( $options as $option ) {
@@ -689,11 +683,11 @@ class WC_Admin_Settings {
 				parse_str( $option['id'], $option_name_array );
 				$option_name  = current( array_keys( $option_name_array ) );
 				$setting_name = key( $option_name_array[ $option_name ] );
-				$raw_value    = isset( $_POST[ $option_name ][ $setting_name ] ) ? wp_unslash( $_POST[ $option_name ][ $setting_name ] ) : NULL;
+				$raw_value    = isset( $_POST[ $option_name ][ $setting_name ] ) ? wp_unslash( $_POST[ $option_name ][ $setting_name ] ) : null;
 			} else {
 				$option_name  = $option['id'];
 				$setting_name = '';
-				$raw_value    = isset( $_POST[ $option['id'] ] ) ? wp_unslash( $_POST[ $option['id'] ] ) : NULL;
+				$raw_value    = isset( $_POST[ $option['id'] ] ) ? wp_unslash( $_POST[ $option['id'] ] ) : null;
 			}
 
 			// Format the value based on option type.
@@ -709,7 +703,7 @@ class WC_Admin_Settings {
 					$value = array_filter( array_map( 'wc_clean', (array) $raw_value ) );
 					break;
 				case 'image_width' :
-					$value = [];
+					$value = array();
 					if ( isset( $raw_value['width'] ) ) {
 						$value['width']  = wc_clean( $raw_value['width'] );
 						$value['height'] = wc_clean( $raw_value['height'] );
@@ -727,8 +721,7 @@ class WC_Admin_Settings {
 
 			/**
 			 * Fire an action when a certain 'type' of field is being saved.
-			 *
-*@deprecated 2.4.0 - doesn't allow manipulation of values!
+			 * @deprecated 2.4.0 - doesn't allow manipulation of values!
 			 */
 			if ( has_action( 'woocommerce_update_option_' . sanitize_title( $option['type'] ) ) ) {
 				_deprecated_function( 'The woocommerce_update_option_X action', '2.4.0', 'woocommerce_admin_settings_sanitize_option filter' );
@@ -738,15 +731,13 @@ class WC_Admin_Settings {
 
 			/**
 			 * Sanitize the value of an option.
-			 *
-*@since 2.4.0
+			 * @since 2.4.0
 			 */
 			$value = apply_filters( 'woocommerce_admin_settings_sanitize_option', $value, $option, $raw_value );
 
 			/**
 			 * Sanitize the value of an option by option name.
-			 *
-*@since 2.4.0
+			 * @since 2.4.0
 			 */
 			$value = apply_filters( "woocommerce_admin_settings_sanitize_option_$option_name", $value, $option, $raw_value );
 
@@ -757,10 +748,10 @@ class WC_Admin_Settings {
 			// Check if option is an array and handle that differently to single values.
 			if ( $option_name && $setting_name ) {
 				if ( ! isset( $update_options[ $option_name ] ) ) {
-					$update_options[ $option_name ] = get_option( $option_name, [] );
+					$update_options[ $option_name ] = get_option( $option_name, array() );
 				}
 				if ( ! is_array( $update_options[ $option_name ] ) ) {
-					$update_options[ $option_name ] = [];
+					$update_options[ $option_name ] = array();
 				}
 				$update_options[ $option_name ][ $setting_name ] = $value;
 			} else {
@@ -769,8 +760,7 @@ class WC_Admin_Settings {
 
 			/**
 			 * Fire an action before saved.
-			 *
-*@deprecated 2.4.0 - doesn't allow manipulation of values!
+			 * @deprecated 2.4.0 - doesn't allow manipulation of values!
 			 */
 			do_action( 'woocommerce_update_option', $option );
 		}
@@ -780,7 +770,7 @@ class WC_Admin_Settings {
 			update_option( $name, $value );
 		}
 
-		return TRUE;
+		return true;
 	}
 
 	/**

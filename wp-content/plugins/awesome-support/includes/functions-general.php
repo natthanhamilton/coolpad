@@ -8,12 +8,15 @@
  * @return mixed           Value for the requested option
  * @since  1.0.0
  */
-function wpas_get_option($option, $default = FALSE) {
-    $options = maybe_unserialize(get_option('wpas_options', []));
-    /* Return option value if exists */
-    $value = isset($options[ $option ]) ? $options[ $option ] : $default;
+function wpas_get_option( $option, $default = false ) {
 
-    return apply_filters('wpas_option_' . $option, $value);
+	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+
+	/* Return option value if exists */
+	$value = isset( $options[ $option ] ) ? $options[ $option ] : $default;
+
+	return apply_filters( 'wpas_option_' . $option, $value );
+
 }
 
 /**
@@ -23,20 +26,31 @@ function wpas_get_option($option, $default = FALSE) {
  *
  * @param mixed $option The name of the option to update
  * @param mixed $value  The new value for this option
+ * @param bool  $add    Whether or not a new key should be added if $option is not found in the options array
  *
  * @return bool
  */
-function wpas_update_option($option, $value) {
-    $options = maybe_unserialize(get_option('wpas_options', []));
-    if (!array_key_exists($option, $options)) {
-        return FALSE;
-    }
-    if ($value === $options[ $option ]) {
-        return FALSE;
-    }
-    $options[ $option ] = $value;
+function wpas_update_option( $option, $value, $add = false ) {
 
-    return update_option('wpas_options', serialize($options));
+	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+
+	// Add a new option key if it doesn't yet exist
+	if ( ! array_key_exists( $option, $options ) && true === $add ) {
+		$options[ $option ] = '';
+	}
+
+	if ( ! array_key_exists( $option, $options ) ) {
+		return false;
+	}
+
+	if ( $value === $options[ $option ] ) {
+		return false;
+	}
+
+	$options[ $option ] = $value;
+
+	return update_option( 'wpas_options', serialize( $options ) );
+
 }
 
 /**
@@ -46,17 +60,23 @@ function wpas_update_option($option, $value) {
  *
  * @return string
  */
-function wpas_get_open_ticket_url($ticket_id) {
-    $remove = ['post', 'message'];
-    $args   = $_GET;
-    foreach ($remove as $key) {
-        if (isset($args[ $key ])) {
-            unset($args[ $key ]);
-        }
-    }
-    $args['post'] = intval($ticket_id);
+function wpas_get_open_ticket_url( $ticket_id ) {
 
-    return wpas_do_url(add_query_arg($args, admin_url('post.php')), 'admin_open_ticket', ['post' => (int)$ticket_id]);
+	$remove = array( 'post', 'message' );
+	$args   = $_GET;
+
+	foreach ( $remove as $key ) {
+
+		if ( isset( $args[ $key ] ) ) {
+			unset( $args[ $key ] );
+		}
+
+	}
+
+	$args['post'] = intval( $ticket_id );
+
+	return wpas_do_url( add_query_arg( $args, admin_url( 'post.php' ) ), 'admin_open_ticket', array( 'post' => (int) $ticket_id ) );
+
 }
 
 /**
@@ -66,50 +86,53 @@ function wpas_get_open_ticket_url($ticket_id) {
  *
  * @return string
  */
-function wpas_get_close_ticket_url($ticket_id) {
-    $url = add_query_arg('post_type', 'ticket', admin_url('edit.php'));
+function wpas_get_close_ticket_url( $ticket_id ) {
 
-    return wpas_do_url($url, 'admin_close_ticket', ['post' => $ticket_id]);
+	$url = add_query_arg( 'post_type', 'ticket', admin_url( 'edit.php' ) );
+
+	return wpas_do_url( $url, 'admin_close_ticket', array( 'post' => $ticket_id ) );
 }
 
 /**
  * Get safe tags for content output.
- *
+ * 
  * @return array List of allowed tags
  * @since  3.0.0
  */
 function wpas_get_safe_tags() {
-    $tags = [
-        'a'          => [
-            'href'  => [],
-            'title' => []],
-        'abbr'       => [
-            'title' => []],
-        'acronym'    => [
-            'title' => []],
-        'b'          => [],
-        'blockquote' => [
-            'cite' => []],
-        'cite'       => [],
-        'code'       => [],
-        'pre'        => [],
-        'del'        => [
-            'datetime' => []],
-        'em'         => [], 'i' => [],
-        'q'          => [
-            'cite' => []],
-        'strike'     => [],
-        'strong'     => [],
-        'h1'         => [],
-        'h2'         => [],
-        'h3'         => [],
-        'h4'         => [],
-        'h5'         => [],
-        'h6'         => [],
-        'p'          => [],
-    ];
 
-    return apply_filters('wpas_get_safe_tags', $tags);
+	$tags = array(
+		'a' => array(
+			'href' => array (),
+			'title' => array ()),
+		'abbr' => array(
+			'title' => array ()),
+		'acronym' => array(
+			'title' => array ()),
+		'b' => array(),
+		'blockquote' => array(
+			'cite' => array ()),
+		'cite' => array (),
+		'code' => array(),
+		'pre' => array(),
+		'del' => array(
+			'datetime' => array ()),
+		'em' => array (), 'i' => array (),
+		'q' => array(
+			'cite' => array ()),
+		'strike' => array(),
+		'strong' => array(),
+		'h1' => array(),
+		'h2' => array(),
+		'h3' => array(),
+		'h4' => array(),
+		'h5' => array(),
+		'h6' => array(),
+		'p' => array(),
+	);
+
+	return apply_filters( 'wpas_get_safe_tags', $tags );
+
 }
 
 /**
@@ -124,65 +147,80 @@ function wpas_get_safe_tags() {
  * @return boolean ether or not the current page belongs to the plugin
  * @since  3.0.0
  */
-function wpas_is_plugin_page($slug = '') {
-    global $post;
-    $ticket_list   = wpas_get_option('ticket_list');
-    $ticket_submit = wpas_get_option('ticket_submit');
-    /* Make sure these are arrays. Multiple selects were only used since 3.2, in earlier versions those options are strings */
-    if (!is_array($ticket_list)) {
-        $ticket_list = (array)$ticket_list;
-    }
-    if (!is_array($ticket_submit)) {
-        $ticket_submit = (array)$ticket_submit;
-    }
-    $plugin_post_types     = apply_filters('wpas_plugin_post_types', ['ticket']);
-    $plugin_admin_pages    = apply_filters('wpas_plugin_admin_pages', ['wpas-status', 'wpas-addons', 'wpas-settings']);
-    $plugin_frontend_pages = apply_filters('wpas_plugin_frontend_pages', array_merge($ticket_list, $ticket_submit));
-    /* Check for plugin pages in the admin */
-    if (is_admin()) {
-        /* First of all let's check if there is a specific slug given */
-        if (!empty($slug) && in_array($slug, $plugin_admin_pages)) {
-            return TRUE;
-        }
-        /* If the current post if of one of our post types */
-        if (isset($post) && isset($post->post_type) && in_array($post->post_type, $plugin_post_types)) {
-            return TRUE;
-        }
-        /* If the page we're in relates to one of our post types */
-        if (isset($_GET['post_type']) && in_array($_GET['post_type'], $plugin_post_types)) {
-            return TRUE;
-        }
-        /* If the page belongs to the plugin */
-        if (isset($_GET['page']) && in_array($_GET['page'], $plugin_admin_pages)) {
-            return TRUE;
-        }
+function wpas_is_plugin_page( $slug = '' ) {
 
-        /* In none of the previous conditions was true, return false by default. */
+	global $post;
 
-        return FALSE;
-    } else {
-        global $post;
-        if (empty($post)) {
-            $protocol = stripos($_SERVER['SERVER_PROTOCOL'], 'https') === TRUE ? 'https://' : 'http://';
-            $post_id  = url_to_postid($protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI']);
-            $post     = get_post($post_id);
-        }
-        if (is_singular('ticket')) {
-            return TRUE;
-        }
-        if (isset($post) && is_object($post) && is_a($post, 'WP_Post')) {
-            // Check for post IDs
-            if (in_array($post->ID, $plugin_frontend_pages)) {
-                return TRUE;
-            }
-            // Check for post types
-            if (in_array($post->post_type, $plugin_post_types)) {
-                return TRUE;
-            }
-        }
+	$ticket_list   = wpas_get_option( 'ticket_list' );
+	$ticket_submit = wpas_get_option( 'ticket_submit' );
 
-        return FALSE;
-    }
+	/* Make sure these are arrays. Multiple selects were only used since 3.2, in earlier versions those options are strings */
+	if( ! is_array( $ticket_list ) ) { $ticket_list = (array) $ticket_list; }
+	if( ! is_array( $ticket_submit ) ) { $ticket_submit = (array) $ticket_submit; }
+
+	$plugin_post_types     = apply_filters( 'wpas_plugin_post_types',     array( 'ticket' ) );
+	$plugin_admin_pages    = apply_filters( 'wpas_plugin_admin_pages',    array( 'wpas-status', 'wpas-addons', 'wpas-settings', 'wpas-optin' ) );
+	$plugin_frontend_pages = apply_filters( 'wpas_plugin_frontend_pages', array_merge( $ticket_list, $ticket_submit ) );
+
+	/* Check for plugin pages in the admin */
+	if ( is_admin() ) {
+
+		/* First of all let's check if there is a specific slug given */
+		if ( ! empty( $slug ) && in_array( $slug, $plugin_admin_pages ) ) {
+			return true;
+		}
+
+		/* If the current post if of one of our post types */
+		if ( isset( $post ) && isset( $post->post_type ) && in_array( $post->post_type, $plugin_post_types ) ) {
+			return true;
+		}
+
+		/* If the page we're in relates to one of our post types */
+		if ( isset( $_GET['post_type'] ) && in_array( $_GET['post_type'], $plugin_post_types ) ) {
+			return true;
+		}
+
+		/* If the page belongs to the plugin */
+		if ( isset( $_GET['page'] ) && in_array( $_GET['page'], $plugin_admin_pages ) ) {
+			return true;
+		}
+
+		/* In none of the previous conditions was true, return false by default. */
+
+		return false;
+
+	} else {
+
+		global $post;
+
+		if ( empty( $post ) ) {
+			$protocol = stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true ? 'https://' : 'http://';
+			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] );
+			$post     = get_post( $post_id );
+		}
+
+		if ( is_singular( 'ticket' ) ) {
+			return true;
+		}
+
+		if ( isset( $post ) && is_object( $post ) && is_a( $post, 'WP_Post' ) ) {
+
+			// Check for post IDs
+			if ( in_array( $post->ID, $plugin_frontend_pages ) ) {
+				return true;
+			}
+
+			// Check for post types
+			if ( in_array( $post->post_type,$plugin_post_types  ) ) {
+				return true;
+			}
+
+		}
+
+		return false;
+
+	}
+
 }
 
 /**
@@ -192,21 +230,21 @@ function wpas_is_plugin_page($slug = '') {
  * a nicely formatted title.
  *
  * @since  3.0.0
- *
  * @param  string $id ID to transform
- *
  * @return string     Nicely formatted title
  */
-function wpas_get_title_from_id($id) {
-    return ucwords(str_replace(['-', '_'], ' ', $id));
+function wpas_get_title_from_id( $id ) {
+	return ucwords( str_replace( array( '-', '_' ), ' ', $id ) );
 }
 
-function wpas_get_field_title($field) {
-    if (!empty($field['args']['title'])) {
-        return sanitize_text_field($field['args']['title']);
-    } else {
-        return wpas_get_title_from_id($field['name']);
-    }
+function wpas_get_field_title( $field ) {
+
+	if ( !empty( $field['args']['title'] ) ) {
+		return sanitize_text_field( $field['args']['title'] );
+	} else {
+		return wpas_get_title_from_id( $field['name'] );
+	}
+
 }
 
 /**
@@ -217,39 +255,40 @@ function wpas_get_field_title($field) {
  * more easily readable.
  *
  * @since  3.0.0
- *
  * @param  mixed $thing Data to display
- *
  * @return void
  */
-function wpas_debug_display($thing) {
-    echo '<pre>';
-    print_r($thing);
-    echo '</pre>';
+function wpas_debug_display( $thing ) {
+	echo '<pre>';
+	print_r( $thing );
+	echo '</pre>';
 }
 
-function wpas_make_button($label = NULL, $args = []) {
-    if (is_null($label)) {
-        $label = __('Submit', 'awesome-support');
-    }
-    $defaults = [
-        'type'     => 'button',
-        'link'     => '',
-        'class'    => apply_filters('wpas_make_button_class', 'wpas-btn wpas-btn-default'),
-        'name'     => 'submit',
-        'value'    => '',
-        'onsubmit' => ''
-    ];
-    $args = wp_parse_args($args, $defaults);
-    extract(shortcode_atts($defaults, $args));
-    if ('link' === $args['type'] && !empty($args['link'])) {
-        ?><a href="<?php echo esc_url($args['link']); ?>"
-             class="<?php echo $args['class']; ?>" <?php if (!empty($args['onsubmit'])): echo "data-onsubmit='{$args['onsubmit']}'"; endif; ?>><?php echo $label; ?></a><?php
-    } else {
-        ?>
-        <button type="submit" class="<?php echo $args['class']; ?>" name="<?php echo $args['name']; ?>"
-                value="<?php echo $args['value']; ?>" <?php if (!empty($args['onsubmit'])): echo "data-onsubmit='{$args['onsubmit']}'"; endif; ?>><?php echo $label; ?></button><?php
-    }
+function wpas_make_button( $label = null, $args = array() ) {
+
+	if ( is_null( $label ) ) {
+		$label = __( 'Submit', 'awesome-support' );
+	}
+
+	$defaults = array(
+		'type'     => 'button',
+		'link'     => '',
+		'class'    => apply_filters( 'wpas_make_button_class', 'wpas-btn wpas-btn-default' ),
+		'name'     => 'submit',
+		'value'    => '',
+		'onsubmit' => ''
+	);
+
+	$args = wp_parse_args( $args, $defaults );
+
+	extract( shortcode_atts( $defaults, $args ) );
+
+	if ( 'link' === $args['type'] && !empty( $args['link'] ) ) {
+		?><a href="<?php echo esc_url( $args['link'] ); ?>" class="<?php echo $args['class']; ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo "data-onsubmit='{$args['onsubmit']}'"; endif; ?>><?php echo $label; ?></a><?php
+	} else {
+		?><button type="submit" class="<?php echo $args['class']; ?>" name="<?php echo $args['name']; ?>" value="<?php echo $args['value']; ?>" <?php if ( !empty( $args['onsubmit'] ) ): echo "data-onsubmit='{$args['onsubmit']}'"; endif; ?>><?php echo $label; ?></button><?php
+	}
+
 }
 
 /**
@@ -259,18 +298,18 @@ function wpas_make_button($label = NULL, $args = []) {
  * the function tries to get it from the global $post object.
  *
  * @since  3.0.0
- *
  * @param  mixed $post_id ID of the ticket to check
- *
  * @return string         Current status of the ticket
  */
-function wpas_get_ticket_status($post_id = NULL) {
-    if (is_null($post_id)) {
-        global $post;
-        $post_id = $post->ID;
-    }
+function wpas_get_ticket_status( $post_id = null ) {
 
-    return get_post_meta($post_id, '_wpas_status', TRUE);
+	if ( is_null( $post_id ) ) {
+		global $post;
+		$post_id = $post->ID;
+	}
+
+	return get_post_meta( $post_id, '_wpas_status', true );
+
 }
 
 /**
@@ -285,22 +324,27 @@ function wpas_get_ticket_status($post_id = NULL) {
  *
  * @return string           Ticket status / state
  */
-function wpas_get_ticket_status_state($post_id) {
-    $status = wpas_get_ticket_status($post_id);
-    if ('closed' === $status) {
-        $output = __('Closed', 'awesome-support');
-    } else {
-        $post          = get_post($post_id);
-        $post_status   = $post->post_status;
-        $custom_status = wpas_get_post_status();
-        if (!array_key_exists($post_status, $custom_status)) {
-            $output = __('Open', 'awesome-support');
-        } else {
-            $output = $custom_status[ $post_status ];
-        }
-    }
+function wpas_get_ticket_status_state( $post_id ) {
 
-    return $output;
+	$status = wpas_get_ticket_status( $post_id );
+
+	if ( 'closed' === $status ) {
+		$output = __( 'Closed', 'awesome-support' );
+	} else {
+
+		$post          = get_post( $post_id );
+		$post_status   = $post->post_status;
+		$custom_status = wpas_get_post_status();
+
+		if ( ! array_key_exists( $post_status, $custom_status ) ) {
+			$output = __( 'Open', 'awesome-support' );
+		} else {
+			$output = $custom_status[ $post_status ];
+		}
+	}
+
+	return $output;
+
 }
 
 /**
@@ -318,29 +362,38 @@ function wpas_get_ticket_status_state($post_id) {
  *
  * @return string           Ticket status / state
  */
-function wpas_get_ticket_status_state_slug($post_id) {
-    $status = wpas_get_ticket_status($post_id);
-    if ('closed' === $status) {
-        return $status;
-    }
-    $post          = get_post($post_id);
-    $post_status   = $post->post_status;
-    $custom_status = wpas_get_post_status();
-    if (!array_key_exists($post_status, $custom_status)) {
-        return 'open';
-    }
+function wpas_get_ticket_status_state_slug( $post_id ) {
 
-    return $post->post_status;
+	$status = wpas_get_ticket_status( $post_id );
+
+	if ( 'closed' === $status ) {
+		return $status;
+	}
+
+	$post          = get_post( $post_id );
+	$post_status   = $post->post_status;
+	$custom_status = wpas_get_post_status();
+
+	if ( ! array_key_exists( $post_status, $custom_status ) ) {
+		return 'open';
+	}
+
+	return $post->post_status;
+
 }
 
 function wpas_get_current_admin_url() {
-    global $pagenow;
-    $get = $_GET;
-    if (!isset($get) || !is_array($get)) {
-        $get = [];
-    }
 
-    return esc_url(add_query_arg($get, admin_url($pagenow)));
+	global $pagenow;
+
+	$get = $_GET;
+
+	if ( !isset( $get ) || !is_array( $get ) ) {
+		$get = array();
+	}
+
+	return esc_url( add_query_arg( $get, admin_url( $pagenow ) ) );
+
 }
 
 /**
@@ -358,25 +411,29 @@ function wpas_get_current_admin_url() {
  *
  * @return integer           Returns false if location is not provided, true otherwise
  */
-function wpas_redirect($case, $location = NULL, $post_id = NULL) {
-    if (is_null($location)) {
-        return FALSE;
-    }
-    /**
-     * Filter the redirect URL.
-     *
-     * @param  string $location URL to redirect to
-     * @param  mixed  $post_id  ID of the post to redirect to or null if none specified
-     */
-    $location = apply_filters("wpas_redirect_$case", $location, $post_id);
-    $location = wp_sanitize_redirect($location);
-    if (!headers_sent()) {
-        wp_redirect($location, 302);
-    } else {
-        echo "<meta http-equiv='refresh' content='0; url=$location'>";
-    }
+function wpas_redirect( $case, $location = null, $post_id = null ) {
 
-    return TRUE;
+	if ( is_null( $location ) ) {
+		return false;
+	}
+
+	/**
+	 * Filter the redirect URL.
+	 *
+	 * @param  string $location URL to redirect to
+	 * @param  mixed  $post_id  ID of the post to redirect to or null if none specified
+	 */
+	$location = apply_filters( "wpas_redirect_$case", $location, $post_id );
+	$location = wp_sanitize_redirect( $location );
+
+	if ( ! headers_sent() ) {
+		wp_redirect( $location, 302 );
+	} else {
+		echo "<meta http-equiv='refresh' content='0; url=$location'>";
+	}
+
+	return true;
+
 }
 
 /**
@@ -387,34 +444,28 @@ function wpas_redirect($case, $location = NULL, $post_id = NULL) {
  * and write the $message at the end of it.
  *
  * @since  3.0.2
- *
  * @param  string $handle  The log file handle
  * @param  string $message The message to write
- *
  * @return void
  */
-function wpas_write_log($handle, $message) {
-    $log = new WPAS_Logger($handle);
-    $log->add($message);
+function wpas_write_log( $handle, $message ) {
+	$log = new WPAS_Logger( $handle );
+	$log->add( $message );
 }
 
 /**
  * Show a warning if dependencies aren't loaded.
  *
  * If the dependencies aren't present in the plugin folder
- * we display a warning to the user and explain him how to
+ * we display a warning to the user and explain him how to 
  * fix the issue.
  *
  * @since  3.0.2
  * @return void
  */
 function wpas_missing_dependencies() { ?>
-    <div class="error">
-        <p><?php printf(__('Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href="%s" class="thickbox">install the production version</a> of this plugin instead.',
-                           'awesome-support'),
-                        '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>',
-                        esc_url(add_query_arg(['tab' => 'plugin-information', 'plugin' => 'awesome-support', 'TB_iframe' => 'true', 'width' => '772', 'height' => '935'],
-                                              admin_url('plugin-install.php')))); ?></p>
+	<div class="error">
+        <p><?php printf( __( 'Awesome Support dependencies are missing. The plugin can’t be loaded properly. Please run %s before anything else. If you don’t know what this is you should <a href="%s" class="thickbox">install the production version</a> of this plugin instead.', 'awesome-support' ), '<a href="https://getcomposer.org/doc/00-intro.md#using-composer" target="_blank"><code>composer install</code></a>', esc_url( add_query_arg( array( 'tab' => 'plugin-information', 'plugin' => 'awesome-support', 'TB_iframe' => 'true', 'width' => '772', 'height' => '935' ), admin_url( 'plugin-install.php' ) ) ) ); ?></p>
     </div>
 <?php }
 
@@ -425,33 +476,30 @@ function wpas_missing_dependencies() { ?>
  * or <li> tags.
  *
  * @since  3.1.3
- *
- * @param  string $entry The entry to wrap
- *
+ * @param  string $entry  The entry to wrap
  * @return string         The wrapped element
  */
-function wpas_wrap_li($entry) {
-    if (is_array($entry)) {
-        $entry = wpas_array_to_ul($entry);
-    }
-    $entry = wp_kses_post($entry);
+function wpas_wrap_li( $entry ) {
 
-    return "<li>$entry</li>";
+	if ( is_array( $entry ) ) {
+		$entry = wpas_array_to_ul( $entry );
+	}
+
+	$entry = wp_kses_post( $entry );
+
+	return "<li>$entry</li>";
 }
 
 /**
  * Convert array into an unordered list.
  *
  * @since  3.1.3
- *
  * @param  array $array Array to convert
- *
  * @return string       Unordered list
  */
-function wpas_array_to_ul($array) {
-    $wrapped = array_map('wpas_wrap_li', $array);
-
-    return '<ul>' . implode('', $wrapped) . '</ul>';
+function wpas_array_to_ul( $array ) {
+	$wrapped = array_map( 'wpas_wrap_li', $array );
+	return '<ul>' . implode( '', $wrapped ) . '</ul>';
 }
 
 /**
@@ -464,84 +512,95 @@ function wpas_array_to_ul($array) {
  *
  * @return string          Dropdown with custom options
  */
-function wpas_dropdown($args, $options) {
-    $defaults = [
-        'name'          => 'wpas_user',
-        'id'            => '',
-        'class'         => '',
-        'please_select' => FALSE,
-        'select2'       => FALSE,
-        'disabled'      => FALSE,
-        'data_attr'     => []
-    ];
-    $args = wp_parse_args($args, $defaults);
-    $class           = (array)$args['class'];
-    $data_attributes = [];
-    if (TRUE === $args['select2']) {
-        array_push($class, 'wpas-select2');
-    }
-    // If there are some data attributes we prepare them
-    if (!empty($args['data_attr'])) {
-        foreach ($args['data_attr'] as $attr => $value) {
-            $data_attributes[] = "data-$attr='$value'";
-        }
-        $data_attributes = implode(' ', $data_attributes);
-    }
-    /* Start the buffer */
-    ob_start(); ?>
+function wpas_dropdown( $args, $options ) {
 
-    <select
-        name="<?php echo $args['name']; ?>" <?php if (!empty($class)) echo 'class="' . implode(' ',
-                                                                                               $class) . '"'; ?> <?php if (!empty($id)) echo "id='$id'"; ?> <?php if (!empty($data_attributes)): echo $data_attributes; endif ?> <?php if (TRUE === $args['disabled']) {
-        echo 'disabled';
-    } ?>>
-        <?php
-        if ($args['please_select']) {
-            echo '<option value="">' . __('Please select', 'awesome-support') . '</option>';
-        }
-        echo $options;
-        ?>
-    </select>
+	$defaults = array(
+		'name'          => 'wpas_user',
+		'id'            => '',
+		'class'         => '',
+		'please_select' => false,
+		'select2'       => false,
+		'disabled'      => false,
+		'data_attr'     => array()
+	);
 
-    <?php
-    /* Get the buffer contents */
-    $contents = ob_get_contents();
-    /* Clean the buffer */
-    ob_end_clean();
+	$args = wp_parse_args( $args, $defaults );
 
-    return $contents;
+	$class           = (array) $args['class'];
+	$data_attributes = array();
+
+	if ( true === $args['select2'] ) {
+		array_push( $class, 'wpas-select2' );
+	}
+
+	// If there are some data attributes we prepare them
+	if ( ! empty( $args['data_attr'] ) ) {
+
+		foreach ( $args['data_attr'] as $attr => $value ) {
+			$data_attributes[] = "data-$attr='$value'";
+		}
+
+		$data_attributes = implode( ' ', $data_attributes );
+
+	}
+
+	/* Start the buffer */
+	ob_start(); ?>
+
+	<select name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if ( ! empty( $data_attributes ) ): echo $data_attributes; endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+		<?php
+		if ( $args['please_select'] ) {
+			echo '<option value="">' . __( 'Please select', 'awesome-support' ) . '</option>';
+		}
+
+		echo $options;
+		?>
+	</select>
+
+	<?php
+	/* Get the buffer contents */
+	$contents = ob_get_contents();
+
+	/* Clean the buffer */
+	ob_end_clean();
+
+	return $contents;
+
 }
 
 /**
  * Get a dropdown of the tickets.
  *
  * @since  3.1.3
- *
  * @param  array  $args   Dropdown arguments
  * @param  string $status Specific ticket status to look for
- *
  * @return void
  */
-function wpas_tickets_dropdown($args = [], $status = '') {
-    $defaults = [
-        'name'          => 'wpas_tickets',
-        'id'            => '',
-        'class'         => '',
-        'exclude'       => [],
-        'selected'      => '',
-        'select2'       => TRUE,
-        'please_select' => FALSE
-    ];
-    /* List all tickets */
-    $tickets = wpas_get_tickets($status);
-    $options = '';
-    foreach ($tickets as $ticket) {
-        $options .= "<option value='$ticket->ID'>$ticket->post_title</option>";
-    }
-    echo wpas_dropdown(wp_parse_args($args, $defaults), $options);
+function wpas_tickets_dropdown( $args = array(), $status = '' ) {
+
+	$defaults = array(
+		'name'          => 'wpas_tickets',
+		'id'            => '',
+		'class'         => '',
+		'exclude'       => array(),
+		'selected'      => '',
+		'select2'       => true,
+		'please_select' => false
+	);
+
+	/* List all tickets */
+	$tickets = wpas_get_tickets( $status );
+	$options = '';
+
+	foreach ( $tickets as $ticket ) {
+		$options .= "<option value='$ticket->ID'>$ticket->post_title</option>";
+	}
+
+	echo wpas_dropdown( wp_parse_args( $args, $defaults ), $options );
+
 }
 
-add_filter('locale', 'wpas_change_locale', 10, 1);
+add_filter( 'locale','wpas_change_locale', 10, 1 );
 /**
  * Change the site's locale.
  *
@@ -550,87 +609,99 @@ add_filter('locale', 'wpas_change_locale', 10, 1);
  * initialization. This will only affect the current user.
  *
  * @since  3.1.5
- *
  * @param  string $locale Site locale
- *
  * @return string         Possibly modified locale
  */
-function wpas_change_locale($locale) {
-    $wpas_locale = filter_input(INPUT_GET, 'wpas_lang', FILTER_SANITIZE_STRING);
-    if (!empty($wpas_locale)) {
-        $locale = $wpas_locale;
-    }
+function wpas_change_locale( $locale ) {
 
-    return $locale;
+   $wpas_locale = filter_input( INPUT_GET, 'wpas_lang', FILTER_SANITIZE_STRING );
+
+	if ( ! empty( $wpas_locale ) ) {
+		$locale = $wpas_locale;
+	}
+
+	return $locale;
 }
 
 /**
  * Get plugin settings page URL.
  *
  * @since  3.1.5
- *
  * @param  string $tab Tab ID
- *
  * @return string      URL to the required settings page
  */
-function wpas_get_settings_page_url($tab = '') {
-    $admin_url  = admin_url('edit.php');
-    $query_args = ['post_type' => 'ticket', 'page' => 'wpas-settings'];
-    if (!empty($tab)) {
-        $query_args['tab'] = sanitize_text_field($tab);
-    }
+function wpas_get_settings_page_url( $tab = '' ) {
 
-    return add_query_arg($query_args, $admin_url);
+	$admin_url  = admin_url( 'edit.php' );
+	$query_args = array( 'post_type' => 'ticket', 'page' => 'wpas-settings' );
+
+	if ( ! empty( $tab ) ) {
+		$query_args['tab'] = sanitize_text_field( $tab );
+	}
+
+	return add_query_arg( $query_args, $admin_url );
+
 }
 
-if (!function_exists('shuffle_assoc')) {
-    /**
-     * Shuffle an associative array.
-     *
-     * @param array $list The array to shuffle
-     *
-     * @return array Shuffled array
-     *
-     * @link  http://php.net/manual/en/function.shuffle.php#99624
-     * @since 3.1.10
-     */
-    function shuffle_assoc($list) {
-        if (!is_array($list)) {
-            return $list;
-        }
-        $keys   = array_keys($list);
-        $random = [];
-        shuffle($keys);
-        foreach ($keys as $key) {
-            $random[ $key ] = $list[ $key ];
-        }
+if ( ! function_exists( 'shuffle_assoc' ) ) {
+	/**
+	 * Shuffle an associative array.
+	 *
+	 * @param array $list The array to shuffle
+	 *
+	 * @return array Shuffled array
+	 *
+	 * @link  http://php.net/manual/en/function.shuffle.php#99624
+	 * @since 3.1.10
+	 */
+	function shuffle_assoc( $list ) {
 
-        return $random;
-    }
-}
-if (!function_exists('wpas_get_admin_path_from_url')) {
-    /**
-     * Get the admin path based on the URL.
-     *
-     * @return string Admin path
-     */
-    function wpas_get_admin_path_from_url() {
-        $admin_url      = get_admin_url();
-        $site_url       = get_bloginfo('url');
-        $admin_protocol = substr($admin_url, 0, 5);
-        $site_protocol  = substr($site_url, 0, 5);
-        if ($site_protocol !== $admin_protocol) {
-            if ('https' === $admin_protocol) {
-                $site_url = 'https' . substr($site_url, 4);
-            } elseif ('https' === $site_protocol) {
-                $admin_url = 'https' . substr($admin_url, 4);
-            }
-        }
-        $abspath = str_replace('\\', '/', ABSPATH);
+		if ( ! is_array( $list ) ) {
+			return $list;
+		}
 
-        return str_replace(trailingslashit($site_url), $abspath, $admin_url);
-    }
+		$keys   = array_keys( $list );
+		$random = array();
+
+		shuffle( $keys );
+
+		foreach ( $keys as $key ) {
+			$random[ $key ] = $list[ $key ];
+		}
+
+		return $random;
+
+	}
 }
+
+if ( ! function_exists( 'wpas_get_admin_path_from_url' ) ) {
+	/**
+	 * Get the admin path based on the URL.
+	 *
+	 * @return string Admin path
+	 */
+	function wpas_get_admin_path_from_url() {
+
+		$admin_url      = get_admin_url();
+		$site_url       = get_bloginfo( 'url' );
+		$admin_protocol = substr( $admin_url, 0, 5 );
+		$site_protocol  = substr( $site_url, 0, 5 );
+
+		if ( $site_protocol !== $admin_protocol ) {
+			if ( 'https' === $admin_protocol ) {
+				$site_url = 'https' . substr( $site_url, 4 );
+			} elseif( 'https' === $site_protocol ) {
+				$admin_url = 'https' . substr( $admin_url, 4 );
+			}
+		}
+
+		$abspath = str_replace( '\\', '/', ABSPATH );
+
+		return str_replace( trailingslashit( $site_url ), $abspath, $admin_url );
+
+	}
+}
+
 /**
  * Recursively sort an array of taxonomy terms hierarchically. Child categories will be
  * placed under a 'children' member of their parent term.
@@ -643,17 +714,19 @@ if (!function_exists('wpas_get_admin_path_from_url')) {
  *
  * @link   http://wordpress.stackexchange.com/a/99516/16176
  */
-function wpas_sort_terms_hierarchicaly(&$cats = [], &$into = [], $parentId = 0) {
-    foreach ($cats as $i => $cat) {
-        if ($cat->parent == $parentId) {
-            $into[ $cat->term_id ] = $cat;
-            unset($cats[ $i ]);
-        }
-    }
-    foreach ($into as $topCat) {
-        $topCat->children = [];
-        wpas_sort_terms_hierarchicaly($cats, $topCat->children, $topCat->term_id);
-    }
+function wpas_sort_terms_hierarchicaly( &$cats = array(), &$into = array(), $parentId = 0 ) {
+
+	foreach ( $cats as $i => $cat ) {
+		if ( $cat->parent == $parentId ) {
+			$into[ $cat->term_id ] = $cat;
+			unset( $cats[ $i ] );
+		}
+	}
+
+	foreach ( $into as $topCat ) {
+		$topCat->children = array();
+		wpas_sort_terms_hierarchicaly( $cats, $topCat->children, $topCat->term_id );
+	}
 }
 
 /**
@@ -667,29 +740,30 @@ function wpas_sort_terms_hierarchicaly(&$cats = [], &$into = [], $parentId = 0) 
  *
  * @return void
  */
-function wpas_hierarchical_taxonomy_dropdown_options($term, $value, $level = 1) {
-    $option = '';
-    /* Add a visual indication that this is a child term */
-    if (1 !== $level) {
-        for ($i = 1; $i < ($level - 1); $i++) {
-            $option .= '&nbsp;&nbsp;&nbsp;&nbsp;';
-        }
-        $option .= '&angrt; ';
-    }
-    $option .= apply_filters('wpas_hierarchical_taxonomy_dropdown_options_label', $term->name, $term, $value, $level);
-    ?>
+function wpas_hierarchical_taxonomy_dropdown_options( $term, $value, $level = 1 ) {
 
-    <option
-        value="<?php echo $term->term_id; ?>" <?php if ((int)$value === (int)$term->term_id || $value === $term->slug) {
-        echo 'selected="selected"';
-    } ?>><?php echo $option; ?></option>
+	$option = '';
 
-    <?php if (isset($term->children) && !empty($term->children)) {
-        ++$level;
-        foreach ($term->children as $child) {
-            wpas_hierarchical_taxonomy_dropdown_options($child, $value, $level);
-        }
-    }
+	/* Add a visual indication that this is a child term */
+	if ( 1 !== $level ) {
+		for ( $i = 1; $i < ( $level - 1 ); $i++ ) {
+			$option .= '&nbsp;&nbsp;&nbsp;&nbsp;';
+		}
+		$option .= '&angrt; ';
+	}
+
+	$option .= apply_filters( 'wpas_hierarchical_taxonomy_dropdown_options_label', $term->name, $term, $value, $level );
+	?>
+
+	<option value="<?php echo $term->term_id; ?>" <?php if( (int) $value === (int) $term->term_id || $value === $term->slug ) { echo 'selected="selected"'; } ?>><?php echo $option; ?></option>
+
+	<?php if ( isset( $term->children ) && !empty( $term->children ) ) {
+		++$level;
+		foreach ( $term->children as $child ) {
+			wpas_hierarchical_taxonomy_dropdown_options( $child, $value, $level );
+		}
+	}
+
 }
 
 /**
@@ -705,18 +779,22 @@ function wpas_hierarchical_taxonomy_dropdown_options($term, $value, $level = 1) 
  *
  * @return string
  */
-function wpas_get_submission_page_url($post_id = FALSE) {
-    $submission = wpas_get_submission_pages();
-    if (empty($submission)) {
-        return '';
-    }
-    if (is_int($post_id) && in_array($post_id, $submission)) {
-        $url = get_permalink((int)$post_id);
-    } else {
-        $url = get_permalink((int)$submission[0]);
-    }
+function wpas_get_submission_page_url( $post_id = false ) {
 
-    return wp_sanitize_redirect($url);
+	$submission = wpas_get_submission_pages();
+
+	if ( empty( $submission ) ) {
+		return '';
+	}
+
+	if ( is_int( $post_id ) && in_array( $post_id, $submission ) ) {
+		$url = get_permalink( (int) $post_id );
+	} else {
+		$url = get_permalink( (int) $submission[0] );
+	}
+
+	return wp_sanitize_redirect( $url );
+
 }
 
 /**
@@ -726,12 +804,15 @@ function wpas_get_submission_page_url($post_id = FALSE) {
  * @return array
  */
 function wpas_get_submission_pages() {
-    $submission = wpas_get_option('ticket_submit');
-    if (!is_array($submission)) {
-        $submission = array_filter((array)$submission);
-    }
 
-    return $submission;
+	$submission = wpas_get_option( 'ticket_submit' );
+
+	if ( ! is_array( $submission ) ) {
+		$submission = array_filter( (array) $submission );
+	}
+
+	return $submission;
+
 }
 
 /**
@@ -742,15 +823,19 @@ function wpas_get_submission_pages() {
  * @return string
  */
 function wpas_get_tickets_list_page_url() {
-    $list = wpas_get_option('ticket_list');
-    if (empty($list)) {
-        return '';
-    }
-    if (is_array($list) && !empty($list)) {
-        $list = $list[0];
-    }
 
-    return wp_sanitize_redirect(get_permalink((int)$list));
+	$list = wpas_get_option( 'ticket_list' );
+
+	if ( empty( $list ) ) {
+		return '';
+	}
+
+	if ( is_array( $list ) && ! empty( $list ) ) {
+		$list = $list[0];
+	}
+
+	return wp_sanitize_redirect( get_permalink( (int) $list ) );
+
 }
 
 /**
@@ -762,34 +847,46 @@ function wpas_get_tickets_list_page_url() {
  *
  * @return string|bool Reply link or false if the reply doesn't exist
  */
-function wpas_get_reply_link($reply_id) {
-    $reply = get_post($reply_id);
-    if (empty($reply)) {
-        return FALSE;
-    }
-    if ('ticket_reply' !== $reply->post_type || 0 === (int)$reply->post_parent) {
-        return FALSE;
-    }
-    $replies = wpas_get_replies($reply->post_parent, ['read', 'unread']);
-    if (empty($replies)) {
-        return FALSE;
-    }
-    $position = 0;
-    foreach ($replies as $key => $post) {
-        if ($reply_id === $post->ID) {
-            $position = $key + 1;
-        }
-    }
-    // We have more replies that what's displayed on one page, so let's set a session var to force displaying all replies
-    if ($position > wpas_get_option('replies_per_page', 10)) {
-        WPAS()->session->add('force_all_replies', TRUE);
-    }
-    $link = get_permalink($reply->post_parent) . "#reply-$reply_id";
+function wpas_get_reply_link( $reply_id ) {
 
-    return esc_url($link);
+	$reply = get_post( $reply_id );
+
+	if ( empty( $reply ) ) {
+		return false;
+	}
+
+	if ( 'ticket_reply' !== $reply->post_type || 0 === (int) $reply->post_parent ) {
+		return false;
+	}
+
+	$replies = wpas_get_replies( $reply->post_parent, array( 'read', 'unread' ) );
+
+	if ( empty( $replies ) ) {
+		return false;
+	}
+
+	$position = 0;
+
+	foreach ( $replies as $key => $post ) {
+
+		if ( $reply_id === $post->ID ) {
+			$position = $key + 1;
+		}
+
+	}
+
+	// We have more replies that what's displayed on one page, so let's set a session var to force displaying all replies
+	if ( $position > wpas_get_option( 'replies_per_page', 10 ) ) {
+		WPAS()->session->add( 'force_all_replies', true );
+	}
+
+	$link = get_permalink( $reply->post_parent ) . "#reply-$reply_id";
+
+	return esc_url( $link );
+
 }
 
-add_action('wpas_after_template', 'wpas_credit', 10, 3);
+add_action( 'wpas_after_template', 'wpas_credit', 10, 3 );
 /**
  * Display a link to the plugin page.
  *
@@ -797,16 +894,19 @@ add_action('wpas_after_template', 'wpas_credit', 10, 3);
  * @var string $name Template name
  * @return void
  */
-function wpas_credit($name) {
-    if (!in_array($name, ['details', 'registration', 'submission', 'list'])) {
-        return;
-    }
-    if (TRUE === (bool)wpas_get_option('credit_link')) {
-        echo '<p class="wpas-credit">Built with Awesome Support,<br> the most versatile <a href="https://wordpress.org/plugins/awesome-support/" target="_blank" title="The best support plugin for WordPress">WordPress Support Plugin</a></p>';
-    }
+function wpas_credit( $name ) {
+
+	if ( ! in_array( $name, array( 'details', 'registration', 'submission', 'list' ) ) ) {
+		return;
+	}
+
+	if ( true === (bool) wpas_get_option( 'credit_link' ) ) {
+		echo '<p class="wpas-credit">Built with Awesome Support,<br> the most versatile <a href="https://wordpress.org/plugins/awesome-support/" target="_blank" title="The best support plugin for WordPress">WordPress Support Plugin</a></p>';
+	}
+
 }
 
-add_filter('plugin_locale', 'wpas_change_plugin_locale', 10, 2);
+add_filter( 'plugin_locale', 'wpas_change_plugin_locale', 10, 2 );
 /**
  * Change the plugin locale
  *
@@ -820,31 +920,35 @@ add_filter('plugin_locale', 'wpas_change_plugin_locale', 10, 2);
  *
  * @return string
  */
-function wpas_change_plugin_locale($locale, $domain) {
-    if ('wpas' !== $domain) {
-        return $locale;
-    }
-    /**
-     * Custom locale.
-     *
-     * The custom locale defined by the URL var $wpas_locale
-     * is used for debugging purpose. It makes testing language
-     * files easy without changing the site main language.
-     * It can also be useful when doing support on a site that's
-     * not in English.
-     *
-     * @since  3.1.5
-     * @var    string
-     */
-    $wpas_locale = filter_input(INPUT_GET, 'wpas_locale', FILTER_SANITIZE_STRING);
-    if (!empty($wpas_locale)) {
-        $locale = $wpas_locale;
-    }
+function wpas_change_plugin_locale( $locale, $domain ) {
 
-    return $locale;
+	if ( 'wpas' !== $domain ) {
+		return $locale;
+	}
+
+	/**
+	 * Custom locale.
+	 *
+	 * The custom locale defined by the URL var $wpas_locale
+	 * is used for debugging purpose. It makes testing language
+	 * files easy without changing the site main language.
+	 * It can also be useful when doing support on a site that's
+	 * not in English.
+	 *
+	 * @since  3.1.5
+	 * @var    string
+	 */
+	$wpas_locale = filter_input( INPUT_GET, 'wpas_locale', FILTER_SANITIZE_STRING );
+
+	if ( ! empty( $wpas_locale ) ) {
+		$locale = $wpas_locale;
+	}
+
+	return $locale;
+
 }
 
-add_filter('wpas_logs_handles', 'wpas_default_log_handles', 10, 1);
+add_filter( 'wpas_logs_handles', 'wpas_default_log_handles', 10, 1 );
 /**
  * Register default logs handles.
  *
@@ -854,13 +958,13 @@ add_filter('wpas_logs_handles', 'wpas_default_log_handles', 10, 1);
  *
  * @return array          Array of registered handles with the default ones added
  */
-function wpas_default_log_handles($handles) {
-    array_push($handles, 'error');
+function wpas_default_log_handles( $handles ) {
+	array_push( $handles, 'error' );
 
-    return $handles;
+	return $handles;
 }
 
-add_filter('wp_link_query_args', 'wpas_remove_tinymce_links_internal', 10, 1);
+add_filter( 'wp_link_query_args', 'wpas_remove_tinymce_links_internal', 10, 1 );
 /**
  * Filter the link query arguments to remove completely internal links from the list.
  *
@@ -870,18 +974,21 @@ add_filter('wp_link_query_args', 'wpas_remove_tinymce_links_internal', 10, 1);
  *
  * @return array $query
  */
-function wpas_remove_tinymce_links_internal($query) {
-    /**
-     * Getting the post ID this way is quite dirty but it seems to be the only way
-     * as we are in an Ajax query and the only given parameter is the $query
-     */
-    $url     = wp_get_referer();
-    $post_id = url_to_postid($url);
-    if ($post_id === wpas_get_option('ticket_submit')) {
-        $query['post_type'] = ['none'];
-    }
+function wpas_remove_tinymce_links_internal( $query ) {
 
-    return $query;
+	/**
+	 * Getting the post ID this way is quite dirty but it seems to be the only way
+	 * as we are in an Ajax query and the only given parameter is the $query
+	 */
+	$url     = wp_get_referer();
+	$post_id = url_to_postid( $url );
+
+	if ( $post_id === wpas_get_option( 'ticket_submit' ) ) {
+		$query['post_type'] = array( 'none' );
+	}
+
+	return $query;
+
 }
 
 /**
@@ -895,17 +1002,22 @@ function wpas_remove_tinymce_links_internal($query) {
  *
  * @return string
  */
-function wpas_array_to_key_value_string($array) {
-    $pairs = [];
-    foreach ($array as $key => $value) {
-        // Convert boolean values to string
-        if (is_bool($value)) {
-            $value = $value ? 'true' : FALSE;
-        }
-        $pairs[] = "$key='$value'";
-    }
+function wpas_array_to_key_value_string( $array ) {
 
-    return implode(' ', $pairs);
+	$pairs = array();
+
+	foreach ( $array as $key => $value ) {
+
+		// Convert boolean values to string
+		if ( is_bool( $value ) ) {
+			$value = $value ? 'true' : false;
+		}
+
+		$pairs[] = "$key='$value'";
+	}
+
+	return implode( ' ', $pairs );
+
 }
 
 /**
@@ -921,31 +1033,43 @@ function wpas_array_to_key_value_string($array) {
  *
  * @return array
  */
-function wpas_array_to_data_attributes($array, $user_funct = FALSE) {
-    $clean = [];
-    foreach ($array as $key => $value) {
-        if ('data-' !== substr($key, 0, 5)) {
-            $key = "data-$key";
-        }
-        if (TRUE === $user_funct) {
-            $function = is_array($value) ? $value[0] : $value;
-            $args     = [];
-            if (is_array($value)) {
-                $args = $value;
-                unset($args[0]); // Remove the function name from the args
-            }
-            if (function_exists($function)) {
-                $value = call_user_func($function, array_values($args));
-            }
-        }
-        // This function does not work with multidimensional arrays
-        if (is_array($value)) {
-            continue;
-        }
-        $clean[ $key ] = $value;
-    }
+function wpas_array_to_data_attributes( $array, $user_funct = false ) {
 
-    return wpas_array_to_key_value_string($clean);
+	$clean = array();
+
+	foreach ( $array as $key => $value ) {
+
+		if ( 'data-' !== substr( $key, 0, 5 ) ) {
+			$key = "data-$key";
+		}
+
+		if ( true === $user_funct ) {
+
+			$function = is_array( $value ) ? $value[0] : $value;
+			$args     = array();
+
+			if ( is_array( $value ) ) {
+				$args = $value;
+				unset( $args[0] ); // Remove the function name from the args
+			}
+
+			if ( function_exists( $function ) ) {
+				$value = call_user_func( $function, array_values( $args ) );
+			}
+
+		}
+
+		// This function does not work with multidimensional arrays
+		if ( is_array( $value ) ) {
+			continue;
+		}
+
+		$clean[ $key ] = $value;
+
+	}
+
+	return wpas_array_to_key_value_string( $clean );
+
 }
 
 /**
@@ -958,5 +1082,5 @@ function wpas_array_to_data_attributes($array, $user_funct = FALSE) {
  * @return string
  */
 function wpas_get_the_time_timestamp() {
-    return get_the_time('U');
+	return get_the_time( 'U' );
 }

@@ -214,4 +214,62 @@ function getAttributes ( $node ) {
     return attrs;
 }
 
-var player = new MediaElementPlayer('#snowDayVideo');
+/*
+
+Smooth parallax footer
+
+ */
+function scrollFooter(scrollY, heightFooter)
+{
+    if(scrollY >= heightFooter)
+    {
+        $('#footer').css({
+            'bottom' : '0px'
+        });
+    }
+    else
+    {
+        $('#footer').css({
+            'bottom' : '-' + heightFooter + 'px'
+        });
+    }
+}
+
+$(window).load(function(){
+    var footerHeight        = $('#footer').height(),
+        contentHeight        = ($('#content').height()) + 200,
+        heightDocument      = contentHeight + 400;
+
+    $('#scroll-animate, #scroll-animate-main').css({
+        'height' :  heightDocument + 'px'
+    });
+
+    $('.wrapper-parallax').css({
+        'height' : contentHeight + 'px',
+    });
+
+    scrollFooter(window.scrollY, footerHeight);
+
+    window.onscroll = function(){
+        var scroll = window.scrollY;
+
+        $('#scroll-animate-main').css({
+            'top' : '-' + scroll + 'px'
+        });
+
+        scrollFooter(scroll, footerHeight);
+    }
+});
+
+$(document).ready(function(){
+    $('#sidebar-icon').click(function(){
+        $(this).toggleClass('open');
+    });
+});
+
+
+$(document).ready(function () {
+    $('#fullpage').fullpage({
+        scrollBar: true
+    });
+});

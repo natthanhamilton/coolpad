@@ -11,16 +11,19 @@
  * @category Class
  * @author   WooThemes
  */
-if (!defined('ABSPATH')) {
+
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
-include_once('libraries/wp-async-request.php');
-include_once('libraries/wp-background-process.php');
+
+include_once( 'libraries/wp-async-request.php' );
+include_once( 'libraries/wp-background-process.php' );
 
 /**
  * WC_Background_Updater Class.
  */
 class WC_Background_Updater extends WP_Background_Process {
+
 	/**
 	 * @var string
 	 */
@@ -34,9 +37,9 @@ class WC_Background_Updater extends WP_Background_Process {
 	public function dispatch() {
 		$dispatched = parent::dispatch();
 		$logger     = new WC_Logger();
-		if (is_wp_error($dispatched)) {
-			$logger->add('wc_db_updates',
-			             sprintf('Unable to dispatch WooCommerce updater: %s', $dispatched->get_error_message()));
+
+		if ( is_wp_error( $dispatched ) ) {
+			$logger->add( 'wc_db_updates', sprintf( 'Unable to dispatch WooCommerce updater: %s', $dispatched->get_error_message() ) );
 		}
 	}
 
@@ -47,16 +50,17 @@ class WC_Background_Updater extends WP_Background_Process {
 	 * and data exists in the queue.
 	 */
 	public function handle_cron_healthcheck() {
-		if ($this->is_process_running()) {
+		if ( $this->is_process_running() ) {
 			// Background process already running.
 			return;
 		}
-		if ($this->is_queue_empty()) {
+
+		if ( $this->is_queue_empty() ) {
 			// No data to process.
 			$this->clear_scheduled_event();
-
 			return;
 		}
+
 		$this->handle();
 	}
 
@@ -64,9 +68,17 @@ class WC_Background_Updater extends WP_Background_Process {
 	 * Schedule fallback event.
 	 */
 	protected function schedule_event() {
-		if (!wp_next_scheduled($this->cron_hook_identifier)) {
-			wp_schedule_event(time() + 10, $this->cron_interval_identifier, $this->cron_hook_identifier);
+		if ( ! wp_next_scheduled( $this->cron_hook_identifier ) ) {
+			wp_schedule_event( time() + 10, $this->cron_interval_identifier, $this->cron_hook_identifier );
 		}
+	}
+
+	/**
+	 * Is the updater running?
+	 * @return boolean
+	 */
+	public function is_updating() {
+		return false === $this->is_queue_empty();
 	}
 
 	/**
@@ -78,24 +90,26 @@ class WC_Background_Updater extends WP_Background_Process {
 	 * item from the queue.
 	 *
 	 * @param string $callback Update callback function
-	 *
 	 * @return mixed
 	 */
-	protected function task($callback) {
-		if (!defined('WC_UPDATING')) {
-			define('WC_UPDATING', TRUE);
-		}
-		$logger = new WC_Logger();
-		include_once('wc-update-functions.php');
-		if (is_callable($callback)) {
-			$logger->add('wc_db_updates', sprintf('Running %s callback', $callback));
-			call_user_func($callback);
-			$logger->add('wc_db_updates', sprintf('Finished %s callback', $callback));
-		} else {
-			$logger->add('wc_db_updates', sprintf('Could not find %s callback', $callback));
+	protected function task( $callback ) {
+		if ( ! defined( 'WC_UPDATING' ) ) {
+			define( 'WC_UPDATING', true );
 		}
 
-		return FALSE;
+		$logger = new WC_Logger();
+
+		include_once( 'wc-update-functions.php' );
+
+		if ( is_callable( $callback ) ) {
+			$logger->add( 'wc_db_updates', sprintf( 'Running %s callback', $callback ) );
+			call_user_func( $callback );
+			$logger->add( 'wc_db_updates', sprintf( 'Finished %s callback', $callback ) );
+		} else {
+			$logger->add( 'wc_db_updates', sprintf( 'Could not find %s callback', $callback ) );
+		}
+
+		return false;
 	}
 
 	/**
@@ -106,17 +120,8 @@ class WC_Background_Updater extends WP_Background_Process {
 	 */
 	protected function complete() {
 		$logger = new WC_Logger();
-		$logger->add('wc_db_updates', 'Data update complete');
+		$logger->add( 'wc_db_updates', 'Data update complete' );
 		WC_Install::update_db_version();
 		parent::complete();
-	}
-
-	/**
-	 * Is the updater running?
-	 *
-	 * @return boolean
-	 */
-	public function is_updating() {
-		return FALSE === $this->is_queue_empty();
 	}
 }

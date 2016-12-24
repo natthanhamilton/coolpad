@@ -29,16 +29,16 @@
       }
     }
     .news {
-      .font-family-book;
+
       font-size: 18px;
       color: #5b6770;
-      @media only screen and (min-width: @break-md) {
+      @media only screen and (min-width: @break-lg) {
         .multi-line-truncate(1.3em, 2);
       }
-      @media only screen and (min-width: @break-sm) and (max-width: @break-md) {
+      @media only screen and (min-width: @break-md) and (max-width: @break-lg) {
         .multi-line-truncate(1.3em, 3);
       }
-      @media only screen and (max-width: @break-sm) {
+      @media only screen and (max-width: @break-md) {
         .multi-line-truncate(1.3em, 1);
       }
     }

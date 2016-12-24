@@ -7,6 +7,7 @@
  * @subpackage Commands
  */
 class WP_Session_Command extends \WP_CLI_Command {
+
 	/**
 	 * Count the total number of sessions stored in the database.
 	 *
@@ -20,9 +21,10 @@ class WP_Session_Command extends \WP_CLI_Command {
 	 * @param array $args
 	 * @param array $assoc_args
 	 */
-	public function count($args, $assoc_args) {
+	public function count( $args, $assoc_args ) {
 		$sessions = WP_Session_Utils::count_sessions();
-		\WP_CLI::line(sprintf('%d sessions currently exist.', absint($sessions)));
+
+		\WP_CLI::line( sprintf( '%d sessions currently exist.', absint( $sessions ) ) );
 	}
 
 	/**
@@ -51,61 +53,50 @@ class WP_Session_Command extends \WP_CLI_Command {
 	 * @param array $args
 	 * @param array $assoc_args
 	 */
-	public function delete($args, $assoc_args) {
-		if (isset($assoc_args['limit'])) {
-			$limit = absint($assoc_args['limit']);
-			$count = WP_Session_Utils::delete_old_sessions($limit);
-			if ($count > 0) {
-				\WP_CLI::line(sprintf('Deleted %d sessions.', $count));
+	public function delete( $args, $assoc_args ) {
+		if ( isset( $assoc_args['limit'] ) ) {
+			$limit = absint( $assoc_args['limit'] );
+
+			$count = WP_Session_Utils::delete_old_sessions( $limit );
+
+			if ( $count > 0 ) {
+				\WP_CLI::line( sprintf( 'Deleted %d sessions.', $count ) );
 			}
+
 			// Clear memory
 			self::free_up_memory();
-
 			return;
 		}
+
 		// Determine if we're deleting all sessions or just a subset.
-		$all = isset($assoc_args['all']);
+		$all = isset( $assoc_args['all'] );
+
 		/**
 		 * Determine the size of each batch for deletion.
 		 *
 		 * @param int
 		 */
-		$batch = isset($assoc_args['batch']) ? absint($assoc_args['batch'])
-			: apply_filters('wp_session_delete_batch_size', 1000);
-		switch ($all) {
-			case TRUE:
+		$batch = isset( $assoc_args['batch'] ) ? absint( $assoc_args['batch'] ) : apply_filters( 'wp_session_delete_batch_size', 1000 );
+
+		switch ( $all ) {
+			case true:
 				$count = WP_Session_Utils::delete_all_sessions();
-				\WP_CLI::line(sprintf('Deleted all %d sessions.', $count));
+
+				\WP_CLI::line( sprintf( 'Deleted all %d sessions.', $count ) );
 				break;
-			case FALSE:
+			case false:
 				do {
-					$count = WP_Session_Utils::delete_old_sessions($batch);
-					if ($count > 0) {
-						\WP_CLI::line(sprintf('Deleted %d sessions.', $count));
+					$count = WP_Session_Utils::delete_old_sessions( $batch );
+
+					if ( $count > 0 ) {
+						\WP_CLI::line( sprintf( 'Deleted %d sessions.', $count ) );
 					}
+
 					// Clear memory
 					self::free_up_memory();
-				} while ($count > 0);
+				} while ( $count > 0 );
 				break;
 		}
-	}
-
-	/**
-	 * Free up memory
-	 *
-	 * @global WP_Object_Cache $wp_object_cache
-	 * @global wpdb            $wpdb
-	 */
-	private function free_up_memory() {
-		global $wp_object_cache, $wpdb;
-		$wpdb->queries = [];
-		if (!is_object($wp_object_cache)) {
-			return;
-		}
-		$wp_object_cache->group_ops      = [];
-		$wp_object_cache->stats          = [];
-		$wp_object_cache->memcache_debug = [];
-		$wp_object_cache->cache          = [];
 	}
 
 	/**
@@ -129,16 +120,39 @@ class WP_Session_Command extends \WP_CLI_Command {
 	 * @param array $args
 	 * @param array $assoc_args
 	 */
-	public function generate($args, $assoc_args) {
-		$count = absint($args[0]);
-		$date  = isset($assoc_args['expires']) ? $assoc_args['expires'] : NULL;
-		$notify = \WP_CLI\Utils\make_progress_bar('Generating sessions', $count);
-		for ($i = 0; $i < $count; $i++) {
-			WP_Session_Utils::create_dummy_session($date);
+	public function generate( $args, $assoc_args ) {
+		$count = absint( $args[0] );
+		$date  = isset( $assoc_args['expires'] ) ? $assoc_args['expires'] : null;
+
+		$notify = \WP_CLI\Utils\make_progress_bar( 'Generating sessions', $count );
+
+		for ( $i = 0; $i < $count; $i ++ ) {
+			WP_Session_Utils::create_dummy_session( $date );
 			$notify->tick();
 		}
+
 		$notify->finish();
+	}
+
+	/**
+	 * Free up memory
+	 *
+	 * @global WP_Object_Cache $wp_object_cache
+	 * @global wpdb            $wpdb
+	 */
+	private function free_up_memory() {
+		global $wp_object_cache, $wpdb;
+		$wpdb->queries = array();
+
+		if ( ! is_object( $wp_object_cache ) ) {
+			return;
+		}
+
+		$wp_object_cache->group_ops      = array();
+		$wp_object_cache->stats          = array();
+		$wp_object_cache->memcache_debug = array();
+		$wp_object_cache->cache          = array();
 	}
 }
 
-\WP_CLI::add_command('session', 'WP_Session_Command');
+\WP_CLI::add_command( 'session', 'WP_Session_Command' );

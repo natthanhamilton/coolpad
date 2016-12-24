@@ -25,29 +25,37 @@
  * IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
  * SUCH DAMAGE.
  */
+
 require_once(dirname(__FILE__) . '/Simplify/Constants.php');
 
-class Simplify {
+class Simplify
+{
 	/**
 	 * @var string $publicKey public API key used to authenticate requests.
 	 */
 	public static $publicKey;
+
 	/**
 	 * @var string $privateKey private API key used to authenticate requests.
 	 */
 	public static $privateKey;
+
+
 	/**
 	 * @var string $apiBaseLiveUrl URL of the live API endpoint
 	 */
 	public static $apiBaseLiveUrl = Simplify_Constants::API_BASE_LIVE_URL;
+
 	/**
 	 * @var string $apiBaseSandboxUrl URL of the sandbox API endpoint
 	 */
 	public static $apiBaseSandboxUrl = Simplify_Constants::API_BASE_SANDBOX_URL;
+
 	/**
 	 * @var string $userAgent User-agent string send with requests.
 	 */
-	public static $userAgent = NULL;
+	public static $userAgent = null;
+
 }
 
 require_once(dirname(__FILE__) . '/Simplify/Object.php');

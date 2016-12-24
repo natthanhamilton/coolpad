@@ -1,23 +1,25 @@
 @import '../variables';
 @import 'buttons';
 
-#footer {
+
+#footer,
+#sub-footer{
   /* SPACINGS */
   margin-bottom: 10px;
   .section-margin-top;
-  @media only screen and (min-width: @break-md) {
+  @media only screen and (min-width: @break-lg) {
     padding: 0 85px;
     .middle {
       padding: 0 125px;
     }
   }
-  @media only screen and (max-width: @break-md) {
+  @media only screen and (max-width: @break-lg) {
     padding: 0 40px;
     .middle {
       padding: 0 60px;
     }
   }
-  @media only screen and (max-width: @break-middle) {
+  @media only screen and (max-width: @break-sm) {
     padding: 0 20px;
     .middle {
       padding: 0 30px;
@@ -26,19 +28,15 @@
   /* SPACINGS */
 
   .top {
-    padding-bottom: 35px;
-    border-bottom: 1px solid #c3c3c3;
-    margin-bottom: 30px;
-
     /* COLUMNS */
     .vc_col-sm-2,
     .vc_col-sm-4,
     .vc_col-sm-6 {
       .center;
-      @media only screen and (max-width: @break-lg) {
+      @media only screen and (max-width: @break-xl) {
         width: 33.333%;
       }
-      @media only screen and (max-width: @break-sm) {
+      @media only screen and (max-width: @break-md) {
         width: 100%;
       }
     }
@@ -47,22 +45,22 @@
       .center;
     }
     .support {
-      .font-family-light;
+
       font-size: 20px;
       color: #696969;
       display: inline-block;
       float: left;
-      @media only screen and (max-width: @break-lg) {
+      @media only screen and (max-width: @break-xl) {
         display: none;
       }
     }
     .phone {
-      .font-family-medium;
+
       font-size: 20px;
       color: #3b3fb6;
       display: inline-block;
       margin-left: 26px;
-      @media only screen and (max-width: @break-lg) {
+      @media only screen and (max-width: @break-xl) {
         .center;
         width: 100%;
         margin-left: 0;
@@ -74,20 +72,20 @@
       padding-right: 25px;
       font-size: 20px;
       color: #696969;
-      @media only screen and (max-width: @break-lg) {
+      @media only screen and (max-width: @break-xl) {
         display: none;
       }
     }
     .social-icons {
       display: inline-block !important;
-      @media only screen and (max-width: @break-lg) {
+      @media only screen and (max-width: @break-xl) {
         .center;
         width: 100%;
       }
-      @media only screen and (max-width: @break-sm) {
+      @media only screen and (max-width: @break-md) {
         margin: 12px 0 !important;
       }
-      @media only screen and (max-width: @break-middle) {
+      @media only screen and (max-width: @break-sm) {
         padding: 20px 0;
       }
       a {
@@ -108,18 +106,18 @@
   .middle {
     .link-set {
       .vertical(start);
-      @media only screen and (max-width: @break-sm) {
+      @media only screen and (max-width: @break-md) {
         display: none;
       }
       .title {
         font-size: 16px;
         color: #b3adad;
-        .font-family-bold;
+
         padding-bottom: 20px !important;
       }
       a {
         .block;
-        .font-family-light;
+
         padding-bottom: 20px;
         font-size: 16px;
         color: #b3adad;
@@ -129,7 +127,7 @@
       }
     }
     .newsletter {
-      @media only screen and (max-width: @break-sm) {
+      @media only screen and (max-width: @break-md) {
         width: 100% !important;
         .vertical-center;
       }
@@ -137,10 +135,10 @@
         .title {
           font-size: 16px;
           color: #b3adad;
-          .font-family-bold;
+
           padding-bottom: 20px !important;
           display: block;
-          @media only screen and (max-width: @break-sm) {
+          @media only screen and (max-width: @break-md) {
             .center;
           }
         }
@@ -150,14 +148,14 @@
           font-weight: normal;
           padding-bottom: 20px;
           display: block;
-          @media only screen and (max-width: @break-sm) {
+          @media only screen and (max-width: @break-md) {
             font-size: 12px;
             .center;
           }
         }
         .form {
           display: inline-block;
-          @media only screen and (max-width: @break-sm) {
+          @media only screen and (max-width: @break-md) {
             .center;
             width: 100%;
           }
@@ -184,7 +182,7 @@
             &:-ms-input-placeholder {
               color: #b3adad;
             }
-            @media only screen and (max-width: @break-sm) {
+            @media only screen and (max-width: @break-md) {
               margin: 0 0 20px 0;
             }
           }
@@ -197,7 +195,7 @@
   }
 
   .bottom {
-    @media only screen and (max-width: @break-sm) {
+    @media only screen and (max-width: @break-md) {
       .flexbox;
       .one {
         .flexbox-div (1);
@@ -208,7 +206,7 @@
       }
     }
     .vc_col-sm-6 {
-      @media only screen and (max-width: @break-sm) {
+      @media only screen and (max-width: @break-md) {
         width: 100%;
       }
       .vc_column-inner {
@@ -220,7 +218,7 @@
     padding-top: 14px;
     .bottom-link {
       a {
-        .font-family-light;
+
         font-size: 16px;
         color: #b3adad;
         text-decoration: none;
@@ -230,11 +228,11 @@
           border-left: 1px #c3c3c3 solid;
           margin-left: 15px;
         }
-        @media only screen and (max-width: @break-sm) {
+        @media only screen and (max-width: @break-md) {
           font-size: 12px;
         }
         /* when more than 2 links, change to full width list
-        @media only screen and (max-width: @break-sm) {
+        @media only screen and (max-width: @break-md) {
           display: block;
           width: 100%;
           text-align: right;
@@ -243,15 +241,20 @@
       }
     }
     .copyright p {
-      .font-family-light;
+
       font-size: 14px;
       color: #b3adad;
       margin: 0;
-      @media only screen and (max-width: @break-sm) {
+      @media only screen and (max-width: @break-md) {
         font-size: 8px;
         padding: 10px 0;
         .center;
       }
     }
   }
+}
+
+#sub-footer {
+  margin-bottom: 0;
+  padding-top: 40px !important;
 }

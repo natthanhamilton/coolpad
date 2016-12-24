@@ -3,13 +3,13 @@
 .content {
   .vc_column-inner {
     height: 380px;
-    @media only screen and (max-width: @break-middle) {
+    @media only screen and (max-width: @break-sm) {
       height: 280px;
     }
     .vertical-center;
   }
   .title {
-    @media only screen and (min-width: @break-sm) {
+    @media only screen and (min-width: @break-md) {
       margin-top: 120px;
     }
     padding-bottom: 45px;
@@ -25,7 +25,7 @@
 }
 
 .highlight-catalyst {
-  @media only screen and (max-width: @break-sm) {
+  @media only screen and (max-width: @break-md) {
     width: 100%;
   }
   .image {
@@ -36,7 +36,7 @@
   }
   .features {
     margin-bottom: 135px !important;
-    @media only screen and (min-width: @break-sm) {
+    @media only screen and (min-width: @break-md) {
       margin-top: 80px !important;
     }
     .wpb_wrapper {
@@ -50,14 +50,14 @@
       li {
         .inline-block;
         width: initial;
-        @media only screen and (min-width: @break-md) {
+        @media only screen and (min-width: @break-lg) {
           &:not(:first-child) {
             padding-left: 50px;
             border-left: 1px #979797 solid;
             margin-left: 50px;
           }
         }
-        @media only screen and (max-width: @break-md) {
+        @media only screen and (max-width: @break-lg) {
           display: block;
           width: 100%;
           .center;
@@ -67,13 +67,13 @@
           color: #262626;
         }
         .title {
-          .font-family-medium;
+
           font-size: 30px;
           font-weight: 400;
           padding-bottom: 15px;
         }
         .description {
-          .font-family-light;
+
           font-size: 24px;
           font-weight: 300;
         }

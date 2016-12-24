@@ -1,14 +1,12 @@
 .clearfix {
-    zoom: 1;
-    /* For IE 6/7 (trigger hasLayout) */
+  zoom: 1;
+  /* For IE 6/7 (trigger hasLayout) */
 }
-
 .clearfix:before,
 .clearfix:after {
-    content: "";
-    display: table;
+  content: "";
+  display: table;
 }
-
 .clearfix:after {
-    clear: both;
+  clear: both;
 }

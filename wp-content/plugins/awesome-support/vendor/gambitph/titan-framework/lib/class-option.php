@@ -12,13 +12,19 @@ class TitanFrameworkOption {
 	const TYPE_META = 'meta';
 	const TYPE_ADMIN = 'option';
 	const TYPE_CUSTOMIZER = 'customizer';
+
+	public $settings;
+	public $type; // One of the TYPE_* constants above
+	public $owner;
+
 	private static $rowIndex = 0;
-		/**
+
+
+	/**
 	 * Default settings across all options
-	 *
-*@var array
+	 * @var array
 	 */
-	private static $defaultSettings = [
+	private static $defaultSettings = array(
 
 		'type' => 'text',
 
@@ -65,8 +71,7 @@ class TitanFrameworkOption {
 
 		/**
 		 * (Optional) CSS rules to be used with this option. Only used when the option is placed in an admin page / panel or a theme customizer section.
-		 *
-*@since 1.0
+		 * @since 1.0
 		 * @var string
 		 * @see http://www.titanframework.net/generate-css-automatically-for-your-options/
 		 */
@@ -74,23 +79,42 @@ class TitanFrameworkOption {
 
 		/**
 		 * (Optional) If true, the option will not be displayed, but will still be accessible using `getOption`. This is helpful for deprecating old settings, while still making your project backward compatible.
-		 *
-*@since 1.8
+		 * @since 1.8
 		 * @var bool
 		 */
-		'hidden' => FALSE,
+		'hidden' => false,
 
 		'example' => '', // An example value for this field, will be displayed in a <code>
-	]; // One of the TYPE_* constants above
-	public $settings;
-public $type;
-	public $owner;
+	);
+
 	/**
 	 * Default settings specific for this option. This is overridden by each option class
-	 *
-*@var array
+	 * @var array
 	 */
-	public $defaultSecondarySettings = [];
+	public $defaultSecondarySettings = array();
+
+	public static function factory( $settings, $owner ) {
+		$settings = array_merge( self::$defaultSettings, $settings );
+
+		$className = 'TitanFrameworkOption' . str_replace( ' ', '', ucwords( str_replace( '-', ' ', $settings['type'] ) ) );
+
+		// assume all the classes are already required
+		if ( ! class_exists( $className ) && ! class_exists( $settings['type'] ) ) {
+			TitanFramework::displayFrameworkError(
+				sprintf( __( 'Option type or extended class %s does not exist.', TF_I18NDOMAIN ), '<code>' . $settings['type'] . '</code>', $settings ),
+			$settings );
+			return null;
+		}
+
+		if ( class_exists( $className ) ) {
+			$obj = new $className( $settings, $owner );
+			return $obj;
+		}
+
+		$className = $settings['type'];
+		$obj = new $className( $settings, $owner );
+		return $obj;
+	}
 
 	function __construct( $settings, $owner ) {
 		$this->owner = $owner;
@@ -107,32 +131,10 @@ public $type;
 		}
 	}
 
-	public static function factory( $settings, $owner ) {
-		$settings = array_merge( self::$defaultSettings, $settings );
 
-		$className = 'TitanFrameworkOption' . str_replace( ' ', '', ucwords( str_replace( '-', ' ', $settings['type'] ) ) );
+	public function getValue( $postID = null ) {
 
-		// assume all the classes are already required
-		if ( ! class_exists( $className ) && ! class_exists( $settings['type'] ) ) {
-			TitanFramework::displayFrameworkError(
-				sprintf( __( 'Option type or extended class %s does not exist.', TF_I18NDOMAIN ), '<code>' . $settings['type'] . '</code>', $settings ),
-			$settings );
-			return NULL;
-		}
-
-		if ( class_exists( $className ) ) {
-			$obj = new $className( $settings, $owner );
-			return $obj;
-		}
-
-		$className = $settings['type'];
-		$obj = new $className( $settings, $owner );
-		return $obj;
-	}
-
-	public function getValue( $postID = NULL ) {
-
-		$value = FALSE;
+		$value = false;
 
 		if ( empty( $this->settings['id'] ) ) {
 			return $value;
@@ -142,25 +144,25 @@ public $type;
 
 			$value = $this->getFramework()->getInternalAdminPageOption( $this->settings['id'], $this->settings['default'] );
 
-		} else {if ( $this->type == self::TYPE_META ) {
+		} else if ( $this->type == self::TYPE_META ) {
 
 			if ( empty( $postID ) ) {
 				$postID = $this->owner->postID;
 			}
 			// If no $postID is given, try and get it if we are in a loop.
-			if ( empty( $postID ) && ! is_admin() && get_post() != NULL ) {
+			if ( empty( $postID ) && ! is_admin() && get_post() != null ) {
 				$postID = get_the_ID();
 			}
 
 			// for meta options, use the default value for new posts/pages
 			if ( metadata_exists( 'post', $postID, $this->getID() ) ) {
-				$value = get_post_meta( $postID, $this->getID(), TRUE );
+				$value = get_post_meta( $postID, $this->getID(), true );
 			} else {
 				$value = $this->settings['default'];
 			}
-		} else {if ( $this->type == self::TYPE_CUSTOMIZER ) {
+		} else if ( $this->type == self::TYPE_CUSTOMIZER ) {
 			$value = get_theme_mod( $this->getID(), $this->settings['default'] );
-		}}}
+		}
 
 		/**
 		 * Allow others to change the value of the option before it gets cleaned
@@ -180,6 +182,43 @@ public $type;
 		return apply_filters( 'tf_get_value_' . $this->settings['type'] . '_' . $this->getOptionNamespace(), $value, $postID, $this );
 	}
 
+
+	/**
+	 *
+	 */
+	public function setValue( $value, $postID = null ) {
+
+		// Apply cleaning method for the value (for serialized data, slashes, etc).
+		$value = $this->cleanValueForSaving( $value );
+
+		if ( $this->type == self::TYPE_ADMIN ) {
+
+			$this->getFramework()->setInternalAdminPageOption( $this->settings['id'], $value );
+
+		} else if ( $this->type == self::TYPE_META ) {
+
+			if ( empty( $postID ) ) {
+				$postID = $this->owner->postID;
+			}
+			// If no $postID is given, try and get it if we are in a loop.
+			if ( empty( $postID ) && ! is_admin() && get_post() != null ) {
+				$postID = get_the_ID();
+			}
+
+			update_post_meta( $postID, $this->getID(), $value );
+
+		} else if ( $this->type == self::TYPE_CUSTOMIZER ) {
+
+			set_theme_mod( $this->getID(), $value );
+
+		}
+
+		do_action( 'tf_set_value_' . $this->settings['type'] . '_' . $this->getOptionNamespace(), $value, $postID, $this );
+
+		return true;
+	}
+
+
 	/**
 	 * Gets the framework instance currently used
 	 *
@@ -198,9 +237,6 @@ public $type;
 		}
 	}
 
-	public function getID() {
-		return $this->getOptionNamespace() . '_' . $this->settings['id'];
-	}
 
 	/**
 	 * Gets the option namespace used in the framework instance currently used
@@ -212,50 +248,8 @@ public $type;
 		return $this->getFramework()->optionNamespace;
 	}
 
-	public function cleanValueForGetting( $value ) {
-		if ( is_array( $value ) ) {
-			return $value;
-		}
-		return stripslashes( $value );
-	}
-
-	/**
-	 *
-	 */
-	public function setValue( $value, $postID = NULL ) {
-
-		// Apply cleaning method for the value (for serialized data, slashes, etc).
-		$value = $this->cleanValueForSaving( $value );
-
-		if ( $this->type == self::TYPE_ADMIN ) {
-
-			$this->getFramework()->setInternalAdminPageOption( $this->settings['id'], $value );
-
-		} else {if ( $this->type == self::TYPE_META ) {
-
-			if ( empty( $postID ) ) {
-				$postID = $this->owner->postID;
-			}
-			// If no $postID is given, try and get it if we are in a loop.
-			if ( empty( $postID ) && ! is_admin() && get_post() != NULL ) {
-				$postID = get_the_ID();
-			}
-
-			update_post_meta( $postID, $this->getID(), $value );
-
-		} else {if ( $this->type == self::TYPE_CUSTOMIZER ) {
-
-			set_theme_mod( $this->getID(), $value );
-
-		}}}
-
-		do_action( 'tf_set_value_' . $this->settings['type'] . '_' . $this->getOptionNamespace(), $value, $postID, $this );
-
-		return TRUE;
-	}
-
-	public function cleanValueForSaving( $value ) {
-		return $value;
+	public function getID() {
+		return $this->getOptionNamespace() . '_' . $this->settings['id'];
 	}
 
 	public function __call( $name, $args ) {
@@ -267,18 +261,9 @@ public $type;
 		return $default;
 	}
 
-	public function display() {
-	}
-
-	public function registerCustomizerControl( $wp_customize, $section, $priority = 1 ) {
-
-	}
-
-	/* overridden */
-
-	protected function echoOptionHeader( $showDesc = FALSE ) {
+	protected function echoOptionHeader( $showDesc = false ) {
 		// Allow overriding for custom styling
-		$useCustom = FALSE;
+		$useCustom = false;
 		$useCustom = apply_filters( 'tf_use_custom_option_header', $useCustom );
 		$useCustom = apply_filters( 'tf_use_custom_option_header_' . $this->getOptionNamespace(), $useCustom );
 		if ( $useCustom ) {
@@ -291,7 +276,7 @@ public $type;
 		$name = $this->getName();
 		$evenOdd = self::$rowIndex++ % 2 == 0 ? 'odd' : 'even';
 
-		$style = $this->getHidden() == TRUE ? 'style="display: none"' : '';
+		$style = $this->getHidden() == true ? 'style="display: none"' : '';
 
 		?>
 		<tr valign="top" class="row-<?php echo self::$rowIndex ?> <?php echo $evenOdd ?>" <?php echo $style ?>>
@@ -309,11 +294,9 @@ public $type;
 		endif;
 	}
 
-	/* overridden */
-
 	protected function echoOptionHeaderBare() {
 		// Allow overriding for custom styling
-		$useCustom = FALSE;
+		$useCustom = false;
 		$useCustom = apply_filters( 'tf_use_custom_option_header', $useCustom );
 		$useCustom = apply_filters( 'tf_use_custom_option_header_' . $this->getOptionNamespace(), $useCustom );
 		if ( $useCustom ) {
@@ -326,7 +309,7 @@ public $type;
 		$name = $this->getName();
 		$evenOdd = self::$rowIndex++ % 2 == 0 ? 'odd' : 'even';
 
-		$style = $this->getHidden() == TRUE ? 'style="display: none"' : '';
+		$style = $this->getHidden() == true ? 'style="display: none"' : '';
 
 		?>
 		<tr valign="top" class="row-<?php echo self::$rowIndex ?> <?php echo $evenOdd ?>" <?php echo $style ?>>
@@ -334,11 +317,9 @@ public $type;
 		<?php
 	}
 
-	/* overridden */
-
-	protected function echoOptionFooter( $showDesc = TRUE ) {
+	protected function echoOptionFooter( $showDesc = true ) {
 		// Allow overriding for custom styling
-		$useCustom = FALSE;
+		$useCustom = false;
 		$useCustom = apply_filters( 'tf_use_custom_option_footer', $useCustom );
 		$useCustom = apply_filters( 'tf_use_custom_option_footer_' . $this->getOptionNamespace(), $useCustom );
 		if ( $useCustom ) {
@@ -367,11 +348,9 @@ public $type;
 		<?php
 	}
 
-	/* overridden */
-
-	protected function echoOptionFooterBare( $showDesc = TRUE ) {
+	protected function echoOptionFooterBare( $showDesc = true ) {
 		// Allow overriding for custom styling
-		$useCustom = FALSE;
+		$useCustom = false;
 		$useCustom = apply_filters( 'tf_use_custom_option_footer', $useCustom );
 		$useCustom = apply_filters( 'tf_use_custom_option_footer_' . $this->getOptionNamespace(), $useCustom );
 		if ( $useCustom ) {
@@ -384,5 +363,27 @@ public $type;
 		</td>
 		</tr>
 		<?php
+	}
+
+	/* overridden */
+	public function display() {
+	}
+
+	/* overridden */
+	public function cleanValueForSaving( $value ) {
+		return $value;
+	}
+
+	/* overridden */
+	public function cleanValueForGetting( $value ) {
+		if ( is_array( $value ) ) {
+			return $value;
+		}
+		return stripslashes( $value );
+	}
+
+	/* overridden */
+	public function registerCustomizerControl( $wp_customize, $section, $priority = 1 ) {
+
 	}
 }

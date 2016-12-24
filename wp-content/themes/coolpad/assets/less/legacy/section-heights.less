@@ -1,0 +1,21 @@
+@import '../variables/breakpoints';
+
+@height-xs: 568px;
+@height-sm: 700px;
+@height-md: 700px;
+@height-lg: 700px;
+.section-height {
+  //max-height: @height-lg;
+  @media only screen and (min-width: @break-lg) {
+    height: @height-lg;
+  }
+  @media only screen and (max-width: @break-lg) {
+    height: @height-md;
+  }
+  @media only screen and (max-width: @break-md) {
+    height: @height-sm;
+  }
+  @media only screen and (max-width: @break-xs) {
+    height: @height-xs;
+  }
+}

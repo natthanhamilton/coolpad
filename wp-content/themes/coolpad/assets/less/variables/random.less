@@ -1,0 +1,31 @@
+@import 'breakpoints';
+/*
+
+Mobile content section padding
+
+*/
+.mobile-content-padding {
+  @media only screen and (max-width: @break-sm) {
+    margin: 0;
+    padding: 0 20px 0 20px;
+  }
+}
+
+/*
+
+Modifiers
+
+*/
+@media only screen and (max-width: @break-md) {
+  .box {
+    display: block !important;
+  }
+}
+
+.affix {
+  top: 0;
+}
+
+.affix-top {
+  position: fixed;
+}

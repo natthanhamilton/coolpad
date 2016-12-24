@@ -1,36 +1,36 @@
 @font-face {
     font-family: 'Gotham-Light';
-    src: url(../../../assets/fonts/Gotham-Light.ttf) format('truetype'), url(../../../assets/fonts/Gotham-Light.otf) format('opentype');
+    src: url(assets/fonts/Gotham-Light.ttf) format('truetype'), url(assets/fonts/Gotham-Light.otf) format('opentype');
 }
 
 @font-face {
     font-family: 'Gotham-Medium';
-    src: url(../../../assets/fonts/Gotham-Medium.ttf) format('truetype'), url(../../../assets/fonts/Gotham-Medium.otf) format('opentype');
+    src: url(assets/fonts/Gotham-Medium.ttf) format('truetype'), url(assets/fonts/Gotham-Medium.otf) format('opentype');
 }
 
 @font-face {
     font-family: 'Gotham-Bold';
-    src: url(../../../assets/fonts/Gotham-Bold.ttf) format('truetype'), url(../../../assets/fonts/Gotham-Bold.otf) format('opentype');
+    src: url(assets/fonts/Gotham-Bold.ttf) format('truetype'), url(assets/fonts/Gotham-Bold.otf) format('opentype');
 }
 
 @font-face {
     font-family: 'Gotham-Book';
-    src: url('../../../assets/fonts/Gotham-Book.ttf') format('truetype'), url(../../../assets/fonts/Gotham-Book.otf) format('opentype');
+    src: url('assets/fonts/Gotham-Book.ttf') format('truetype'), url(assets/fonts/Gotham-Book.otf) format('opentype');
 }
 
-.font-family-light {
+.futura {
     font-family: Gotham-Light, serif;
 }
 
-.font-family-medium {
+.futura {
     font-family: Gotham-Medium, serif;
 }
 
-.font-family-book {
+.futura {
     font-family: Gotham-Book, serif;
 }
 
-.font-family-bold {
+.futura {
     font-family: Gotham-Bold, serif;
 }
 

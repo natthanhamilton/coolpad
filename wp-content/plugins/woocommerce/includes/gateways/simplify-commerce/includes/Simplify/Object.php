@@ -26,20 +26,22 @@
  * SUCH DAMAGE.
  */
 
+
 /**
  * Base class for all domain objects.
  */
 class Simplify_Object {
-	private $properties = [];
+
+	private $properties = array();
 
 	/**
 	 * @ignore
 	 */
 	public function __get($key) {
 		if (array_key_exists($key, $this->properties)) {
-			return $this->properties[ $key ];
+			return $this->properties[$key];
 		} else {
-			return NULL;
+			return null;
 		}
 	}
 
@@ -47,12 +49,11 @@ class Simplify_Object {
 	 * @ignore
 	 */
 	public function __set($key, $value) {
-		$this->properties[ $key ] = $value;
+		$this->properties[$key] = $value;
 	}
 
 	/**
 	 * Updates the object's properties with the values in the specified map.
-	 *
 	 * @param $hash array Map of values to set.
 	 */
 	public function setAll($hash) {
@@ -70,7 +71,6 @@ class Simplify_Object {
 
 	/**
 	 * Returns the object's properties as a map.
-	 *
 	 * @return array map of properties.
 	 */
 	public function getProperties() {

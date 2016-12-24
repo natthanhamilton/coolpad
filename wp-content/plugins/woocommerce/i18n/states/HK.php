@@ -8,8 +8,9 @@
  * @version     2.0.0
  */
 global $states;
-$states['HK'] = [
-	'HONG KONG'       => __('Hong Kong Island', 'woocommerce'),
-	'KOWLOON'         => __('Kowloon', 'woocommerce'),
-	'NEW TERRITORIES' => __('New Territories', 'woocommerce')
-];
+
+$states['HK'] = array(
+	'HONG KONG'       => __( 'Hong Kong Island', 'woocommerce' ),
+	'KOWLOON'         => __( 'Kowloon', 'woocommerce' ),
+	'NEW TERRITORIES' => __( 'New Territories', 'woocommerce' )
+);

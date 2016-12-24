@@ -1,4 +1,4 @@
-@import '../../Coolpad/less/variables';
+@import '../../Coolpad/assets/less/variables';
 
 #features-list {
   background-color: #f3f4f6;
@@ -8,7 +8,6 @@
     margin-bottom: 0;
   }
   h3, p {
-    .font-family-book;
     color: #5b6770;
     text-align: center;
   }
@@ -52,16 +51,16 @@
   }
   .carousel {
     padding: 0 300px;
-    @media only screen and (max-width: @break-lg) {
+    @media only screen and (max-width: @break-xl) {
       padding: 0 200px;
     }
-    @media only screen and (max-width: @break-md) {
+    @media only screen and (max-width: @break-lg) {
       padding: 0 100px;
     }
-    @media only screen and (max-width: @break-sm) {
+    @media only screen and (max-width: @break-md) {
       padding: 0 50px;
     }
-    @media only screen and (max-width: @break-middle) {
+    @media only screen and (max-width: @break-sm) {
       padding: 0 25px;
     }
     .left,
@@ -73,19 +72,18 @@
     }
     .left {
       left: 10%;
-      @media only screen and (max-width: @break-md) {
+      @media only screen and (max-width: @break-lg) {
         left: 2%;
       }
     }
     .right {
       right: 10%;
-      @media only screen and (max-width: @break-md) {
+      @media only screen and (max-width: @break-lg) {
         right: 2%;
       }
     }
   }
   .item a {
-    .font-family-light;
     font-size: 24px;
     line-height: 0.67;
     color: @color-charcoal-grey;
@@ -138,16 +136,16 @@
 
     .item a {
       .col-sm-6 {
-        @media all and (min-width: @break-middle) and (max-width: @break-sm) {
+        @media all and (min-width: @break-sm) and (max-width: @break-md) {
           width: 50%;
         }
-        @media all and (min-width: @break-sm) and (max-width: @break-md) {
+        @media all and (min-width: @break-md) and (max-width: @break-lg) {
           width: 33.333%;
         }
       }
     }
 
-    @media all and (min-width: @break-middle) {
+    @media all and (min-width: @break-sm) {
       > .item.active.right,
       > .item.next {
         transform: translate3d(50%, 0, 0);
@@ -188,7 +186,7 @@
       }
     }
 
-    @media all and (min-width: @break-sm) {
+    @media all and (min-width: @break-md) {
       > .item.active.right,
       > .item.next {
         transform: translate3d(33.333%, 0, 0);
@@ -229,7 +227,7 @@
       }
     }
 
-    @media all and (min-width: @break-md) {
+    @media all and (min-width: @break-lg) {
       > .item.active.right,
       > .item.next {
         transform: translate3d(25%, 0, 0);

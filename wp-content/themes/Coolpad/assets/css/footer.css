@@ -958,7 +958,7 @@ Fix img-responsive issue
     text-decoration: none;
     float: left;
     /* when more than 2 links, change to full width list
-          @media only screen and (max-width: @break-sm) {
+          @media only screen and (max-width: @break-md) {
             display: block;
             width: 100%;
             text-align: right;

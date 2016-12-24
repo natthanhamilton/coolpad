@@ -226,23 +226,6 @@ class URE_Base_Lib {
     }
     // end of check_version()
 
-    /**
-     * returns 'selected' HTML cluster if $value matches to $etalon
-     * 
-     * @param string $value
-     * @param string $etalon
-     * @return string
-     */
-    public function option_selected($value, $etalon) {
-        $selected = '';
-        if (strcasecmp($value, $etalon) == 0) {
-            $selected = 'selected="selected"';
-        }
-
-        return $selected;
-    }
-    // end of option_selected()
-
 
     public function get_current_url() {
         global $wp;

@@ -1,67 +1,67 @@
 [
-  {
-    "name": "ericmann/wp-session-manager",
-    "version": "dev-master",
-    "version_normalized": "9999999-dev",
-    "source": {
-      "type": "git",
-      "url": "https://github.com/ericmann/wp-session-manager.git",
-      "reference": "c446c85909206345d875297d8691396e0ba624a3"
+    {
+        "name": "ericmann/wp-session-manager",
+        "version": "dev-master",
+        "version_normalized": "9999999-dev",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ericmann/wp-session-manager.git",
+            "reference": "c446c85909206345d875297d8691396e0ba624a3"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ericmann/wp-session-manager/zipball/c446c85909206345d875297d8691396e0ba624a3",
+            "reference": "c446c85909206345d875297d8691396e0ba624a3",
+            "shasum": ""
+        },
+        "time": "2015-05-25 00:38:47",
+        "type": "wordpress-plugin",
+        "installation-source": "source",
+        "notification-url": "https://packagist.org/downloads/"
     },
-    "dist": {
-      "type": "zip",
-      "url": "https://api.github.com/repos/ericmann/wp-session-manager/zipball/c446c85909206345d875297d8691396e0ba624a3",
-      "reference": "c446c85909206345d875297d8691396e0ba624a3",
-      "shasum": ""
-    },
-    "time": "2015-05-25 00:38:47",
-    "type": "wordpress-plugin",
-    "installation-source": "source",
-    "notification-url": "https://packagist.org/downloads/"
-  },
-  {
-    "name": "gambitph/titan-framework",
-    "version": "1.9.2",
-    "version_normalized": "1.9.2.0",
-    "source": {
-      "type": "git",
-      "url": "https://github.com/gambitph/Titan-Framework.git",
-      "reference": "793bee37350acf4ff10ebf1068aa6d16cdc44da1"
-    },
-    "dist": {
-      "type": "zip",
-      "url": "https://api.github.com/repos/gambitph/Titan-Framework/zipball/793bee37350acf4ff10ebf1068aa6d16cdc44da1",
-      "reference": "793bee37350acf4ff10ebf1068aa6d16cdc44da1",
-      "shasum": ""
-    },
-    "time": "2015-10-06 16:21:47",
-    "type": "library",
-    "installation-source": "dist",
-    "autoload": {
-      "files": [
-        "titan-framework.php"
-      ]
-    },
-    "notification-url": "https://packagist.org/downloads/",
-    "license": [
-      "GPLv2+"
-    ],
-    "authors": [
-      {
-        "name": "Gambit Technologies",
-        "email": "info@gambit.ph",
-        "homepage": "http://www.titanframework.net/",
-        "role": "Developer"
-      }
-    ],
-    "description": "Titan Framework allows theme and plugin developers to create admin pages, options, meta boxes, and theme customizer options with just a few simple lines of code.",
-    "homepage": "https://github.com/gambitph/Titan-Framework",
-    "keywords": [
-      "Titan Framework",
-      "framework",
-      "options",
-      "titan",
-      "wordpress"
-    ]
-  }
+    {
+        "name": "gambitph/titan-framework",
+        "version": "1.9.2",
+        "version_normalized": "1.9.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/gambitph/Titan-Framework.git",
+            "reference": "793bee37350acf4ff10ebf1068aa6d16cdc44da1"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/gambitph/Titan-Framework/zipball/793bee37350acf4ff10ebf1068aa6d16cdc44da1",
+            "reference": "793bee37350acf4ff10ebf1068aa6d16cdc44da1",
+            "shasum": ""
+        },
+        "time": "2015-10-06 16:21:47",
+        "type": "library",
+        "installation-source": "dist",
+        "autoload": {
+            "files": [
+                "titan-framework.php"
+            ]
+        },
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPLv2+"
+        ],
+        "authors": [
+            {
+                "name": "Gambit Technologies",
+                "email": "info@gambit.ph",
+                "homepage": "http://www.titanframework.net/",
+                "role": "Developer"
+            }
+        ],
+        "description": "Titan Framework allows theme and plugin developers to create admin pages, options, meta boxes, and theme customizer options with just a few simple lines of code.",
+        "homepage": "https://github.com/gambitph/Titan-Framework",
+        "keywords": [
+            "Titan Framework",
+            "framework",
+            "options",
+            "titan",
+            "wordpress"
+        ]
+    }
 ]

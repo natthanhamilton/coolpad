@@ -5,10 +5,11 @@
  * Standardizes WordPress session data and uses either database transients or in-memory caching
  * for storing user session information.
  *
- * @package    WordPress
+ * @package WordPress
  * @subpackage Session
- * @since      3.7.0
+ * @since   3.7.0
  */
+
 /**
  * Return the current cache expire setting.
  *
@@ -32,10 +33,10 @@ function wp_session_commit() {
  *
  * @param string $data
  */
-function wp_session_decode($data) {
+function wp_session_decode( $data ) {
 	$wp_session = WP_Session::get_instance();
 
-	return $wp_session->json_in($data);
+	return $wp_session->json_in( $data );
 }
 
 /**
@@ -56,11 +57,12 @@ function wp_session_encode() {
  *
  * @return bool
  */
-function wp_session_regenerate_id($delete_old_session = FALSE) {
+function wp_session_regenerate_id( $delete_old_session = false ) {
 	$wp_session = WP_Session::get_instance();
-	$wp_session->regenerate_id($delete_old_session);
 
-	return TRUE;
+	$wp_session->regenerate_id( $delete_old_session );
+
+	return true;
 }
 
 /**
@@ -72,14 +74,14 @@ function wp_session_regenerate_id($delete_old_session = FALSE) {
  */
 function wp_session_start() {
 	$wp_session = WP_Session::get_instance();
-	do_action('wp_session_start');
+	do_action( 'wp_session_start' );
 
 	return $wp_session->session_started();
 }
-
-if (!defined('WP_CLI') || FALSE === WP_CLI) {
-	add_action('plugins_loaded', 'wp_session_start');
+if ( ! defined( 'WP_CLI' ) || false === WP_CLI ) {
+	add_action( 'plugins_loaded', 'wp_session_start' );
 }
+
 /**
  * Return the current session status.
  *
@@ -87,7 +89,8 @@ if (!defined('WP_CLI') || FALSE === WP_CLI) {
  */
 function wp_session_status() {
 	$wp_session = WP_Session::get_instance();
-	if ($wp_session->session_started()) {
+
+	if ( $wp_session->session_started() ) {
 		return PHP_SESSION_ACTIVE;
 	}
 
@@ -99,6 +102,7 @@ function wp_session_status() {
  */
 function wp_session_unset() {
 	$wp_session = WP_Session::get_instance();
+
 	$wp_session->reset();
 }
 
@@ -107,13 +111,14 @@ function wp_session_unset() {
  */
 function wp_session_write_close() {
 	$wp_session = WP_Session::get_instance();
+
 	$wp_session->write_data();
-	do_action('wp_session_commit');
+	do_action( 'wp_session_commit' );
+}
+if ( ! defined( 'WP_CLI' ) || false === WP_CLI ) {
+	add_action( 'shutdown', 'wp_session_write_close' );
 }
 
-if (!defined('WP_CLI') || FALSE === WP_CLI) {
-	add_action('shutdown', 'wp_session_write_close');
-}
 /**
  * Clean up expired sessions by removing data and their expiration entries from
  * the WordPress options table.
@@ -122,31 +127,33 @@ if (!defined('WP_CLI') || FALSE === WP_CLI) {
  * of a scheduled task or cron job.
  */
 function wp_session_cleanup() {
-	if (defined('WP_SETUP_CONFIG')) {
+	if ( defined( 'WP_SETUP_CONFIG' ) ) {
 		return;
 	}
-	if (!defined('WP_INSTALLING')) {
+
+	if ( ! defined( 'WP_INSTALLING' ) ) {
 		/**
 		 * Determine the size of each batch for deletion.
 		 *
 		 * @param int
 		 */
-		$batch_size = apply_filters('wp_session_delete_batch_size', 1000);
-		// Delete a batch of old sessions
-		WP_Session_Utils::delete_old_sessions($batch_size);
-	}
-	// Allow other plugins to hook in to the garbage collection process.
-	do_action('wp_session_cleanup');
-}
+		$batch_size = apply_filters( 'wp_session_delete_batch_size', 1000 );
 
-add_action('wp_session_garbage_collection', 'wp_session_cleanup');
+		// Delete a batch of old sessions
+		WP_Session_Utils::delete_old_sessions( $batch_size );
+	}
+
+	// Allow other plugins to hook in to the garbage collection process.
+	do_action( 'wp_session_cleanup' );
+}
+add_action( 'wp_session_garbage_collection', 'wp_session_cleanup' );
+
 /**
  * Register the garbage collector as a twice daily event.
  */
 function wp_session_register_garbage_collection() {
-	if (!wp_next_scheduled('wp_session_garbage_collection')) {
-		wp_schedule_event(time(), 'hourly', 'wp_session_garbage_collection');
+	if ( ! wp_next_scheduled( 'wp_session_garbage_collection' ) ) {
+		wp_schedule_event( time(), 'hourly', 'wp_session_garbage_collection' );
 	}
 }
-
-add_action('wp', 'wp_session_register_garbage_collection');
+add_action( 'wp', 'wp_session_register_garbage_collection' );

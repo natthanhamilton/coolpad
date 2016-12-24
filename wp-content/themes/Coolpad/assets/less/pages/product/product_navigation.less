@@ -5,7 +5,7 @@
   width: 100%;
   z-index: 1000;
   min-height: 80px;
-  @media only screen and (max-width: @break-sm) {
+  @media only screen and (max-width: @break-md) {
     z-index: 1 !important;
     .vertical-center !important;
     .vc_col-sm-6 {
@@ -17,23 +17,23 @@
 
     // Responsive elements
     padding: 20px 0 0 129px;
-    @media only screen and (min-width: @break-md) and (max-width: @break-lg) {
+    @media only screen and (min-width: @break-lg) and (max-width: @break-xl) {
       padding: 20px 0 0 60px;
     }
-    @media only screen and (min-width: @break-sm)  and (max-width: @break-md) {
+    @media only screen and (min-width: @break-md)  and (max-width: @break-lg) {
       padding: 20px 0 0 20px;
     }
-    @media only screen and (max-width: @break-sm) {
+    @media only screen and (max-width: @break-md) {
       height: initial;
       padding: 0;
       text-align: center;
     }
 
     p {
-      .font-family-light;
+
       color: #fff;
       font-size: 28px;
-      @media only screen and (max-width: @break-middle) {
+      @media only screen and (max-width: @break-sm) {
         font-size: 24px;
       }
       @media only screen and (max-width: @break-xs) {
@@ -49,7 +49,7 @@
     }
   }
   .nav-links {
-    @media only screen and (max-width: @break-sm) {
+    @media only screen and (max-width: @break-md) {
       display: none;
     }
     .wpb_wrapper {
@@ -66,14 +66,14 @@
         display: inline-block;
       }
       a {
-        .font-family-book;
+
         color: #fff;
         height: 80px;
 
         //Responsive elements
         font-size: 18px;
         padding: 25px 10px 0 10px;
-        @media only screen and (min-width: @break-sm) and (max-width: @break-md) {
+        @media only screen and (min-width: @break-md) and (max-width: @break-lg) {
           font-size: 16px;
           padding: 25px 6px 0 6px;
         }
@@ -104,7 +104,7 @@
 
         //Responsive elements
         margin-left: 10px;
-        @media only screen and (min-width: @break-sm) and (max-width: @break-md) {
+        @media only screen and (min-width: @break-md) and (max-width: @break-lg) {
           margin-left: 6px;
         }
         &:hover {

@@ -1,54 +1,24 @@
-<?php
-global $post;
-$rand_ID = mt_rand();
-?>
-<div id="listing" xmlns="http://www.w3.org/1999/html">
-	<div class="panel">
-		<div class="panel-heading" id="heading">
-			<div class="row">
-				<div class="col-xs-2" id="icon">
-					<a data-toggle="collapse" data-parent="#accordion" href="#<?php echo $rand_ID; ?>"><span
-							class="icon"><i class="fa fa-plus"></i></span></a>
-				</div>
-				<div class="col-xs-10">
-					<div class="line">
-						<span class="title"><?php the_title(); ?></span><span class="ref">1234</span>
-					</div>
-					<span class="location"><?php the_job_location(FALSE); ?></span>
-				</div>
+<?php global $post; ?>
+<li <?php job_listing_class(); ?> data-longitude="<?php echo esc_attr( $post->geolocation_lat ); ?>" data-latitude="<?php echo esc_attr( $post->geolocation_long ); ?>">
+	<a href="<?php the_job_permalink(); ?>">
+		<?php the_company_logo(); ?>
+		<div class="position">
+			<h3><?php the_title(); ?></h3>
+			<div class="company">
+				<?php the_company_name( '<strong>', '</strong> ' ); ?>
+				<?php the_company_tagline( '<span class="tagline">', '</span>' ); ?>
 			</div>
 		</div>
-		<div id="<?php echo $rand_ID; ?>" class="panel-collapse collapse">
-			<div class="panel-body">
-				<div class="row">
-					<div class="col-xs-2" id="icon"></div>
-					<div class="col-xs-10">
-						<span class="content"><?php echo get_the_content(); ?></span>
-						<span class="apply"><button type="button" data-toggle="modal"
-						                            data-target="#job-<?php echo $rand_ID; ?>">Apply Now
-							</button</span>
-					</div>
-				</div>
-			</div>
+		<div class="location">
+			<?php the_job_location( false ); ?>
 		</div>
-	</div>
-</div>
-<script type="application/javascript">
-	$('#job-<?php echo $rand_ID; ?>').on('shown.bs.modal', function () {
-		$('#myInput').focus()
-	})
-</script>
-<div class="modal fade" id="job-<?php echo $rand_ID; ?>" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-						aria-hidden="true">&times;</span></button>
-				<h4 class="modal-title" id="myModalLabel"><?php the_title(); ?>, <?php the_job_location(FALSE); ?></h4>
-			</div>
-			<div class="modal-body">
-				<?php echo do_shortcode('[contact-form-7 id="336" title="Dynamic Job Application Form"]'); ?>
-			</div>
-		</div>
-	</div>
-</div>
+		<ul class="meta">
+			<?php do_action( 'job_listing_meta_start' ); ?>
+
+			<li class="job-type <?php echo get_the_job_type() ? sanitize_title( get_the_job_type()->slug ) : ''; ?>"><?php the_job_type(); ?></li>
+			<li class="date"><date><?php printf( __( '%s ago', 'wp-job-manager' ), human_time_diff( get_post_time( 'U' ), current_time( 'timestamp' ) ) ); ?></date></li>
+
+			<?php do_action( 'job_listing_meta_end' ); ?>
+		</ul>
+	</a>
+</li>

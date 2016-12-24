@@ -29,26 +29,27 @@
 /**
  * Simplify_Authentication - encapsulates the credentials needed to make a request to the Simplify API.
  *
- * @var $publicKey   - this is your API public key
- * @var $privateKey  - this is your API private key
+ * @var $publicKey - this is your API public key
+ * @var $privateKey - this is your API private key
  * @var $accessToken - Oauth access token that is needed to make API requests on behalf of another user
  */
 class Simplify_Authentication {
+
 	public $privateKey;
 	public $publicKey;
 	public $accessToken;
 
 	function __construct() {
 		$args = func_get_args();
-		switch (func_num_args()) {
+		switch( func_num_args() ) {
 			case 1:
-				self::__construct1($args[0]);
+				self::__construct1( $args[0] );
 				break;
 			case 2:
-				self::__construct2($args[0], $args[1]);
+				self::__construct2( $args[0], $args[1] );
 				break;
 			case 3:
-				self::__construct3($args[0], $args[1], $args[2]);
+				self::__construct3( $args[0], $args[1], $args[2] );
 		}
 	}
 
@@ -57,13 +58,13 @@ class Simplify_Authentication {
 	}
 
 	function __construct2($publicKey, $privateKey) {
-		$this->publicKey  = $publicKey;
+		$this->publicKey = $publicKey;
 		$this->privateKey = $privateKey;
 	}
 
 	function __construct3($publicKey, $privateKey, $accessToken) {
-		$this->publicKey   = $publicKey;
-		$this->privateKey  = $privateKey;
+		$this->publicKey = $publicKey;
+		$this->privateKey = $privateKey;
 		$this->accessToken = $accessToken;
 	}
 }

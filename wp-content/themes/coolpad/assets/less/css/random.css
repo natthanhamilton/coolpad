@@ -1,0 +1,27 @@
+/*
+
+Mobile content section padding
+
+*/
+@media only screen and (max-width: 480px) {
+  .mobile-content-padding {
+    margin: 0;
+    padding: 0 20px 0 20px;
+  }
+}
+/*
+
+Modifiers
+
+*/
+@media only screen and (max-width: 768px) {
+  .box {
+    display: block !important;
+  }
+}
+.affix {
+  top: 0;
+}
+.affix-top {
+  position: fixed;
+}

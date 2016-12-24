@@ -7,10 +7,12 @@
  *
  * @since 3.2
  */
+
 /* Exit if accessed directly */
-if (!defined('ABSPATH')) {
+if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
+
 /**
  * Set the errors session
  *
@@ -18,7 +20,7 @@ if (!defined('ABSPATH')) {
  * @return void
  */
 function wpas_set_errors() {
-	wpas_set_notifications('errors');
+	wpas_set_notifications( 'errors' );
 }
 
 /**
@@ -31,8 +33,8 @@ function wpas_set_errors() {
  *
  * @return void
  */
-function wpas_add_error($error_id, $error_message) {
-	wpas_add_notification($error_id, $error_message, 'errors');
+function wpas_add_error( $error_id, $error_message ) {
+	wpas_add_notification( $error_id, $error_message, 'errors' );
 }
 
 /**
@@ -45,8 +47,8 @@ function wpas_add_error($error_id, $error_message) {
  *
  * @return mixed
  */
-function wpas_get_error($error_id, $default = FALSE) {
-	return wpas_get_notification($error_id, $default, 'errors');
+function wpas_get_error( $error_id, $default = false ) {
+	return wpas_get_notification( $error_id, $default, 'errors' );
 }
 
 /**
@@ -56,7 +58,7 @@ function wpas_get_error($error_id, $default = FALSE) {
  * @return array
  */
 function wpas_get_errors() {
-	return wpas_get_notifications('errors');
+	return wpas_get_notifications( 'errors' );
 }
 
 /**
@@ -68,8 +70,8 @@ function wpas_get_errors() {
  *
  * @return void
  */
-function wpas_clean_error($error_id) {
-	wpas_clean_notification($error_id, 'errors');
+function wpas_clean_error( $error_id ) {
+	wpas_clean_notification( $error_id, 'errors' );
 }
 
 /**
@@ -79,7 +81,7 @@ function wpas_clean_error($error_id) {
  * @return void
  */
 function wpas_clean_errors() {
-	wpas_clean_notifications('errors');
+	wpas_clean_notifications( 'errors' );
 }
 
 /**
@@ -89,10 +91,10 @@ function wpas_clean_errors() {
  * @return string
  */
 function wpas_get_display_errors() {
-	return wpas_get_display_notifications('errors', 'failure');
+	return wpas_get_display_notifications( 'errors', 'failure' );
 }
 
-add_action('wpas_before_template', 'wpas_display_errors', 10, 3);
+add_action( 'wpas_before_template', 'wpas_display_errors', 10, 3 );
 /**
  * Display all error messages
  *
