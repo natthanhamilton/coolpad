@@ -185,7 +185,7 @@ function lgap_main_page() {
 //
 function about_us_news_pr() {
 // the query
-    $the_query = new WP_Query(['category_name' => 'pr', 'posts_per_page' => 3]);
+    $the_query = new WP_Query(['post_type' => ['news', 'pr'], 'posts_per_page' => 3]);
 // The Loop
     $string = "";
     if ($the_query->have_posts()) {

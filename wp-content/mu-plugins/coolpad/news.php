@@ -59,7 +59,7 @@ function news_shortcode()
         } else $image = get_post_meta($post->ID, "_news_img");
         $string .= '<div class="col-sm-4">';
         $string .= '<a href=' . htmlspecialchars(get_post_meta($post->ID, "_news_url", true)) . '>';
-        $string .= "<div class='tile-title' style='background-image: url(" . $image[0] . "')>";
+        $string .= "<div class='tile-title' style='background-image: url(" . $image[0] . ")'>";
         $string .= $post->post_title;
         $string .= '</div>';
         $string .= '</a>';

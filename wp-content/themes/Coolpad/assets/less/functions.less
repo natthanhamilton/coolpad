@@ -13,6 +13,10 @@ Vertically center everything
   .vertical(end);
 }
 
+.right {
+  .horizontal(end);
+}
+
 .vertical-center(@horizontal: center, @vertical: center) {
   /* Internet Explorer 10 */
   display: -ms-flexbox;
@@ -53,7 +57,7 @@ Vertically center everything
   box-align: @alignment;
 }
 
-.horizonal(@alignment: center) {
+.horizontal(@alignment: center) {
   /* Internet Explorer 10 */
   display: -ms-flexbox;
   -ms-flex-pack: @alignment;

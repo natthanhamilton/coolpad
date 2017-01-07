@@ -1,8 +1,7 @@
 [class*="column"] + [class*="column"]:last-child {
-    float: left;
+  float: left;
 }
-
 .row {
-    margin-left: auto !important;
-    margin-right: auto !important;
+  margin-left: auto !important;
+  margin-right: auto !important;
 }

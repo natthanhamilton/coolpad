@@ -1,8 +1,13 @@
 @import '../../variables';
 
 .conjr-cover {
-  @media only screen and (min-width: @break-sm) {
-    height: 100vh;
+  .background;
+  height: 100vh;
+  width: 100%;
+  @media only screen and (max-width: @break-sm) {
+    height: initial !important;
+    padding-top: 100px;
+    padding-bottom: 60px;
   }
   padding: 0 20px;
   .content {
@@ -15,7 +20,7 @@
       .inline-block;
       width: 100%;
       padding-left: 0 !important;
-      padding-top: 80px;
+      padding-top: 20px;
       li {
         .inline-block;
         width: initial;
@@ -23,32 +28,64 @@
       }
     }
   }
-  .icons ul {
-    list-style: none;
-    padding-top: 30px;
-    padding-left: 0;
+  .logo img {
+    max-height: 100px;
+    width: initial;
+  }
+  .icons {
     margin: auto;
-    display: table;
-    li {
-      .block;
-      width: initial;
-      padding: 10px;
-        color: @color-snow;
-      img {
-        max-height: 45px;
-        padding-right: 10px;
+    padding-top: 50px;
+    @media only screen and (min-width: @break-md) {
+      width: 350px;
+    }
+    @media only screen and (max-width: @break-md) {
+      .vertical-center;
+      .wrapper {
+        display: table-caption;
       }
+    }
+    .icon {
+      padding-bottom: 10px;
+      @media only screen and (max-width: @break-md) {
+        width: 100%;
+      }
+    }
+    .img {
+      display: inline-block;
+      position: absolute;
+      padding-top: 2px;
+      img {
+        max-height: 30px;
+        padding-top: 3px;
+      }
+    }
+    .text {
+      display: inline-block;
+      width: 160px;
+      padding-left: 37px;
+      color: @color-snow;
+      font-size: 12px;
     }
   }
   .phone {
-    @media only screen and (min-width: @break-sm) {
-      .left;
+    @media only screen and (max-width: @break-sm) {
+      display: none;
     }
+    .left;
     img {
       max-height: 600px;
-      width: auto;
-      @media only screen and (max-width: @break-sm) {
-        max-height: 400px;
+      width: initial;
+    }
+  }
+  .mobile-phone {
+    display: none;
+    @media only screen and (max-width: @break-sm) {
+      display: block;
+      .center;
+      img {
+        max-height: 300px;
+        padding-top: 30px;
+        margin: auto;
       }
     }
   }
@@ -78,16 +115,30 @@
       width: initial;
       padding: 15px;
     }
+    img {
+      max-height: 40px;
+    }
   }
-  .website-phone img,
-  .mobile-phone img {
+  .conjr-camera-phone img{
     max-height: 600px;
     width: auto;
     padding-top: 20px;
   }
+  .camera-website-phone img {
+    top: 25px;
+    position: relative;
+  }
+  #website-camera-frame,
+  #mobile-camera-frame {
+    display: none;
+  }
+  #mobile-camera-frame {
+    margin-top: 30px !important;
+  }
   @media only screen and (max-width: @break-sm) {
-    .website-phone {
-      display: none;
+    .camera-website-phone,
+    #website-camera-frame {
+      display: none !important;
     }
 
     h4, p, ul {
@@ -99,8 +150,9 @@
     }
   }
   @media only screen and (min-width: @break-sm) {
-    .mobile-phone {
-      display: none;
+    .camera-mobile-phone,
+    #mobile-camera-frame {
+      display: none !important;
     }
   }
 }
@@ -174,20 +226,112 @@
 }
 
 .conjr-feature {
-  padding-bottom: 0 !important;
-  img {
-    max-height: 450px;
-    width: initial;
-    position: relative;
+  padding: 0 !important;
+  min-height: initial;
+  height: initial;
+  .content {
+    .section-padding;
+    padding-top: 50px !important;
+    padding-bottom: 150px !important;
   }
   p {
     max-width: 700px;
     margin: auto;
     padding-bottom: 25px !important;
   }
-  @media only screen and (max-width: @break-sm) {
-    height: 500px;
-    min-height: initial;
+  #fingerprint-phone {
+    background-size: contain !important;
+    background-repeat: no-repeat !important;
+    margin: auto;
+    height: 321px;
+    width: 500px;
+    @media only screen and (max-width: @break-md) {
+      height: 193px;
+      width: 300px;
+    }
+  }
+  #maps,
+  #music,
+  #videos,
+  #messages,
+  #games {
+    transition: all ease 1.5s;
+    position: relative;
+    top: 224px;
+    height: 60px;
+    @media only screen and (max-width: @break-md) {
+      top: 134px;
+      height: 35px;
+    }
+  }
+  #games {
+    left: -40px;
+    @media only screen and (max-width: @break-md) {
+      left: -26px;
+    }
+  }
+  #messages {
+    left: 25px;
+    @media only screen and (max-width: @break-md) {
+      left: 14px;
+    }
+  }
+  #videos {
+    left: 89px;
+    @media only screen and (max-width: @break-md) {
+      left: 53px;
+    }
+  }
+  #music {
+    left: 155px;
+    @media only screen and (max-width: @break-md) {
+      left: 94px;
+    }
+  }
+  #maps {
+    left: 219px;
+    @media only screen and (max-width: @break-md) {
+      left: 132px;
+    }
+  }
+  .gamesMove {
+    top: 80px !important;
+    left: 60% !important;
+    @media only screen and (max-width: @break-md) {
+      top: -35% !important;
+      left: -33% !important;
+    }
+  }
+  .messagesMove {
+    top: -30% !important;
+    left: 64% !important;
+    @media only screen and (max-width: @break-md) {
+      top: -35% !important;
+      left: 24% !important;
+    }
+  }
+  .videosMove {
+    top: -36% !important;
+    @media only screen and (max-width: @break-md) {
+      top: -74% !important;
+      left: 58% !important;
+    }
+  }
+  .musicMove {
+    top: -30% !important;
+    left: -33% !important;
+    @media only screen and (max-width: @break-md) {
+      top: -74% !important;
+      left: 29% !important;
+    }
+  }
+  .mapsMove {
+    top: 80px !important;
+    left: -27% !important;
+    @media only screen and (max-width: @break-md) {
+      top: -74% !important;
+      left: 1% !important;
+    }
   }
 }
 
@@ -198,17 +342,15 @@
     .product-section-height;
     .vertical;
     background-position: 70% 50%;
+    @media only screen and (max-width: @break-md) {
+      .bottom;
+    }
   }
   .content {
-    max-width: 500px;
+    max-width: 400px;
   }
   h4, p {
     text-shadow: 1px 1px 0 rgba(255, 255, 255, 0.4);
-  }
-  @media only screen and (max-width: @break-sm) {
-    .background {
-      .bottom;
-    }
   }
 }
 
@@ -224,6 +366,10 @@
 
     ol {
       display: none;
+    }
+
+    .learn-more p {
+      .center;
     }
   }
 }
@@ -254,7 +400,9 @@
       .row {
         height: 100% !important;
         #phone {
-          @media only screen and (max-width: 768px) {
+          max-height: 590px;
+          max-width: 295px;
+          @media only screen and (max-width: @break-md) {
             display: none !important;
           }
         }
@@ -262,12 +410,17 @@
           .col-sm-6 {
             .mobile-phone {
               display: none !important;
-              @media only screen and (max-width: 768px) {
+              margin-bottom: 10px !important;
+              @media only screen and (max-width: @break-md) {
                 display: block !important;
                 margin: auto;
+                max-height: 500px;
+              }
+              @media only screen and (max-width: @break-sm) {
+                max-height: 300px;
               }
             }
-            @media only screen and (max-width: 768px) {
+            @media only screen and (max-width: @break-md) {
               h3, p {
                 text-align: center;
               }
@@ -285,4 +438,41 @@
       }
     }
   }
+}
+
+#cover-bg {
+  height: 100vh;
+  background: url('../../archive/rfp/shared/background.jpg') center center no-repeat;
+  background-size: cover;
+  opacity: 1;
+}
+
+#cover-bg #cover {
+  height: 100vh;
+  background: url('../../../images/home-banner.jpg') center center no-repeat;
+  background-size: cover;
+}
+
+#frame {
+  z-index: 10;
+  position: fixed;
+  margin: auto;
+  display: block;
+  height: 450px;
+  width: 225px;
+  top: 110%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
+
+#phone-frame {
+  height: 450px;
+  background-size: cover;
+}
+
+#screen {
+  height: 370px;
+  position: absolute;
+  top: 38px;
+  left: 9px;
 }

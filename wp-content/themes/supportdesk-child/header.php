@@ -45,12 +45,8 @@
 	      href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.3/css/font-awesome.min.css">
 	<link rel="stylesheet" type="text/css" media="all"
 	      href="<?php echo get_site_url() . '/wp-content/themes/supportdesk-child/css/style.css'; ?>"/>
-
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 </head>
 <body <?php body_class(); ?>>
-<header>
-	<?php require_once(ABSPATH . 'wp-content/themes/assets/navigation.php'); ?>
-	<?php require_once(ABSPATH . 'wp-content/themes/assets/checkout_site_2.php'); ?>
-	<?php require_once(ABSPATH . 'wp-content/themes/assets/close_navigation.php'); ?>
-</header>
-<div id="main">
+<div id="body-wrapper" style="overflow-x: hidden">
+    <?php require_once(ABSPATH . 'wp-content/themes/assets/navigation.php'); ?>

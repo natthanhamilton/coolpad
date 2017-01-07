@@ -5335,12 +5335,12 @@ li.products .item a .content .description {
     transition: all ease .5s
 }
 
-.btn-green {
+.btn-purple {
     border: solid 2px #c4d600 !important;
     background-color: transparent
 }
 
-.btn-green:hover {
+.btn-purple:hover {
     background-color: #c4d600;
     border: solid 2px #c4d600;
     -webkit-transition: all ease .5s;

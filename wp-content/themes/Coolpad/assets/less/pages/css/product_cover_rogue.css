@@ -246,6 +246,9 @@ Section break point set ups
 .right {
   text-align: right;
 }
+.no-padding {
+  padding: 0;
+}
 /*
 
 Mobile content section padding
@@ -317,13 +320,7 @@ p,
   margin-bottom: 0 !important;
 }
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  position: relative;
   overflow-x: hidden;
   color: #292f33;
 }
@@ -380,6 +377,20 @@ Vertically center everything
   /* W3C */
   display: box;
   box-align: end;
+}
+.right {
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-pack: end;
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-pack: end;
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-pack: end;
+  /* W3C */
+  display: box;
+  box-pack: end;
 }
 .flex-vertical-center {
   display: -ms-flexbox;
@@ -507,10 +518,10 @@ RESET
 
 Fix img-responsive issue
 
-*/
 .img-responsive {
   display: initial !important;
 }
+*/
 @media only screen and (min-width: 1024px) {
   .section-height {
     height: 700px;
@@ -540,6 +551,7 @@ Text formats
   font-size: 64px;
   line-height: 1.1;
   text-align: center;
+  color: #fff;
 }
 @media only screen and (max-width: 1024px) {
   .text-title {
@@ -560,11 +572,15 @@ Text formats
   font-size: 24px;
   line-height: 1.3;
   text-align: center;
+  color: #fff;
 }
 @media only screen and (max-width: 480px) {
   .text-description {
     font-size: 18px;
   }
+}
+* {
+  transition: .2s;
 }
 .cover-rogue {
   padding: 0 20px;
@@ -667,6 +683,7 @@ Text formats
   font-size: 64px;
   line-height: 1.1;
   text-align: center;
+  color: #fff;
   color: #3b3fb6;
   display: block;
   padding-bottom: 15px;
@@ -690,6 +707,7 @@ Text formats
   font-size: 24px;
   line-height: 1.3;
   text-align: center;
+  color: #fff;
   color: #5b6770;
   display: block;
 }

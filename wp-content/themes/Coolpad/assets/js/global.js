@@ -1,19 +1,4 @@
 $(document).ready(function () {
-
-    $(window).load(function () {
-        $(document).on('click touchstart', '.navbar .dropdown-menu', function (e) {
-            e.stopPropagation();
-        })
-    });
-
-    $("img")
-        .addClass("img-responsive");
-
-
-    /*
-     Functions
-     */
-
     // Check for mobile
     var isMobile = {
         Android: function () {
@@ -37,21 +22,18 @@ $(document).ready(function () {
     };
     if (isMobile.any()) {
         $(window).resize(function () {
-                var width = $(window).width();
-                if (width <= 680) {
-                    $('#buy_now').addClass('modal-dialog');
-                }
-                else {
-                    $('#buy_now').removeClass('modal-dialog');
-                }
-            })
+            var width = $(window).width();
+            if (width <= 680) {
+                $('#buy_now').addClass('modal-dialog');
+            }
+            else {
+                $('#buy_now').removeClass('modal-dialog');
+            }
+        })
             .resize();//trigger the resize event on page load.
     }
 
-
-    /*
-     Accordion
-     */
+    // Accordion
     $('#accordion').on('shown.bs.collapse', function () {
         var $accordin = $(this).parent();
         $accordin.find(".fa-minus").removeClass("fa-minus").addClass("fa-plus");
@@ -63,29 +45,6 @@ $(document).ready(function () {
         $accordin.find(".panel-heading").css({'font-weight': '', 'color': '#a0a0a0'});
         $accordin.find("#icon").css("color", "#a0a0a0");
     });
-
-    /*
-     Product page
-     */
-    // Initiate affix and append in-page nav for this page
-    $("#in-page-nav").affix({
-        offset: 1
-    });
-
-    $('#buy_now').appendTo("body");
-
-
-    /* $("#product-navigation ul li").click(function () {
-     $('.box').hide().eq($(this).index()).show();
-     $('body').animate({"scrollTop": "0px"}, 100);
-     });
-     $("#action-section ul li").click(function () {
-     $('.box').hide().eq($(this).index()).show();
-     $('body').animate({"scrollTop": "0px"}, 100);
-     });*/
-
-    // Carousel
-    $('#slider').carousel();
 
     //Handles the carousel thumbnails
     $('[id^=carousel-selector-]').click(function () {
@@ -103,21 +62,15 @@ $(document).ready(function () {
         var id = $('.item.active').data('slide-number');
         $('#carousel-text').html($('#slide-content-' + id).html());
     });
-});
 
-/*
+    //Listen for an OVERLAY
+    (function ($) {
+        $.fn.inlineStyle = function (prop) {
+            return this.prop("style")[$.camelCase(prop)];
+        };
+    }(jQuery));
 
- Listen for an OVERLAY
-
- */
-(function ($) {
-    $.fn.inlineStyle = function (prop) {
-        return this.prop("style")[$.camelCase(prop)];
-    };
-}(jQuery));
-
-// Tile specific overlays
-$(document).ready(function () {
+    //Tile specific overlays
     $('.tile-title').each(function (i, obj) {
         if ($(obj).inlineStyle("background-image")) {
 
@@ -127,14 +80,8 @@ $(document).ready(function () {
             $(this).removeAttr('style').css({"background": css});
         }
     });
-});
 
-/*
-
-Modal tiles moving image and title
-
- */
-$(document).ready(function () {
+    // Modal tiles moving image and title
     var allTags = document.getElementsByClassName("modal-image");
     for (var i = 0, len = allTags.length; i < len; i++) {
         var tile = allTags[i];
@@ -154,122 +101,21 @@ $(document).ready(function () {
         tile.parentNode.replaceChild(newElement, tile);
 
         var title = $(id).find('h3').text();
-        $(newElement).find('.vc_column-inner').html("<div class='tile-title' style=\"background: linear-gradient(rgba(0, 0, 0, 0) 39%, #000 100%), url('"+image+"') center center no-repeat\">"+title+"</div>");
+        $(newElement).find('.vc_column-inner').html("<div class='tile-title' style=\"background: linear-gradient(rgba(0, 0, 0, 0) 39%, #000 100%), url('" + image + "') center center no-repeat\">" + title + "</div>");
         $(id).find('.ult_modal-header').remove();
     }
 });
 
-
-/*
-
- Carousel set all same height
-
- */
-equalheight = function (container) {
-    var currentRow = {
-        cols: [],
-        h: 0
-    };
-    var topPostion = -1;
-    $(container).each(function () {
-        var $el = $(this);
-        $($el).height('auto');
-        if (topPostion != $el.position().top) {
-            for (var j = 0; j < currentRow.cols.length; j++) {
-                currentRow.cols[j].height(currentRow.h);
-            }
-            topPostion = $el.position().top;
-            currentRow = {
-                cols: [],
-                h: 0
-            };
-        }
-        currentRow.cols.push($el);
-        if ($el.height() > currentRow.h) {
-            currentRow.h = $el.height();
-        }
-
-
-    });
-    for (var j = 0; j < currentRow.cols.length; j++) {
-        currentRow.cols[j].height(currentRow.h);
-    }
-
-};
-equalheight('.item');
-$(window).load(function () {
-    equalheight('.item');
-});
-
-$(window).resize(function () {
-    equalheight('.item');
-});
-
-function getAttributes ( $node ) {
-    var attrs = {};
-    $.each( $node[0].attributes, function ( index, attribute ) {
-        attrs[attribute.name] = attribute.value;
-    } );
-
-    return attrs;
-}
-
-/*
-
-Smooth parallax footer
-
- */
-function scrollFooter(scrollY, heightFooter)
-{
-    if(scrollY >= heightFooter)
-    {
-        $('#footer').css({
-            'bottom' : '0px'
-        });
-    }
-    else
-    {
-        $('#footer').css({
-            'bottom' : '-' + heightFooter + 'px'
-        });
-    }
-}
-
-$(window).load(function(){
-    var footerHeight        = $('#footer').height(),
-        contentHeight        = ($('#content').height()) + 200,
-        heightDocument      = contentHeight + 400;
-
-    $('#scroll-animate, #scroll-animate-main').css({
-        'height' :  heightDocument + 'px'
-    });
-
-    $('.wrapper-parallax').css({
-        'height' : contentHeight + 'px',
-    });
-
-    scrollFooter(window.scrollY, footerHeight);
-
-    window.onscroll = function(){
-        var scroll = window.scrollY;
-
-        $('#scroll-animate-main').css({
-            'top' : '-' + scroll + 'px'
-        });
-
-        scrollFooter(scroll, footerHeight);
-    }
-});
-
-$(document).ready(function(){
-    $('#sidebar-icon').click(function(){
-        $(this).toggleClass('open');
-    });
-});
-
-
+// Initializers
 $(document).ready(function () {
-    $('#fullpage').fullpage({
-        scrollBar: true
+    $(document).on('click touchstart', '.navbar .dropdown-menu', function (e) {
+        e.stopPropagation();
     });
+
+    $("img").addClass("img-responsive");
+    $('#slider').carousel();
+    $('[data-toggle="tooltip"]').tooltip();
+    $("#in-page-nav").affix({ offset: 1 });
+    $('#fullpage').fullpage({ scrollBar: true });
 });
+

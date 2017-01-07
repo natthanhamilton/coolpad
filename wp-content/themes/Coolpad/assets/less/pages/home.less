@@ -2,80 +2,114 @@
 
 .hero {
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   background-size: cover;
   background-position: 50% 50%;
   background-repeat: no-repeat;
+  @media only screen and (max-width: @break-sm) {
+    height: initial;
+    padding-top: 80px;
+    padding-bottom: 50px;
+  }
 }
 
 #home-cover {
-  .logo,
+  .vertical !important;
   .details {
-    padding-bottom: 50px;
+    padding: 50px 0;
+    @media only screen and (max-width: @break-md) {
+      padding: 30px 0;
+    }
   }
   p {
-    //font-size: 27px;
     font-weight: 300;
     color: #aaaaaa;
-    padding-left: 15px;
   }
-  a {
-    margin-bottom: 21px;
+  .logo img,
+  .website-phone img,
+  .mobile-phone img {
+    width: auto;
+  }
+  .logo img {
+    max-height: 100px;
+  }
+  #buy {
+    .vertical-center !important;
+    a {
+      @media only screen and (min-width: @break-sm) {
+        margin-top: 40px;
+      }
+    }
+  }
+  .website-phone img {
+    max-height: 400px;
+  }
+  .mobile-phone img {
+    display: none !important;
+    padding-top: 30px;
+  }
+  @media only screen and (max-width: @break-sm) {
+    .website-phone img {
+      display: none !important;
+    }
+    .mobile-phone img {
+      display: block !important;
+    }
   }
 }
 
 #home-tiles {
-  @padding: 5px;
-  @height: 162px;
-  @width: 100%;
-  @media only screen and (min-width: @break-md) {
-    margin: @padding;
-  }
-  .tile {
-    @media only screen and (min-width: @break-md) {
-      padding: @padding;
+  @media only screen and (max-width: @break-md) {
+    .vc_col-sm-4 {
+      width: 100%;
     }
   }
-  .tile-1 {
-    background-color: #2f355e;
-    .vertical-center;
-    height: @height;
-    width: @width;
+  .tile-title {
+    background-size: cover !important;
+    height: 300px;
+    .h5;
+    color: @color-snow;
+    padding: 30px !important;
+    &:first-child {
+      .vertical-center;
+    }
+    &:last-child {
+      .bottom;
+      .center;
+    }
   }
-  .tile-2 {
-    background: linear-gradient(to top, #c4d600, #8d9a00 76%, #c4d600);
-    background: -webkit-linear-gradient(top, #c4d600, #8d9a00 76%, #c4d600);
-    .vertical-center;
-    height: @height;
-    width: @width;
-  }
-  .tile-3 {
-    .vertical-center;
-    height: @height;
-    width: @width;
-    background-position: 50% 50%;
-    background-size: cover;
-    .text {
-      display: inline-block;
+}
 
-      font-size: 36px;
-      font-weight: 300;
-      line-height: 1.17;
-      color: #ffffff;
+#catalyst {
+  .product-section-wrapper;
+  height: 500px !important;
+  padding-bottom: 0 !important;
+  .block;
+  #logo {  max-height: 40px;  }
+  #phone img {  max-height: 400px;  }
+  h5 {  padding: 30px 0 65px 0 !important;  }
+  @media only screen and (min-width: @break-md) {
+    #phone,
+    #info {
+      height: 100%;
     }
-    .icon {
-      display: inline-block;
-      bottom: 25px;
-      position: relative;
-      left: 20px;
-      .fa {
-        color: #fff;
-        font-size: 18px;
-        .vertical-center;
-        padding: 8px 14px;
-        border-radius: 50%;
-        border: solid 1.4px #fefefe;
+  }
+  @media only screen and (max-width: @break-md) {
+    height: initial !important;
+    min-height: initial !important;
+    .flexbox;
+    #info {
+      .flexbox-div(1);
+      width: 100%;
+      padding-bottom: 60px;
+      .vertical-center;
+      div {
+        .center;
       }
+    }
+    #phone {
+      .flexbox-div(2);
+      margin: auto;
     }
   }
 }

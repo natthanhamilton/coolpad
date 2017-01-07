@@ -68,7 +68,7 @@ function pr_shortcode()
         }
         $string .= '<div class="col-sm-4">';
         $string .= '<a href="' . get_permalink( $post->ID ) . '">';
-        $string .= "<div class='tile-title' style='background-image: url(" . $image . "')>";
+        $string .= "<div class='tile-title' style='background-image: url(" . $image . ")'>";
         $string .= $post->post_title;
         $string .= '</div>';
         $string .= '</a>';

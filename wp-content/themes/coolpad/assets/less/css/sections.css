@@ -49,6 +49,20 @@ Vertically center everything
   display: box;
   box-align: end;
 }
+.right {
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-pack: end;
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-pack: end;
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-pack: end;
+  /* W3C */
+  display: box;
+  box-pack: end;
+}
 .flex-vertical-center {
   display: -ms-flexbox;
   display: -webkit-flex;

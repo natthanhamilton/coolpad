@@ -41,7 +41,7 @@
 	Coming soon
 </div>
 <div class="buy">
-	<a class="btn btn-green btn-pill" alt="Buy Now" href="#">Buy Now</a>
+	<a class="btn btn-purple btn-pill" alt="Buy Now" href="#">Buy Now</a>
 </div>
 
 
@@ -58,7 +58,7 @@
 	What part of your life do you want to catalyze?
 </div>
 <div class="buy">
-	<a class="btn btn-green btn-pill" alt="Buy Now" href="#">Buy Now</a>
+	<a class="btn btn-purple btn-pill" alt="Buy Now" href="#">Buy Now</a>
 </div>
 
 
@@ -80,7 +80,7 @@
 
 
 <div class="buy">
-	<a class="btn btn-green btn-pill-sm" alt="Shop" href="#">Shop</a>
+	<a class="btn btn-purple btn-pill-sm" alt="Shop" href="#">Shop</a>
 </div>
 
 
@@ -102,7 +102,7 @@
 			work together perfectly.
 		</div>
 		<div class="buy">
-			<a class="btn btn-green btn-pill" alt="Buy Now" href="#">Buy Now</a>
+			<a class="btn btn-purple btn-pill" alt="Buy Now" href="#">Buy Now</a>
 		</div>
 		<div class="image">
 			<img class="img-responsive" alt="Coolpad Accessories"
@@ -131,7 +131,7 @@
 						Coolpad is taking Miami by Snow Storm
 					</div>
 					<div class="buy">
-						<a class="btn btn-green btn-pill-sm" title="Coolpad Snow Day" href="https://coolpad.us/miamisnowday/">Join Us</a>
+						<a class="btn btn-purple btn-pill-sm" title="Coolpad Snow Day" href="https://coolpad.us/miamisnowday/">Join Us</a>
 					</div>
 				</div>
 			</div>
@@ -160,7 +160,7 @@
 						Create precious memories.
 					</div>
 					<div class="buy">
-						<a class="btn btn-green btn-pill-sm" title="Coolpad Store" href="http://coolpad.us/products/catalyst">Shop Now</a>
+						<a class="btn btn-purple btn-pill-sm" title="Coolpad Store" href="http://coolpad.us/products/catalyst">Shop Now</a>
 					</div>
 				</div>
 			</div>
@@ -176,7 +176,7 @@
 						Puerto Rico, get ready for a new kind of phone.
 					</div>
 					<div class="buy">
-						<a class="btn btn-green btn-pill-sm" title="Coolpad Store" href="http://coolpad.us/products/tattoo">Shop Now</a>
+						<a class="btn btn-purple btn-pill-sm" title="Coolpad Store" href="http://coolpad.us/products/tattoo">Shop Now</a>
 					</div>
 				</div>
 			</div>
@@ -198,3 +198,34 @@
 </div>
 
 <div id="hero" style="background-image: url('assets/images/homepagebanner.jpg')"></div>
+
+<div id="home-tiles" class="row">
+    <a href="" target="_blank" alt="">
+        <div class="col-sm-4 no-padding">
+            <div class="vertical-center tile" style="background-image: url('http://localhost/coolpad/wp-content/uploads/2016/12/onmyself.jpg')">
+                <div>
+                    <h5 style="color: #fafafa">#OhMySelfie</h5>
+                </div>
+            </div>
+        </div>
+    </a>
+    <a href="" target="_blank" alt="">
+        <div class="col-sm-4 no-padding">
+            <div class="tile" style="background-image: url('http://localhost/coolpad/wp-content/uploads/2016/12/boysgirls.jpg')">
+                <h5 style="color: #292f33">Community Involvement</h5>
+            </div>
+        </div>
+    </a>
+    <a href="" target="_blank" alt="">
+        <div class="col-sm-4 no-padding">
+            <div class="bottom tile" style="background-image: url('http://localhost/coolpad/wp-content/uploads/2016/12/miamisnowday.jpg')">
+                <div style="width: 100%; text-align: right">
+                    <h5 style="
+text-shadow: 0px 14px 30px 0px rgba(0, 0, 0, 0.35);
+color: #fafafa
+">#MiamiSnowDay</h5>
+                </div>
+            </div>
+        </div>
+    </a>
+</div>

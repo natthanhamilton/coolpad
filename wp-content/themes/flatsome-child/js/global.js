@@ -4,4 +4,7 @@ $(document).ready(function () {
         var content = allTags[i];
         content.innerHTML = "";
     }
+
+    $("img")
+        .addClass("img-responsive");
 });

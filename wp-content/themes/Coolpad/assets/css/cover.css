@@ -596,12 +596,12 @@ Fix img-responsive issue
     transition: all ease 0.5s;
 }
 
-.btn-green {
+.btn-purple {
     border: solid 2px #c4d600 !important;
     background-color: transparent !important;
 }
 
-.btn-green:hover {
+.btn-purple:hover {
     background-color: #c4d600 !important;
     border: solid 2px #c4d600 !important;
     -webkit-transition: all ease 0.5s;

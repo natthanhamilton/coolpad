@@ -110,7 +110,7 @@ button.st-btn.small, input[type="submit"].st-btn.small {
     *padding-bottom: 3px;
 }
 
-.st-btn-blue, .st-btn-blue:hover, .st-btn-green, .st-btn-green:hover, .st-btn-red, .st-btn-red:hover, .st-btn-purple, .st-btn-purple:hover, .st-btn-teal, .st-btn-teal:hover, .st-btn-black, .st-btn-black:hover {
+.st-btn-blue, .st-btn-blue:hover, .st-btn-purple, .st-btn-purple:hover, .st-btn-red, .st-btn-red:hover, .st-btn-purple, .st-btn-purple:hover, .st-btn-teal, .st-btn-teal:hover, .st-btn-black, .st-btn-black:hover {
     color: #fff;
     text-shadow: 0 -1px 0 rgba(0, 0, 0, 0.25);
 }
@@ -149,7 +149,7 @@ button.st-btn.small, input[type="submit"].st-btn.small {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#3b7b96', endColorstr='#4fa3c7', GradientType=0);
 }
 
-.st-btn-green {
+.st-btn-purple {
     background: #97c950;
     background: -moz-linear-gradient(top, #97c950 0%, #70963b 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c950), color-stop(100%, #70963b));
@@ -161,7 +161,7 @@ button.st-btn.small, input[type="submit"].st-btn.small {
     border: 1px solid #5b7338;
 }
 
-.st-btn-green:hover {
+.st-btn-purple:hover {
     background: #9fd455;
     background: -moz-linear-gradient(top, #9fd455 0%, #82af44 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9fd455), color-stop(100%, #82af44));
@@ -172,7 +172,7 @@ button.st-btn.small, input[type="submit"].st-btn.small {
     filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9fd455', endColorstr='#82af44', GradientType=0);
 }
 
-.st-btn-green:active {
+.st-btn-purple:active {
     background: #70963b;
     background: -moz-linear-gradient(top, #70963b 0%, #97c950 100%);
     background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #70963b), color-stop(100%, #97c950));

@@ -57,15 +57,16 @@
 </head>
 <body <?php body_class(); ?> id="skrollr-body" data-spy="scroll" data-target=".scrollspy">
 <div id="fullpage" class="phone-conjr">
-    <div class="section">
-        <div class="container" id="cover">
+    <div class="section" id="cover">
+        <div class="container">
             <div class="row">
-                <div class="col-sm-12 vertical-center">
+                <div class="col-sm-12 vertical-center" style="height: 100%">
                     <wrapper style="opacity: 1;">
-                        <img class="img-responsive" src="http://localhost/coolpad/wp-content/uploads/2016/12/UIBANNER.png"
+                        <img class="img-responsive"
+                             src="http://localhost/coolpad/wp-content/uploads/2016/12/UIBANNER.png"
                              style="display: block; max-height: 500px">
                         <h3 class="text-center">Cool UI 8.0</h3>
-                        <p class="text-center">
+                        <p class="text-center section-padding">
                             Cool UI brings you the most customizable experience of any Android phone with features
                             like: Multi-Finger Unlock, Call Recording, Multi-Screen Capture, Smart gestures, C
                             Button Navigation, Screen Recording, and so much more. Cool UI is our most advanced in
@@ -76,38 +77,21 @@
                 </div>
             </div>
         </div>
-        <div id="in-page-nav">
-            <div class="information col-xs-6">
-                <div class="phone">
-                    coolpad conjr
-                </div>
-                <div class="price">
-                    from $
-                </div>
-            </div>
-            <div class="nav-links col-xs-6 pull-right">
-                <div class="navbar" id="product-navigation">
-                    <ul class="nav navbar-nav">
-                        <li class="active"><a href="http://localhost/coolpad/products/catalyst">Product</a></li>
-                        <li><a href="http://localhost/coolpad/products/catalyst_specs">Specs</a></li>
-                        <li><a href="http://localhost/coolpad/products/catalyst_gallery">Gallery</a></li>
-                    </ul>
-                    <a href="#" data-toggle="modal" data-target="#buy_now" class="buy">Buy</a>
-                </div>
-            </div>
-        </div>
     </div>
     <div class="section" id="unlock">
         <div class="container" id="phone-container">
             <div class="row vertical">
-                <img id="phone" src="http://localhost/coolpad/wp-content/uploads/2016/12/cooluifingerprint-1.png">
+                <div class="col-xs-12 col-sm-8">
+                <img id="phone" src="http://localhost/coolpad/wp-content/themes/coolpad/assets/images/phones/conjr/ui/CoolUIFingerPrint.png" style="margin: auto">
+                </div>
             </div>
         </div>
         <div class="container">
             <div class="row vertical">
                 <wrapper>
                     <div class="col-sm-6">
-                        <img class="mobile-phone img-responsive" src="http://localhost/coolpad/wp-content/uploads/2016/12/cooluifingerprint-1.png">
+                        <img class="mobile-phone img-responsive"
+                             src="http://localhost/coolpad/wp-content/uploads/2016/12/cooluifingerprint-1.png">
                     </div>
                     <div class="col-sm-6" id="unlock-content">
                         <h3>Multi Finger Unlock</h3>
@@ -117,113 +101,118 @@
                             to quick open apps and unlock your phone. Protect your personal information, family photos,
                             banking, social media and so much more with a signature that is unique to you.
                         </p>
+                    </div>
                 </wrapper>
             </div>
         </div>
     </div>
-</div>
-<div class="section" id="gestures">
-    <div class="container">
-        <div class="row vertical">
-            <wrapper>
-                <div class="col-sm-6">
-                    <img class="mobile-phone img-responsive" src="http://localhost/coolpad/wp-content/uploads/2016/12/cooluismart-gesture.png">
-                </div>
-                <div class="col-sm-6" id="gestures-content">
-                    <h3>Smart Gestures</h3>
-                    <p>
-                        Our new Smart Gestures allow you to launch apps from stand-by. Program C for phone dialpad,
-                        E
-                        for your webrowser, M for Music and so many more options.
-                    </p>
+    <div class="section" id="gestures">
+        <div class="container">
+            <div class="row vertical">
+                <wrapper>
+                    <div class="col-sm-6">
+                        <img class="mobile-phone img-responsive"
+                             src="http://localhost/coolpad/wp-content/themes/coolpad/assets/images/phones/conjr/ui/cooluismart-gesture.png">
+                    </div>
+                    <div class="col-sm-6" id="gestures-content">
+                        <h3>Smart Gestures</h3>
+                        <p>
+                            Our new Smart Gestures allow you to launch apps from stand-by. Program C for phone dialpad,
+                            E
+                            for your webrowser, M for Music and so many more options.
+                        </p>
+                    </div>
                 </wrapper>
             </div>
         </div>
     </div>
-</div>
-<div class="section" id="recording">
-    <div class="container">
-        <div class="row vertical">
-            <wrapper>
-                <div class="col-sm-6">
-                    <img class="mobile-phone img-responsive" src="http://localhost/coolpad/wp-content/uploads/2016/12/cooluiscreenrecording.png">
-                </div>
-                <div class="col-sm-6" id="recording-content">
-                    <h3>Screen Recording</h3>
-                    <p>
-                        Cool UI 8.0 brings you the most seemless screen recording on the market. Now you can access
-                        from
-                        you control center and immediately with one button start screen recording. With the conjr
-                        you
-                        can screen record in High Definiton at 60fps.
-                    </p>
+    <div class="section" id="recording">
+        <div class="container">
+            <div class="row vertical">
+                <wrapper>
+                    <div class="col-sm-6">
+                        <img class="mobile-phone img-responsive"
+                             src="http://localhost/coolpad/wp-content/themes/coolpad/assets/images/phones/conjr/ui/cooluiscreenrecording.png">
+                    </div>
+                    <div class="col-sm-6" id="recording-content">
+                        <h3>Screen Recording</h3>
+                        <p>
+                            Cool UI 8.0 brings you the most seemless screen recording on the market. Now you can access
+                            from
+                            you control center and immediately with one button start screen recording. With the conjr
+                            you
+                            can screen record in High Definiton at 60fps.
+                        </p>
+                    </div>
                 </wrapper>
             </div>
         </div>
     </div>
-</div>
-<div class="section" id="button">
-    <div class="container">
-        <div class="row vertical">
-            <wrapper>
-                <div class="col-sm-6">
-                    <img class="mobile-phone img-responsive" src="http://localhost/coolpad/wp-content/uploads/2016/12/cooluicbutton-1.png">
-                </div>
-                <div class="col-sm-6" id="button-content">
-                    <h3>C Button</h3>
-                    <p>
-                        With larger and larger phone screens we still have the need to try and control our phones
-                        with
-                        one hand. Our new C Button allows you to create a custom menu that appears on the click of a
-                        button. You can place C Button anywhere you want on your screen and it will fade away so
-                        it’s
-                        not in the way of your work.
-                    </p>
+    <div class="section" id="button">
+        <div class="container">
+            <div class="row vertical">
+                <wrapper>
+                    <div class="col-sm-6">
+                        <img class="mobile-phone img-responsive"
+                             src="http://localhost/coolpad/wp-content/themes/coolpad/assets/images/phones/conjr/ui/CoolUICButton.png">
+                    </div>
+                    <div class="col-sm-6" id="button-content">
+                        <h3>C Button</h3>
+                        <p>
+                            With larger and larger phone screens we still have the need to try and control our phones
+                            with
+                            one hand. Our new C Button allows you to create a custom menu that appears on the click of a
+                            button. You can place C Button anywhere you want on your screen and it will fade away so
+                            it’s
+                            not in the way of your work.
+                        </p>
+                    </div>
                 </wrapper>
             </div>
         </div>
     </div>
-</div>
-<div class="section" id="video">
-    <div class="container">
-        <div class="row vertical">
-            <wrapper>
-                <div class="col-sm-6">
-                    <img class="mobile-phone img-responsive" src="http://localhost/coolpad/wp-content/uploads/2016/12/cooluivideoapp.png">
-                </div>
-                <div class="col-sm-6" id="video-content">
-                    <h3>Video App</h3>
-                    <p>
-                        Cool UI’s Video App features options like: Picture in a Picture so you can watch all your
-                        favorite movies while texting with your friends, Cast Screen, you can now broadcast what you
-                        are
-                        watching straight to your TV, along with Automatic Subtitles.
-                    </p>
+    <div class="section" id="video">
+        <div class="container">
+            <div class="row vertical">
+                <wrapper>
+                    <div class="col-sm-6">
+                        <img class="mobile-phone img-responsive"
+                             src="http://localhost/coolpad/wp-content/themes/coolpad/assets/images/phones/conjr/ui/cooluivideoapp.png">
+                    </div>
+                    <div class="col-sm-6" id="video-content">
+                        <h3>Video App</h3>
+                        <p>
+                            Cool UI’s Video App features options like: Picture in a Picture so you can watch all your
+                            favorite movies while texting with your friends, Cast Screen, you can now broadcast what you
+                            are
+                            watching straight to your TV, along with Automatic Subtitles.
+                        </p>
+                    </div>
                 </wrapper>
             </div>
         </div>
     </div>
-</div>
-<div class="section" id="screenshot">
-    <div class="container">
-        <div class="row vertical">
-            <wrapper>
-                <div class="col-sm-6">
-                    <img class="mobile-phone img-responsive" src="http://localhost/coolpad/wp-content/uploads/2016/12/cooluiscreenshot.png">
-                </div>
-                <div class="col-sm-6" id="screenshot-content">
-                    <h3>Scrolling Screen Shot</h3>
-                    <p>
-                        Expand upon the screen you are trying to capture. If you have ever tried to take a screen
-                        shot
-                        of something bigger than can fit on one page this is the feeature you have been looking for.
-                        With scrolling sreen shot mutli-page screenshots are now possible.
-                    </p>
+    <div class="section" id="screenshot">
+        <div class="container">
+            <div class="row vertical">
+                <wrapper>
+                    <div class="col-sm-6">
+                        <img class="mobile-phone img-responsive"
+                             src="http://localhost/coolpad/wp-content/themes/coolpad/assets/images/phones/conjr/ui/cooluiscreenshot.png">
+                    </div>
+                    <div class="col-sm-6" id="screenshot-content">
+                        <h3>Scrolling Screen Shot</h3>
+                        <p>
+                            Expand upon the screen you are trying to capture. If you have ever tried to take a screen
+                            shot
+                            of something bigger than can fit on one page this is the feeature you have been looking for.
+                            With scrolling sreen shot mutli-page screenshots are now possible.
+                        </p>
+                    </div>
                 </wrapper>
             </div>
         </div>
     </div>
-</div>
 </div>
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"

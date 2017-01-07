@@ -1,4 +1,4 @@
-#topnav-transparent {
+.nav-theme-transparent {
   background: transparent;
   border-color: transparent;
   color: #fff;
@@ -6,385 +6,385 @@
   width: 100%;
   z-index: 1000;
 }
-#topnav-transparent .navbar-collapse {
+.nav-theme-transparent .navbar-collapse {
   background-color: transparent;
   border-color: transparent;
 }
-#topnav-transparent a.navbar-link {
+.nav-theme-transparent a.navbar-link {
   color: #fff;
   background-color: transparent;
 }
-#topnav-transparent a.navbar-link:hover,
-#topnav-transparent a.navbar-link:focus {
+.nav-theme-transparent a.navbar-link:hover,
+.nav-theme-transparent a.navbar-link:focus {
   color: #ffffff;
   background-color: transparent;
 }
-#topnav-transparent .navbar-brand {
+.nav-theme-transparent .navbar-brand {
   color: #fff;
   background-color: transparent;
 }
-#topnav-transparent .navbar-brand:hover,
-#topnav-transparent .navbar-brand:focus {
+.nav-theme-transparent .navbar-brand:hover,
+.nav-theme-transparent .navbar-brand:focus {
   color: #ffffff;
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav > li.divider {
+.nav-theme-transparent .navbar-nav > li.divider {
   background-color: #9a2b2b;
 }
-#topnav-transparent input::-webkit-input-placeholder,
-#topnav-transparent textarea::-webkit-input-placeholder {
+.nav-theme-transparent input::-webkit-input-placeholder,
+.nav-theme-transparent textarea::-webkit-input-placeholder {
   color: rgba(204, 204, 204, 0.3);
 }
-#topnav-transparent input::-moz-placeholder,
-#topnav-transparent textarea::-moz-placeholder {
+.nav-theme-transparent input::-moz-placeholder,
+.nav-theme-transparent textarea::-moz-placeholder {
   color: rgba(204, 204, 204, 0.3);
 }
-#topnav-transparent input:-ms-input-placeholder,
-#topnav-transparent textarea:-ms-input-placeholder {
+.nav-theme-transparent input:-ms-input-placeholder,
+.nav-theme-transparent textarea:-ms-input-placeholder {
   color: rgba(204, 204, 204, 0.3);
 }
-#topnav-transparent input:-moz-placeholder,
-#topnav-transparent textarea:-moz-placeholder {
+.nav-theme-transparent input:-moz-placeholder,
+.nav-theme-transparent textarea:-moz-placeholder {
   color: rgba(204, 204, 204, 0.3);
 }
-#topnav-transparent .navbar-nav > li[class*="dropdown"].dropdown-onhover:hover > a,
-#topnav-transparent.dropdown-onhover .navbar-nav > li:hover > a[class*="dropdown"] {
+.nav-theme-transparent .navbar-nav > li[class*="dropdown"].dropdown-onhover:hover > a,
+.nav-theme-transparent.dropdown-onhover .navbar-nav > li:hover > a[class*="dropdown"] {
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav > li > a {
+.nav-theme-transparent .navbar-nav > li > a {
   color: #d3d3d3;
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav > li:hover > a {
+.nav-theme-transparent .navbar-nav > li:hover > a {
   color: #ffffff;
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav > li.active > a {
+.nav-theme-transparent .navbar-nav > li.active > a {
   color: #ffffff;
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav > li.active:hover > a {
+.nav-theme-transparent .navbar-nav > li.active:hover > a {
   color: #ffffff;
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav > li.open > a {
+.nav-theme-transparent .navbar-nav > li.open > a {
   color: #ffffff;
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav > li.open:hover > a {
+.nav-theme-transparent .navbar-nav > li.open:hover > a {
   color: #ffffff;
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav > li.disabled > a {
+.nav-theme-transparent .navbar-nav > li.disabled > a {
   color: #999999;
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav > li.disabled:hover > a {
+.nav-theme-transparent .navbar-nav > li.disabled:hover > a {
   color: #999999;
   background-color: transparent;
 }
 @media (min-width: 768px) {
-  #topnav-transparent.dropdown-onhover.no-fix .navbar-nav > li > a,
-  #topnav-transparent .navbar-nav.dropdown-onhover.no-fix > li > a,
-  #topnav-transparent .navbar-nav > li.dropdown-onhover.no-fix > a {
+  .nav-theme-transparent.dropdown-onhover.no-fix .navbar-nav > li > a,
+  .nav-theme-transparent .navbar-nav.dropdown-onhover.no-fix > li > a,
+  .nav-theme-transparent .navbar-nav > li.dropdown-onhover.no-fix > a {
     color: #d3d3d3;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover.no-fix .navbar-nav > li:hover > a,
-  #topnav-transparent .navbar-nav.dropdown-onhover.no-fix > li:hover > a,
-  #topnav-transparent .navbar-nav > li.dropdown-onhover.no-fix:hover > a {
+  .nav-theme-transparent.dropdown-onhover.no-fix .navbar-nav > li:hover > a,
+  .nav-theme-transparent .navbar-nav.dropdown-onhover.no-fix > li:hover > a,
+  .nav-theme-transparent .navbar-nav > li.dropdown-onhover.no-fix:hover > a {
     color: #ffffff;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover.no-fix .navbar-nav > li.active > a,
-  #topnav-transparent .navbar-nav.dropdown-onhover.no-fix > li.active > a,
-  #topnav-transparent .navbar-nav > li.dropdown-onhover.no-fix.active > a {
+  .nav-theme-transparent.dropdown-onhover.no-fix .navbar-nav > li.active > a,
+  .nav-theme-transparent .navbar-nav.dropdown-onhover.no-fix > li.active > a,
+  .nav-theme-transparent .navbar-nav > li.dropdown-onhover.no-fix.active > a {
     color: #ffffff;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover.no-fix .navbar-nav > li.active:hover > a,
-  #topnav-transparent .navbar-nav.dropdown-onhover.no-fix > li.active:hover > a,
-  #topnav-transparent .navbar-nav > li.dropdown-onhover.no-fix.active:hover > a {
+  .nav-theme-transparent.dropdown-onhover.no-fix .navbar-nav > li.active:hover > a,
+  .nav-theme-transparent .navbar-nav.dropdown-onhover.no-fix > li.active:hover > a,
+  .nav-theme-transparent .navbar-nav > li.dropdown-onhover.no-fix.active:hover > a {
     color: #ffffff;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover.no-fix .navbar-nav > li.active.open > a,
-  #topnav-transparent .navbar-nav.dropdown-onhover.no-fix > li.active.open > a,
-  #topnav-transparent .navbar-nav > li.dropdown-onhover.no-fix.active.open > a {
+  .nav-theme-transparent.dropdown-onhover.no-fix .navbar-nav > li.active.open > a,
+  .nav-theme-transparent .navbar-nav.dropdown-onhover.no-fix > li.active.open > a,
+  .nav-theme-transparent .navbar-nav > li.dropdown-onhover.no-fix.active.open > a {
     color: #ffffff;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover.no-fix .navbar-nav > li.open > a,
-  #topnav-transparent .navbar-nav.dropdown-onhover.no-fix > li.open > a,
-  #topnav-transparent .navbar-nav > li.dropdown-onhover.no-fix.open > a {
+  .nav-theme-transparent.dropdown-onhover.no-fix .navbar-nav > li.open > a,
+  .nav-theme-transparent .navbar-nav.dropdown-onhover.no-fix > li.open > a,
+  .nav-theme-transparent .navbar-nav > li.dropdown-onhover.no-fix.open > a {
     color: #fff;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover.no-fix .navbar-nav > li.open:hover > a,
-  #topnav-transparent .navbar-nav.dropdown-onhover.no-fix > li.open:hover > a,
-  #topnav-transparent .navbar-nav > li.dropdown-onhover.no-fix.open:hover > a {
+  .nav-theme-transparent.dropdown-onhover.no-fix .navbar-nav > li.open:hover > a,
+  .nav-theme-transparent .navbar-nav.dropdown-onhover.no-fix > li.open:hover > a,
+  .nav-theme-transparent .navbar-nav > li.dropdown-onhover.no-fix.open:hover > a {
     color: #ffffff;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover.no-fix .navbar-nav > li.disabled > a,
-  #topnav-transparent .navbar-nav.dropdown-onhover.no-fix > li.disabled > a,
-  #topnav-transparent .navbar-nav > li.dropdown-onhover.no-fix.disabled > a {
+  .nav-theme-transparent.dropdown-onhover.no-fix .navbar-nav > li.disabled > a,
+  .nav-theme-transparent .navbar-nav.dropdown-onhover.no-fix > li.disabled > a,
+  .nav-theme-transparent .navbar-nav > li.dropdown-onhover.no-fix.disabled > a {
     color: #999999;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover.no-fix .navbar-nav > li.disabled:hover > a,
-  #topnav-transparent .navbar-nav.dropdown-onhover.no-fix > li.disabled:hover > a,
-  #topnav-transparent .navbar-nav > li.dropdown-onhover.no-fix.disabled:hover > a {
+  .nav-theme-transparent.dropdown-onhover.no-fix .navbar-nav > li.disabled:hover > a,
+  .nav-theme-transparent .navbar-nav.dropdown-onhover.no-fix > li.disabled:hover > a,
+  .nav-theme-transparent .navbar-nav > li.dropdown-onhover.no-fix.disabled:hover > a {
     color: #999999;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix) > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix) > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix) > a {
+  .nav-theme-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix) > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix) > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix) > a {
     color: #fff;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix):hover > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix):hover > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix):hover > a {
+  .nav-theme-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix):hover > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix):hover > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix):hover > a {
     color: #ffffff;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix).active > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix).active > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix).active > a {
+  .nav-theme-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix).active > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix).active > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix).active > a {
     color: #ffffff;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix).active:hover > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix).active:hover > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix).active:hover > a {
+  .nav-theme-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix).active:hover > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix).active:hover > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix).active:hover > a {
     color: #ffffff;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix).open > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix).open > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix).open > a {
+  .nav-theme-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix).open > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix).open > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix).open > a {
     color: #ffffff;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix).open:hover > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix).open:hover > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix).open:hover > a {
+  .nav-theme-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix).open:hover > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix).open:hover > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix).open:hover > a {
     color: #ffffff;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix).disabled > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix).disabled > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix).disabled > a {
+  .nav-theme-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix).disabled > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix).disabled > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix).disabled > a {
     color: #999999;
     background-color: transparent;
   }
-  #topnav-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix).disabled:hover > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix).disabled:hover > a,
-  #topnav-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix).disabled:hover > a {
+  .nav-theme-transparent.dropdown-onhover:not(.no-fix) .navbar-nav:not(.no-fix) > li:not(.no-fix).disabled:hover > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav.dropdown-onhover:not(.no-fix) > li:not(.no-fix).disabled:hover > a,
+  .nav-theme-transparent:not(.no-fix) .navbar-nav:not(.no-fix) > li.dropdown-onhover:not(.no-fix).disabled:hover > a {
     color: #999999;
     background-color: transparent;
   }
 }
 @media (min-width: 768px) {
-  #topnav-transparent:not(.no-border).dropdown-onhover .navbar-nav > li:hover > a,
-  #topnav-transparent:not(.no-border) .navbar-nav.dropdown-onhover > li:hover > a,
-  #topnav-transparent:not(.no-border) .navbar-nav li.dropdown-onhover:hover > a {
+  .nav-theme-transparent:not(.no-border).dropdown-onhover .navbar-nav > li:hover > a,
+  .nav-theme-transparent:not(.no-border) .navbar-nav.dropdown-onhover > li:hover > a,
+  .nav-theme-transparent:not(.no-border) .navbar-nav li.dropdown-onhover:hover > a {
     border-color: transparent;
   }
-  #topnav-transparent:not(.navbar-fixed-bottom):not(.no-border) .navbar-nav > .active > a:before {
+  .nav-theme-transparent:not(.navbar-fixed-bottom):not(.no-border) .navbar-nav > .active > a:before {
     border-top-color: transparent;
   }
-  #topnav-transparent:not(.navbar-fixed-bottom):not(.no-border) .navbar-nav > .open > a:before,
-  #topnav-transparent:not(.navbar-fixed-bottom):not(.no-border) .navbar-nav > li.dropdown-onhover:not(.disabled):hover > a:before,
-  #topnav-transparent:not(.navbar-fixed-bottom):not(.no-border) .navbar-nav.dropdown-onhover > li:not(.disabled):hover > a:before {
+  .nav-theme-transparent:not(.navbar-fixed-bottom):not(.no-border) .navbar-nav > .open > a:before,
+  .nav-theme-transparent:not(.navbar-fixed-bottom):not(.no-border) .navbar-nav > li.dropdown-onhover:not(.disabled):hover > a:before,
+  .nav-theme-transparent:not(.navbar-fixed-bottom):not(.no-border) .navbar-nav.dropdown-onhover > li:not(.disabled):hover > a:before {
     border-bottom-color: transparent;
   }
-  #topnav-transparent:not(.navbar-fixed-bottom):not(.no-border).dropdown-onhover .navbar-nav > li:not(.disabled):hover > a:before {
+  .nav-theme-transparent:not(.navbar-fixed-bottom):not(.no-border).dropdown-onhover .navbar-nav > li:not(.disabled):hover > a:before {
     border-bottom-color: transparent;
   }
-  #topnav-transparent:not(.navbar-fixed-bottom) .navbar-nav > .active > a:after {
+  .nav-theme-transparent:not(.navbar-fixed-bottom) .navbar-nav > .active > a:after {
     border-top-color: transparent;
   }
-  #topnav-transparent:not(.navbar-fixed-bottom) .navbar-nav > .active:hover > a:after {
+  .nav-theme-transparent:not(.navbar-fixed-bottom) .navbar-nav > .active:hover > a:after {
     border-top-color: transparent;
   }
-  #topnav-transparent:not(.navbar-fixed-bottom) .navbar-nav > .open > a:after,
-  #topnav-transparent:not(.navbar-fixed-bottom) .navbar-nav > li.dropdown-onhover:not(.disabled):hover > a:after,
-  #topnav-transparent:not(.navbar-fixed-bottom) .navbar-nav.dropdown-onhover > li:not(.disabled):hover > a:after {
+  .nav-theme-transparent:not(.navbar-fixed-bottom) .navbar-nav > .open > a:after,
+  .nav-theme-transparent:not(.navbar-fixed-bottom) .navbar-nav > li.dropdown-onhover:not(.disabled):hover > a:after,
+  .nav-theme-transparent:not(.navbar-fixed-bottom) .navbar-nav.dropdown-onhover > li:not(.disabled):hover > a:after {
     border-bottom-color: #fff;
   }
-  #topnav-transparent:not(.navbar-fixed-bottom).dropdown-onhover .navbar-nav > li:not(.disabled):hover > a:after {
+  .nav-theme-transparent:not(.navbar-fixed-bottom).dropdown-onhover .navbar-nav > li:not(.disabled):hover > a:after {
     border-bottom-color: #fff;
   }
-  #topnav-transparent.navbar-fixed-bottom:not(.no-border) .navbar-nav > .active > a:before {
+  .nav-theme-transparent.navbar-fixed-bottom:not(.no-border) .navbar-nav > .active > a:before {
     border-bottom-color: transparent;
   }
-  #topnav-transparent.navbar-fixed-bottom:not(.no-border) .navbar-nav > .open > a:before,
-  #topnav-transparent.navbar-fixed-bottom:not(.no-border) .navbar-nav > li.dropdown-onhover:not(.disabled):hover > a:before,
-  #topnav-transparent.navbar-fixed-bottom:not(.no-border) .navbar-nav.dropdown-onhover > li:not(.disabled):hover > a:before {
+  .nav-theme-transparent.navbar-fixed-bottom:not(.no-border) .navbar-nav > .open > a:before,
+  .nav-theme-transparent.navbar-fixed-bottom:not(.no-border) .navbar-nav > li.dropdown-onhover:not(.disabled):hover > a:before,
+  .nav-theme-transparent.navbar-fixed-bottom:not(.no-border) .navbar-nav.dropdown-onhover > li:not(.disabled):hover > a:before {
     border-top-color: transparent;
   }
-  #topnav-transparent.navbar-fixed-bottom:not(.no-border).dropdown-onhover .navbar-nav > li:not(.disabled):hover > a:before {
+  .nav-theme-transparent.navbar-fixed-bottom:not(.no-border).dropdown-onhover .navbar-nav > li:not(.disabled):hover > a:before {
     border-top-color: transparent;
   }
-  #topnav-transparent.navbar-fixed-bottom .navbar-nav > .active > a:after {
+  .nav-theme-transparent.navbar-fixed-bottom .navbar-nav > .active > a:after {
     border-bottom-color: transparent;
   }
-  #topnav-transparent.navbar-fixed-bottom .navbar-nav > .open > a:after,
-  #topnav-transparent.navbar-fixed-bottom .navbar-nav > li.dropdown-onhover:not(.disabled):hover > a:after,
-  #topnav-transparent.navbar-fixed-bottom .navbar-nav.dropdown-onhover > li:not(.disabled):hover > a:after {
+  .nav-theme-transparent.navbar-fixed-bottom .navbar-nav > .open > a:after,
+  .nav-theme-transparent.navbar-fixed-bottom .navbar-nav > li.dropdown-onhover:not(.disabled):hover > a:after,
+  .nav-theme-transparent.navbar-fixed-bottom .navbar-nav.dropdown-onhover > li:not(.disabled):hover > a:after {
     border-top-color: #fff;
   }
-  #topnav-transparent.navbar-fixed-bottom.dropdown-onhover .navbar-nav > li:not(.disabled):hover > a:after {
+  .nav-theme-transparent.navbar-fixed-bottom.dropdown-onhover .navbar-nav > li:not(.disabled):hover > a:after {
     border-top-color: #fff;
   }
 }
-#topnav-transparent .dropdown-menu {
+.nav-theme-transparent .dropdown-menu {
   background: #fff;
   color: #dddddd;
   border-color: transparent;
   box-shadow: -60px 0px 100px -90px #000000, 60px 0px 100px -90px #000000 !important;
 }
-#topnav-transparent .navbar-nav > li[class*="dropdown"].dropdown-onhover:hover,
-#topnav-transparent .navbar-nav.dropdown-onhover > li[class*="dropdown"]:hover,
-#topnav-transparent.dropdown-onhover .navbar-nav > li[class*="dropdown"]:hover {
+.nav-theme-transparent .navbar-nav > li[class*="dropdown"].dropdown-onhover:hover,
+.nav-theme-transparent .navbar-nav.dropdown-onhover > li[class*="dropdown"]:hover,
+.nav-theme-transparent.dropdown-onhover .navbar-nav > li[class*="dropdown"]:hover {
   background-color: transparent;
 }
-#topnav-transparent a > span.desc {
+.nav-theme-transparent a > span.desc {
   color: #aaaaaa;
 }
-#topnav-transparent a:hover > span.desc {
+.nav-theme-transparent a:hover > span.desc {
   color: #aaaaaa;
 }
-#topnav-transparent *:not(li) > a {
+.nav-theme-transparent *:not(li) > a {
   color: #fff;
 }
-#topnav-transparent *:not(li) > a:hover {
+.nav-theme-transparent *:not(li) > a:hover {
   color: #fff;
 }
-#topnav-transparent .dropdown-menu > li > a {
+.nav-theme-transparent .dropdown-menu > li > a {
   color: #dddddd;
   background-color: #fff;
 }
-#topnav-transparent .dropdown-menu > li > a:hover {
+.nav-theme-transparent .dropdown-menu > li > a:hover {
   color: #000;
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav > li .dropdown-menu:not([class*="collaps"]) {
+.nav-theme-transparent .navbar-nav > li .dropdown-menu:not([class*="collaps"]) {
   background-color: #fff;
   color: #dddddd;
   border-color: transparent;
   box-shadow: -60px 0px 100px -90px #000000, 60px 0px 100px -90px #000000 !important;
 }
-#topnav-transparent.navbar-fixed-bottom .navbar-nav > li .dropdown-menu:not([class*="collaps"]) {
+.nav-theme-transparent.navbar-fixed-bottom .navbar-nav > li .dropdown-menu:not([class*="collaps"]) {
   box-shadow: -60px 0px 100px -90px #000000, 60px 0px 100px -90px #000000 !important;
 }
-#topnav-transparent .navbar-nav .dropdown-menu > li[class*="-onhover"],
-#topnav-transparent .navbar-nav .dropdown-menu > li[class*="-onclick"] {
+.nav-theme-transparent .navbar-nav .dropdown-menu > li[class*="-onhover"],
+.nav-theme-transparent .navbar-nav .dropdown-menu > li[class*="-onclick"] {
   color: #dddddd;
   background-color: #fff;
 }
-#topnav-transparent .navbar-nav .dropdown-menu > li[class*="-onhover"]:hover > a,
-#topnav-transparent .navbar-nav .dropdown-menu > li[class*="-onclick"]:hover > a {
+.nav-theme-transparent .navbar-nav .dropdown-menu > li[class*="-onhover"]:hover > a,
+.nav-theme-transparent .navbar-nav .dropdown-menu > li[class*="-onclick"]:hover > a {
   color: #000;
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav .dropdown-menu li:not(.list-group) > a {
+.nav-theme-transparent .navbar-nav .dropdown-menu li:not(.list-group) > a {
   color: #000;
   background-color: #fff;
 }
-#topnav-transparent .navbar-nav .dropdown-menu li:not(.list-group) > a:hover {
+.nav-theme-transparent .navbar-nav .dropdown-menu li:not(.list-group) > a:hover {
   text-decoration: underline;
 }
-#topnav-transparent .navbar-nav .dropdown-menu li.active > a {
+.nav-theme-transparent .navbar-nav .dropdown-menu li.active > a {
   color: #000;
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav .dropdown-menu li.active > a:hover {
+.nav-theme-transparent .navbar-nav .dropdown-menu li.active > a:hover {
   color: #000;
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav .dropdown-menu li[class*="-onhover"] > a:hover {
+.nav-theme-transparent .navbar-nav .dropdown-menu li[class*="-onhover"] > a:hover {
   color: #000;
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav .dropdown-menu li.open > a,
-#topnav-transparent .navbar-nav .dropdown-menu li:not(.no-fix) > a.dropdown-toggle:not(.collapsed) {
+.nav-theme-transparent .navbar-nav .dropdown-menu li.open > a,
+.nav-theme-transparent .navbar-nav .dropdown-menu li:not(.no-fix) > a.dropdown-toggle:not(.collapsed) {
   color: #000;
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav .dropdown-menu li.open > a:hover,
-#topnav-transparent .navbar-nav .dropdown-menu li:not(.no-fix) > a.dropdown-toggle:not(.collapsed):hover {
+.nav-theme-transparent .navbar-nav .dropdown-menu li.open > a:hover,
+.nav-theme-transparent .navbar-nav .dropdown-menu li:not(.no-fix) > a.dropdown-toggle:not(.collapsed):hover {
   color: #000;
   background-color: transparent;
 }
-#topnav-transparent .navbar-nav .dropdown-menu li.disabled > a {
+.nav-theme-transparent .navbar-nav .dropdown-menu li.disabled > a {
   color: #777777;
   background-color: #fff;
 }
-#topnav-transparent .navbar-nav .dropdown-menu li.disabled > a > span.desc {
+.nav-theme-transparent .navbar-nav .dropdown-menu li.disabled > a > span.desc {
   color: #777777;
 }
-#topnav-transparent .navbar-nav .dropdown-menu li.disabled > a:hover > span.desc {
+.nav-theme-transparent .navbar-nav .dropdown-menu li.disabled > a:hover > span.desc {
   color: #777777;
 }
-#topnav-transparent .navbar-nav .dropdown-menu li.disabled > a:hover {
+.nav-theme-transparent .navbar-nav .dropdown-menu li.disabled > a:hover {
   color: #777777;
   background-color: #fff;
 }
-#topnav-transparent .navbar-nav li:not(.dropdown) > .dropdown-menu.bordered:not(.no-padding):after,
-#topnav-transparent .navbar-nav li:not(.dropdown) > .dropdown-grid-wrapper > .dropdown-menu.bordered:not(.no-padding):after {
+.nav-theme-transparent .navbar-nav li:not(.dropdown) > .dropdown-menu.bordered:not(.no-padding):after,
+.nav-theme-transparent .navbar-nav li:not(.dropdown) > .dropdown-grid-wrapper > .dropdown-menu.bordered:not(.no-padding):after {
   outline-color: #555555;
 }
-#topnav-transparent .dropdown-menu li.divider,
-#topnav-transparent .v-divided > *:before,
-#topnav-transparent .v-divided > *:after,
-#topnav-transparent .h-divided > *:after,
-#topnav-transparent .h-divided > *:first-child:before,
-#topnav-transparent .h-divider:after {
+.nav-theme-transparent .dropdown-menu li.divider,
+.nav-theme-transparent .v-divided > *:before,
+.nav-theme-transparent .v-divided > *:after,
+.nav-theme-transparent .h-divided > *:after,
+.nav-theme-transparent .h-divided > *:first-child:before,
+.nav-theme-transparent .h-divider:after {
   background-color: transparent;
 }
-#topnav-transparent .divided > *:before {
+.nav-theme-transparent .divided > *:before {
   border-color: transparent;
 }
 @media (max-width: 767px) {
-  #topnav-transparent .navbar-nav li.xs-hover > a {
+  .nav-theme-transparent .navbar-nav li.xs-hover > a {
     color: #fff;
     background-color: transparent;
   }
-  #topnav-transparent .navbar-nav li.xs-hover > a:hover {
+  .nav-theme-transparent .navbar-nav li.xs-hover > a:hover {
     color: #ffffff;
     background-color: transparent;
   }
-  #topnav-transparent .navbar-nav li.xs-hover.open:not(.no-fix) > a {
+  .nav-theme-transparent .navbar-nav li.xs-hover.open:not(.no-fix) > a {
     color: #ffffff;
     background-color: transparent;
   }
-  #topnav-transparent .navbar-nav li.xs-hover.open:not(.no-fix) > a:hover {
+  .nav-theme-transparent .navbar-nav li.xs-hover.open:not(.no-fix) > a:hover {
     color: #ffffff;
     background-color: transparent;
   }
-  #topnav-transparent .navbar-nav li.xs-hover.no-fix > a {
+  .nav-theme-transparent .navbar-nav li.xs-hover.no-fix > a {
     color: #fff;
     background-color: transparent;
   }
-  #topnav-transparent .navbar-nav li.xs-hover.no-fix > a:hover {
+  .nav-theme-transparent .navbar-nav li.xs-hover.no-fix > a:hover {
     color: #ffffff;
     background-color: transparent;
   }
-  #topnav-transparent .navbar-collapse > a.navbar-link,
-  #topnav-transparent .navbar-collapse .navbar-nav > li,
-  #topnav-transparent .navbar-collapse .navbar-nav > a.navbar-link {
+  .nav-theme-transparent .navbar-collapse > a.navbar-link,
+  .nav-theme-transparent .navbar-collapse .navbar-nav > li,
+  .nav-theme-transparent .navbar-collapse .navbar-nav > a.navbar-link {
     border-bottom-color: #222222 !important;
     box-shadow: -60px 0px 100px -90px #000000, 60px 0px 100px -90px #000000 !important;
   }
-  #topnav-transparent .navbar-nav .dropdown-menu .divider {
+  .nav-theme-transparent .navbar-nav .dropdown-menu .divider {
     background-color: transparent;
   }
-  #topnav-transparent .navbar-nav > li > .dropdown-grid-wrapper > .dropdown-menu,
-  #topnav-transparent .navbar-nav > li > .dropdown-menu {
+  .nav-theme-transparent .navbar-nav > li > .dropdown-grid-wrapper > .dropdown-menu,
+  .nav-theme-transparent .navbar-nav > li > .dropdown-menu {
     border-top-color: #555555 !important;
     box-shadow: -60px 0px 100px -90px #000000, 60px 0px 100px -90px #000000 !important;
   }

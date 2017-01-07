@@ -246,6 +246,9 @@ Section break point set ups
 .right {
   text-align: right;
 }
+.no-padding {
+  padding: 0;
+}
 /*
 
 Mobile content section padding
@@ -317,13 +320,7 @@ p,
   margin-bottom: 0 !important;
 }
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  position: relative;
   overflow-x: hidden;
   color: #292f33;
 }
@@ -380,6 +377,20 @@ Vertically center everything
   /* W3C */
   display: box;
   box-align: end;
+}
+.right {
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-pack: end;
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-pack: end;
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-pack: end;
+  /* W3C */
+  display: box;
+  box-pack: end;
 }
 .flex-vertical-center {
   display: -ms-flexbox;
@@ -507,10 +518,10 @@ RESET
 
 Fix img-responsive issue
 
-*/
 .img-responsive {
   display: initial !important;
 }
+*/
 @media only screen and (min-width: 1024px) {
   .section-height {
     height: 700px;
@@ -540,6 +551,7 @@ Text formats
   font-size: 64px;
   line-height: 1.1;
   text-align: center;
+  color: #fff;
 }
 @media only screen and (max-width: 1024px) {
   .text-title {
@@ -560,11 +572,15 @@ Text formats
   font-size: 24px;
   line-height: 1.3;
   text-align: center;
+  color: #fff;
 }
 @media only screen and (max-width: 480px) {
   .text-description {
     font-size: 18px;
   }
+}
+* {
+  transition: .2s;
 }
 /*
 
@@ -670,6 +686,7 @@ Page sections
 #product-phone-section-cover .wpb_column .vc_column-inner .cover-tattoo .wrapper .title {
   font-size: 64px;
   line-height: 1.1;
+  color: #fff;
   display: block;
   text-align: center;
   width: 100%;
@@ -704,6 +721,7 @@ Page sections
 #product-phone-section-cover .wpb_column .vc_column-inner .cover-tattoo .wrapper .bottom-on-mobile .description {
   font-size: 24px;
   line-height: 1.3;
+  color: #fff;
   display: block;
   text-align: center;
   padding-bottom: 30px;
@@ -826,6 +844,7 @@ Page sections
   font-size: 64px;
   line-height: 1.1;
   text-align: center;
+  color: #fff;
   color: #3b3fb6;
   display: block;
   padding-bottom: 15px;
@@ -849,6 +868,7 @@ Page sections
   font-size: 24px;
   line-height: 1.3;
   text-align: center;
+  color: #fff;
   color: #5b6770;
   display: block;
 }
@@ -936,6 +956,7 @@ Page sections
   font-size: 64px;
   line-height: 1.1;
   text-align: center;
+  color: #fff;
   margin-bottom: 12px;
 }
 @media only screen and (max-width: 1024px) {
@@ -967,6 +988,7 @@ Page sections
   font-size: 24px;
   line-height: 1.3;
   text-align: center;
+  color: #fff;
 }
 @media only screen and (max-width: 480px) {
   #product-phone-section-cover .cover-catalyst .content .uvc-sub-heading {
@@ -1041,15 +1063,16 @@ Page sections
 @media only screen and (max-width: 768px) {
   #feature-section .feature-catalyst {
     height: initial;
-    padding-bottom: 100px;
+    padding-bottom: 100px !important;
   }
 }
 #feature-section .feature-catalyst .uvc-main-heading h2 {
   font-size: 64px;
   line-height: 1.1;
   text-align: center;
+  color: #fff;
   color: #5b6770;
-  padding-top: 100px;
+  padding-top: 100px !important;
 }
 @media only screen and (max-width: 1024px) {
   #feature-section .feature-catalyst .uvc-main-heading h2 {
@@ -1070,6 +1093,7 @@ Page sections
   font-size: 24px;
   line-height: 1.3;
   text-align: center;
+  color: #fff;
   color: #5b6770;
   padding: 20px 0 20px 0;
 }
@@ -1113,8 +1137,9 @@ Page sections
   font-size: 64px;
   line-height: 1.1;
   text-align: center;
+  color: #fff;
   color: #5b6770;
-  padding-top: 100px;
+  padding-top: 100px !important;
 }
 @media only screen and (max-width: 1024px) {
   #feature-section .feature-tattoo .uvc-main-heading h2 {
@@ -1135,6 +1160,7 @@ Page sections
   font-size: 24px;
   line-height: 1.3;
   text-align: center;
+  color: #fff;
   color: #5b6770;
   margin: 16px 0 63px 0;
 }
@@ -1252,6 +1278,7 @@ Page sections
   font-size: 24px;
   line-height: 1.3;
   text-align: center;
+  color: #fff;
   color: #5b6770;
   text-align: left;
 }
@@ -1342,6 +1369,7 @@ Page sections
   font-size: 64px;
   line-height: 1.1;
   text-align: center;
+  color: #fff;
 }
 @media only screen and (max-width: 1024px) {
   #lifestyle-section .lifestyle-catalyst .lifestyle-content .uvc-main-heading h2 {
@@ -1362,6 +1390,7 @@ Page sections
   font-size: 24px;
   line-height: 1.3;
   text-align: center;
+  color: #fff;
   padding: 30px 0 37px 0;
 }
 @media only screen and (max-width: 480px) {
@@ -1462,6 +1491,7 @@ Page sections
   font-size: 64px;
   line-height: 1.1;
   text-align: center;
+  color: #fff;
 }
 @media only screen and (max-width: 1024px) {
   #lifestyle-section .lifestyle-tattoo .image .overlay .content .title {
@@ -1482,6 +1512,7 @@ Page sections
   font-size: 24px;
   line-height: 1.3;
   text-align: center;
+  color: #fff;
 }
 @media only screen and (max-width: 480px) {
   #lifestyle-section .lifestyle-tattoo .image .overlay .content .description {
@@ -1586,6 +1617,7 @@ Page sections
   font-size: 64px;
   line-height: 1.1;
   text-align: center;
+  color: #fff;
   display: block;
   padding-bottom: 15px;
 }
@@ -1608,6 +1640,7 @@ Page sections
   font-size: 24px;
   line-height: 1.3;
   text-align: center;
+  color: #fff;
   display: block;
 }
 @media only screen and (max-width: 480px) {
@@ -1709,6 +1742,7 @@ Page sections
   font-size: 64px;
   line-height: 1.1;
   text-align: center;
+  color: #fff;
   color: #5b6770;
 }
 @media only screen and (max-width: 1024px) {
@@ -1730,6 +1764,7 @@ Page sections
   font-size: 24px;
   line-height: 1.3;
   text-align: center;
+  color: #fff;
   color: #5b6770;
 }
 @media only screen and (max-width: 480px) {
@@ -1898,6 +1933,7 @@ Page sections
   font-size: 64px;
   line-height: 1.1;
   text-align: center;
+  color: #fff;
   text-align: left;
   margin-bottom: 30px;
   margin-left: -10px;
@@ -1986,155 +2022,124 @@ Standalone sections
 
 */
 #in-page-nav {
-  background-color: #3b3fb6;
+  z-index: 2;
+}
+#in-page-nav #product-navigation {
+  background: #f5f5f5;
+  box-shadow: 0 1px 5px 5px rgba(0, 0, 0, 0.1);
   width: 100%;
   z-index: 1000;
-  min-height: 80px;
-}
-@media only screen and (max-width: 768px) {
-  #in-page-nav {
-    z-index: 1 !important;
-    /* Internet Explorer 10 */
-    /* Firefox */
-    /* Safari, Opera, and Chrome */
-    /* W3C */
-    /* Internet Explorer 10 */
-    display: -ms-flexbox !important;
-    -ms-flex-pack: center !important;
-    -ms-flex-align: center !important;
-    /* Firefox */
-    display: -moz-box !important;
-    -moz-box-pack: center !important;
-    -moz-box-align: center !important;
-    /* Safari, Opera, and Chrome */
-    display: -webkit-box !important;
-    -webkit-box-pack: center !important;
-    -webkit-box-align: center !important;
-    /* W3C */
-    display: box !important;
-    box-pack: center !important;
-    box-align: center !important;
-  }
-  #in-page-nav .vc_col-sm-6 {
-    width: 100%;
-  }
-}
-#in-page-nav .information {
-  height: 80px;
-  padding: 20px 0 0 129px;
-}
-@media only screen and (min-width: 1024px) and (max-width: 1440px) {
-  #in-page-nav .information {
-    padding: 20px 0 0 60px;
-  }
-}
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-  #in-page-nav .information {
-    padding: 20px 0 0 20px;
-  }
-}
-@media only screen and (max-width: 768px) {
-  #in-page-nav .information {
-    height: initial;
-    padding: 0;
-    text-align: center;
-  }
-}
-#in-page-nav .information p {
-  color: #fff;
-  font-size: 28px;
-}
-@media only screen and (max-width: 480px) {
-  #in-page-nav .information p {
-    font-size: 24px;
-  }
-}
-@media only screen and (max-width: 320px) {
-  #in-page-nav .information p {
-    font-size: 20px;
-  }
-}
-#in-page-nav .information .phone,
-#in-page-nav .information .price {
-  display: inline-block;
-}
-#in-page-nav .information .price {
-  padding-left: 10px;
-}
-@media only screen and (max-width: 768px) {
-  #in-page-nav .nav-links {
-    display: none;
-  }
-}
-#in-page-nav .nav-links .wpb_wrapper {
-  margin-right: 21px;
-  float: right;
-}
-#in-page-nav .nav-links #product-navigation {
-  height: 80px;
-  background-color: transparent;
-  border: none;
-  padding: 0;
+  height: 60px;
+  padding-top: 6px;
+  position: fixed;
+  border-radius: 0;
+  border: 0;
   margin: 0;
 }
-#in-page-nav .nav-links #product-navigation ul {
-  float: left;
-  display: inline-block;
-}
-#in-page-nav .nav-links #product-navigation a {
-  color: #fff;
-  height: 80px;
-  font-size: 18px;
-  padding: 25px 10px 0 10px;
-}
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-  #in-page-nav .nav-links #product-navigation a {
-    font-size: 16px;
-    padding: 25px 6px 0 6px;
+@media only screen and (min-width: 768px) {
+  #in-page-nav #product-navigation .container-fluid {
+    text-align: right;
+  }
+  #in-page-nav #product-navigation .navbar-collapse {
+    display: inline-block !important;
+  }
+  #in-page-nav #product-navigation .navbar-toggle {
+    display: none;
+  }
+  #in-page-nav #product-navigation .buy {
+    padding-left: 35px !important;
+    padding-right: 35px !important;
   }
 }
-#in-page-nav .nav-links #product-navigation a:hover,
-#in-page-nav .nav-links #product-navigation a:focus {
-  color: #3b3fb6;
-  background-color: #fff;
-  -webkit-transition: all ease 0.5s !important;
-  -moz-transition: all ease 0.5s !important;
-  -o-transition: all ease 0.5s !important;
-  transition: all ease 0.5s !important;
-}
-#in-page-nav .nav-links #product-navigation .active a {
-  color: #3b3fb6;
-  background-color: #fff;
-}
-#in-page-nav .nav-links #product-navigation .buy {
-  float: left;
-  display: inline-block;
-  border-radius: 20px;
-  background-color: #ffffff;
-  padding: 8px 17px;
-  position: relative;
-  top: 15px;
-  height: initial !important;
-  color: #5b6770;
-  cursor: pointer;
-  margin-left: 10px;
-}
-@media only screen and (min-width: 768px) and (max-width: 1024px) {
-  #in-page-nav .nav-links #product-navigation .buy {
-    margin-left: 6px;
+@media only screen and (max-width: 768px) {
+  #in-page-nav #product-navigation .navbar-header {
+    text-align: center;
+  }
+  #in-page-nav #product-navigation .navbar-brand {
+    position: absolute;
+    left: 0;
+  }
+  #in-page-nav #product-navigation #buy {
+    display: inline-block;
+    position: absolute;
+    top: 4px;
+    right: 10px;
+    z-index: 1;
+  }
+  #in-page-nav #product-navigation .navbar-toggle {
+    float: none;
+  }
+  #in-page-nav #product-navigation .navbar-collapse {
+    top: -4px;
+    background: #fff;
+  }
+  #in-page-nav #product-navigation .navbar-collapse li {
+    border-color: rgba(0, 0, 0, 0.1);
+  }
+  #in-page-nav #product-navigation .navbar-collapse li:hover {
+    border-color: #3b3fb6;
+  }
+  #in-page-nav #product-navigation .navbar-collapse li a:hover {
+    background-color: transparent;
+  }
+  #in-page-nav #product-navigation .navbar-collapse li .active {
+    border-bottom: 2px solid #3b3fb6;
+  }
+  #in-page-nav #product-navigation .navbar-nav {
+    margin: 0;
+  }
+  #in-page-nav #product-navigation .navbar-toggle.collapsed i {
+    -webkit-transform: initial;
+    -moz-transform: initial;
+    -ms-transform: initial;
+    -o-transform: initial;
+    transform: initial;
+  }
+  #in-page-nav #product-navigation .navbar-toggle i {
+    -webkit-transform: rotate(-180deg);
+    -moz-transform: rotate(-180deg);
+    -ms-transform: rotate(-180deg);
+    -o-transform: rotate(-180deg);
+    transform: rotate(-180deg);
   }
 }
-#in-page-nav .nav-links #product-navigation .buy:hover {
-  background: #c4d600 !important;
+#in-page-nav #product-navigation .navbar-brand {
+  color: rgba(51, 51, 51, 0.65);
 }
-#in-page-nav {
-  transition: top 1s ease;
-  -webkit-transition: top 1s ease;
-  /* Safari */
+#in-page-nav #product-navigation .navbar-nav a {
+  color: #333;
+  text-align: center;
+  margin: 0;
+}
+@media only screen and (min-width: 768px) {
+  #in-page-nav #product-navigation .navbar-nav a {
+    padding-left: 0;
+    padding-right: 0;
+    margin-left: 15px;
+    margin-right: 15px;
+    border-bottom: 4px solid rgba(255, 255, 255, 0);
+  }
+  #in-page-nav #product-navigation .navbar-nav a:hover {
+    border-color: #3b3fb6;
+    background-color: transparent;
+  }
+}
+#in-page-nav #product-navigation .navbar-nav .active {
+  border-color: #3b3fb6;
+}
+#in-page-nav #product-navigation .navbar-nav .buy {
+  background-color: #3b3fb6;
+  border-radius: 0 !important;
+  border: none !important;
+  color: #eeeeee;
+}
+#in-page-nav #product-navigation .navbar-nav .buy:hover {
+  background-color: #32349A;
 }
 #specs {
   display: block;
   padding: 0;
+  padding-top: 60px;
 }
 @media only screen and (min-width: 1440px) {
   #specs {
@@ -2159,21 +2164,6 @@ Standalone sections
 @media only screen and (max-width: 320px) {
   #specs {
     margin: 0 10px !important;
-  }
-}
-@media only screen and (min-width: 768px) {
-  #specs {
-    padding-top: 115px;
-  }
-}
-@media only screen and (max-width: 768px) {
-  #specs {
-    margin-top: 60px;
-  }
-}
-@media only screen and (max-width: 320px) {
-  #specs {
-    margin: 20px 40px;
   }
 }
 #specs #title h1 {
@@ -2213,6 +2203,9 @@ Standalone sections
 }
 #specs #image .wpb_single_image img {
   max-height: 567px;
+}
+#specs #content {
+  padding-bottom: 60px;
 }
 #specs #content .vc_col-sm-4 {
   padding: 0 40px;
@@ -2291,10 +2284,9 @@ Standalone sections
     font-size: 7px;
   }
 }
-@media only screen and (min-width: 768px) {
-  #gallery {
-    padding-top: 115px;
-  }
+#gallery {
+  padding-top: 115px;
+  padding-bottom: 50px;
 }
 #gallery .thumbs {
   text-align: right;

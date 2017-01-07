@@ -1,121 +1,121 @@
 @import '../../variables';
+@import '../../variables/breakpoints';
 
 #in-page-nav {
-  background-color: @color-daybreak-blue;
-  width: 100%;
-  z-index: 1000;
-  min-height: 80px;
-  @media only screen and (max-width: @break-md) {
-    z-index: 1 !important;
-    .vertical-center !important;
-    .vc_col-sm-6 {
-      width: 100%;
-    }
-  }
-  .information {
-    height: 80px;
-
-    // Responsive elements
-    padding: 20px 0 0 129px;
-    @media only screen and (min-width: @break-lg) and (max-width: @break-xl) {
-      padding: 20px 0 0 60px;
-    }
-    @media only screen and (min-width: @break-md)  and (max-width: @break-lg) {
-      padding: 20px 0 0 20px;
-    }
-    @media only screen and (max-width: @break-md) {
-      height: initial;
-      padding: 0;
-      text-align: center;
-    }
-
-    p {
-
-      color: #fff;
-      font-size: 28px;
-      @media only screen and (max-width: @break-sm) {
-        font-size: 24px;
+  z-index: 2;
+  #product-navigation {
+    background: #f5f5f5;
+    box-shadow: 0 1px 5px 5px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    z-index: 1000;
+    height: 60px;
+    padding-top: 6px;
+    position: fixed;
+    border-radius: 0;
+    border: 0;
+    margin: 0;
+    @media only screen and (min-width: @break-md) {
+      .container-fluid {
+        text-align: right;
       }
-      @media only screen and (max-width: @break-xs) {
-        font-size: 20px;
+      .navbar-collapse {
+        display: inline-block !important;
+      }
+      .navbar-toggle {
+        display: none;
+      }
+      .buy {
+        padding-left: 35px !important;
+        padding-right: 35px !important;
       }
     }
-    .phone,
-    .price {
-      display: inline-block;
-    }
-    .price {
-      padding-left: 10px;
-    }
-  }
-  .nav-links {
     @media only screen and (max-width: @break-md) {
-      display: none;
-    }
-    .wpb_wrapper {
-      margin-right: 21px;
-      float: right;
-    }
-    #product-navigation {
-      height: 80px;
-      background-color: transparent;
-      border: none;
-      .reset;
-      ul {
-        float: left;
+      .navbar-header {
+        text-align: center;
+      }
+      .navbar-brand {
+        position: absolute;
+        left: 0;
+      }
+      #buy {
         display: inline-block;
+        position: absolute;
+        top: 4px;
+        right: 10px;
+        z-index: 1;
       }
-      a {
-
-        color: #fff;
-        height: 80px;
-
-        //Responsive elements
-        font-size: 18px;
-        padding: 25px 10px 0 10px;
-        @media only screen and (min-width: @break-md) and (max-width: @break-lg) {
-          font-size: 16px;
-          padding: 25px 6px 0 6px;
+      .navbar-toggle {
+        float: none;
+      }
+      .navbar-collapse {
+        top: -4px;
+        background: #fff;
+        li {
+          border-color: rgba(0, 0, 0, 0.1);
+          &:hover {
+            border-color: @color-daybreak-blue;
+          }
+          a {
+            &:hover {
+              background-color: transparent;
+            }
+          }
+          .active {
+            border-bottom: 2px solid @color-daybreak-blue;
+          }
         }
-        &:hover,
-        &:focus {
-          color: @color-daybreak-blue;
-          background-color: #fff;
-          .hover-transition !important;
+      }
+      .navbar-nav {
+        margin: 0;
+      }
+      .navbar-toggle.collapsed i {
+        -webkit-transform: initial;
+        -moz-transform: initial;
+        -ms-transform: initial;
+        -o-transform: initial;
+        transform: initial;
+      }
+      .navbar-toggle i {
+        -webkit-transform: rotate(-180deg);
+        -moz-transform: rotate(-180deg);
+        -ms-transform: rotate(-180deg);
+        -o-transform: rotate(-180deg);
+        transform: rotate(-180deg);
+      }
+    }
+    .navbar-brand {
+      color: rgba(51, 51, 51, 0.65);
+    }
+    .navbar-nav {
+      a {
+        color: #333;
+        text-align: center;
+        margin: 0;
+
+        @media only screen and (min-width: @break-md) {
+          padding-left: 0;
+          padding-right: 0;
+          margin-left: 15px;
+          margin-right: 15px;
+          border-bottom: 4px solid rgba(255, 255, 255, 0);
+          &:hover {
+            border-color: @color-daybreak-blue;
+            background-color: transparent;
+          }
         }
       }
       .active {
-        a {
-          color: @color-daybreak-blue;
-          background-color: #fff;
-        }
+        border-color: @color-daybreak-blue;
       }
       .buy {
-        float: left;
-        display: inline-block;
-        border-radius: 20px;
-        background-color: #ffffff;
-        padding: 8px 17px;
-        position: relative;
-        top: 15px;
-        height: initial !important;
-        color: @color-charcoal-grey;
-        cursor: pointer;
-
-        //Responsive elements
-        margin-left: 10px;
-        @media only screen and (min-width: @break-md) and (max-width: @break-lg) {
-          margin-left: 6px;
-        }
+        background-color: #3b3fb6;
+        border-radius: 0 !important;
+        border: none !important;
+        color: #eeeeee;
         &:hover {
-          background: @color-sprout-green !important;
+          background-color: #32349A;
         }
       }
     }
   }
-}
-
-#in-page-nav {
-  transition: top 1s ease;
-  -webkit-transition: top 1s ease; /* Safari */
 }

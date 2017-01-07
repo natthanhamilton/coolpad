@@ -73,7 +73,7 @@
 		</a>
 	</li>
 </ul>
-<a href="#" data-toggle="modal" data-target="#buy_now" class="btn btn-green" id="order_now">Order Now</a>
+<a href="#" data-toggle="modal" data-target="#buy_now" class="btn btn-purple" id="order_now">Order Now</a>
 
 
 <div class="row cover-rogue">

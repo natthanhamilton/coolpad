@@ -580,30 +580,18 @@ Fix img-responsive issue
     width: auto;
 }
 
-.btn-purple {
+.btn-purple,
+.btn-green {
     border: solid 2px #3b3fb6 !important;
     background-color: transparent !important;
     color: #5b5b5b !important;
 }
 
-.btn-purple:hover {
+.btn-purple:hover,
+.btn-green:hover {
     background-color: #3b3fb6 !important;
     border: solid 2px #3b3fb6 !important;
     color: #fff !important;
-    -webkit-transition: all ease 0.5s;
-    -moz-transition: all ease 0.5s;
-    -o-transition: all ease 0.5s;
-    transition: all ease 0.5s;
-}
-
-.btn-green {
-    border: solid 2px #c4d600 !important;
-    background-color: transparent !important;
-}
-
-.btn-green:hover {
-    background-color: #c4d600 !important;
-    border: solid 2px #c4d600 !important;
     -webkit-transition: all ease 0.5s;
     -moz-transition: all ease 0.5s;
     -o-transition: all ease 0.5s;

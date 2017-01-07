@@ -246,6 +246,9 @@ Section break point set ups
 .right {
   text-align: right;
 }
+.no-padding {
+  padding: 0;
+}
 /*
 
 Mobile content section padding
@@ -317,13 +320,7 @@ p,
   margin-bottom: 0 !important;
 }
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  position: relative;
   overflow-x: hidden;
   color: #292f33;
 }
@@ -380,6 +377,20 @@ Vertically center everything
   /* W3C */
   display: box;
   box-align: end;
+}
+.right {
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-pack: end;
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-pack: end;
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-pack: end;
+  /* W3C */
+  display: box;
+  box-pack: end;
 }
 .flex-vertical-center {
   display: -ms-flexbox;
@@ -507,10 +518,10 @@ RESET
 
 Fix img-responsive issue
 
-*/
 .img-responsive {
   display: initial !important;
 }
+*/
 @media only screen and (min-width: 1024px) {
   .section-height {
     height: 700px;
@@ -540,6 +551,7 @@ Text formats
   font-size: 64px;
   line-height: 1.1;
   text-align: center;
+  color: #fff;
 }
 @media only screen and (max-width: 1024px) {
   .text-title {
@@ -560,15 +572,20 @@ Text formats
   font-size: 24px;
   line-height: 1.3;
   text-align: center;
+  color: #fff;
 }
 @media only screen and (max-width: 480px) {
   .text-description {
     font-size: 18px;
   }
 }
+* {
+  transition: .2s;
+}
 #specs {
   display: block;
   padding: 0;
+  padding-top: 60px;
 }
 @media only screen and (min-width: 1440px) {
   #specs {
@@ -593,21 +610,6 @@ Text formats
 @media only screen and (max-width: 320px) {
   #specs {
     margin: 0 10px !important;
-  }
-}
-@media only screen and (min-width: 768px) {
-  #specs {
-    padding-top: 115px;
-  }
-}
-@media only screen and (max-width: 768px) {
-  #specs {
-    margin-top: 60px;
-  }
-}
-@media only screen and (max-width: 320px) {
-  #specs {
-    margin: 20px 40px;
   }
 }
 #specs #title h1 {
@@ -647,6 +649,9 @@ Text formats
 }
 #specs #image .wpb_single_image img {
   max-height: 567px;
+}
+#specs #content {
+  padding-bottom: 60px;
 }
 #specs #content .vc_col-sm-4 {
   padding: 0 40px;

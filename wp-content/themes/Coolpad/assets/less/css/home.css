@@ -246,6 +246,9 @@ Section break point set ups
 .right {
   text-align: right;
 }
+.no-padding {
+  padding: 0;
+}
 /*
 
 Mobile content section padding
@@ -317,13 +320,7 @@ p,
   margin-bottom: 0 !important;
 }
 body {
-  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 16px;
-  padding-top: 10px !important;
-  padding-bottom: 10px !important;
-  margin-top: 0 !important;
-  margin-bottom: 0 !important;
-  position: relative;
   overflow-x: hidden;
   color: #292f33;
 }
@@ -380,6 +377,20 @@ Vertically center everything
   /* W3C */
   display: box;
   box-align: end;
+}
+.right {
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-pack: end;
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-pack: end;
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-pack: end;
+  /* W3C */
+  display: box;
+  box-pack: end;
 }
 .flex-vertical-center {
   display: -ms-flexbox;
@@ -507,10 +518,10 @@ RESET
 
 Fix img-responsive issue
 
-*/
 .img-responsive {
   display: initial !important;
 }
+*/
 @media only screen and (min-width: 1024px) {
   .section-height {
     height: 700px;
@@ -540,6 +551,7 @@ Text formats
   font-size: 64px;
   line-height: 1.1;
   text-align: center;
+  color: #fff;
 }
 @media only screen and (max-width: 1024px) {
   .text-title {
@@ -560,93 +572,127 @@ Text formats
   font-size: 24px;
   line-height: 1.3;
   text-align: center;
+  color: #fff;
 }
 @media only screen and (max-width: 480px) {
   .text-description {
     font-size: 18px;
   }
 }
+* {
+  transition: .2s;
+}
 .hero {
   height: 100vh;
-  width: 100vw;
+  width: 100%;
   background-size: cover;
   background-position: 50% 50%;
   background-repeat: no-repeat;
 }
-#home-cover .logo,
+@media only screen and (max-width: 480px) {
+  .hero {
+    height: initial;
+    padding-top: 80px;
+    padding-bottom: 50px;
+  }
+}
+#home-cover {
+  /* Internet Explorer 10 */
+  /* Firefox */
+  /* Safari, Opera, and Chrome */
+  /* W3C */
+  /* Internet Explorer 10 */
+  display: -ms-flexbox !important;
+  -ms-flex-align: center !important;
+  /* Firefox */
+  display: -moz-box !important;
+  -moz-box-align: center !important;
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box !important;
+  -webkit-box-align: center !important;
+  /* W3C */
+  display: box !important;
+  box-align: center !important;
+}
 #home-cover .details {
-  padding-bottom: 50px;
+  padding: 50px 0;
+}
+@media only screen and (max-width: 768px) {
+  #home-cover .details {
+    padding: 30px 0;
+  }
 }
 #home-cover p {
   font-weight: 300;
   color: #aaaaaa;
-  padding-left: 15px;
 }
-#home-cover a {
-  margin-bottom: 21px;
+#home-cover .logo img,
+#home-cover .website-phone img,
+#home-cover .mobile-phone img {
+  width: auto;
 }
-@media only screen and (min-width: 768px) {
-  #home-tiles {
-    margin: 5px;
+#home-cover .logo img {
+  max-height: 100px;
+}
+#home-cover #buy {
+  /* Internet Explorer 10 */
+  /* Firefox */
+  /* Safari, Opera, and Chrome */
+  /* W3C */
+  /* Internet Explorer 10 */
+  display: -ms-flexbox !important;
+  -ms-flex-pack: center !important;
+  -ms-flex-align: center !important;
+  /* Firefox */
+  display: -moz-box !important;
+  -moz-box-pack: center !important;
+  -moz-box-align: center !important;
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box !important;
+  -webkit-box-pack: center !important;
+  -webkit-box-align: center !important;
+  /* W3C */
+  display: box !important;
+  box-pack: center !important;
+  box-align: center !important;
+}
+@media only screen and (min-width: 480px) {
+  #home-cover #buy a {
+    margin-top: 40px;
   }
 }
-@media only screen and (min-width: 768px) {
-  #home-tiles .tile {
-    padding: 5px;
+#home-cover .website-phone img {
+  max-height: 400px;
+}
+#home-cover .mobile-phone img {
+  display: none !important;
+  padding-top: 30px;
+}
+@media only screen and (max-width: 480px) {
+  #home-cover .website-phone img {
+    display: none !important;
+  }
+  #home-cover .mobile-phone img {
+    display: block !important;
   }
 }
-#home-tiles .tile-1 {
-  background-color: #2f355e;
-  /* Internet Explorer 10 */
-  /* Firefox */
-  /* Safari, Opera, and Chrome */
-  /* W3C */
-  /* Internet Explorer 10 */
-  display: -ms-flexbox;
-  -ms-flex-pack: center;
-  -ms-flex-align: center;
-  /* Firefox */
-  display: -moz-box;
-  -moz-box-pack: center;
-  -moz-box-align: center;
-  /* Safari, Opera, and Chrome */
-  display: -webkit-box;
-  -webkit-box-pack: center;
-  -webkit-box-align: center;
-  /* W3C */
-  display: box;
-  box-pack: center;
-  box-align: center;
-  height: 162px;
-  width: 100%;
+@media only screen and (max-width: 768px) {
+  #home-tiles .vc_col-sm-4 {
+    width: 100%;
+  }
 }
-#home-tiles .tile-2 {
-  background: linear-gradient(to top, #c4d600, #8d9a00 76%, #c4d600);
-  background: -webkit-linear-gradient(top, #c4d600, #8d9a00 76%, #c4d600);
-  /* Internet Explorer 10 */
-  /* Firefox */
-  /* Safari, Opera, and Chrome */
-  /* W3C */
-  /* Internet Explorer 10 */
-  display: -ms-flexbox;
-  -ms-flex-pack: center;
-  -ms-flex-align: center;
-  /* Firefox */
-  display: -moz-box;
-  -moz-box-pack: center;
-  -moz-box-align: center;
-  /* Safari, Opera, and Chrome */
-  display: -webkit-box;
-  -webkit-box-pack: center;
-  -webkit-box-align: center;
-  /* W3C */
-  display: box;
-  box-pack: center;
-  box-align: center;
-  height: 162px;
-  width: 100%;
+#home-tiles .tile-title {
+  background-size: cover !important;
+  height: 300px;
+  font-size: 24px;
+  padding-top: 10px !important;
+  padding-bottom: 10px !important;
+  margin-top: 0 !important;
+  margin-bottom: 0 !important;
+  color: #fafafa;
+  padding: 30px !important;
 }
-#home-tiles .tile-3 {
+#home-tiles .tile-title:first-child {
   /* Internet Explorer 10 */
   /* Firefox */
   /* Safari, Opera, and Chrome */
@@ -667,50 +713,158 @@ Text formats
   display: box;
   box-pack: center;
   box-align: center;
-  height: 162px;
-  width: 100%;
-  background-position: 50% 50%;
+}
+#home-tiles .tile-title:last-child {
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-align: end;
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-align: end;
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-align: end;
+  /* W3C */
+  display: box;
+  box-align: end;
+  text-align: center;
+}
+#catalyst {
   background-size: cover;
-}
-#home-tiles .tile-3 .text {
-  display: inline-block;
-  font-size: 36px;
-  font-weight: 300;
-  line-height: 1.17;
-  color: #ffffff;
-}
-#home-tiles .tile-3 .icon {
-  display: inline-block;
-  bottom: 25px;
-  position: relative;
-  left: 20px;
-}
-#home-tiles .tile-3 .icon .fa {
-  color: #fff;
-  font-size: 18px;
+  background-position: 50% 50%;
+  padding-top: 50px !important;
+  padding-bottom: 50px !important;
   /* Internet Explorer 10 */
   /* Firefox */
   /* Safari, Opera, and Chrome */
   /* W3C */
   /* Internet Explorer 10 */
   display: -ms-flexbox;
-  -ms-flex-pack: center;
   -ms-flex-align: center;
   /* Firefox */
   display: -moz-box;
-  -moz-box-pack: center;
   -moz-box-align: center;
   /* Safari, Opera, and Chrome */
   display: -webkit-box;
-  -webkit-box-pack: center;
   -webkit-box-align: center;
   /* W3C */
   display: box;
-  box-pack: center;
   box-align: center;
-  padding: 8px 14px;
-  border-radius: 50%;
-  border: solid 1.4px #fefefe;
+  height: 500px !important;
+  padding-bottom: 0 !important;
+  display: block;
+}
+@media only screen and (max-width: 480px) {
+  #catalyst {
+    min-height: 700px;
+  }
+}
+@media only screen and (min-width: 480px) {
+  #catalyst {
+    height: 700px;
+  }
+}
+@media only screen and (min-width: 1440px) {
+  #catalyst {
+    padding: 0 119px;
+  }
+}
+@media only screen and (max-width: 1440px) {
+  #catalyst {
+    padding: 0 60px;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  #catalyst {
+    padding: 0 30px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  #catalyst {
+    padding: 0 20px;
+  }
+}
+@media only screen and (max-width: 320px) {
+  #catalyst {
+    padding: 0 10px;
+  }
+}
+#catalyst #logo {
+  max-height: 40px;
+}
+#catalyst #phone img {
+  max-height: 400px;
+}
+#catalyst h5 {
+  padding: 30px 0 65px 0 !important;
+}
+@media only screen and (min-width: 768px) {
+  #catalyst #phone,
+  #catalyst #info {
+    height: 100%;
+  }
+}
+@media only screen and (max-width: 768px) {
+  #catalyst {
+    height: initial !important;
+    min-height: initial !important;
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    display: flex;
+    -webkit-box-orient: vertical;
+    -moz-box-orient: vertical;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    /* optional */
+    -webkit-box-align: start;
+    -moz-box-align: start;
+    -ms-flex-align: start;
+    -webkit-align-items: flex-start;
+    align-items: flex-start;
+  }
+  #catalyst #info {
+    -webkit-box-ordinal-group: 1;
+    -moz-box-ordinal-group: 1;
+    -ms-flex-order: 1;
+    -webkit-order: 1;
+    order: 1;
+    width: 100%;
+    padding-bottom: 60px;
+    /* Internet Explorer 10 */
+    /* Firefox */
+    /* Safari, Opera, and Chrome */
+    /* W3C */
+    /* Internet Explorer 10 */
+    display: -ms-flexbox;
+    -ms-flex-pack: center;
+    -ms-flex-align: center;
+    /* Firefox */
+    display: -moz-box;
+    -moz-box-pack: center;
+    -moz-box-align: center;
+    /* Safari, Opera, and Chrome */
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    /* W3C */
+    display: box;
+    box-pack: center;
+    box-align: center;
+  }
+  #catalyst #info div {
+    text-align: center;
+  }
+  #catalyst #phone {
+    -webkit-box-ordinal-group: 2;
+    -moz-box-ordinal-group: 2;
+    -ms-flex-order: 2;
+    -webkit-order: 2;
+    order: 2;
+    margin: auto;
+  }
 }
 /*
 
