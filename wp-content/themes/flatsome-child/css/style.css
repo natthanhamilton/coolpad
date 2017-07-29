@@ -953,12 +953,12 @@ retailer a:hover {
   }
 }
 .nav-theme-transparent {
-  background: transparent;
   border-color: transparent;
   color: #fff;
   position: absolute;
   width: 100%;
   z-index: 1000;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9));
 }
 .nav-theme-transparent .navbar-collapse {
   background-color: transparent;
@@ -1982,6 +1982,12 @@ Text formats
 * {
   transition: .2s;
 }
+.margin-auto {
+  margin: auto !important;
+}
+.margin-auto div p {
+  margin: auto !important;
+}
 .btn {
   border-radius: 0 !important;
   color: #ffffff !important;
@@ -1992,6 +1998,19 @@ Text formats
 .btn:focus {
   outline: 0;
   color: #fff;
+}
+.btn-dark {
+  border: solid 2px rgba(41, 47, 51, 0.6) !important;
+  color: #000 !important;
+}
+.btn-dark:hover {
+  border: solid 2px #292f33 !important;
+}
+.btn-light {
+  border: solid 2px #ffffff !important;
+}
+.btn-light:hover {
+  border: solid 2px rgba(255, 255, 255, 0.7) !important;
 }
 .btn-lg {
   padding: 14px 18px;
@@ -2025,19 +2044,6 @@ Text formats
   }
 }
 */
-.btn-dark {
-  border: solid 2px rgba(41, 47, 51, 0.6) !important;
-  color: #000 !important;
-}
-.btn-dark:hover {
-  border: solid 2px #292f33 !important;
-}
-.btn-light {
-  border: solid 2px #ffffff !important;
-}
-.btn-light:hover {
-  border: solid 2px rgba(255, 255, 255, 0.7) !important;
-}
 .btn-pill {
   padding-left: 45px !important;
   padding-right: 45px !important;

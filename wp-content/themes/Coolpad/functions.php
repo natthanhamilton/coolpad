@@ -1,4 +1,5 @@
 <?php
+
 require_once(get_theme_root() . '/assets/global-functions.php');
 // enables wigitized sidebars
 if (function_exists('register_sidebar')) // post thumbnail support

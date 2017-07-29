@@ -582,6 +582,12 @@ Text formats
 * {
   transition: .2s;
 }
+.margin-auto {
+  margin: auto !important;
+}
+.margin-auto div p {
+  margin: auto !important;
+}
 .hero {
   height: 100vh;
   width: 100%;
@@ -622,6 +628,12 @@ Text formats
     padding: 30px 0;
   }
 }
+@media only screen and (max-width: 768px) {
+  #home-cover .half {
+    text-align: center;
+    width: 100%;
+  }
+}
 #home-cover p {
   font-weight: 300;
   color: #aaaaaa;
@@ -632,7 +644,12 @@ Text formats
   width: auto;
 }
 #home-cover .logo img {
-  max-height: 100px;
+  max-height: 200px;
+}
+@media only screen and (max-width: 768px) {
+  #home-cover .logo img {
+    max-height: 100px;
+  }
 }
 #home-cover #buy {
   /* Internet Explorer 10 */
@@ -662,7 +679,7 @@ Text formats
   }
 }
 #home-cover .website-phone img {
-  max-height: 400px;
+  max-height: 600px;
 }
 #home-cover .mobile-phone img {
   display: none !important;

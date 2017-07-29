@@ -545,6 +545,12 @@ Text formats
 * {
   transition: .2s;
 }
+.margin-auto {
+  margin: auto !important;
+}
+.margin-auto div p {
+  margin: auto !important;
+}
 #features-list {
   background-color: #f3f4f6;
   margin: 0 !important;
@@ -991,9 +997,10 @@ Text formats
 }
 #product-cover .vc_column_container .wpb_wrapper img {
   position: absolute;
-  right: 20px;
+  right: 40px;
   top: -260px;
   height: 550px;
+  width: auto;
 }
 @media only screen and (max-width: 1024px) {
   #product-cover .vc_column_container .wpb_wrapper img {
@@ -1107,6 +1114,8 @@ Text formats
 }
 #product-manuals .item .download {
   height: 100%;
+  position: relative;
+  top: 10px;
   /* Internet Explorer 10 */
   /* Firefox */
   /* Safari, Opera, and Chrome */
@@ -1135,10 +1144,12 @@ Text formats
   color: #ffffff !important;
   outline: 0 !important;
   line-height: normal !important;
-  border: solid 2px #3b3fb6 !important;
-  background-color: transparent !important;
-  color: #5b5b5b !important;
-  padding: 5px 2px;
+  padding: 14px 18px;
+  font-size: 20px;
+  border: solid 2px rgba(41, 47, 51, 0.6) !important;
+  color: #000 !important;
+  padding-left: 45px !important;
+  padding-right: 45px !important;
 }
 #product-manuals .item .download a:hover,
 #product-manuals .item .download a:focus {
@@ -1146,13 +1157,7 @@ Text formats
   color: #fff;
 }
 #product-manuals .item .download a:hover {
-  background-color: #3b3fb6 !important;
-  border: solid 2px #3b3fb6 !important;
-  color: #fff !important;
-  -webkit-transition: all ease 0.5s;
-  -moz-transition: all ease 0.5s;
-  -o-transition: all ease 0.5s;
-  transition: all ease 0.5s;
+  border: solid 2px #292f33 !important;
 }
 #product-faq {
   display: none !important;
@@ -2153,12 +2158,12 @@ Text formats
   }
 }
 .nav-theme-transparent {
-  background: transparent;
   border-color: transparent;
   color: #fff;
   position: absolute;
   width: 100%;
   z-index: 1000;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.9));
 }
 .nav-theme-transparent .navbar-collapse {
   background-color: transparent;
@@ -2764,6 +2769,19 @@ tooltip i {
   outline: 0;
   color: #fff;
 }
+.btn-dark {
+  border: solid 2px rgba(41, 47, 51, 0.6) !important;
+  color: #000 !important;
+}
+.btn-dark:hover {
+  border: solid 2px #292f33 !important;
+}
+.btn-light {
+  border: solid 2px #ffffff !important;
+}
+.btn-light:hover {
+  border: solid 2px rgba(255, 255, 255, 0.7) !important;
+}
 .btn-lg {
   padding: 14px 18px;
   font-size: 20px;
@@ -2796,19 +2814,6 @@ tooltip i {
   }
 }
 */
-.btn-dark {
-  border: solid 2px rgba(41, 47, 51, 0.6) !important;
-  color: #000 !important;
-}
-.btn-dark:hover {
-  border: solid 2px #292f33 !important;
-}
-.btn-light {
-  border: solid 2px #ffffff !important;
-}
-.btn-light:hover {
-  border: solid 2px rgba(255, 255, 255, 0.7) !important;
-}
 .btn-pill {
   padding-left: 45px !important;
   padding-right: 45px !important;

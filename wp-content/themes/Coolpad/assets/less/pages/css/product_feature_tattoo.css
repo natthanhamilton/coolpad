@@ -582,6 +582,12 @@ Text formats
 * {
   transition: .2s;
 }
+.margin-auto {
+  margin: auto !important;
+}
+.margin-auto div p {
+  margin: auto !important;
+}
 .feature-tattoo .uvc-main-heading h2 {
   font-size: 64px;
   line-height: 1.1;

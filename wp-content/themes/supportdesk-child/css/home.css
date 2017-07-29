@@ -582,6 +582,12 @@ Text formats
 * {
   transition: .2s;
 }
+.margin-auto {
+  margin: auto !important;
+}
+.margin-auto div p {
+  margin: auto !important;
+}
 #features-list {
   background-color: #f3f4f6;
   margin: 0 !important;

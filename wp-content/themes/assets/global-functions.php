@@ -37,7 +37,9 @@ add_action( 'wpmu_activate_user', 'add_custom_role', 10, 1 );
 add_action( 'wpmu_new_user', 'add_custom_role', 10, 1 );
 add_action( 'user_register', 'add_custom_role', 10, 1 );
 
-function custom_get_blog_list( $start = 0, $num = 10 ) {
+
+
+function custom_get_blog_list( $start = 0, $num = 3 ) {
     global $wpdb;
 
     $blogs = $wpdb->get_results( $wpdb->prepare( "SELECT blog_id, domain, path FROM $wpdb->blogs WHERE site_id = %d AND archived = '0' AND spam = '0' AND deleted = '0' ORDER BY registered DESC", $wpdb->siteid ), ARRAY_A );

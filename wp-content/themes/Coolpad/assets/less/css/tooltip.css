@@ -582,6 +582,12 @@ Text formats
 * {
   transition: .2s;
 }
+.margin-auto {
+  margin: auto !important;
+}
+.margin-auto div p {
+  margin: auto !important;
+}
 tooltip {
   text-align: center;
   background-color: #3b3fb6;

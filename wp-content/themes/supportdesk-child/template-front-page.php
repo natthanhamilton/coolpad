@@ -111,6 +111,42 @@ if ($content != '') { ?>
                 <div class="carousel slide" id="home-products-carousel">
                     <div class="carousel-inner">
                         <div class="item active">
+                            <a href="http://support.coolpad.us/defiant" title="Coolpad Defiant">
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <div class="image">
+                                        <img class="img-responsive"
+                                             src="http://support.coolpad.us/wp-content/uploads/sites/2/2017/06/front-image-300X600.png"
+                                             alt="Coolpad Defiant">
+                                    </div>
+                                    <span class="title">Defiant</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="item">
+                            <a href="http://support.coolpad.us/canvas" title="Coolpad Canvas">
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <div class="image">
+                                        <img class="img-responsive"
+                                             src="http://coolpad.us/wp-content/uploads/2017/05/canvas.jpg"
+                                             alt="Coolpad Canvas">
+                                    </div>
+                                    <span class="title">Canvas</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="item">
+                            <a href="http://support.coolpad.us/conjr" title="Coolpad Conjr">
+                                <div class="col-md-3 col-sm-6 col-xs-12">
+                                    <div class="image">
+                                        <img class="img-responsive"
+                                             src="https://coolpad.us/wp-content/themes/Coolpad/assets/images/phones/conjr/gallery/front.jpg"
+                                             alt="Coolpad Conjr">
+                                    </div>
+                                    <span class="title">Conjr</span>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="item">
                             <a href="http://support.coolpad.us/tattoo" title="Coolpad Tattoo">
                                 <div class="col-md-3 col-sm-6 col-xs-12">
                                     <div class="image">
@@ -208,9 +244,9 @@ if ($content != '') { ?>
                         </div>
                     </div>
                     <a class="left carousel-control" href="#home-products-carousel" data-slide="prev"><i
-                            class="fa fa-chevron-left"></i></a>
+                            class="fa fa-angle-left"></i></a>
                     <a class="right carousel-control" href="#home-products-carousel" data-slide="next"><i
-                            class="fa fa-chevron-right"></i></a>
+                            class="fa fa-angle-right"></i></a>
                 </div>
             </div>
         </div>

@@ -953,6 +953,12 @@ Text formats
 * {
   transition: .2s;
 }
+.margin-auto {
+  margin: auto !important;
+}
+.margin-auto div p {
+  margin: auto !important;
+}
 #footer,
 #sub-footer {
   /* SPACINGS */
@@ -1789,6 +1795,19 @@ Modifiers
   outline: 0;
   color: #fff;
 }
+.btn-dark {
+  border: solid 2px rgba(41, 47, 51, 0.6) !important;
+  color: #000 !important;
+}
+.btn-dark:hover {
+  border: solid 2px #292f33 !important;
+}
+.btn-light {
+  border: solid 2px #ffffff !important;
+}
+.btn-light:hover {
+  border: solid 2px rgba(255, 255, 255, 0.7) !important;
+}
 .btn-lg {
   padding: 14px 18px;
   font-size: 20px;
@@ -1821,19 +1840,6 @@ Modifiers
   }
 }
 */
-.btn-dark {
-  border: solid 2px rgba(41, 47, 51, 0.6) !important;
-  color: #000 !important;
-}
-.btn-dark:hover {
-  border: solid 2px #292f33 !important;
-}
-.btn-light {
-  border: solid 2px #ffffff !important;
-}
-.btn-light:hover {
-  border: solid 2px rgba(255, 255, 255, 0.7) !important;
-}
 .btn-pill {
   padding-left: 45px !important;
   padding-right: 45px !important;

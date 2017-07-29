@@ -582,6 +582,12 @@ Text formats
 * {
   transition: .2s;
 }
+.margin-auto {
+  margin: auto !important;
+}
+.margin-auto div p {
+  margin: auto !important;
+}
 .cover-rogue {
   padding: 0 20px;
 }

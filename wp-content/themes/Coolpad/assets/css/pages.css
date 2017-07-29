@@ -582,6 +582,12 @@ Text formats
 * {
   transition: .2s;
 }
+.margin-auto {
+  margin: auto !important;
+}
+.margin-auto div p {
+  margin: auto !important;
+}
 .overview .wpb_content_element {
   padding: 0;
   margin: 0;
@@ -1350,6 +1356,12 @@ Text formats
     padding: 30px 0;
   }
 }
+@media only screen and (max-width: 768px) {
+  #home-cover .half {
+    text-align: center;
+    width: 100%;
+  }
+}
 #home-cover p {
   font-weight: 300;
   color: #aaaaaa;
@@ -1360,7 +1372,12 @@ Text formats
   width: auto;
 }
 #home-cover .logo img {
-  max-height: 100px;
+  max-height: 200px;
+}
+@media only screen and (max-width: 768px) {
+  #home-cover .logo img {
+    max-height: 100px;
+  }
 }
 #home-cover #buy {
   /* Internet Explorer 10 */
@@ -1390,7 +1407,7 @@ Text formats
   }
 }
 #home-cover .website-phone img {
-  max-height: 400px;
+  max-height: 600px;
 }
 #home-cover .mobile-phone img {
   display: none !important;
@@ -3573,11 +3590,6 @@ Standalone sections
     text-align: center;
   }
 }
-@media only screen and (max-width: 320px) {
-  #specs #content .title p {
-    font-size: 10px;
-  }
-}
 #specs #content .description p {
   border-bottom: solid 1px rgba(151, 151, 151, 0.4);
   padding-bottom: 18px;
@@ -3599,17 +3611,12 @@ Standalone sections
 }
 @media only screen and (max-width: 768px) {
   #specs #content .description p {
-    font-size: 10px;
+    font-size: 12px;
   }
 }
 @media only screen and (max-width: 480px) {
   #specs #content .description p {
     text-align: center;
-  }
-}
-@media only screen and (max-width: 320px) {
-  #specs #content .description p {
-    font-size: 7px;
   }
 }
 #gallery {
@@ -4547,7 +4554,7 @@ Standalone sections
   height: 100% !important;
 }
 .phone-conjr .section .container .row #phone {
-  max-height: 590px;
+  max-height: 500px;
   max-width: 295px;
 }
 @media only screen and (max-width: 768px) {
@@ -4616,6 +4623,369 @@ Standalone sections
   position: absolute;
   top: 38px;
   left: 9px;
+}
+.canvas-cover {
+  background-size: cover;
+  background-position: 50% 50%;
+  height: 100vh;
+  width: 100%;
+}
+@media only screen and (max-width: 480px) {
+  .canvas-cover {
+    height: initial !important;
+    padding-top: 100px;
+    padding-bottom: 60px;
+  }
+}
+.canvas-cover .content p {
+  padding: 40px 0 !important;
+  font-size: 20px;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+}
+.canvas-cover .logo img {
+  max-height: 200px;
+  width: initial;
+}
+@media only screen and (max-width: 480px) {
+  .canvas-cover .logo img {
+    max-height: 130px;
+  }
+}
+.canvas-section {
+  background-size: cover;
+  background-position: 50% 50%;
+  height: 100vh;
+  width: 100%;
+  padding-top: 50px;
+}
+@media only screen and (max-width: 480px) {
+  .canvas-section {
+    height: initial !important;
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+}
+@media only screen and (min-width: 480px) {
+  .canvas-section .top {
+    position: absolute;
+    width: 100%;
+    top: 0;
+  }
+}
+.canvas-section h4,
+.canvas-section p {
+  color: #fff;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+}
+.canvas-section h4 {
+  font-size: 42px;
+}
+@media only screen and (min-width: 480px) {
+  .canvas-section p {
+    font-size: 20px;
+    max-width: 800px;
+    margin: auto;
+  }
+}
+.canvas-section img {
+  margin-top: 40px;
+  max-height: 500px;
+  width: initial;
+}
+@media only screen and (max-width: 480px) {
+  .canvas-section img {
+    max-height: 150px;
+  }
+}
+.canvas-section .icons {
+  margin: auto;
+  padding-top: 50px;
+}
+@media only screen and (min-width: 768px) {
+  .canvas-section .icons {
+    width: 350px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .canvas-section .icons {
+    /* Internet Explorer 10 */
+    /* Firefox */
+    /* Safari, Opera, and Chrome */
+    /* W3C */
+    /* Internet Explorer 10 */
+    display: -ms-flexbox;
+    -ms-flex-pack: center;
+    -ms-flex-align: center;
+    /* Firefox */
+    display: -moz-box;
+    -moz-box-pack: center;
+    -moz-box-align: center;
+    /* Safari, Opera, and Chrome */
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    /* W3C */
+    display: box;
+    box-pack: center;
+    box-align: center;
+  }
+  .canvas-section .icons .wrapper {
+    display: table-caption;
+  }
+}
+.canvas-section .icons .icon {
+  padding-bottom: 10px;
+}
+@media only screen and (max-width: 768px) {
+  .canvas-section .icons .icon {
+    width: 100%;
+  }
+}
+.canvas-section .icons .img {
+  display: inline-block;
+  position: absolute;
+  padding-top: 2px;
+}
+.canvas-section .icons .img img {
+  max-height: 30px;
+  padding-top: 3px;
+}
+.canvas-section .icons .text {
+  display: inline-block;
+  width: 160px;
+  padding-left: 37px;
+  color: #fafafa;
+  font-size: 12px;
+}
+.inline-block {
+  display: inline-block;
+}
+.float-right {
+  float: right;
+}
+@media only screen and (max-width: 480px) {
+  .float-right {
+    float: initial;
+  }
+}
+.margin-auto {
+  margin: auto;
+}
+@media only screen and (max-width: 480px) {
+  .defiant-icons {
+    text-align: center;
+  }
+}
+@media only screen and (min-width: 480px) {
+  .hide-website {
+    display: none;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .hide-mobile {
+    display: none;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .hide-website-large {
+    display: none;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .hide-mobile-large {
+    display: none;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .defiant-cover-piece {
+    width: 100% !important;
+  }
+}
+@media only screen and (min-width: 480px) {
+  .defiant-fast > .wpb_column {
+    position: relative;
+    left: 30px;
+  }
+}
+.defiant-fast-description {
+  padding-top: 240px;
+}
+.defiant-cover {
+  background-size: cover;
+  background-position: 50% 50%;
+  height: 100vh;
+  width: 100%;
+}
+@media only screen and (max-width: 480px) {
+  .defiant-cover {
+    height: initial !important;
+    padding-top: 100px;
+    padding-bottom: 60px;
+  }
+}
+.defiant-cover p {
+  padding: 20px 0 !important;
+  font-size: 36px !important;
+  text-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+  color: #3b3fb6 !important;
+}
+.defiant-cover .logo img {
+  max-height: 200px;
+  width: initial;
+}
+@media only screen and (max-width: 480px) {
+  .defiant-cover .logo img {
+    max-height: 130px;
+  }
+}
+.defiant-section {
+  background-size: cover;
+  background-position: 50% 50%;
+  height: 800px;
+  width: 100%;
+  padding: 50px 20px;
+}
+@media only screen and (max-width: 480px) {
+  .defiant-section {
+    background-position: 55% 50%;
+    height: initial !important;
+    padding: 100px 10px;
+  }
+}
+@media only screen and (min-width: 480px) {
+  .defiant-section .top {
+    position: absolute;
+    width: 100%;
+    top: 0;
+  }
+}
+.defiant-section h4,
+.defiant-section p {
+  color: #fff;
+  text-shadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+}
+@media only screen and (max-width: 480px) {
+  .defiant-section h4,
+  .defiant-section p {
+    text-align: center !important;
+  }
+}
+.defiant-section h4 {
+  font-size: 42px;
+}
+@media only screen and (min-width: 480px) {
+  .defiant-section p {
+    font-size: 20px;
+    max-width: 500px;
+  }
+}
+.defiant-section img {
+  margin-top: 40px;
+  max-height: 500px;
+  width: initial;
+  padding-right: 15px;
+}
+@media only screen and (max-width: 480px) {
+  .defiant-section img {
+    max-height: 250px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .defiant-section .img {
+    text-align: center;
+  }
+}
+.defiant-section .icons {
+  margin: auto;
+  padding-top: 50px;
+}
+@media only screen and (min-width: 768px) {
+  .defiant-section .icons {
+    width: 350px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .defiant-section .icons {
+    /* Internet Explorer 10 */
+    /* Firefox */
+    /* Safari, Opera, and Chrome */
+    /* W3C */
+    /* Internet Explorer 10 */
+    display: -ms-flexbox;
+    -ms-flex-pack: center;
+    -ms-flex-align: center;
+    /* Firefox */
+    display: -moz-box;
+    -moz-box-pack: center;
+    -moz-box-align: center;
+    /* Safari, Opera, and Chrome */
+    display: -webkit-box;
+    -webkit-box-pack: center;
+    -webkit-box-align: center;
+    /* W3C */
+    display: box;
+    box-pack: center;
+    box-align: center;
+  }
+  .defiant-section .icons .wrapper {
+    display: table-caption;
+  }
+}
+.defiant-section .icons .icon {
+  padding-bottom: 10px;
+}
+@media only screen and (max-width: 768px) {
+  .defiant-section .icons .icon {
+    width: 100%;
+  }
+}
+.defiant-section .icons .img {
+  display: inline-block;
+  position: absolute;
+  padding-top: 2px;
+}
+.defiant-section .icons .img img {
+  max-height: 30px;
+  padding-top: 3px;
+}
+.defiant-section .icons .text {
+  display: inline-block;
+  width: 160px;
+  padding-left: 37px;
+  color: #fafafa;
+  font-size: 12px;
+}
+.defiant-section .mobility-custom {
+  float: right;
+}
+@media only screen and (min-width: 480px) {
+  .defiant-section .mobility-custom {
+    padding-right: 40px;
+  }
+}
+.stay-powered-section {
+  padding: 0 !important;
+}
+.stay-powered-overlay {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 50px 20px;
+}
+@media only screen and (max-width: 480px) {
+  .stay-powered-overlay {
+    padding: 100px 10px;
+  }
+}
+.full-height-pieces > .wpb_column {
+  height: 100%;
+}
+.full-height-pieces > .wpb_column > .vc_column-inner {
+  height: 100%;
+}
+.full-height-pieces > .wpb_column > .vc_column-inner > .wpb_wrapper {
+  height: 100%;
+}
+.full-height-pieces > .wpb_column > .vc_column-inner > .wpb_wrapper > .vc_inner {
+  height: 100%;
 }
 #info-page {
   margin: auto !important;

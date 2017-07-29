@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html <?php language_attributes(); ?>>
 <head>
+    <meta charset="<?php bloginfo('charset'); ?>"/>
     <title><?php if (is_category()) {
             echo 'Category Archive for &quot;';
             single_cat_title();
@@ -32,10 +33,6 @@
             echo ' | ';
             bloginfo('name');
         } ?></title>
-    <meta name="description" content="<?php wp_title('');
-    echo ' | ';
-    bloginfo('description'); ?>"/>
-    <meta charset="<?php bloginfo('charset'); ?>"/>
     <meta name="viewport" content="width=device-width, initial-scale=1"/>
     <link rel="icon" href="http://res.cloudinary.com/coolpad/image/upload/v1464995065/favicon.jpg" type="image/x-icon"/>
     <?php wp_head(); ?>
@@ -47,8 +44,9 @@
     <link rel="stylesheet"
           href="https://cdnjs.cloudflare.com/ajax/libs/mediaelement/2.23.2/mediaelementplayer.min.css"/>
     <link rel="stylesheet" type="text/css" media="all"
-          href="<?php echo get_template_directory_uri() . '/assets/css/style.css'; ?>"/>
+          href="<?php echo get_template_directory_uri() . '/assets/css/style.min.css'; ?>"/>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <?php require_once(ABSPATH . 'wp-content/themes/assets/header.php'); ?>
 </head>
 <body <?php body_class(); ?>>
 <div id="body-wrapper" style="overflow-x: hidden">

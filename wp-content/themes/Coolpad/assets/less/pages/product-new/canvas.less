@@ -1,0 +1,100 @@
+@import '../../variables';
+
+.canvas-cover {
+  .background;
+  height: 100vh;
+  width: 100%;
+  @media only screen and (max-width: @break-sm) {
+    height: initial !important;
+    padding-top: 100px;
+    padding-bottom: 60px;
+  }
+  .content  p {
+      padding: 40px 0 !important;
+    font-size: 20px;
+      text-shadow: 0 2px 2px rgba(0, 0, 0, 0.1);
+  }
+  .logo img {
+    max-height: 200px;
+    width: initial;
+    @media only screen and (max-width: @break-sm) {
+      max-height: 130px;
+    }
+  }
+}
+
+.canvas-section {
+  .background;
+  height: 100vh;
+  width: 100%;
+  padding-top: 50px;
+  @media only screen and (max-width: @break-sm) {
+    height: initial !important;
+    padding-top: 100px;
+    padding-bottom: 100px;
+  }
+  .top {
+    @media only screen and (min-width: @break-sm) {
+      position: absolute;
+      width: 100%;
+      top: 0;
+    }
+  }
+    h4, p {
+      color: #fff;
+      text-shadow: 0 2px 2px rgba(0, 0, 0, 0.25);
+    }
+  h4 {
+    font-size: 42px;
+  }
+  p {
+    @media only screen and (min-width: @break-sm) {
+      font-size: 20px;
+      max-width: 800px;
+      margin: auto;
+    }
+  }
+  img {
+    margin-top: 40px;
+    max-height: 500px;
+    width: initial;
+    @media only screen and (max-width: @break-sm) {
+      max-height: 150px
+    }
+  }
+  .icons {
+    margin: auto;
+    padding-top: 50px;
+    @media only screen and (min-width: @break-md) {
+      width: 350px;
+    }
+    @media only screen and (max-width: @break-md) {
+      .vertical-center;
+      .wrapper {
+        display: table-caption;
+      }
+    }
+    .icon {
+      padding-bottom: 10px;
+      @media only screen and (max-width: @break-md) {
+        width: 100%;
+      }
+    }
+    .img {
+      display: inline-block;
+      position: absolute;
+      padding-top: 2px;
+      img {
+        max-height: 30px;
+        padding-top: 3px;
+      }
+    }
+    .text {
+      display: inline-block;
+      width: 160px;
+      padding-left: 37px;
+      color: @color-snow;
+      font-size: 12px;
+    }
+  }
+}

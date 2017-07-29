@@ -582,6 +582,12 @@ Text formats
 * {
   transition: .2s;
 }
+.margin-auto {
+  margin: auto !important;
+}
+.margin-auto div p {
+  margin: auto !important;
+}
 #specs {
   display: block;
   padding: 0;
@@ -691,11 +697,6 @@ Text formats
     text-align: center;
   }
 }
-@media only screen and (max-width: 320px) {
-  #specs #content .title p {
-    font-size: 10px;
-  }
-}
 #specs #content .description p {
   border-bottom: solid 1px rgba(151, 151, 151, 0.4);
   padding-bottom: 18px;
@@ -717,16 +718,11 @@ Text formats
 }
 @media only screen and (max-width: 768px) {
   #specs #content .description p {
-    font-size: 10px;
+    font-size: 12px;
   }
 }
 @media only screen and (max-width: 480px) {
   #specs #content .description p {
     text-align: center;
-  }
-}
-@media only screen and (max-width: 320px) {
-  #specs #content .description p {
-    font-size: 7px;
   }
 }

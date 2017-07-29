@@ -15,16 +15,14 @@ if (get_current_blog_id() == 1 AND is_page('home')) {
         <li>Phones</li>
         <li>
             <ul>
+                <li><a href="http://coolpad.us/products/defiant">coolpad defiant</li>
+                <li><a href="http://coolpad.us/products/canvas">coolpad canvas</li>
                 <li><a href="http://coolpad.us/products/conjr">coolpad conjr</li>
                 <li><a href="http://coolpad.us/products/catalyst">coolpad catalyst</li>
-                <li><a href="http://coolpad.us/products/tattoo">coolpad tattoo</li>
-                <li><a href="http://coolpad.us/products/rogue">coolpad rogue</li>
             </ul>
         </li>
         <li><a href="http://coolpad.us/about/">About</a></li>
         <li><a href="http://coolpad.us/blogs/">News</a></li>
-        <li><a href="http://support.coolpad.us/">Support</a></li>
-        <li><a href="http://store.coolpad.us/">Store</a></li>
         <li>&nbsp;</li>
         <li class="bottom">&nbsp;
             <ul>
@@ -72,11 +70,12 @@ if (get_current_blog_id() == 1 AND is_page('home')) {
                 <!-- Side navigation toggle -->
                 <i class="fa fa-bars fa-lg" id="sidenav-open"></i>
                 <li><a class="navbar-brand navbar-left" href="http://coolpad.us/">
+                        <h1 style="display:none">Coolpad Americas</h1>
                         <img class="img-responsive hidden-xs hidden-sm"
-                             src="http://res.cloudinary.com/coolpad/image/upload/v1480838252/logos/Coolpad-white.png"
+                             src="<?= get_site_url().'/wp-content/themes/assets/img/Coolpad-white.png'; ?>"
                              alt="Coolpad Americas">
                         <img class="img-responsive hidden-md hidden-lg"
-                             src="http://res.cloudinary.com/coolpad/image/upload/c_scale,h_25/v1462471233/logos/Coolpad.png"
+                             src="<?= get_site_url().'/wp-content/themes/assets/img/Coolpad.png'; ?>"
                              alt="Coolpad Americas">
                     </a></li>
             </ul>
@@ -85,7 +84,7 @@ if (get_current_blog_id() == 1 AND is_page('home')) {
             <ul class="nav navbar-nav navbar-left">
                 <li class="navbar-brand"><a href="http://coolpad.us/">
                         <img class="img-responsive"
-                             src="http://res.cloudinary.com/coolpad/image/upload/v1480838252/logos/Coolpad-white.png"
+                             src="<?= get_site_url().'/wp-content/themes/assets/img/Coolpad-white.png'; ?>"
                              alt="Coolpad Americas">
                     </a></li>
                 <li class="dropdown-full no-shadow">
@@ -94,10 +93,30 @@ if (get_current_blog_id() == 1 AND is_page('home')) {
                         <wrapper>
                             <ul>
                                 <li class="col-xs-6 col-sm-2">
+                                    <a href="http://coolpad.us/products/defiant">
+                                        <div class="image">
+                                            <img class="img-responsive"
+                                                 src="<?= get_site_url().'/wp-content/uploads/2017/06/6666666.263.png'; ?>"
+                                                 alt="Coolpad Defiant">
+                                        </div>
+                                        Coolpad Defiant
+                                    </a>
+                                </li>
+                                <li class="col-xs-6 col-sm-2">
+                                    <a href="http://coolpad.us/products/canvas">
+                                        <div class="image">
+                                            <img class="img-responsive"
+                                                 src="<?= get_site_url().'/wp-content/uploads/2017/06/Canvas-Front.png'; ?>"
+                                                 alt="Coolpad Canvas">
+                                        </div>
+                                        Coolpad Canvas
+                                    </a>
+                                </li>
+                                <li class="col-xs-6 col-sm-2">
                                     <a href="http://coolpad.us/products/conjr">
                                         <div class="image">
                                             <img class="img-responsive"
-                                                 src="http://res.cloudinary.com/coolpad/image/upload/v1480838344/phones/Conjr.png"
+                                                 src="<?= get_site_url().'/wp-content/themes/Coolpad/assets/images/phones/conjr/gallery/front.jpg'; ?>"
                                                  alt="Coolpad Conjr">
                                         </div>
                                         Coolpad Conjr
@@ -107,30 +126,11 @@ if (get_current_blog_id() == 1 AND is_page('home')) {
                                     <a href="http://coolpad.us/products/catalyst">
                                         <div class="image">
                                             <img class="img-responsive"
-                                                 src="http://res.cloudinary.com/coolpad/image/upload/v1480838344/phones/Catalyst.png"
+                                                 src="<?= get_site_url().'/wp-content/uploads/2017/04/Catalyst-Gallery_4.jpg'; ?>"
+
                                                  alt="Coolpad catalyst">
                                         </div>
                                         Coolpad catalyst
-                                    </a>
-                                </li>
-                                <li class="col-xs-6 col-sm-2">
-                                    <a href="http://coolpad.us/products/tattoo">
-                                        <div class="image">
-                                            <img class="img-responsive"
-                                                 src="http://res.cloudinary.com/coolpad/image/upload/v1480838344/phones/Tattoo.png"
-                                                 alt="Coolpad Tattoo">
-                                        </div>
-                                        Coolpad Tattoo
-                                    </a>
-                                </li>
-                                <li class="col-xs-6 col-sm-2">
-                                    <a href="http://coolpad.us/products/rogue">
-                                        <div class="image">
-                                            <img class="img-responsive"
-                                                 src="http://res.cloudinary.com/coolpad/image/upload/v1480838344/phones/Rogue.png"
-                                                 alt="Coolpad Rogue">
-                                        </div>
-                                        Coolpad Rogue
                                     </a>
                                 </li>
                             </ul>
@@ -139,20 +139,10 @@ if (get_current_blog_id() == 1 AND is_page('home')) {
                 </li>
                 <li><a href="http://coolpad.us/about">About</a></li>
                 <li><a href="http://coolpad.us/blogs">News</a></li>
-                <li><a href="http://support.coolpad.us/">Support</a></li>
                 <li><a href="http://store.coolpad.us/">Store</a></li>
+                <li><a href="http://support.coolpad.us/">Support</a></li>
             </ul>
             <ul class="nav navbar-nav navbar-right">
-                <li>
-                    <a href="http://store.coolpad.us/account">
-                        <i class="fa fa-user" aria-hidden="true"></i>
-                    </a>
-                </li>
-                <li>
-                    <a class="top-level" href="http://store.coolpad.us/cart">
-                        <i class="fa fa-shopping-cart" aria-hidden="true"></i>
-                    </a>
-                </li>
                 <li class="dropdown-short all-left">
                     <a data-toggle=dropdown href="javascript:void(0);" class="dropdown-toggle top-level"><i
                                 class="fa fa-lg fa-question"></i></a>

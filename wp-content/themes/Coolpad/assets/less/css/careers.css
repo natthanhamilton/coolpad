@@ -582,6 +582,12 @@ Text formats
 * {
   transition: .2s;
 }
+.margin-auto {
+  margin: auto !important;
+}
+.margin-auto div p {
+  margin: auto !important;
+}
 .highlights-list .vc_column-inner {
   padding-left: 7.5px !important;
   padding-right: 7.5px !important;
