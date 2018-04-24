@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 /* Message box 2
 ---------------------------------------------------------- */
 $pixel_icons = vc_pixel_icons();
@@ -259,11 +263,14 @@ return array(
 			'type' => 'iconpicker',
 			'heading' => __( 'Icon', 'js_composer' ),
 			'param_name' => 'icon_monosocial',
-			'value' => 'vc-mono vc-mono-fivehundredpx', // default value to backend editor admin_label
+			'value' => 'vc-mono vc-mono-fivehundredpx',
+			// default value to backend editor admin_label
 			'settings' => array(
-				'emptyIcon' => false, // default true, display an "EMPTY" icon?
+				'emptyIcon' => false,
+				// default true, display an "EMPTY" icon?
 				'type' => 'monosocial',
-				'iconsPerPage' => 4000, // default 100, how many icons per/page to display
+				'iconsPerPage' => 4000,
+				// default 100, how many icons per/page to display
 			),
 			'dependency' => array(
 				'element' => 'icon_type',

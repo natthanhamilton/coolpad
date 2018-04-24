@@ -133,7 +133,7 @@ function wpas_open_ticket( $data ) {
 		'comment_status' => 'closed',
 	) );
 
-	return wpas_insert_ticket( $post, false, false );
+	return wpas_insert_ticket( $post, false, false, 'standard-ticket-form' );
 	
 }
 
@@ -206,13 +206,17 @@ function wpas_new_ticket_submission( $data ) {
  * This function is a wrapper function for wp_insert_post
  * with additional checks specific to the ticketing system
  *
- * @param array    $data     Ticket (post) data
- * @param bool|int $post_id  Post ID for an update
- * @param bool|int $agent_id ID of the agent to assign ticket to
+ * @param array    $data     		Ticket (post) data
+ * @param bool|int $post_id  		Post ID for an update
+ * @param bool|int $agent_id		ID of the agent to assign ticket to
+ * @param string   $channel_term	Source of the ticket
  *
  * @return bool|int|WP_Error
  */
-function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = false ) {
+function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = false, $channel_term = 'other' ) {
+	
+	// Save the original data array
+	$incoming_data = $data ;
 
 	// First of all we want to set the ticket author so that we can check if (s)he is allowed to open a ticket or not.
 	if ( empty( $data['post_author'] ) ) {
@@ -266,21 +270,26 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	}
 
 	/**
-	 * Filter the data right before inserting it in the post.
-	 * 
-	 * @var array
-	 */
-	$data = apply_filters( 'wpas_open_ticket_data', $data );
-
+	* Sanitize the slug
+	*/
 	if ( isset( $data['post_name'] ) && !empty( $data['post_name'] ) ) {
 		$data['post_name'] = sanitize_text_field( $data['post_name'] );
 	}
 
 	/**
+	 * Filter the data right before inserting it in the post.
+	 * 
+	 * @var array
+	 */
+	$data = apply_filters( 'wpas_open_ticket_data', $data, $incoming_data );
+	
+	
+	/**
 	 * Fire wpas_before_open_ticket just before the post is actually
 	 * inserted in the database.
 	 */
-	do_action( 'wpas_open_ticket_before', $data, $post_id );
+	do_action( 'wpas_open_ticket_before', $data, $post_id, $incoming_data );
+	
 
 	/**
 	 * Insert the post in database using the regular WordPress wp_insert_post
@@ -289,35 +298,56 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 	 * @var boolean
 	 */
 	$ticket_id = wp_insert_post( $data, false );
-
+	
 	if ( false === $ticket_id ) {
 
 		/**
 		 * Fire wpas_open_ticket_failed if the ticket couldn't be inserted.
 		 */
-		do_action( 'wpas_open_ticket_failed', $data, $post_id );
+		do_action( 'wpas_open_ticket_failed', $data, $post_id, $incoming_data );
 
 		return false;
 
 	}
 
+	/**
+	* Change the slug to the postid if that's the option the admin set in the TICKETS->SETTINGS->Advanced tab.  
+	* Note that we only do this if $update is false signifying a new ticket!
+	*/	
+	If ( ! $update ) {
+		wpas_set_ticket_slug($ticket_id);
+	}
+
 	/* Set the ticket as open. */
 	add_post_meta( $ticket_id, '_wpas_status', 'open', true );
+
+	/* Next - update other some meta values. If you add or delete from this list you also */
+	/* need to do the same thing in the /includes/admin/functions-post.php file */
+	add_post_meta( $ticket_id, '_wpas_last_reply_date', null, true );
+	add_post_meta( $ticket_id, '_wpas_last_reply_date_gmt', null, true );
+	add_post_meta( $ticket_id, '_wpas_is_waiting_client_reply', ! user_can( $data['post_author'], 'edit_ticket' ), true  );
 
 	if ( false === $agent_id ) {
 		$agent_id = wpas_find_agent( $ticket_id );
 	}
-
+				
+	
 	/**
 	 * Fire wpas_open_ticket_before_assigned after the post is successfully submitted but before it has been assigned to an agent.
 	 *
 	 * @since 3.2.6
 	 */
-	do_action( 'wpas_open_ticket_before_assigned', $ticket_id, $data );
-
+	do_action( 'wpas_open_ticket_before_assigned', $ticket_id, $data, $incoming_data );	
+	
 	/* Assign an agent to the ticket */
 	wpas_assign_ticket( $ticket_id, apply_filters( 'wpas_new_ticket_agent_id', $agent_id, $ticket_id, $agent_id ), false );
 
+	/* Update the channel on the ticket - but only if the $update is false which means we've got a new ticket */
+	/* Need to update it here because some of the action hooks fired above will overwrite the term.			  */
+	If (! empty( $channel_term ) && ( ! $update ) ) {
+		wpas_set_ticket_channel( $ticket_id , $channel_term, false );
+	}	
+	
 	/**
 	 * Fire wpas_after_open_ticket just after the post is successfully submitted and assigned.
 	 */
@@ -327,6 +357,104 @@ function wpas_insert_ticket( $data = array(), $post_id = false, $agent_id = fals
 
 }
 
+/**
+ * Set the channel (ticket source) term/field
+ *
+ * @since 3.4.0
+ *
+ * @param numeric		$ticket_id
+ * @param string		$channel_term
+ * @param string		$overwrite	whether or not to overwrite existing channel on the ticket - set to false by default 
+ *
+ * @return void
+ */
+ function wpas_set_ticket_channel( $ticket_id = -1, $channel_term = 'other', $overwrite = false ) {
+	 
+	 /* Does a term already exist on the ticket?  If so, do not overrite it if $overwrite is false */
+	 if ( false === $overwrite ) {
+		 $existing_channel = wp_get_post_terms($ticket_id,'ticket_channel');
+		 if ( ! empty( $existing_channel ) ) {
+			 return ;
+		 }
+	 }	 
+
+	/*  get the term id because wp_set_object_terms require an id instead of just a string */
+	$arr_the_term_id = term_exists( $channel_term, 'ticket_channel' );
+
+	If ( $arr_the_term_id ) {
+			
+		// Need to get array keys first so we can index and extract the first element in the wp_set_object_terms below.
+		$arr_the_term_id_keys = array_keys($arr_the_term_id);  
+		$int_the_term_id = (int) $arr_the_term_id[ $arr_the_term_id_keys[0] ];
+
+		// Now add the terms (this function call doesn't work consistently for some reason!)
+		$term_taxonomy_ids = wp_set_object_terms( $ticket_id, (int) $int_the_term_id , 'ticket_channel' );
+
+	} 
+	
+	return;
+ }
+
+/**
+ * Set ticket slug on new tickets if the admin chooses anything other than the default slug.
+ *
+ * @since 3.4.0
+ *
+ * @param numeric		$ticket_id
+ *
+ * @return void
+ */
+ function wpas_set_ticket_slug( $ticket_id = -1 ) {
+ 	$use_ticket_id_for_slug = wpas_get_option('ticket_topic_slug');  
+
+	/* Set ticket slug to the post id / ticket id */
+	If ( isset( $use_ticket_id_for_slug ) &&  ('ticketid' == $use_ticket_id_for_slug ) ) {
+		
+		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID passed into this function */
+		$newdata = array(
+				'ID'			=> $ticket_id,
+				'post_name'		=> (string) $ticket_id
+		);
+		
+		/* Update the post with the new slug */
+		wp_update_post ($newdata);
+	} 	
+	
+	/* Set ticket slug to a random number  */
+	If ( isset( $use_ticket_id_for_slug ) &&  ('randomnumber' == $use_ticket_id_for_slug ) ) {
+		
+		/*Calculate a random number */
+		$randomslug = mt_rand();
+
+		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID passed into this function */
+		$newdata = array(
+				'ID'			=> $ticket_id,
+				'post_name'		=> (string) $randomslug
+		);
+		
+		/* Update the post with the new slug */
+		wp_update_post ($newdata);
+	} 		
+
+	/* Set ticket slug to a GUID  */
+	If ( isset( $use_ticket_id_for_slug ) &&  ('guid' == $use_ticket_id_for_slug ) ) {
+		
+		/*Calculate a guid */
+		$randomguid = wpas_create_pseudo_guid();
+		
+		/* Set the data to be updated - in this case just post_name (slug) with the key being the ID passed into this function */
+		$newdata = array(
+				'ID'			=> $ticket_id,
+				'post_name'		=> $randomguid
+		);
+		
+		/* Update the post with the new slug */
+		wp_update_post ($newdata);
+	} 		
+	
+	return ;
+}
+ 
 /**
  * Get tickets.
  *
@@ -887,6 +1015,17 @@ function wpas_insert_reply( $data, $post_id = false ) {
 		do_action( 'wpas_add_reply_public_after', $reply_id, $data );
 
 	}
+	
+	/**
+	 * Fire wpas_add_reply_complete after the reply and attachments was successfully added.
+	 */
+	do_action( 'wpas_add_reply_complete', $reply_id, $data );
+
+	/* . */
+	update_post_meta( $data[ 'post_parent' ], '_wpas_last_reply_date', current_time( 'mysql' ) );
+	update_post_meta( $data[ 'post_parent' ], '_wpas_last_reply_date_gmt', current_time( 'mysql', 1 ) );
+
+	update_post_meta( $data[ 'post_parent' ], '_wpas_is_waiting_client_reply', ! current_user_can( 'edit_ticket' )  );
 
 	return $reply_id;
 
@@ -1203,7 +1342,7 @@ function wpas_update_ticket_status( $post_id, $status ) {
  *
  * @return integer|boolean            ID of the post meta if exists, true on success or false on failure
  */
-function wpas_close_ticket( $ticket_id, $user_id = 0 ) {
+function wpas_close_ticket( $ticket_id, $user_id = 0, $skip_user_validation = false ) {
 
 	global $current_user;
 
@@ -1212,8 +1351,10 @@ function wpas_close_ticket( $ticket_id, $user_id = 0 ) {
 		$user_id = $current_user->ID;
 	}
 
-	if ( ! current_user_can( 'close_ticket' ) ) {
-		wp_die( __( 'You do not have the capacity to close this ticket', 'awesome-support' ), __( 'Can’t close ticket', 'awesome-support' ), array( 'back_link' => true ) );
+	if ( ! $skip_user_validation ) {
+		if ( ! current_user_can( 'close_ticket' ) ) {
+			wp_die( __( 'You do not have the capacity to close this ticket', 'awesome-support' ), __( 'Can’t close ticket', 'awesome-support' ), array( 'back_link' => true ) );
+		}
 	}
 
 	$ticket_id = intval( $ticket_id );
@@ -1221,6 +1362,10 @@ function wpas_close_ticket( $ticket_id, $user_id = 0 ) {
 	if ( 'ticket' == get_post_type( $ticket_id ) ) {
 
 		$update = update_post_meta( intval( $ticket_id ), '_wpas_status', 'closed' );
+
+		// Save the date at which the ticket was last closed. The date is updated if the ticket is re-opened and then re-closed.
+		update_post_meta( $ticket_id, '_ticket_closed_on', current_time( 'mysql' ) );
+		update_post_meta( $ticket_id, '_ticket_closed_on_gmt', current_time( 'mysql', 1 ) );
 
 		/* Decrement the number of tickets open for this agent */
 		$agent_id = get_post_meta( $ticket_id, '_wpas_assignee', true );
@@ -1321,7 +1466,7 @@ add_action( 'wpas_do_reopen_ticket', 'wpas_reopen_ticket_trigger' );
  * @return void
  */
 function wpas_reopen_ticket_trigger( $data ) {
-
+ 
 	if ( isset( $data['ticket_id'] ) ) {
 
 		$ticket_id = (int) $data['ticket_id'];
@@ -1331,7 +1476,9 @@ function wpas_reopen_ticket_trigger( $data ) {
 			wpas_redirect( 'ticket_reopen', wpas_get_tickets_list_page_url() );
 			exit;
 		}
-
+		
+		do_action( 'wpas_before_customer_reopen_ticket', $ticket_id );
+		
 		wpas_reopen_ticket( $ticket_id );
 		wpas_add_notification( 'ticket_reopen', __( 'The ticket has been successfully re-opened.', 'awesome-support' ) );
 		wpas_redirect( 'ticket_reopen', wp_sanitize_redirect( get_permalink( $ticket_id ) ) );

@@ -93,6 +93,7 @@ return array(
 			'heading' => __( 'Pagination position', 'js_composer' ),
 			'description' => __( 'Select pageable navigation position.', 'js_composer' ),
 		),
+		vc_map_add_css_animation(),
 		array(
 			'type' => 'textfield',
 			'heading' => __( 'Extra class name', 'js_composer' ),

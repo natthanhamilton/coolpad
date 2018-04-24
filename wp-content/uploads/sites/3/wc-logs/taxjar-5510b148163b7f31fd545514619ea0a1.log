@@ -1,0 +1,741 @@
+10-04-2016 @ 07:31:04 - :::: TaxJar Plugin requested ::::
+10-04-2016 @ 07:31:12 - :::: TaxJar Plugin requested ::::
+10-04-2016 @ 07:31:15 - :::: TaxJar Plugin requested ::::
+10-05-2016 @ 16:55:52 - :::: TaxJar Plugin requested ::::
+10-05-2016 @ 17:03:58 - :::: TaxJar Plugin requested ::::
+10-05-2016 @ 17:04:17 - :::: TaxJar Plugin requested ::::
+10-05-2016 @ 17:08:40 - :::: TaxJar Plugin requested ::::
+10-05-2016 @ 17:08:47 - :::: TaxJar Plugin requested ::::
+10-05-2016 @ 17:08:59 - :::: TaxJar Plugin requested ::::
+10-05-2016 @ 17:09:03 - :::: TaxJar Plugin requested ::::
+10-05-2016 @ 17:10:24 - :::: TaxJar Plugin requested ::::
+10-05-2016 @ 17:46:41 - :::: TaxJar Plugin requested ::::
+10-05-2016 @ 17:46:48 - :::: TaxJar Plugin requested ::::
+10-05-2016 @ 17:50:15 - :::: TaxJar Plugin requested ::::
+10-05-2016 @ 17:50:16 - :::: TaxJar Plugin requested ::::
+10-05-2016 @ 17:50:16 - :::: TaxJar API called ::::
+10-05-2016 @ 17:50:16 - Requesting: https://api.taxjar.com/v2/taxes
+10-05-2016 @ 17:50:17 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-05-2016 @ 17:50:17 - Cache Value: 0::0::1::0::origin::0::0
+10-08-2016 @ 05:18:49 - :::: TaxJar Plugin requested ::::
+10-08-2016 @ 05:19:06 - :::: TaxJar Plugin requested ::::
+10-08-2016 @ 05:19:13 - :::: TaxJar Plugin requested ::::
+10-08-2016 @ 19:46:52 - :::: TaxJar Plugin requested ::::
+10-08-2016 @ 19:46:55 - :::: TaxJar Plugin requested ::::
+10-09-2016 @ 10:24:07 - :::: TaxJar Plugin requested ::::
+10-09-2016 @ 10:24:24 - :::: TaxJar Plugin requested ::::
+10-09-2016 @ 10:24:28 - :::: TaxJar Plugin requested ::::
+10-09-2016 @ 10:35:05 - :::: TaxJar Plugin requested ::::
+10-11-2016 @ 14:00:43 - :::: TaxJar Plugin requested ::::
+10-11-2016 @ 14:00:55 - :::: TaxJar Plugin requested ::::
+10-11-2016 @ 14:01:08 - :::: TaxJar Plugin requested ::::
+10-11-2016 @ 14:06:00 - :::: TaxJar Plugin requested ::::
+10-11-2016 @ 14:06:19 - :::: TaxJar Plugin requested ::::
+10-11-2016 @ 14:06:34 - :::: TaxJar Plugin requested ::::
+10-11-2016 @ 14:06:43 - :::: TaxJar Plugin requested ::::
+10-11-2016 @ 14:06:50 - :::: TaxJar Plugin requested ::::
+10-11-2016 @ 14:07:05 - :::: TaxJar Plugin requested ::::
+10-11-2016 @ 14:07:05 - :::: TaxJar API called ::::
+10-11-2016 @ 14:07:05 - Requesting: https://api.taxjar.com/v2/taxes
+10-11-2016 @ 14:07:06 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-11-2016 @ 14:07:06 - Cache Value: 0::0::1::0::origin::0::0
+10-11-2016 @ 14:07:07 - :::: TaxJar Plugin requested ::::
+10-11-2016 @ 14:08:41 - :::: TaxJar Plugin requested ::::
+10-11-2016 @ 14:08:41 - :::: TaxJar API called ::::
+10-11-2016 @ 14:08:41 - Requesting: https://api.taxjar.com/v2/taxes
+10-11-2016 @ 14:08:41 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-11-2016 @ 14:08:41 - Cache Value: 0::0::1::0::origin::0::0
+10-11-2016 @ 14:08:51 - :::: TaxJar Plugin requested ::::
+10-11-2016 @ 14:08:51 - :::: TaxJar API called ::::
+10-11-2016 @ 14:08:51 - Requesting: https://api.taxjar.com/v2/taxes
+10-11-2016 @ 14:08:51 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-11-2016 @ 14:08:51 - Cache Value: 0::0::1::0::origin::0::0
+10-11-2016 @ 14:11:49 - :::: TaxJar Plugin requested ::::
+10-11-2016 @ 14:11:49 - :::: TaxJar API called ::::
+10-11-2016 @ 14:11:49 - Requesting: https://api.taxjar.com/v2/taxes
+10-11-2016 @ 14:11:49 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-11-2016 @ 14:11:49 - Cache Value: 0::0::1::0::origin::0::0
+10-12-2016 @ 17:09:33 - :::: TaxJar Plugin requested ::::
+10-12-2016 @ 17:09:54 - :::: TaxJar Plugin requested ::::
+10-12-2016 @ 17:10:01 - :::: TaxJar Plugin requested ::::
+10-12-2016 @ 17:13:58 - :::: TaxJar Plugin requested ::::
+10-12-2016 @ 17:14:00 - :::: TaxJar Plugin requested ::::
+10-12-2016 @ 17:14:04 - :::: TaxJar Plugin requested ::::
+10-12-2016 @ 17:15:37 - :::: TaxJar Plugin requested ::::
+10-12-2016 @ 18:20:22 - :::: TaxJar Plugin requested ::::
+10-12-2016 @ 18:20:53 - :::: TaxJar Plugin requested ::::
+10-12-2016 @ 18:20:53 - :::: TaxJar API called ::::
+10-12-2016 @ 18:20:53 - Requesting: https://api.taxjar.com/v2/taxes
+10-12-2016 @ 18:20:54 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-12-2016 @ 18:20:54 - Cache Value: 0::0::1::0::origin::0::0
+10-12-2016 @ 18:20:54 - :::: TaxJar Plugin requested ::::
+10-12-2016 @ 18:20:54 - :::: TaxJar API called ::::
+10-12-2016 @ 18:20:54 - Cached Amount: 0
+10-12-2016 @ 18:20:54 - Cached Nexus: 0
+10-12-2016 @ 18:20:54 - Cached Source: origin
+10-12-2016 @ 18:20:54 - Cached Rate: 0
+10-12-2016 @ 18:20:54 - Shipping Taxable? 1
+10-12-2016 @ 18:20:54 - Item Tax to Collect: 0
+10-12-2016 @ 18:20:54 - Shipping Tax to Collect: 0
+10-12-2016 @ 18:21:17 - :::: TaxJar Plugin requested ::::
+10-12-2016 @ 18:21:17 - :::: TaxJar API called ::::
+10-12-2016 @ 18:21:17 - Requesting: https://api.taxjar.com/v2/taxes
+10-12-2016 @ 18:21:17 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-12-2016 @ 18:21:17 - Cache Value: 0::0::1::0::origin::0::0
+10-12-2016 @ 18:21:57 - :::: TaxJar Plugin requested ::::
+10-12-2016 @ 18:21:57 - :::: TaxJar API called ::::
+10-12-2016 @ 18:21:57 - Requesting: https://api.taxjar.com/v2/taxes
+10-12-2016 @ 18:21:57 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-12-2016 @ 18:21:57 - Cache Value: 0::0::1::0::origin::0::0
+10-12-2016 @ 18:24:36 - :::: TaxJar Plugin requested ::::
+10-12-2016 @ 18:24:36 - :::: TaxJar API called ::::
+10-12-2016 @ 18:24:36 - Requesting: https://api.taxjar.com/v2/taxes
+10-12-2016 @ 18:24:36 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-12-2016 @ 18:24:36 - Cache Value: 0::0::1::0::origin::0::0
+10-15-2016 @ 14:34:11 - :::: TaxJar Plugin requested ::::
+10-15-2016 @ 14:34:32 - :::: TaxJar Plugin requested ::::
+10-15-2016 @ 14:34:32 - :::: TaxJar API called ::::
+10-15-2016 @ 14:34:32 - Requesting: https://api.taxjar.com/v2/taxes
+10-15-2016 @ 14:34:32 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-15-2016 @ 14:34:32 - Cache Value: 0::0::1::0::origin::0::0
+10-15-2016 @ 14:34:32 - :::: TaxJar Plugin requested ::::
+10-15-2016 @ 14:34:32 - :::: TaxJar API called ::::
+10-15-2016 @ 14:34:32 - Cached Amount: 0
+10-15-2016 @ 14:34:32 - Cached Nexus: 0
+10-15-2016 @ 14:34:32 - Cached Source: origin
+10-15-2016 @ 14:34:32 - Cached Rate: 0
+10-15-2016 @ 14:34:32 - Shipping Taxable? 1
+10-15-2016 @ 14:34:32 - Item Tax to Collect: 0
+10-15-2016 @ 14:34:32 - Shipping Tax to Collect: 0
+10-15-2016 @ 14:52:58 - :::: TaxJar Plugin requested ::::
+10-15-2016 @ 14:52:58 - :::: TaxJar API called ::::
+10-15-2016 @ 14:52:58 - Requesting: https://api.taxjar.com/v2/taxes
+10-15-2016 @ 14:52:59 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-15-2016 @ 14:52:59 - Cache Value: 0::0::1::0::origin::0::0
+10-15-2016 @ 14:53:03 - :::: TaxJar Plugin requested ::::
+10-15-2016 @ 14:53:03 - :::: TaxJar API called ::::
+10-15-2016 @ 14:53:03 - Requesting: https://api.taxjar.com/v2/taxes
+10-15-2016 @ 14:53:03 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-15-2016 @ 14:53:03 - Cache Value: 0::0::1::0::origin::0::0
+10-15-2016 @ 14:55:04 - :::: TaxJar Plugin requested ::::
+10-15-2016 @ 14:55:04 - :::: TaxJar API called ::::
+10-15-2016 @ 14:55:04 - Requesting: https://api.taxjar.com/v2/taxes
+10-15-2016 @ 14:55:04 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-15-2016 @ 14:55:04 - Cache Value: 0::0::1::0::origin::0::0
+10-15-2016 @ 14:55:24 - :::: TaxJar Plugin requested ::::
+10-15-2016 @ 14:55:24 - :::: TaxJar API called ::::
+10-15-2016 @ 14:55:24 - Requesting: https://api.taxjar.com/v2/taxes
+10-15-2016 @ 14:55:25 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-15-2016 @ 14:55:25 - Cache Value: 0::0::1::0::origin::0::0
+10-15-2016 @ 14:57:56 - :::: TaxJar Plugin requested ::::
+10-15-2016 @ 14:57:56 - :::: TaxJar API called ::::
+10-15-2016 @ 14:57:56 - Requesting: https://api.taxjar.com/v2/taxes
+10-15-2016 @ 14:57:57 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-15-2016 @ 14:57:57 - Cache Value: 0::0::1::0::origin::0::0
+10-15-2016 @ 16:02:37 - :::: TaxJar Plugin requested ::::
+10-15-2016 @ 16:03:11 - :::: TaxJar Plugin requested ::::
+10-15-2016 @ 16:03:30 - :::: TaxJar Plugin requested ::::
+10-15-2016 @ 16:04:37 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 15:14:39 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 15:14:47 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 20:52:25 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 20:52:45 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 20:52:52 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 20:55:11 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 21:02:14 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 21:02:41 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 21:02:48 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 21:03:02 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 21:03:37 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 21:04:44 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 21:06:03 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 21:06:16 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 21:06:16 - :::: TaxJar API called ::::
+10-16-2016 @ 21:06:16 - Requesting: https://api.taxjar.com/v2/taxes
+10-16-2016 @ 21:06:17 - Received: {"tax":{"order_total_amount":17.98,"shipping":5.99,"taxable_amount":11.99,"amount_to_collect":0.96,"rate":0.08,"has_nexus":true,"freight_taxable":false,"tax_source":"destination","breakdown":{"taxable_amount":11.99,"tax_collectable":0.96,"combined_tax_rate":0.08,"state_taxable_amount":11.99,"state_tax_rate":0.065,"state_tax_collectable":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_tax_collectable":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_tax_collectable":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.005,"special_district_tax_collectable":0.06,"line_items":[{"id":"1","taxable_amount":11.99,"tax_collectable":0.96,"combined_tax_rate":0.08,"state_taxable_amount":11.99,"state_sales_tax_rate":0.065,"state_amount":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_amount":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_amount":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.005,"special_district_amount":0.06}]}}}
+10-16-2016 @ 21:06:17 - Cache Value: 0.96::0.08::0::1::destination::0.96::0
+10-16-2016 @ 21:06:17 - redlands
+10-16-2016 @ 21:06:17 - :: Adding New Tax Rate ::
+10-16-2016 @ 21:06:17 - Tax Rate ID Set: 5
+10-16-2016 @ 21:29:06 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 21:29:06 - :::: TaxJar API called ::::
+10-16-2016 @ 21:29:06 - Requesting: https://api.taxjar.com/v2/taxes
+10-16-2016 @ 21:29:07 - Received: {"tax":{"order_total_amount":17.98,"shipping":5.99,"taxable_amount":11.99,"amount_to_collect":0.96,"rate":0.08,"has_nexus":true,"freight_taxable":false,"tax_source":"destination","breakdown":{"taxable_amount":11.99,"tax_collectable":0.96,"combined_tax_rate":0.08,"state_taxable_amount":11.99,"state_tax_rate":0.065,"state_tax_collectable":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_tax_collectable":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_tax_collectable":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.005,"special_district_tax_collectable":0.06,"line_items":[{"id":"1","taxable_amount":11.99,"tax_collectable":0.96,"combined_tax_rate":0.08,"state_taxable_amount":11.99,"state_sales_tax_rate":0.065,"state_amount":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_amount":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_amount":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.005,"special_district_amount":0.06}]}}}
+10-16-2016 @ 21:29:07 - Cache Value: 0.96::0.08::0::1::destination::0.96::0
+10-16-2016 @ 21:29:07 - redlands
+10-16-2016 @ 21:29:07 - ::: TAX RATES FOUND :::
+10-16-2016 @ 21:29:07 - Array
+(
+    [5] => Array
+        (
+            [rate] => 8.0000
+            [label] => CA Tax
+            [shipping] => no
+            [compound] => no
+        )
+
+)
+
+10-16-2016 @ 21:29:07 - :: UPDATING TAX RATES TO ::
+10-16-2016 @ 21:29:07 - Array
+(
+    [tax_rate_country] => US
+    [tax_rate_state] => CA
+    [tax_rate_name] => CA Tax
+    [tax_rate_priority] => 1
+    [tax_rate_compound] => 
+    [tax_rate_shipping] => 0
+    [tax_rate] => 8
+    [tax_rate_class] => 
+)
+
+10-16-2016 @ 21:29:07 - Tax Rate ID Set: 5
+10-16-2016 @ 21:29:16 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 21:29:16 - :::: TaxJar API called ::::
+10-16-2016 @ 21:29:16 - Requesting: https://api.taxjar.com/v2/taxes
+10-16-2016 @ 21:29:17 - Received: {"tax":{"order_total_amount":17.98,"shipping":5.99,"taxable_amount":11.99,"amount_to_collect":0.96,"rate":0.08,"has_nexus":true,"freight_taxable":false,"tax_source":"destination","breakdown":{"taxable_amount":11.99,"tax_collectable":0.96,"combined_tax_rate":0.08,"state_taxable_amount":11.99,"state_tax_rate":0.065,"state_tax_collectable":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_tax_collectable":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_tax_collectable":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.005,"special_district_tax_collectable":0.06,"line_items":[{"id":"1","taxable_amount":11.99,"tax_collectable":0.96,"combined_tax_rate":0.08,"state_taxable_amount":11.99,"state_sales_tax_rate":0.065,"state_amount":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_amount":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_amount":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.005,"special_district_amount":0.06}]}}}
+10-16-2016 @ 21:29:17 - Cache Value: 0.96::0.08::0::1::destination::0.96::0
+10-16-2016 @ 21:29:17 - redlands
+10-16-2016 @ 21:29:17 - ::: TAX RATES FOUND :::
+10-16-2016 @ 21:29:17 - Array
+(
+    [5] => Array
+        (
+            [rate] => 8.0000
+            [label] => CA Tax
+            [shipping] => no
+            [compound] => no
+        )
+
+)
+
+10-16-2016 @ 21:29:17 - :: UPDATING TAX RATES TO ::
+10-16-2016 @ 21:29:17 - Array
+(
+    [tax_rate_country] => US
+    [tax_rate_state] => CA
+    [tax_rate_name] => CA Tax
+    [tax_rate_priority] => 1
+    [tax_rate_compound] => 
+    [tax_rate_shipping] => 0
+    [tax_rate] => 8
+    [tax_rate_class] => 
+)
+
+10-16-2016 @ 21:29:17 - Tax Rate ID Set: 5
+10-16-2016 @ 21:29:26 - :::: TaxJar Plugin requested ::::
+10-16-2016 @ 21:29:26 - :::: TaxJar API called ::::
+10-16-2016 @ 21:29:26 - Requesting: https://api.taxjar.com/v2/taxes
+10-16-2016 @ 21:29:27 - Received: {"tax":{"order_total_amount":17.98,"shipping":5.99,"taxable_amount":11.99,"amount_to_collect":0.96,"rate":0.08,"has_nexus":true,"freight_taxable":false,"tax_source":"destination","breakdown":{"taxable_amount":11.99,"tax_collectable":0.96,"combined_tax_rate":0.08,"state_taxable_amount":11.99,"state_tax_rate":0.065,"state_tax_collectable":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_tax_collectable":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_tax_collectable":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.005,"special_district_tax_collectable":0.06,"line_items":[{"id":"1","taxable_amount":11.99,"tax_collectable":0.96,"combined_tax_rate":0.08,"state_taxable_amount":11.99,"state_sales_tax_rate":0.065,"state_amount":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_amount":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_amount":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.005,"special_district_amount":0.06}]}}}
+10-16-2016 @ 21:29:27 - Cache Value: 0.96::0.08::0::1::destination::0.96::0
+10-16-2016 @ 21:29:27 - redlands
+10-16-2016 @ 21:29:27 - ::: TAX RATES FOUND :::
+10-16-2016 @ 21:29:27 - Array
+(
+    [5] => Array
+        (
+            [rate] => 8.0000
+            [label] => CA Tax
+            [shipping] => no
+            [compound] => no
+        )
+
+)
+
+10-16-2016 @ 21:29:27 - :: UPDATING TAX RATES TO ::
+10-16-2016 @ 21:29:27 - Array
+(
+    [tax_rate_country] => US
+    [tax_rate_state] => CA
+    [tax_rate_name] => CA Tax
+    [tax_rate_priority] => 1
+    [tax_rate_compound] => 
+    [tax_rate_shipping] => 0
+    [tax_rate] => 8
+    [tax_rate_class] => 
+)
+
+10-16-2016 @ 21:29:27 - Tax Rate ID Set: 5
+10-17-2016 @ 15:47:16 - :::: TaxJar Plugin requested ::::
+10-17-2016 @ 15:47:37 - :::: TaxJar Plugin requested ::::
+10-17-2016 @ 15:47:38 - :::: TaxJar Plugin requested ::::
+10-17-2016 @ 15:47:39 - :::: TaxJar Plugin requested ::::
+10-17-2016 @ 15:47:41 - :::: TaxJar Plugin requested ::::
+10-17-2016 @ 15:47:53 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 06:33:39 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 06:33:48 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 06:33:54 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 06:34:16 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 06:36:28 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 06:36:36 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 06:36:36 - :::: TaxJar API called ::::
+10-19-2016 @ 06:36:36 - Requesting: https://api.taxjar.com/v2/taxes
+10-19-2016 @ 06:36:36 - Received: {"tax":{"order_total_amount":17.98,"shipping":5.99,"taxable_amount":11.99,"amount_to_collect":1.08,"rate":0.09,"has_nexus":true,"freight_taxable":false,"tax_source":"destination","breakdown":{"taxable_amount":11.99,"tax_collectable":1.08,"combined_tax_rate":0.09,"state_taxable_amount":11.99,"state_tax_rate":0.065,"state_tax_collectable":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_tax_collectable":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_tax_collectable":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.015,"special_district_tax_collectable":0.18,"line_items":[{"id":"1","taxable_amount":11.99,"tax_collectable":1.08,"combined_tax_rate":0.09,"state_taxable_amount":11.99,"state_sales_tax_rate":0.065,"state_amount":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_amount":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_amount":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.015,"special_district_amount":0.18}]}}}
+10-19-2016 @ 06:36:36 - Cache Value: 1.08::0.09::0::1::destination::1.08::0
+10-19-2016 @ 06:36:36 - wescovina
+10-19-2016 @ 06:36:36 - :: Adding New Tax Rate ::
+10-19-2016 @ 06:36:36 - Tax Rate ID Set: 5
+10-19-2016 @ 06:36:53 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 06:38:45 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 06:38:45 - :::: TaxJar API called ::::
+10-19-2016 @ 06:38:45 - Requesting: https://api.taxjar.com/v2/taxes
+10-19-2016 @ 06:38:45 - Received: {"tax":{"order_total_amount":17.98,"shipping":5.99,"taxable_amount":11.99,"amount_to_collect":1.08,"rate":0.09,"has_nexus":true,"freight_taxable":false,"tax_source":"destination","breakdown":{"taxable_amount":11.99,"tax_collectable":1.08,"combined_tax_rate":0.09,"state_taxable_amount":11.99,"state_tax_rate":0.065,"state_tax_collectable":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_tax_collectable":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_tax_collectable":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.015,"special_district_tax_collectable":0.18,"line_items":[{"id":"1","taxable_amount":11.99,"tax_collectable":1.08,"combined_tax_rate":0.09,"state_taxable_amount":11.99,"state_sales_tax_rate":0.065,"state_amount":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_amount":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_amount":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.015,"special_district_amount":0.18}]}}}
+10-19-2016 @ 06:38:45 - Cache Value: 1.08::0.09::0::1::destination::1.08::0
+10-19-2016 @ 06:38:45 - westcovina
+10-19-2016 @ 06:38:45 - :: Adding New Tax Rate ::
+10-19-2016 @ 06:38:46 - Tax Rate ID Set: 6
+10-19-2016 @ 06:39:38 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 06:39:38 - :::: TaxJar API called ::::
+10-19-2016 @ 06:39:38 - Requesting: https://api.taxjar.com/v2/taxes
+10-19-2016 @ 06:39:38 - Received: {"tax":{"order_total_amount":17.98,"shipping":5.99,"taxable_amount":11.99,"amount_to_collect":1.08,"rate":0.09,"has_nexus":true,"freight_taxable":false,"tax_source":"destination","breakdown":{"taxable_amount":11.99,"tax_collectable":1.08,"combined_tax_rate":0.09,"state_taxable_amount":11.99,"state_tax_rate":0.065,"state_tax_collectable":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_tax_collectable":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_tax_collectable":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.015,"special_district_tax_collectable":0.18,"line_items":[{"id":"1","taxable_amount":11.99,"tax_collectable":1.08,"combined_tax_rate":0.09,"state_taxable_amount":11.99,"state_sales_tax_rate":0.065,"state_amount":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_amount":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_amount":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.015,"special_district_amount":0.18}]}}}
+10-19-2016 @ 06:39:38 - Cache Value: 1.08::0.09::0::1::destination::1.08::0
+10-19-2016 @ 06:39:38 - wescovina
+10-19-2016 @ 06:39:38 - ::: TAX RATES FOUND :::
+10-19-2016 @ 06:39:38 - Array
+(
+    [5] => Array
+        (
+            [rate] => 9.0000
+            [label] => CA Tax
+            [shipping] => no
+            [compound] => no
+        )
+
+)
+
+10-19-2016 @ 06:39:38 - :: UPDATING TAX RATES TO ::
+10-19-2016 @ 06:39:38 - Array
+(
+    [tax_rate_country] => US
+    [tax_rate_state] => CA
+    [tax_rate_name] => CA Tax
+    [tax_rate_priority] => 1
+    [tax_rate_compound] => 
+    [tax_rate_shipping] => 0
+    [tax_rate] => 9
+    [tax_rate_class] => 
+)
+
+10-19-2016 @ 06:39:38 - Tax Rate ID Set: 5
+10-19-2016 @ 06:40:38 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 06:40:38 - :::: TaxJar API called ::::
+10-19-2016 @ 06:40:38 - Requesting: https://api.taxjar.com/v2/taxes
+10-19-2016 @ 06:40:39 - Received: {"tax":{"order_total_amount":17.98,"shipping":5.99,"taxable_amount":11.99,"amount_to_collect":1.08,"rate":0.09,"has_nexus":true,"freight_taxable":false,"tax_source":"destination","breakdown":{"taxable_amount":11.99,"tax_collectable":1.08,"combined_tax_rate":0.09,"state_taxable_amount":11.99,"state_tax_rate":0.065,"state_tax_collectable":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_tax_collectable":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_tax_collectable":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.015,"special_district_tax_collectable":0.18,"line_items":[{"id":"1","taxable_amount":11.99,"tax_collectable":1.08,"combined_tax_rate":0.09,"state_taxable_amount":11.99,"state_sales_tax_rate":0.065,"state_amount":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_amount":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_amount":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.015,"special_district_amount":0.18}]}}}
+10-19-2016 @ 06:40:39 - Cache Value: 1.08::0.09::0::1::destination::1.08::0
+10-19-2016 @ 06:40:39 - westcovina
+10-19-2016 @ 06:40:39 - ::: TAX RATES FOUND :::
+10-19-2016 @ 06:40:39 - Array
+(
+    [6] => Array
+        (
+            [rate] => 9.0000
+            [label] => CA Tax
+            [shipping] => no
+            [compound] => no
+        )
+
+)
+
+10-19-2016 @ 06:40:39 - :: UPDATING TAX RATES TO ::
+10-19-2016 @ 06:40:39 - Array
+(
+    [tax_rate_country] => US
+    [tax_rate_state] => CA
+    [tax_rate_name] => CA Tax
+    [tax_rate_priority] => 1
+    [tax_rate_compound] => 
+    [tax_rate_shipping] => 0
+    [tax_rate] => 9
+    [tax_rate_class] => 
+)
+
+10-19-2016 @ 06:40:39 - Tax Rate ID Set: 6
+10-19-2016 @ 06:41:22 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 06:41:22 - :::: TaxJar API called ::::
+10-19-2016 @ 06:41:22 - Requesting: https://api.taxjar.com/v2/taxes
+10-19-2016 @ 06:41:22 - Received: {"tax":{"order_total_amount":17.98,"shipping":5.99,"taxable_amount":11.99,"amount_to_collect":1.08,"rate":0.09,"has_nexus":true,"freight_taxable":false,"tax_source":"destination","breakdown":{"taxable_amount":11.99,"tax_collectable":1.08,"combined_tax_rate":0.09,"state_taxable_amount":11.99,"state_tax_rate":0.065,"state_tax_collectable":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_tax_collectable":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_tax_collectable":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.015,"special_district_tax_collectable":0.18,"line_items":[{"id":"1","taxable_amount":11.99,"tax_collectable":1.08,"combined_tax_rate":0.09,"state_taxable_amount":11.99,"state_sales_tax_rate":0.065,"state_amount":0.78,"county_taxable_amount":11.99,"county_tax_rate":0.01,"county_amount":0.12,"city_taxable_amount":0.0,"city_tax_rate":0.0,"city_amount":0.0,"special_district_taxable_amount":11.99,"special_tax_rate":0.015,"special_district_amount":0.18}]}}}
+10-19-2016 @ 06:41:22 - Cache Value: 1.08::0.09::0::1::destination::1.08::0
+10-19-2016 @ 06:41:22 - westcovina
+10-19-2016 @ 06:41:22 - ::: TAX RATES FOUND :::
+10-19-2016 @ 06:41:22 - Array
+(
+    [6] => Array
+        (
+            [rate] => 9.0000
+            [label] => CA Tax
+            [shipping] => no
+            [compound] => no
+        )
+
+)
+
+10-19-2016 @ 06:41:22 - :: UPDATING TAX RATES TO ::
+10-19-2016 @ 06:41:22 - Array
+(
+    [tax_rate_country] => US
+    [tax_rate_state] => CA
+    [tax_rate_name] => CA Tax
+    [tax_rate_priority] => 1
+    [tax_rate_compound] => 
+    [tax_rate_shipping] => 0
+    [tax_rate] => 9
+    [tax_rate_class] => 
+)
+
+10-19-2016 @ 06:41:22 - Tax Rate ID Set: 6
+10-19-2016 @ 17:14:32 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 17:14:33 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 17:14:54 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 17:14:54 - :::: TaxJar API called ::::
+10-19-2016 @ 17:14:54 - Requesting: https://api.taxjar.com/v2/taxes
+10-19-2016 @ 17:14:54 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-19-2016 @ 17:14:54 - Cache Value: 0::0::1::0::origin::0::0
+10-19-2016 @ 17:14:54 - :::: TaxJar Plugin requested ::::
+10-19-2016 @ 17:14:54 - :::: TaxJar API called ::::
+10-19-2016 @ 17:14:54 - Cached Amount: 0
+10-19-2016 @ 17:14:54 - Cached Nexus: 0
+10-19-2016 @ 17:14:54 - Cached Source: origin
+10-19-2016 @ 17:14:54 - Cached Rate: 0
+10-19-2016 @ 17:14:54 - Shipping Taxable? 1
+10-19-2016 @ 17:14:54 - Item Tax to Collect: 0
+10-19-2016 @ 17:14:54 - Shipping Tax to Collect: 0
+10-20-2016 @ 17:45:22 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 17:45:36 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 17:45:39 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 17:47:08 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 17:47:10 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 17:48:28 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 17:50:03 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 17:50:15 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 17:50:17 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 17:51:51 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 17:52:14 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 17:52:22 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 17:52:25 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:02:12 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:02:19 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:02:22 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:04:07 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:04:28 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:04:49 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:04:52 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:06:29 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:28:09 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:28:53 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:29:01 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:29:09 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:29:27 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:29:47 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:29:47 - :::: TaxJar API called ::::
+10-20-2016 @ 18:29:47 - Requesting: https://api.taxjar.com/v2/taxes
+10-20-2016 @ 18:29:48 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-20-2016 @ 18:29:48 - Cache Value: 0::0::1::0::origin::0::0
+10-20-2016 @ 18:33:03 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:33:03 - :::: TaxJar API called ::::
+10-20-2016 @ 18:33:03 - Requesting: https://api.taxjar.com/v2/taxes
+10-20-2016 @ 18:33:04 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-20-2016 @ 18:33:04 - Cache Value: 0::0::1::0::origin::0::0
+10-20-2016 @ 18:41:20 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:41:20 - :::: TaxJar API called ::::
+10-20-2016 @ 18:41:20 - Requesting: https://api.taxjar.com/v2/taxes
+10-20-2016 @ 18:41:20 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-20-2016 @ 18:41:20 - Cache Value: 0::0::1::0::origin::0::0
+10-20-2016 @ 18:41:34 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:41:34 - :::: TaxJar API called ::::
+10-20-2016 @ 18:41:34 - Requesting: https://api.taxjar.com/v2/taxes
+10-20-2016 @ 18:41:35 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-20-2016 @ 18:41:35 - Cache Value: 0::0::1::0::origin::0::0
+10-20-2016 @ 18:41:47 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:41:47 - :::: TaxJar API called ::::
+10-20-2016 @ 18:41:47 - Requesting: https://api.taxjar.com/v2/taxes
+10-20-2016 @ 18:41:47 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-20-2016 @ 18:41:47 - Cache Value: 0::0::1::0::origin::0::0
+10-20-2016 @ 18:41:54 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:41:54 - :::: TaxJar API called ::::
+10-20-2016 @ 18:41:54 - Requesting: https://api.taxjar.com/v2/taxes
+10-20-2016 @ 18:41:55 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-20-2016 @ 18:41:55 - Cache Value: 0::0::1::0::origin::0::0
+10-20-2016 @ 18:42:13 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:42:13 - :::: TaxJar API called ::::
+10-20-2016 @ 18:42:13 - Requesting: https://api.taxjar.com/v2/taxes
+10-20-2016 @ 18:42:13 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-20-2016 @ 18:42:13 - Cache Value: 0::0::1::0::origin::0::0
+10-20-2016 @ 18:42:23 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:42:23 - :::: TaxJar API called ::::
+10-20-2016 @ 18:42:23 - Requesting: https://api.taxjar.com/v2/taxes
+10-20-2016 @ 18:42:24 - Received (400): {"error":"Bad Request","detail":"To zip (104723335) isn't a valid postal code for US","status":400}
+10-20-2016 @ 18:42:46 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:42:46 - :::: TaxJar API called ::::
+10-20-2016 @ 18:42:46 - Requesting: https://api.taxjar.com/v2/taxes
+10-20-2016 @ 18:42:46 - Received (400): {"error":"Bad Request","detail":"To zip (104723335) isn't a valid postal code for US","status":400}
+10-20-2016 @ 18:42:49 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:42:49 - :::: TaxJar API called ::::
+10-20-2016 @ 18:42:49 - Requesting: https://api.taxjar.com/v2/taxes
+10-20-2016 @ 18:42:50 - Received (400): {"error":"Bad Request","detail":"To zip (104723335) isn't a valid postal code for US","status":400}
+10-20-2016 @ 18:42:51 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:42:51 - :::: TaxJar API called ::::
+10-20-2016 @ 18:42:51 - Requesting: https://api.taxjar.com/v2/taxes
+10-20-2016 @ 18:42:51 - Received (400): {"error":"Bad Request","detail":"To zip (104723335) isn't a valid postal code for US","status":400}
+10-20-2016 @ 18:48:59 - :::: TaxJar Plugin requested ::::
+10-20-2016 @ 18:48:59 - :::: TaxJar API called ::::
+10-20-2016 @ 18:48:59 - Requesting: https://api.taxjar.com/v2/taxes
+10-20-2016 @ 18:49:00 - Received (400): {"error":"Bad Request","detail":"To zip (104723335) isn't a valid postal code for US","status":400}
+10-21-2016 @ 13:02:12 - :::: TaxJar Plugin requested ::::
+10-21-2016 @ 13:02:48 - :::: TaxJar Plugin requested ::::
+10-21-2016 @ 13:02:48 - :::: TaxJar API called ::::
+10-21-2016 @ 13:02:48 - Requesting: https://api.taxjar.com/v2/taxes
+10-21-2016 @ 13:02:48 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-21-2016 @ 13:02:48 - Cache Value: 0::0::1::0::origin::0::0
+10-21-2016 @ 13:02:48 - :::: TaxJar Plugin requested ::::
+10-21-2016 @ 13:02:48 - :::: TaxJar API called ::::
+10-21-2016 @ 13:02:48 - Cached Amount: 0
+10-21-2016 @ 13:02:48 - Cached Nexus: 0
+10-21-2016 @ 13:02:48 - Cached Source: origin
+10-21-2016 @ 13:02:48 - Cached Rate: 0
+10-21-2016 @ 13:02:48 - Shipping Taxable? 1
+10-21-2016 @ 13:02:48 - Item Tax to Collect: 0
+10-21-2016 @ 13:02:48 - Shipping Tax to Collect: 0
+10-22-2016 @ 07:29:33 - :::: TaxJar Plugin requested ::::
+10-22-2016 @ 07:29:40 - :::: TaxJar Plugin requested ::::
+10-22-2016 @ 07:29:44 - :::: TaxJar Plugin requested ::::
+10-22-2016 @ 08:48:15 - :::: TaxJar Plugin requested ::::
+10-22-2016 @ 08:48:15 - :::: TaxJar API called ::::
+10-22-2016 @ 08:48:15 - Requesting: https://api.taxjar.com/v2/taxes
+10-22-2016 @ 08:48:16 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-22-2016 @ 08:48:16 - Cache Value: 0::0::1::0::origin::0::0
+10-22-2016 @ 11:39:50 - :::: TaxJar Plugin requested ::::
+10-22-2016 @ 11:40:07 - :::: TaxJar Plugin requested ::::
+10-22-2016 @ 11:40:07 - :::: TaxJar API called ::::
+10-22-2016 @ 11:40:07 - Requesting: https://api.taxjar.com/v2/taxes
+10-22-2016 @ 11:40:08 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-22-2016 @ 11:40:08 - Cache Value: 0::0::1::0::origin::0::0
+10-22-2016 @ 11:40:08 - :::: TaxJar Plugin requested ::::
+10-22-2016 @ 11:40:08 - :::: TaxJar API called ::::
+10-22-2016 @ 11:40:08 - Cached Amount: 0
+10-22-2016 @ 11:40:08 - Cached Nexus: 0
+10-22-2016 @ 11:40:08 - Cached Source: origin
+10-22-2016 @ 11:40:08 - Cached Rate: 0
+10-22-2016 @ 11:40:08 - Shipping Taxable? 1
+10-22-2016 @ 11:40:08 - Item Tax to Collect: 0
+10-22-2016 @ 11:40:08 - Shipping Tax to Collect: 0
+10-22-2016 @ 11:41:14 - :::: TaxJar Plugin requested ::::
+10-22-2016 @ 11:41:14 - :::: TaxJar API called ::::
+10-22-2016 @ 11:41:14 - Requesting: https://api.taxjar.com/v2/taxes
+10-22-2016 @ 11:41:15 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-22-2016 @ 11:41:15 - Cache Value: 0::0::1::0::origin::0::0
+10-22-2016 @ 13:44:05 - :::: TaxJar Plugin requested ::::
+10-22-2016 @ 13:44:17 - :::: TaxJar Plugin requested ::::
+10-22-2016 @ 13:44:17 - :::: TaxJar API called ::::
+10-22-2016 @ 13:44:17 - Requesting: https://api.taxjar.com/v2/taxes
+10-22-2016 @ 13:44:17 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-22-2016 @ 13:44:17 - Cache Value: 0::0::1::0::origin::0::0
+10-22-2016 @ 13:44:17 - :::: TaxJar Plugin requested ::::
+10-22-2016 @ 13:44:17 - :::: TaxJar API called ::::
+10-22-2016 @ 13:44:17 - Cached Amount: 0
+10-22-2016 @ 13:44:17 - Cached Nexus: 0
+10-22-2016 @ 13:44:17 - Cached Source: origin
+10-22-2016 @ 13:44:17 - Cached Rate: 0
+10-22-2016 @ 13:44:17 - Shipping Taxable? 1
+10-22-2016 @ 13:44:17 - Item Tax to Collect: 0
+10-22-2016 @ 13:44:17 - Shipping Tax to Collect: 0
+10-22-2016 @ 13:44:22 - :::: TaxJar Plugin requested ::::
+10-22-2016 @ 13:44:22 - :::: TaxJar API called ::::
+10-22-2016 @ 13:44:22 - Requesting: https://api.taxjar.com/v2/taxes
+10-22-2016 @ 13:44:22 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-22-2016 @ 13:44:22 - Cache Value: 0::0::1::0::origin::0::0
+10-22-2016 @ 13:44:25 - :::: TaxJar Plugin requested ::::
+10-22-2016 @ 13:44:25 - :::: TaxJar API called ::::
+10-22-2016 @ 13:44:25 - Requesting: https://api.taxjar.com/v2/taxes
+10-22-2016 @ 13:44:25 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-22-2016 @ 13:44:25 - Cache Value: 0::0::1::0::origin::0::0
+10-24-2016 @ 02:21:56 - :::: TaxJar Plugin requested ::::
+10-24-2016 @ 02:22:17 - :::: TaxJar Plugin requested ::::
+10-24-2016 @ 02:22:26 - :::: TaxJar Plugin requested ::::
+10-24-2016 @ 02:23:49 - :::: TaxJar Plugin requested ::::
+10-24-2016 @ 02:23:52 - :::: TaxJar Plugin requested ::::
+10-24-2016 @ 02:23:52 - :::: TaxJar API called ::::
+10-24-2016 @ 02:23:52 - Requesting: https://api.taxjar.com/v2/taxes
+10-24-2016 @ 02:23:53 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-24-2016 @ 02:23:53 - Cache Value: 0::0::1::0::origin::0::0
+10-24-2016 @ 02:26:19 - :::: TaxJar Plugin requested ::::
+10-24-2016 @ 02:26:19 - :::: TaxJar API called ::::
+10-24-2016 @ 02:26:19 - Requesting: https://api.taxjar.com/v2/taxes
+10-24-2016 @ 02:26:19 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-24-2016 @ 02:26:19 - Cache Value: 0::0::1::0::origin::0::0
+10-24-2016 @ 05:01:43 - :::: TaxJar Plugin requested ::::
+10-24-2016 @ 05:01:59 - :::: TaxJar Plugin requested ::::
+10-24-2016 @ 05:02:05 - :::: TaxJar Plugin requested ::::
+10-25-2016 @ 09:14:59 - :::: TaxJar Plugin requested ::::
+10-25-2016 @ 09:16:25 - :::: TaxJar Plugin requested ::::
+10-25-2016 @ 09:17:16 - :::: TaxJar Plugin requested ::::
+10-25-2016 @ 19:35:15 - :::: TaxJar Plugin requested ::::
+10-25-2016 @ 19:36:54 - :::: TaxJar Plugin requested ::::
+10-25-2016 @ 19:36:54 - :::: TaxJar Plugin requested ::::
+10-25-2016 @ 19:37:04 - :::: TaxJar Plugin requested ::::
+10-25-2016 @ 19:38:05 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 07:01:45 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 07:02:19 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 07:02:19 - :::: TaxJar API called ::::
+10-26-2016 @ 07:02:19 - Requesting: https://api.taxjar.com/v2/taxes
+10-26-2016 @ 07:02:19 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-26-2016 @ 07:02:19 - Cache Value: 0::0::1::0::origin::0::0
+10-26-2016 @ 07:02:19 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 07:02:19 - :::: TaxJar API called ::::
+10-26-2016 @ 07:02:19 - Cached Amount: 0
+10-26-2016 @ 07:02:19 - Cached Nexus: 0
+10-26-2016 @ 07:02:19 - Cached Source: origin
+10-26-2016 @ 07:02:19 - Cached Rate: 0
+10-26-2016 @ 07:02:19 - Shipping Taxable? 1
+10-26-2016 @ 07:02:19 - Item Tax to Collect: 0
+10-26-2016 @ 07:02:19 - Shipping Tax to Collect: 0
+10-26-2016 @ 07:02:45 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 07:02:45 - :::: TaxJar API called ::::
+10-26-2016 @ 07:02:45 - Requesting: https://api.taxjar.com/v2/taxes
+10-26-2016 @ 07:02:46 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-26-2016 @ 07:02:46 - Cache Value: 0::0::1::0::origin::0::0
+10-26-2016 @ 07:03:00 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 07:03:00 - :::: TaxJar API called ::::
+10-26-2016 @ 07:03:00 - Requesting: https://api.taxjar.com/v2/taxes
+10-26-2016 @ 07:03:00 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-26-2016 @ 07:03:00 - Cache Value: 0::0::1::0::origin::0::0
+10-26-2016 @ 07:03:17 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 07:03:17 - :::: TaxJar API called ::::
+10-26-2016 @ 07:03:17 - Requesting: https://api.taxjar.com/v2/taxes
+10-26-2016 @ 07:03:17 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-26-2016 @ 07:03:17 - Cache Value: 0::0::1::0::origin::0::0
+10-26-2016 @ 07:03:28 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 07:03:28 - :::: TaxJar API called ::::
+10-26-2016 @ 07:03:28 - Requesting: https://api.taxjar.com/v2/taxes
+10-26-2016 @ 07:03:28 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-26-2016 @ 07:03:28 - Cache Value: 0::0::1::0::origin::0::0
+10-26-2016 @ 08:56:37 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 08:56:44 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 08:56:47 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 16:23:38 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 16:23:43 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 16:23:47 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 16:26:31 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 20:14:10 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 20:14:16 - :::: TaxJar Plugin requested ::::
+10-26-2016 @ 20:14:20 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 09:16:27 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 09:16:39 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 09:16:44 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 09:17:01 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 09:25:43 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 09:26:08 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 09:26:16 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 09:26:36 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 09:27:29 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:22:20 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:22:29 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:22:32 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:22:53 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:23:09 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:23:13 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:23:14 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:23:18 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:23:48 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:23:49 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:23:56 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:24:09 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:24:38 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:24:40 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:25:04 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:25:09 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:25:12 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:25:14 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:25:26 - :::: TaxJar Plugin requested ::::
+10-27-2016 @ 10:25:28 - :::: TaxJar Plugin requested ::::
+10-29-2016 @ 05:56:35 - :::: TaxJar Plugin requested ::::
+10-29-2016 @ 05:56:57 - :::: TaxJar Plugin requested ::::
+10-29-2016 @ 05:57:11 - :::: TaxJar Plugin requested ::::
+10-29-2016 @ 05:58:05 - :::: TaxJar Plugin requested ::::
+10-29-2016 @ 05:58:11 - :::: TaxJar Plugin requested ::::
+10-29-2016 @ 05:58:18 - :::: TaxJar Plugin requested ::::
+10-29-2016 @ 05:58:29 - :::: TaxJar Plugin requested ::::
+10-29-2016 @ 05:59:02 - :::: TaxJar Plugin requested ::::
+10-29-2016 @ 06:01:43 - :::: TaxJar Plugin requested ::::
+10-29-2016 @ 06:01:43 - :::: TaxJar API called ::::
+10-29-2016 @ 06:01:43 - Requesting: https://api.taxjar.com/v2/taxes
+10-29-2016 @ 06:01:44 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-29-2016 @ 06:01:44 - Cache Value: 0::0::1::0::origin::0::0
+10-29-2016 @ 06:03:41 - :::: TaxJar Plugin requested ::::
+10-29-2016 @ 06:03:41 - :::: TaxJar API called ::::
+10-29-2016 @ 06:03:41 - Requesting: https://api.taxjar.com/v2/taxes
+10-29-2016 @ 06:03:41 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+10-29-2016 @ 06:03:41 - Cache Value: 0::0::1::0::origin::0::0
+10-30-2016 @ 21:24:39 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 06:50:17 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 06:50:59 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 06:50:59 - :::: TaxJar API called ::::
+11-01-2016 @ 06:50:59 - Requesting: https://api.taxjar.com/v2/taxes
+11-01-2016 @ 06:51:00 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+11-01-2016 @ 06:51:00 - Cache Value: 0::0::1::0::origin::0::0
+11-01-2016 @ 06:51:00 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 06:51:00 - :::: TaxJar API called ::::
+11-01-2016 @ 06:51:00 - Cached Amount: 0
+11-01-2016 @ 06:51:00 - Cached Nexus: 0
+11-01-2016 @ 06:51:00 - Cached Source: origin
+11-01-2016 @ 06:51:00 - Cached Rate: 0
+11-01-2016 @ 06:51:00 - Shipping Taxable? 1
+11-01-2016 @ 06:51:00 - Item Tax to Collect: 0
+11-01-2016 @ 06:51:00 - Shipping Tax to Collect: 0
+11-01-2016 @ 09:03:18 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 09:03:27 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 09:03:32 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 09:03:41 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 12:37:30 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 12:37:37 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 12:37:40 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 12:49:45 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 12:49:54 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 12:50:00 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 12:50:03 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 12:50:17 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 12:51:02 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 12:51:28 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 12:52:02 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 12:52:02 - :::: TaxJar API called ::::
+11-01-2016 @ 12:52:02 - Requesting: https://api.taxjar.com/v2/taxes
+11-01-2016 @ 12:52:02 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+11-01-2016 @ 12:52:02 - Cache Value: 0::0::1::0::origin::0::0
+11-01-2016 @ 12:52:51 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 12:52:51 - :::: TaxJar API called ::::
+11-01-2016 @ 12:52:51 - Requesting: https://api.taxjar.com/v2/taxes
+11-01-2016 @ 12:52:51 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+11-01-2016 @ 12:52:51 - Cache Value: 0::0::1::0::origin::0::0
+11-01-2016 @ 15:20:15 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 15:20:19 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 19:06:14 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 19:06:39 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 19:06:46 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 19:06:50 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 19:06:56 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 19:08:13 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 19:08:28 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 19:08:29 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 19:08:39 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 19:09:05 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 19:09:58 - :::: TaxJar Plugin requested ::::
+11-01-2016 @ 19:10:20 - :::: TaxJar Plugin requested ::::
+11-02-2016 @ 04:03:07 - :::: TaxJar Plugin requested ::::
+11-02-2016 @ 04:03:07 - :::: TaxJar API called ::::
+11-02-2016 @ 04:03:07 - Requesting: https://api.taxjar.com/v2/taxes
+11-02-2016 @ 04:03:08 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+11-02-2016 @ 04:03:08 - Cache Value: 0::0::1::0::origin::0::0
+11-02-2016 @ 08:05:52 - :::: TaxJar Plugin requested ::::
+11-02-2016 @ 08:06:00 - :::: TaxJar Plugin requested ::::
+11-02-2016 @ 08:06:03 - :::: TaxJar Plugin requested ::::
+11-02-2016 @ 15:04:13 - :::: TaxJar Plugin requested ::::
+11-02-2016 @ 15:04:55 - :::: TaxJar Plugin requested ::::
+11-02-2016 @ 15:05:09 - :::: TaxJar Plugin requested ::::
+11-02-2016 @ 15:06:25 - :::: TaxJar Plugin requested ::::
+11-02-2016 @ 15:07:12 - :::: TaxJar Plugin requested ::::
+11-02-2016 @ 15:07:14 - :::: TaxJar Plugin requested ::::
+11-02-2016 @ 15:07:25 - :::: TaxJar Plugin requested ::::
+11-02-2016 @ 15:07:26 - :::: TaxJar Plugin requested ::::
+11-02-2016 @ 15:07:26 - :::: TaxJar API called ::::
+11-02-2016 @ 15:07:26 - Requesting: https://api.taxjar.com/v2/taxes
+11-02-2016 @ 15:07:27 - Received: {"tax":{"taxable_amount":0.0,"amount_to_collect":0.0,"rate":0.0,"has_nexus":false,"freight_taxable":true,"tax_source":null}}
+11-02-2016 @ 15:07:27 - Cache Value: 0::0::1::0::origin::0::0

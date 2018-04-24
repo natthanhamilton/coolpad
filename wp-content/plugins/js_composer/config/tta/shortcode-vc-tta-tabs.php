@@ -176,6 +176,7 @@ return array(
 				'not_empty' => true,
 			),
 		),
+		vc_map_add_css_animation(),
 		array(
 			'type' => 'textfield',
 			'heading' => __( 'Extra class name', 'js_composer' ),

@@ -1197,6 +1197,16 @@
 .nav-theme-transparent .navbar-brand a {
   background-color: transparent !important;
 }
+.nav-theme-primary .navbar-brand a img,
+.nav-theme-transparent .navbar-brand a img {
+  max-height: 20px;
+}
+@media screen and (max-width: 768px) {
+  .nav-theme-primary ul.navbar-left,
+  .nav-theme-transparent ul.navbar-left {
+    width: initial !important;
+  }
+}
 .nav-theme-primary ul.navbar-left li a,
 .nav-theme-transparent ul.navbar-left li a {
   white-space: normal;
@@ -1222,6 +1232,14 @@
 .nav-theme-primary ul.navbar-left .btn,
 .nav-theme-transparent ul.navbar-left .btn {
   margin-top: 10px;
+}
+@media screen and (min-width: 768px) {
+  .nav-theme-primary ul.navbar-right,
+  .nav-theme-transparent ul.navbar-right {
+    position: absolute;
+    right: 0;
+    width: initial;
+  }
 }
 .nav-theme-primary .dropdown-menu,
 .nav-theme-transparent .dropdown-menu {

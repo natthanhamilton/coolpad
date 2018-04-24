@@ -1,21 +1,25 @@
 <?php
-require_once "vc-icon-element.php";
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
+require_once 'vc-icon-element.php';
 $icon_params = vc_icon_element_params();
 /* Separator (Divider)
 ---------------------------------------------------------- */
 $icons_params = vc_map_integrate_shortcode( $icon_params, 'i_', __( 'Icon', 'js_composer' ), array(
-		'exclude' => array(
-			'align',
-			'css',
-			'el_class',
-			'link',
-			'css_animation',
-		),
-		// we need only type, icon_fontawesome, icon_blabla..., NOT color and etc
-	), array(
-		'element' => 'add_icon',
-		'value' => 'true',
-	) );
+	'exclude' => array(
+		'align',
+		'css',
+		'el_class',
+		'link',
+		'css_animation',
+	),
+	// we need only type, icon_fontawesome, icon_blabla..., NOT color and etc
+), array(
+	'element' => 'add_icon',
+	'value' => 'true',
+) );
 
 // populate integrated vc_icons params.
 if ( is_array( $icons_params ) && ! empty( $icons_params ) ) {
@@ -111,6 +115,7 @@ return array(
 			'value' => getVcShared( 'separator widths' ),
 			'description' => __( 'Separator element width in percents.', 'js_composer' ),
 		),
+		vc_map_add_css_animation(),
 		array(
 			'type' => 'textfield',
 			'heading' => __( 'Extra class name', 'js_composer' ),

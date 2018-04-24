@@ -15,10 +15,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var $x_values
  * @var $values
  * @var $css
+ * @var $css_animation
  * Shortcode class
  * @var $this WPBakeryShortCode_Vc_Line_Chart
  */
-$el_class = $title = $type = $legend = $style = $tooltips = $animation = $x_values = $values = $css = '';
+$el_class = $title = $type = $legend = $style = $tooltips = $animation = $x_values = $values = $css = $css_animation = '';
 $atts = vc_map_get_attributes( $this->getShortcode(), $atts );
 extract( $atts );
 
@@ -92,7 +93,7 @@ foreach ( $base_colors['active'] as $name => $color ) {
 wp_enqueue_script( 'vc_line_chart' );
 
 $class_to_filter = 'vc_chart vc_line-chart wpb_content_element';
-$class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class );
+$class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class ) . $this->getCSSAnimation( $css_animation );
 $css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $class_to_filter, $this->settings['base'], $atts );
 
 $options = array();

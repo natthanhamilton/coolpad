@@ -1,0 +1,137 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Bolder Elements Plugin Upgrader\n"
+"POT-Creation-Date: 2015-04-14 14:37-0500\n"
+"PO-Revision-Date: 2015-04-14 14:46-0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.5\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: upgrader\n"
+
+#: upgrader/class-be-config.php:45
+msgid "Bolder Elements Dashboard"
+msgstr "Bolder elementos de painel"
+
+#: upgrader/class-be-config.php:46
+msgid "Manage plugins and support status by registering your purchase codes here"
+msgstr "Gerenciar plugins e apoiar estado, registrando os seus códigos de compra aqui"
+
+#: upgrader/class-be-config.php:122
+msgid "You have not registered any plugins yet"
+msgstr "Você não registrou nenhum plugins ainda"
+
+#: upgrader/class-be-config.php:195
+msgid "Last Updated"
+msgstr "Ultima Atualização"
+
+#: upgrader/class-be-config.php:196
+#, php-format
+msgid "%s ago"
+msgstr "%s atrás"
+
+#: upgrader/class-be-config.php:231 upgrader/class-be-config.php:262
+#: upgrader/class-be-config.php:265 upgrader/class-be-config.php:293
+#: upgrader/class-be-config.php:296
+msgid "Sorry, but there was a problem connecting to the API"
+msgstr "Desculpe, mas houve um problema de conexão com a API"
+
+#: upgrader/class-be-config.php:258 upgrader/class-be-config.php:289
+msgid "Username and/or API Key invalid"
+msgstr "Usuário e / ou API inválido Key"
+
+#: upgrader/class-be-config.php:331 upgrader/class-be-config.php:333
+#: upgrader/class-be-config.php:337 upgrader/class-be-config.php:360
+#: upgrader/class-be-config.php:397
+msgid "Error"
+msgstr "Erro"
+
+#: upgrader/class-be-config.php:331
+msgid "The username provided does not match the name on the license"
+msgstr "O nome de usuário fornecido não corresponde ao nome no certificado"
+
+#: upgrader/class-be-config.php:333
+msgid "The purchase code provided is not for the selected plugin"
+msgstr "O código de compra fornecido não é para o plugin selecionado"
+
+#: upgrader/class-be-config.php:337
+msgid "An error occured when processing the information provided"
+msgstr "Ocorreu um erro ao processar as informações fornecidas"
+
+#: upgrader/class-be-config.php:360
+msgid "Settings for this plugin could not be found"
+msgstr "Definições para este plugin não foi encontrado"
+
+#: upgrader/class-be-config.php:385
+msgid "Activate Your License"
+msgstr "Ativar sua licença"
+
+#: upgrader/class-be-config.php:386
+msgid "Enter the following information to unlock additional features"
+msgstr "Digite as informações a seguir para desbloquear recursos adicionais"
+
+#: upgrader/class-be-config.php:387
+msgid "Envato Marketplace Username"
+msgstr "Nome de usuário Envato mercado"
+
+#: upgrader/class-be-config.php:388
+msgid "API Key"
+msgstr "Key API"
+
+#: upgrader/class-be-config.php:389
+msgid "Purchase Code"
+msgstr "Código de Compra"
+
+#: upgrader/class-be-config.php:390
+msgid "Are you sure you want to remove the settings for this plugin"
+msgstr "Tem certeza de que deseja remover as configurações para este plugin"
+
+#: upgrader/class-be-config.php:391
+msgid "This action cannot be undone"
+msgstr "Esta ação não pode ser desfeita"
+
+#: upgrader/class-be-config.php:392
+msgid "Success"
+msgstr "Sucesso"
+
+#: upgrader/class-be-config.php:393
+msgid "Close"
+msgstr "Perto"
+
+#: upgrader/class-be-config.php:394
+msgid "Register"
+msgstr "Cadastre-se"
+
+#: upgrader/class-be-config.php:395
+msgid "Remove"
+msgstr "Remover"
+
+#: upgrader/class-be-config.php:396
+msgid "Cancel"
+msgstr "Cancelar"
+
+#: upgrader/class-be-config.php:397
+msgid "There are empty required fields in your form."
+msgstr "Há campos obrigatórios vazios em seu formulário."
+
+#: upgrader/class-be-updater.php:282
+msgid "Downloading package from Envato Marketplace"
+msgstr "Baixando pacote de Envato mercado"
+
+#: upgrader/class-be-updater.php:288
+msgid "Could not connect to Envato API"
+msgstr "Não foi possível conectar-se Envato API"
+
+#: upgrader/class-be-updater.php:307
+msgid "Missing login credentials"
+msgstr "Faltando credenciais de login"
+
+#: upgrader/class-be-updater.php:307
+msgid "Register Plugin"
+msgstr "Register Plugin"

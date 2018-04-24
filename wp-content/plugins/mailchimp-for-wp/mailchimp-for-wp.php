@@ -26,8 +26,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
+
 // Prevent direct file access
-defined('ABSPATH') or exit;
+defined( 'ABSPATH' ) or exit;
+
 /**
  * Bootstrap the MailChimp for WordPress plugin
  *
@@ -36,69 +38,84 @@ defined('ABSPATH') or exit;
  * @return bool
  */
 function __mc4wp_load_plugin() {
+
 	global $mc4wp;
+
 	// Don't run if MailChimp for WP Pro 2.x is activated
-	if (defined('MC4WP_VERSION')) {
-		return FALSE;
+	if( defined( 'MC4WP_VERSION' ) ) {
+		return false;
 	}
+
 	// bootstrap the core plugin
-	define('MC4WP_VERSION', '3.1.12');
-	define('MC4WP_PLUGIN_DIR', dirname(__FILE__) . '/');
-	define('MC4WP_PLUGIN_URL', plugins_url('/', __FILE__));
-	define('MC4WP_PLUGIN_FILE', __FILE__);
+	define( 'MC4WP_VERSION', '3.1.12' );
+	define( 'MC4WP_PLUGIN_DIR', dirname( __FILE__ ) . '/' );
+	define( 'MC4WP_PLUGIN_URL', plugins_url( '/' , __FILE__ ) );
+	define( 'MC4WP_PLUGIN_FILE', __FILE__ );
+
 	// load autoloader if function not yet exists (for compat with sitewide autoloader)
-	if (!function_exists('mc4wp')) {
+	if( ! function_exists( 'mc4wp' ) ) {
 		require_once MC4WP_PLUGIN_DIR . 'vendor/autoload_52.php';
 	}
+
 	/**
-	 * @global MC4WP_Container $GLOBALS ['mc4wp']
-	 * @name                   $mc4wp
+	 * @global MC4WP_Container $GLOBALS['mc4wp']
+	 * @name $mc4wp
 	 */
-	$mc4wp            = mc4wp();
-	$mc4wp['api']     = 'mc4wp_get_api';
-	$mc4wp['request'] = ['MC4WP_Request', 'create_from_globals'];
-	$mc4wp['log']     = 'mc4wp_get_debug_log';
+	$mc4wp = mc4wp();
+	$mc4wp['api'] = 'mc4wp_get_api';
+	$mc4wp['request'] = array( 'MC4WP_Request', 'create_from_globals' );
+	$mc4wp['log'] = 'mc4wp_get_debug_log';
+
 	// forms
 	$mc4wp['forms'] = new MC4WP_Form_Manager();
 	$mc4wp['forms']->add_hooks();
+
 	// integration core
 	$mc4wp['integrations'] = new MC4WP_Integration_Manager();
 	$mc4wp['integrations']->add_hooks();
+
 	// bootstrap custom integrations
 	require_once MC4WP_PLUGIN_DIR . 'integrations/bootstrap.php';
+
 	// Doing cron? Load Usage Tracking class.
-	if (defined('DOING_CRON') && DOING_CRON) {
+	if( defined( 'DOING_CRON' ) && DOING_CRON ) {
 		MC4WP_Usage_Tracking::instance()->add_hooks();
 	}
+
 	// Initialize admin section of plugin
-	if (is_admin()
-	    && (!defined('DOING_AJAX') || !DOING_AJAX)
-	) {
-		$messages                = new MC4WP_Admin_Messages();
+	if( is_admin()
+	    && ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) ) {
+
+		$messages = new MC4WP_Admin_Messages();
 		$mc4wp['admin.messages'] = $messages;
+
 		$mailchimp = new MC4WP_MailChimp();
-		$admin = new MC4WP_Admin($messages, $mailchimp);
+
+		$admin = new MC4WP_Admin( $messages, $mailchimp );
 		$admin->add_hooks();
-		$forms_admin = new MC4WP_Forms_Admin($messages, $mailchimp);
+
+		$forms_admin = new MC4WP_Forms_Admin( $messages, $mailchimp );
 		$forms_admin->add_hooks();
-		$integrations_admin = new MC4WP_Integration_Admin($mc4wp['integrations'], $messages, $mailchimp);
+
+		$integrations_admin = new MC4WP_Integration_Admin( $mc4wp['integrations'], $messages, $mailchimp );
 		$integrations_admin->add_hooks();
 	}
 
-	return TRUE;
+	return true;
 }
 
-add_action('plugins_loaded', '__mc4wp_load_plugin', 20);
+add_action( 'plugins_loaded', '__mc4wp_load_plugin', 20 );
+
 /**
  * Flushes all MailChimp caches
  *
  * @ignore
  * @access private
- * @since  3.0
+ * @since 3.0
  */
 function __mc4wp_flush() {
-	delete_transient('mc4wp_mailchimp_lists');
-	delete_transient('mc4wp_mailchimp_lists_fallback');
+	delete_transient( 'mc4wp_mailchimp_lists' );
+	delete_transient( 'mc4wp_mailchimp_lists_fallback' );
 }
 
-register_activation_hook(__FILE__, '__mc4wp_flush');
+register_activation_hook( __FILE__, '__mc4wp_flush' );

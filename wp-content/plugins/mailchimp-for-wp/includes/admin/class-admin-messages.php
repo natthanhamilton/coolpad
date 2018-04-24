@@ -7,21 +7,35 @@
  * @since 3.0
  */
 class MC4WP_Admin_Messages {
+
 	/**
 	 * @var array
 	 */
 	protected $bag;
+
 	/**
 	 * @var bool
 	 */
-	protected $dirty = FALSE;
+	protected $dirty = false;
 
 	/**
 	 * Add hooks
 	 */
 	public function add_hooks() {
-		add_action('admin_notices', [$this, 'show']);
-		register_shutdown_function([$this, 'save']);
+		add_action( 'admin_notices', array( $this, 'show' ) );
+		register_shutdown_function( array( $this, 'save' ) );
+	}
+
+	private function load() {
+		if( is_null( $this->bag ) ) {
+			$this->bag = get_option( 'mc4wp_flash_messages', array() );
+		}
+	}
+
+	// empty flash bag
+	private function reset() {
+		$this->bag = array();
+		$this->dirty = true;
 	}
 
 	/**
@@ -30,37 +44,28 @@ class MC4WP_Admin_Messages {
 	 * @param        $message
 	 * @param string $type
 	 */
-	public function flash($message, $type = 'success') {
+	public function flash( $message, $type = 'success' ) {
 		$this->load();
-		$this->bag[] = [
+		$this->bag[] = array(
 			'text' => $message,
 			'type' => $type
-		];
-		$this->dirty = TRUE;
+		);
+		$this->dirty = true;
 	}
 
-	// empty flash bag
-	private function load() {
-		if (is_null($this->bag)) {
-			$this->bag = get_option('mc4wp_flash_messages', []);
-		}
-	}
+
 
 	/**
 	 * Show queued flash messages
 	 */
 	public function show() {
 		$this->load();
-		foreach ($this->bag as $message) {
-			echo sprintf('<div class="notice notice-%s is-dismissible"><p>%s</p></div>', $message['type'],
-			             $message['text']);
-		}
-		$this->reset();
-	}
 
-	private function reset() {
-		$this->bag   = [];
-		$this->dirty = TRUE;
+		foreach( $this->bag as $message ) {
+			echo sprintf( '<div class="notice notice-%s is-dismissible"><p>%s</p></div>', $message['type'], $message['text'] );
+		}
+
+		$this->reset();
 	}
 
 	/**
@@ -69,8 +74,8 @@ class MC4WP_Admin_Messages {
 	 * @hooked `shutdown`
 	 */
 	public function save() {
-		if ($this->dirty) {
-			update_option('mc4wp_flash_messages', $this->bag, FALSE);
+		if( $this->dirty ) {
+			update_option( 'mc4wp_flash_messages', $this->bag, false );
 		}
 	}
 }

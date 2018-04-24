@@ -50,27 +50,32 @@ add_action('init', 'blog_CPT', 0);
 add_shortcode('blog', 'blog_shortcode');
 function blog_shortcode()
 {
-    $string = '';
+    $string = '<div class="grid">';
+    $string .= '<div class="grid-sizer"></div>';
     $args   = [
         'post_type'   => 'blog',
-        'post_status' => 'publish'
+        'post_status' => 'publish',
+        'posts_per_page' => '20',
     ];
     $posts  = get_posts($args);
     foreach ($posts as $post) {
+        $image = '';
         if (has_post_thumbnail($post->ID)) {
             $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'single-post-thumbnail');
             $image = $image[0];
-        } else {
-            $image = '';
         }
-        $string .= '<div class="col-sm-4">';
-        $string .= '<a href="' . get_permalink( $post->ID ) . '">';
-        $string .= "<div class='tile-title' style='background-image: url(" . $image . "')>";
-        $string .= $post->post_title;
+
+        $string .= '<div class="grid-item">';
+        $string .= '<a class="tile" href="' . get_permalink( $post->ID ) . '">';
+        $string .= "<img class='img-responsive' src='".$image."'>";
+        $string .= '<div>';
+        $string .= "<h5 class='text-overflow'>".$post->post_title."</h5>";
+        $string .= "<p class='small'>".$post->post_excerpt."</p>";
         $string .= '</div>';
         $string .= '</a>';
         $string .= '</div>';
     }
+    $string .= '</div>';
 
     return $string;
 }

@@ -9,14 +9,12 @@
     border-top: none;
     background-color: #fff
 }
-
 .ultimate-border .ultimate-colorpicker-block .cs-alpha-slider {
     position: absolute;
     width: 190px;
     margin-left: 2px;
     height: 18px
 }
-
 .ultimate-border .ultimate-colorpicker-block .cs-alpha-slider .ui-slider-handle {
     position: absolute;
     top: -3px;
@@ -34,7 +32,6 @@
     border-radius: 4px;
     box-shadow: 0 1px 2px rgba(0, 0, 0, .2)
 }
-
 .ultimate-border .ultimate-colorpicker-block .cs-alpha-slider .ui-slider-handle:before {
     content: " ";
     position: absolute;
@@ -45,7 +42,6 @@
     border: 2px solid #fff;
     border-radius: 3px
 }
-
 .ultimate-border .ultimate-colorpicker-block .cs-alpha-slider-offset {
     height: 18px;
     width: 200px;
@@ -53,7 +49,6 @@
     box-shadow: 0 0 5px rgba(0, 0, 0, .4) inset;
     border-radius: 2px
 }
-
 .ultimate-border .ultimate-colorpicker-block .cs-alpha-text {
     position: absolute;
     top: 10px;
@@ -71,7 +66,7 @@
     margin-right: 10px;
     margin-bottom: 7px;
     /* font-size: 0; */
-
+    
     white-space: nowrap;
     float: left;
     display: inline-block;
@@ -113,7 +108,7 @@
     line-height: 19px;
     display: inline-block;
     /* border: 1px solid #ddd; */
-
+    
     -webkit-box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
     box-shadow: inset 0 1px 2px rgba(0, 0, 0, 0.07);
     background-color: #fff;
@@ -182,7 +177,7 @@
     float: left;
     width: 100px;
     clear: both; */
-
+    
     margin-bottom: 10px;
 }
 
@@ -241,7 +236,6 @@
     -moz-transform: rotate(-45deg);
     -webkit-transform: rotate(-45deg);
 }
-
 /* Tooltip */
 
 .ult-expand:hover .ult-tooltip {
@@ -249,7 +243,6 @@
     visibility: visible;
     opacity: 1;
 }
-
 /* REMOVE IT AFTER ADMIN ENQUEUE */
 /*  Param - Tooltip */
 
@@ -292,7 +285,6 @@
     top: 100%;
     left: 10px;
 }
-
 /* expand */
 
 .ult-expand {

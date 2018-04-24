@@ -10,10 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var $size
  * @var $el_class
  * @var $css
+ * @var $css_animation
  * Shortcode class
  * @var $this WPBakeryShortCode_VC_Gmaps
  */
-$title = $link = $size = $el_class = $css = '';
+$title = $link = $size = $el_class = $css = $css_animation = '';
 $output = '';
 $atts = vc_map_get_attributes( $this->getShortcode(), $atts );
 extract( $atts );
@@ -27,19 +28,28 @@ if ( '' === $link ) {
 }
 $link = trim( vc_value_from_safe( $link ) );
 $bubble = ( '' !== $bubble && '0' !== $bubble ) ? '&amp;iwloc=near' : '';
-$size = str_replace( array( 'px', ' ' ), array( '', '' ), $size );
+$size = str_replace( array(
+	'px',
+	' ',
+), array(
+	'',
+	'',
+), $size );
 
 if ( is_numeric( $size ) ) {
 	$link = preg_replace( '/height="[0-9]*"/', 'height="' . $size . '"', $link );
 }
 
 $class_to_filter = 'wpb_gmaps_widget wpb_content_element' . ( '' === $size ? ' vc_map_responsive' : '' );
-$class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class );
+$class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class ) . $this->getCSSAnimation( $css_animation );
 $css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $class_to_filter, $this->settings['base'], $atts );
 
 ?>
 <div class="<?php echo esc_attr( $css_class ); ?>">
-	<?php echo wpb_widget_title( array( 'title' => $title, 'extraclass' => 'wpb_map_heading' ) ); ?>
+	<?php echo wpb_widget_title( array(
+		'title' => $title,
+		'extraclass' => 'wpb_map_heading',
+	) ); ?>
 	<div class="wpb_wrapper">
 		<div class="wpb_map_wraper">
 			<?php

@@ -9,14 +9,17 @@
  * @ignore
  */
 class MC4WP_Upgrade_Routines {
+
 	/**
 	 * @var float
 	 */
 	protected $version_from = 0;
+
 	/**
 	 * @var float
 	 */
 	protected $version_to = 0;
+
 	/**
 	 * @var string
 	 */
@@ -26,9 +29,9 @@ class MC4WP_Upgrade_Routines {
 	 * @param float $from
 	 * @param float $to
 	 */
-	public function __construct($from, $to, $migrations_dir) {
-		$this->version_from   = $from;
-		$this->version_to     = $to;
+	public function __construct( $from, $to, $migrations_dir ) {
+		$this->version_from = $from;
+		$this->version_to = $to;
 		$this->migrations_dir = $migrations_dir;
 	}
 
@@ -37,25 +40,30 @@ class MC4WP_Upgrade_Routines {
 	 */
 	public function run() {
 		$migrations = $this->find_migrations();
+
 		// run in sub-function for scope
-		array_map([$this, 'run_migration'], $migrations);
+		array_map( array( $this, 'run_migration' ), $migrations );
 	}
 
 	/**
 	 * @return array
 	 */
 	public function find_migrations() {
-		$files      = glob(rtrim($this->migrations_dir, '/') . '/*.php');
-		$migrations = [];
+
+		$files = glob( rtrim( $this->migrations_dir, '/' ) . '/*.php' );
+		$migrations =  array();
+
 		// return empty array when glob returns non-array value.
-		if (!is_array($files)) {
+		if( ! is_array( $files ) ) {
 			return $migrations;
 		}
-		foreach ($files as $file) {
-			$migration = basename($file);
-			$parts     = explode('-', $migration);
-			$version   = $parts[0];
-			if (version_compare($this->version_from, $version, '<')) {
+
+		foreach( $files as $file ) {
+			$migration = basename( $file );
+			$parts = explode( '-', $migration );
+			$version = $parts[0];
+
+			if( version_compare( $this->version_from, $version, '<' ) ) {
 				$migrations[] = $file;
 			}
 		}
@@ -68,7 +76,14 @@ class MC4WP_Upgrade_Routines {
 	 *
 	 * @param string $file
 	 */
-	protected function run_migration($file) {
+	protected function run_migration( $file ) {
 		include $file;
 	}
+
+
+
+
+
+
+
 }

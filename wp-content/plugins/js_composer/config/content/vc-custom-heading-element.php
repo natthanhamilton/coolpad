@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 function vc_custom_heading_element_params() {
 	return array(
 		'name' => __( 'Custom Heading', 'js_composer' ),
@@ -44,7 +48,8 @@ function vc_custom_heading_element_params() {
 				'value' => 'tag:h2|text_align:left',
 				'settings' => array(
 					'fields' => array(
-						'tag' => 'h2', // default value h2
+						'tag' => 'h2',
+						// default value h2
 						'text_align',
 						'font_size',
 						'line_height',
@@ -79,6 +84,7 @@ function vc_custom_heading_element_params() {
 					'value_not_equal_to' => 'yes',
 				),
 			),
+			vc_map_add_css_animation(),
 			array(
 				'type' => 'textfield',
 				'heading' => __( 'Extra class name', 'js_composer' ),

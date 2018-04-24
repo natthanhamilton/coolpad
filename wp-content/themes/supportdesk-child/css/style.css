@@ -292,145 +292,6 @@ Legacy used globally that needs cleaned up
  */
 /*
 
-Vertically center everything
-
-*/
-.vertical-center {
-  /* Internet Explorer 10 */
-  display: -ms-flexbox;
-  -ms-flex-pack: center;
-  -ms-flex-align: center;
-  /* Firefox */
-  display: -moz-box;
-  -moz-box-pack: center;
-  -moz-box-align: center;
-  /* Safari, Opera, and Chrome */
-  display: -webkit-box;
-  -webkit-box-pack: center;
-  -webkit-box-align: center;
-  /* W3C */
-  display: box;
-  box-pack: center;
-  box-align: center;
-}
-.vertical {
-  /* Internet Explorer 10 */
-  display: -ms-flexbox;
-  -ms-flex-align: center;
-  /* Firefox */
-  display: -moz-box;
-  -moz-box-align: center;
-  /* Safari, Opera, and Chrome */
-  display: -webkit-box;
-  -webkit-box-align: center;
-  /* W3C */
-  display: box;
-  box-align: center;
-}
-.bottom {
-  /* Internet Explorer 10 */
-  display: -ms-flexbox;
-  -ms-flex-align: end;
-  /* Firefox */
-  display: -moz-box;
-  -moz-box-align: end;
-  /* Safari, Opera, and Chrome */
-  display: -webkit-box;
-  -webkit-box-align: end;
-  /* W3C */
-  display: box;
-  box-align: end;
-}
-.right {
-  /* Internet Explorer 10 */
-  display: -ms-flexbox;
-  -ms-flex-pack: end;
-  /* Firefox */
-  display: -moz-box;
-  -moz-box-pack: end;
-  /* Safari, Opera, and Chrome */
-  display: -webkit-box;
-  -webkit-box-pack: end;
-  /* W3C */
-  display: box;
-  box-pack: end;
-}
-.flex-vertical-center {
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -ms-flex-align: center;
-  -webkit-align-items: center;
-  -webkit-box-align: center;
-  align-items: center;
-}
-/*
-
-Multi line truncate
-
-*/
-.multi-line-truncate:before {
-  /* points in the end */
-  content: '...';
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of block */
-  right: 0;
-  bottom: 0;
-}
-.multi-line-truncate:after {
-  /* points in the end */
-  content: '...';
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of text */
-  right: 0;
-  /* set width and height */
-  width: 1em;
-  height: 1em;
-  margin-top: 0.2em;
-}
-/*
-
-Hover transition
-
-*/
-.hover-transition {
-  -webkit-transition: all ease 0.5s;
-  -moz-transition: all ease 0.5s;
-  -o-transition: all ease 0.5s;
-  transition: all ease 0.5s;
-}
-/*
-
-TRANSLATE (Move an object)
-
-*/
-/*
-
-Flex Box Arranging divs
-
-*/
-.flexbox {
-  display: -webkit-box;
-  display: -moz-box;
-  display: -ms-flexbox;
-  display: -webkit-flex;
-  display: flex;
-  -webkit-box-orient: vertical;
-  -moz-box-orient: vertical;
-  -webkit-flex-direction: column;
-  -ms-flex-direction: column;
-  flex-direction: column;
-  /* optional */
-  -webkit-box-align: start;
-  -moz-box-align: start;
-  -ms-flex-align: start;
-  -webkit-align-items: flex-start;
-  align-items: flex-start;
-}
-/*
-
 Automatic Resets
 
 */
@@ -1113,9 +974,8 @@ Text formats
   }
 }
 #product-manuals .item .download {
-  height: 100%;
+  height: 55px;
   position: relative;
-  top: 10px;
   /* Internet Explorer 10 */
   /* Firefox */
   /* Safari, Opera, and Chrome */
@@ -1261,6 +1121,291 @@ Text formats
 #product-faq .accordion .vc_toggle_active i:after {
   content: "";
 }
+#product-header {
+  opacity: 0.9;
+  background-position: 50% 50%;
+  background-size: cover;
+  background-repeat: no-repeat;
+}
+#product-header p {
+  color: #3b3fb6;
+  padding-bottom: 40px;
+  font-size: 72px;
+}
+@media only screen and (max-width: 480px) {
+  #product-header p {
+    font-size: 36px;
+    text-align: center;
+  }
+}
+@media only screen and (min-width: 768px) {
+  #product-header p {
+    padding-left: 140px;
+  }
+}
+#product-header .vc_column-inner {
+  height: 367px;
+  padding: 0;
+}
+#product-header .vc_column_container .wpb_wrapper {
+  position: absolute;
+  bottom: 0;
+  width: 100%;
+}
+#product-header .vc_column_container .wpb_wrapper .vc_btn3-container {
+  margin-bottom: 0;
+}
+#product-header .vc_column_container .wpb_wrapper .wpb_content_element {
+  margin-bottom: 0;
+}
+#product-user-manuals {
+  display: block;
+  padding-top: 60px !important;
+  padding-bottom: 60px !important;
+  background: #f5f5f5;
+}
+@media only screen and (min-width: 1440px) {
+  #product-user-manuals {
+    padding: 0 119px;
+  }
+}
+@media only screen and (max-width: 1440px) {
+  #product-user-manuals {
+    padding: 0 60px;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  #product-user-manuals {
+    padding: 0 30px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  #product-user-manuals {
+    padding: 0 20px;
+  }
+}
+@media only screen and (max-width: 320px) {
+  #product-user-manuals {
+    padding: 0 10px;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  #product-user-manuals {
+    padding-left: 115px;
+    padding-right: 115px;
+  }
+}
+#product-user-manuals:before {
+  content: 'Download Manuals';
+  padding-left: 20px;
+  font-size: 24px;
+  font-weight: 300;
+  color: #4a4a4a;
+}
+#product-user-manuals .item {
+  border: solid 1px #979797;
+  margin-top: -1px;
+  padding: 20px 30px;
+  background: #fff;
+}
+@media only screen and (max-width: 768px) {
+  #product-user-manuals .item {
+    padding: 20px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  #product-user-manuals .item {
+    padding: 15px;
+  }
+}
+@media only screen and (min-width: 1024px) {
+  #product-user-manuals .item .vc_col-sm-8 {
+    position: relative;
+    float: left;
+    width: 66.66666667%;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  #product-user-manuals .item .vc_col-sm-4 {
+    position: relative;
+    float: left;
+    width: 33.33333333%;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+@media only screen and (min-width: 480px) and (max-width: 1024px) {
+  #product-user-manuals .item .vc_col-sm-8 {
+    position: relative;
+    float: left;
+    width: 58.33333333%;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+  #product-user-manuals .item .vc_col-sm-4 {
+    position: relative;
+    float: left;
+    width: 41.66666667%;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+#product-user-manuals .item .title {
+  font-size: 24px;
+  font-weight: 300;
+  color: #4a4a4a;
+}
+@media only screen and (max-width: 480px) {
+  #product-user-manuals .item .title {
+    padding-bottom: 10px;
+  }
+}
+#product-user-manuals .item .download {
+  height: 55px;
+  position: relative;
+  /* Internet Explorer 10 */
+  /* Firefox */
+  /* Safari, Opera, and Chrome */
+  /* W3C */
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-align: center;
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-align: center;
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-align: center;
+  /* W3C */
+  display: box;
+  box-align: center;
+}
+@media only screen and (min-width: 480px) {
+  #product-user-manuals .item .download .wpb_wrapper {
+    width: 100%;
+    text-align: right;
+  }
+}
+#product-user-manuals .item .download a {
+  border-radius: 0 !important;
+  color: #ffffff !important;
+  outline: 0 !important;
+  line-height: normal !important;
+  padding: 14px 18px;
+  font-size: 20px;
+  border: solid 2px rgba(41, 47, 51, 0.6) !important;
+  color: #000 !important;
+  padding-left: 45px !important;
+  padding-right: 45px !important;
+}
+#product-user-manuals .item .download a:hover,
+#product-user-manuals .item .download a:focus {
+  outline: 0;
+  color: #fff;
+}
+#product-user-manuals .item .download a:hover {
+  border: solid 2px #292f33 !important;
+}
+#product-navigation .vc_column-inner {
+  padding: 0;
+}
+#product-navigation a {
+  position: relative;
+  float: left;
+  width: 25%;
+  min-height: 1px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding: 25px 0;
+  font-size: 24px;
+  color: #4a4a4a;
+  text-align: center;
+  border: solid 1px #979797;
+}
+@media only screen and (max-width: 640px) {
+  #product-navigation a {
+    position: relative;
+    float: left;
+    width: 100%;
+    min-height: 1px;
+    padding-left: 15px;
+    padding-right: 15px;
+  }
+}
+#product-navigation a:hover,
+#product-navigation a:active,
+#product-navigation a.active {
+  background: #3b3fb6;
+  color: #fff;
+  border-color: #3b3fb6;
+}
+.page-id-29 {
+  background-color: #efefef;
+}
+.page-id-29 #primary {
+  padding-top: 20px;
+}
+article .section-title {
+  font-size: 24px;
+  padding: 10px !important;
+  margin-top: 20px !important;
+}
+article .entry-title {
+  margin: 0 !important;
+  padding: 0 !important;
+}
+article .entry-title a {
+  display: block;
+  padding: 10px 30px;
+  background: #fff;
+  position: relative;
+  margin: 0;
+  color: #666;
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+article .entry-title .action {
+  float: right;
+  background: transparent !important;
+  z-index: 1;
+  top: 12px;
+}
+article .entry-title .action span {
+  color: #c2c2c2;
+  font-size: 28px;
+}
+article .entry-content {
+  background: #efefef;
+  padding: 3% 6%;
+}
+article .entry-content p {
+  padding: 0;
+  font-weight: 300;
+  color: #666;
+  letter-spacing: 0.02em;
+}
+.faq .wpb_column .vc_column-inner {
+  padding: 0 !important;
+}
+@media only screen and (max-width: 768px) {
+  .faq-tabs {
+    display: none;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .desktop-titles {
+    display: none;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .tab-pane {
+    display: block !important;
+  }
+}
 .page-id-29 #primary {
   padding-top: 20px;
   background-color: #efefef;
@@ -1334,6 +1479,50 @@ Text formats
   width: 100% !important;
   background-position: 98% center;
   margin: 20px 0 0 !important;
+}
+#tiles .col-sm-4,
+.tiles .col-sm-4 {
+  margin-bottom: 30px;
+  float: left;
+}
+@media only screen and (min-width: 480px) and (max-width: 768px) {
+  #tiles .col-sm-4,
+  .tiles .col-sm-4 {
+    width: 50% !important;
+  }
+}
+@media only screen and (max-width: 480px) {
+  #tiles .col-sm-4,
+  .tiles .col-sm-4 {
+    width: 100%;
+  }
+}
+#tiles .tile-title,
+.tiles .tile-title {
+  width: 100%;
+  height: 260px;
+  background-position: 50% 50% !important;
+  background-size: cover !important;
+  font-weight: 400;
+  line-height: 20px;
+  color: #ffffff;
+  padding: 30px 20px;
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-align: end;
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-align: end;
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-align: end;
+  /* W3C */
+  display: box;
+  box-align: end;
+}
+.ult_modal-content {
+  border-color: transparent !important;
+  box-shadow: none !important;
 }
 /* custom inclusion of right, left and below tabs */
 .tabs-below > .nav-tabs,
@@ -1427,17 +1616,32 @@ Text formats
   border: none;
   padding: 0;
 }
-.nav-tabs {
+.tabs-left .nav-tabs {
   border: none !important;
 }
-.nav-tabs li a {
+.tabs-left .nav-tabs li a {
   border: none !important;
   margin: 0 !important;
   border-radius: 0 !important;
+  color: #fff !important;
+  font-weight: 500;
+  background: #3b3fb6 !important;
+  padding-left: 40px !important;
 }
-.nav-tabs .active a {
-  border-left: 4px solid #3b3fb6 !important;
-  background: #fff !important;
+.tabs-left .nav-tabs li a:hover,
+.tabs-left .nav-tabs li a:active,
+.tabs-left .nav-tabs li a:focus,
+.tabs-left .nav-tabs li a:visited {
+  background: rgba(59, 63, 182, 0.7) !important;
+}
+.tabs-left .nav-tabs .active a {
+  background: rgba(59, 63, 182, 0.7) !important;
+}
+.tabs-left .nav-tabs .active a:hover,
+.tabs-left .nav-tabs .active a:active,
+.tabs-left .nav-tabs .active a:focus,
+.tabs-left .nav-tabs .active a:visited {
+  background: rgba(59, 63, 182, 0.7) !important;
 }
 /* MegaNavbar v2.2.0 (http://www.MegaNavbar.com) Copyright 2014 MegaNavbar.com. All Rights Reserved.
 ** Licensed under Regular License (http://codecanyon.net/licenses/regular) or Extended License (http://codecanyon.net/licenses/extended)
@@ -2638,6 +2842,16 @@ Text formats
 .nav-theme-transparent .navbar-brand a {
   background-color: transparent !important;
 }
+.nav-theme-primary .navbar-brand a img,
+.nav-theme-transparent .navbar-brand a img {
+  max-height: 20px;
+}
+@media screen and (max-width: 768px) {
+  .nav-theme-primary ul.navbar-left,
+  .nav-theme-transparent ul.navbar-left {
+    width: initial !important;
+  }
+}
 .nav-theme-primary ul.navbar-left li a,
 .nav-theme-transparent ul.navbar-left li a {
   white-space: normal;
@@ -2663,6 +2877,14 @@ Text formats
 .nav-theme-primary ul.navbar-left .btn,
 .nav-theme-transparent ul.navbar-left .btn {
   margin-top: 10px;
+}
+@media screen and (min-width: 768px) {
+  .nav-theme-primary ul.navbar-right,
+  .nav-theme-transparent ul.navbar-right {
+    position: absolute;
+    right: 0;
+    width: initial;
+  }
 }
 .nav-theme-primary .dropdown-menu,
 .nav-theme-transparent .dropdown-menu {
@@ -3283,6 +3505,231 @@ tooltip i {
   margin-bottom: 0;
   padding-top: 40px !important;
   padding-bottom: 35px;
+}
+/*
+
+Vertically center everything
+
+*/
+.vertical-center {
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-pack: center;
+  -ms-flex-align: center;
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-pack: center;
+  -moz-box-align: center;
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-pack: center;
+  -webkit-box-align: center;
+  /* W3C */
+  display: box;
+  box-pack: center;
+  box-align: center;
+}
+.vertical {
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-align: center;
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-align: center;
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-align: center;
+  /* W3C */
+  display: box;
+  box-align: center;
+}
+.bottom {
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-align: end;
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-align: end;
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-align: end;
+  /* W3C */
+  display: box;
+  box-align: end;
+}
+.right {
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-pack: end;
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-pack: end;
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-pack: end;
+  /* W3C */
+  display: box;
+  box-pack: end;
+}
+.flex-vertical-center {
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -ms-flex-align: center;
+  -webkit-align-items: center;
+  -webkit-box-align: center;
+  align-items: center;
+}
+/*
+
+Multi line truncate
+
+*/
+/*
+
+Hover transition
+
+*/
+.hover-transition {
+  -webkit-transition: all ease 0.5s;
+  -moz-transition: all ease 0.5s;
+  -o-transition: all ease 0.5s;
+  transition: all ease 0.5s;
+}
+/*
+
+TRANSLATE (Move an object)
+
+*/
+/*
+
+Flex Box Arranging divs
+
+*/
+.flexbox {
+  display: -webkit-box;
+  display: -moz-box;
+  display: -ms-flexbox;
+  display: -webkit-flex;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -moz-box-orient: vertical;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  /* optional */
+  -webkit-box-align: start;
+  -moz-box-align: start;
+  -ms-flex-align: start;
+  -webkit-align-items: flex-start;
+  align-items: flex-start;
+}
+#tiles .col-sm-4,
+.tiles .col-sm-4 {
+  margin-bottom: 30px;
+  float: left;
+}
+@media only screen and (min-width: 480px) and (max-width: 768px) {
+  #tiles .col-sm-4,
+  .tiles .col-sm-4 {
+    width: 50% !important;
+  }
+}
+@media only screen and (max-width: 480px) {
+  #tiles .col-sm-4,
+  .tiles .col-sm-4 {
+    width: 100%;
+  }
+}
+#tiles .tile,
+.tiles .tile {
+  display: block;
+  box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.14), 0 1px 5px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.2);
+  border-radius: 2px;
+  background-color: #fff;
+}
+#tiles .tile:hover,
+.tiles .tile:hover {
+  transform: translateY(-4px);
+  -webkit-animation-fill-mode: forwards;
+  animation-fill-mode: forwards;
+  box-shadow: 0 4px 30px rgba(0, 0, 0, 0.15) !important;
+}
+#tiles .tile div,
+.tiles .tile div {
+  padding: 24px;
+}
+#tiles .tile div h5,
+.tiles .tile div h5 {
+  padding: 0 !important;
+  color: rgba(0, 0, 0, 0.87) !important;
+  line-height: 32px;
+  margin-bottom: 8px !important;
+  font-weight: 300;
+}
+#tiles .tile div p,
+.tiles .tile div p {
+  padding: 0 !important;
+  color: rgba(0, 0, 0, 0.71) !important;
+  font-weight: normal;
+  line-height: 1.5;
+}
+#tiles .tile-title,
+.tiles .tile-title {
+  width: 100%;
+  height: 260px;
+  background-position: 50% 50% !important;
+  background-size: cover !important;
+  font-weight: 400;
+  line-height: 20px;
+  color: #ffffff;
+  padding: 30px 20px;
+  /* Internet Explorer 10 */
+  display: -ms-flexbox;
+  -ms-flex-align: end;
+  /* Firefox */
+  display: -moz-box;
+  -moz-box-align: end;
+  /* Safari, Opera, and Chrome */
+  display: -webkit-box;
+  -webkit-box-align: end;
+  /* W3C */
+  display: box;
+  box-align: end;
+}
+/* fluid 5 columns */
+.grid-sizer,
+.grid-item {
+  width: 22.5%;
+  margin-bottom: 15px;
+}
+@media only screen and (min-width: 905px) and (max-width: 1024px) {
+  .grid-sizer,
+  .grid-item {
+    width: 31%;
+  }
+}
+@media only screen and (max-width: 905px) {
+  .grid-sizer,
+  .grid-item {
+    width: 30%;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .grid-sizer,
+  .grid-item {
+    width: 46.5%;
+  }
+}
+@media only screen and (max-width: 480px) {
+  .grid-sizer,
+  .grid-item {
+    width: 100%;
+  }
+}
+/* 2 columns */
+.grid-item--width2 {
+  width: 45%;
 }
 h1,
 .h1 {

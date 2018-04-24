@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 return array(
 	'name' => 'WP ' . __( 'Pages' ),
 	'base' => 'vc_wp_pages',

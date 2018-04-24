@@ -1,0 +1,76 @@
+@import '../../../Coolpad/assets/less/variables';
+@import '../../../Coolpad/assets/less/components/buttons';
+@import '../../../Coolpad/assets/less/components/grid';
+
+#product-user-manuals {
+  .section-padding;
+  padding-top: 60px !important;
+  padding-bottom: 60px !important;
+  background: #f5f5f5;
+  @media only screen and (min-width: @break-lg) {
+    padding-left: 115px;
+    padding-right: 115px;
+  }
+  &:before {
+    content: 'Download Manuals';
+    padding-left: 20px;
+    font-size: 24px;
+    font-weight: 300;
+    color: #4a4a4a;
+  }
+  .item {
+    border: solid 1px #979797;
+    margin-top: -1px;
+    padding: 20px 30px;
+    background: #fff;
+    @media only screen and (max-width: @break-md) {
+      padding: 20px;
+    }
+    @media only screen and (max-width: @break-sm) {
+      padding: 15px;
+    }
+    @media only screen and (min-width: @break-lg) {
+      .vc_col-sm-8 {
+        .make-xs-column(8);
+      }
+
+      .vc_col-sm-4 {
+        .make-xs-column(4);
+      }
+    }
+    @media only screen and (min-width: @break-sm) and (max-width: @break-lg) {
+      .vc_col-sm-8 {
+        .make-xs-column(7);
+      }
+
+      .vc_col-sm-4 {
+        .make-xs-column(5);
+      }
+    }
+    .title {
+      font-size: 24px;
+      font-weight: 300;
+      color: #4a4a4a;
+      @media only screen and (max-width: @break-sm) {
+        padding-bottom: 10px;
+      }
+    }
+    .download {
+      height: 55px;
+      position: relative;
+      .vertical;
+      .wpb_wrapper {
+        @media only screen and (min-width: @break-sm) {
+          width: 100%;
+          text-align: right;
+        }
+      }
+      a {
+        .btn;
+        .btn-lg;
+        .btn-dark;
+        .btn-pill;
+      }
+    }
+  }
+}

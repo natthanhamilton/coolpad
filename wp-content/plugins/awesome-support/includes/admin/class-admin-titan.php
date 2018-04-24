@@ -5,8 +5,8 @@
  * @package   Admin/Titan
  * @author    Julien Liabeuf <julien@liabeuf.fr>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 
 class WPAS_Titan {
@@ -20,7 +20,9 @@ class WPAS_Titan {
 	protected static $instance = null;
 
 	public function __construct() {
-		add_action( 'after_setup_theme', array( $this, 'load_titan_framework' ), 12 );
+
+		add_action( 'wp_loaded', array( $this, 'load_titan_framework' ), 12 );
+
 	}
 
 	/**
@@ -54,10 +56,9 @@ class WPAS_Titan {
 		 
 		// Don't do anything when we're activating a plugin to prevent errors
 		// on redeclaring Titan classes
-		if ( ! empty( $_GET['action'] ) && ! empty( $_GET['plugin'] ) ) {
-		    if ( $_GET['action'] == 'activate' ) {
-		        return;
-		    }
+		if( 'activate' === filter_input(INPUT_GET, 'action', FILTER_SANITIZE_STRING )
+			&& ! empty( filter_input( INPUT_GET, 'plugin' ) ) ) {
+				return;
 		}
 
 		// Check if the framework plugin is activated

@@ -406,27 +406,6 @@ Vertically center everything
 Multi line truncate
 
 */
-.multi-line-truncate:before {
-  /* points in the end */
-  content: '...';
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of block */
-  right: 0;
-  bottom: 0;
-}
-.multi-line-truncate:after {
-  /* points in the end */
-  content: '...';
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of text */
-  right: 0;
-  /* set width and height */
-  width: 1em;
-  height: 1em;
-  margin-top: 0.2em;
-}
 /*
 
 Hover transition
@@ -642,6 +621,27 @@ Text formats
     margin-right: -1em;
     padding-right: 1em;
   }
+  .about-us-news-list .item .news:before {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of block */
+    right: 0;
+    bottom: 0;
+  }
+  .about-us-news-list .item .news:after {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of text */
+    right: 0;
+    /* set width and height */
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+  }
 }
 @media only screen and (min-width: 768px) and (max-width: 1024px) {
   .about-us-news-list .item .news {
@@ -657,6 +657,27 @@ Text formats
     margin-right: -1em;
     padding-right: 1em;
   }
+  .about-us-news-list .item .news:before {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of block */
+    right: 0;
+    bottom: 0;
+  }
+  .about-us-news-list .item .news:after {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of text */
+    right: 0;
+    /* set width and height */
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
+  }
 }
 @media only screen and (max-width: 768px) {
   .about-us-news-list .item .news {
@@ -671,5 +692,26 @@ Text formats
     /* place for '...' */
     margin-right: -1em;
     padding-right: 1em;
+  }
+  .about-us-news-list .item .news:before {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of block */
+    right: 0;
+    bottom: 0;
+  }
+  .about-us-news-list .item .news:after {
+    /* points in the end */
+    content: '...';
+    /* absolute position */
+    position: absolute;
+    /* set position to right bottom corner of text */
+    right: 0;
+    /* set width and height */
+    width: 1em;
+    height: 1em;
+    margin-top: 0.2em;
   }
 }

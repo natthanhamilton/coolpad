@@ -7,6 +7,7 @@
  * @ignore
  */
 class MC4WP_Array_Bag {
+
 	/**
 	 * @var array
 	 */
@@ -15,7 +16,7 @@ class MC4WP_Array_Bag {
 	/**
 	 * @param array $array
 	 */
-	public function __construct(array $array) {
+	public function __construct( array $array ) {
 		$this->array = $array;
 	}
 
@@ -23,25 +24,26 @@ class MC4WP_Array_Bag {
 	 * @return array
 	 */
 	public function keys() {
-		return array_keys($this->array);
+		return array_keys( $this->array );
 	}
 
 	/**
 	 * @param string $name
-	 * @param mixed  $value
+	 * @param mixed $value
 	 */
-	public function set($name, $value) {
+	public function set( $name, $value ) {
 		$this->array[ $name ] = $value;
 	}
 
 	/**
 	 * @param string $name
-	 * @param mixed  $default
+	 * @param mixed $default
 	 *
 	 * @return mixed
 	 */
-	public function get($name, $default = NULL) {
-		if (isset($this->array[ $name ])) {
+	public function get( $name, $default = null ) {
+
+		if( isset( $this->array[ $name ] ) ) {
 			return $this->array[ $name ];
 		}
 
@@ -60,12 +62,14 @@ class MC4WP_Array_Bag {
 	 *
 	 * @return array
 	 */
-	public function all_with_prefix($prefix) {
-		$return = [];
-		$length = strlen($prefix);
-		foreach ($this->array as $key => $value) {
-			if (strpos($key, $prefix) === 0) {
-				$new_key            = substr($key, $length);
+	public function all_with_prefix( $prefix ) {
+		$return = array();
+		$length = strlen( $prefix );
+
+		foreach( $this->array as $key => $value ) {
+			if( strpos( $key, $prefix ) === 0 ) {
+
+				$new_key = substr( $key, $length );
 				$return[ $new_key ] = $value;
 			}
 		}
@@ -75,13 +79,13 @@ class MC4WP_Array_Bag {
 
 	/**
 	 * @param $prefix
-	 *
 	 * @return array
 	 */
-	public function all_without_prefix($prefix) {
-		$return = [];
-		foreach ($this->array as $key => $value) {
-			if (strpos($key, $prefix) !== 0) {
+	public function all_without_prefix( $prefix ) {
+		$return = array();
+
+		foreach( $this->array as $key => $value ) {
+			if( strpos( $key, $prefix ) !== 0 ) {
 				$return[ $key ] = $value;
 			}
 		}

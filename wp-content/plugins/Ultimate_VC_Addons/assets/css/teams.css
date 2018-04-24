@@ -9,47 +9,46 @@
 }
 
 .ult-team-member-image img {
-    width: 100%;
-    box-shadow: none;
-    vertical-align: middle;
-    border-radius: 0px;
+  width: 100%;
+  box-shadow: none;
+  vertical-align: middle;
+  border-radius: 0px;
 }
 
 .ult-team-member-bio-wrap {
-    text-align: center;
-    border-radius: inherit;
-    box-sizing: border-box;
+  text-align: center;
+  border-radius: inherit;
+  box-sizing: border-box;
 }
 
 .ult-team-member-image-overlay.ult-team_img_hover {
-    position: absolute;
-    background-image: url("../img/ov-plus.png");
-    width: 83px;
-    height: 83px;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-color: rgba(100, 100, 100, 0.6); /* should be theme color*/
-    font-family: fontAwesome;
-    font-size: 60px;
-    color: #373737;
-    font-weight: 300;
-    border-radius: inherit;
-    top: 50%;
-    left: 50%;
-    -webkit-transform: translate(-50%, -50%);
-    transform: translate(-50%, -50%);
-    visibility: hidden;
-    opacity: 0;
-    transition: all .2s linear;
-    z-index: 9999;
-    -webkit-transition: all 0.2s ease-in-out;
-    -moz-transition: all 0.2s ease-in-out;
-    -ms-transition: all 0.2s ease-in-out;
-    -o-transition: all 0.2s ease-in-out;
-    transition: all 0.2s ease-in-out;
+  position: absolute;
+  background-image: url("../img/ov-plus.png");
+  width: 83px;
+  height: 83px;
+  background-repeat: no-repeat;
+  background-position: center;
+  background-color: rgba(100,100,100,0.6); /* should be theme color*/
+  font-family: fontAwesome;
+  font-size: 60px;
+  color: #373737;
+  font-weight: 300;
+  border-radius: inherit;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+  transform: translate(-50%, -50%);
+  visibility: hidden;
+  opacity: 0;
+  transition: all .2s linear;
+  z-index: 9999;
+  -webkit-transition: all 0.2s ease-in-out;
+  -moz-transition: all 0.2s ease-in-out;
+  -ms-transition: all 0.2s ease-in-out;
+  -o-transition: all 0.2s ease-in-out;
+  transition: all 0.2s ease-in-out;
 }
-
-.ult-team-member-wrap:hover .ult-team-member-image .ult-team-member-image-overlay.ult-team_img_hover {
+.ult-team-member-wrap:hover .ult-team-member-image .ult-team-member-image-overlay.ult-team_img_hover{
     width: 101%;
     height: 101%;
     z-index: 9;
@@ -59,7 +58,6 @@
     visibility: visible;
     opacity: 1;
 }
-
 .ult-team-member-image.ult-team_img_hover:before {
     width: 100%;
     position: absolute;
@@ -78,7 +76,6 @@
     transition: all 0.3s ease-in-out;
     border-radius: inherit;
 }
-
 .ult-team-member-wrap:hover > .ult-team-member-image.ult-team_img_hover:before {
     visibility: visible;
     opacity: 1;
@@ -88,7 +85,6 @@
     -o-transition: all 0.3s ease-in-out;
     transition: all 0.3s ease-in-out;
 }
-
 .ult-team-member-wrap:hover > .ult-team-member-image.ult-team_img_hover:after {
     visibility: visible;
     opacity: 1;
@@ -100,7 +96,7 @@
 }
 
 .ult-social-icon {
-    -webkit-transition: all 0.3s ease-in-out;
+	-webkit-transition: all 0.3s ease-in-out;
     -moz-transition: all 0.3s ease-in-out;
     -ms-transition: all 0.3s ease-in-out;
     -o-transition: all 0.3s ease-in-out;
@@ -119,95 +115,91 @@
 .ult-style-1 .ult-team-member-name-wrap,
 .ult-style-2 .ult-team-member-name-wrap,
 .ult-style-3 .ult-team-member-name-wrap {
-    width: 100%;
-    box-sizing: border-box;
+  width:100%;
+  box-sizing: border-box;
 }
 
 .ult-style-1 .ult-team-member-name-wrap .ult-team-member-name,
 .ult-style-2 .ult-team-member-name-wrap .ult-team-member-name,
 .ult-style-3 .ult-team-member-name-wrap .ult-team-member-name {
-    color: #333333;
-    font-size: 16px;
-    text-transform: uppercase;
-    margin: 25px 0 5px 0;
-    display: block;
-    font-weight: 700;
+  color: #333333;
+  font-size: 16px;
+  text-transform: uppercase;
+  margin: 25px 0 5px 0;
+  display: block;
+  font-weight: 700;
 }
 
 .ult-style-1 .ult-team-member-position,
 .ult-style-2 .ult-team-member-position,
 .ult-style-3 .ult-team-member-position {
-    padding-bottom: 0px;
-    font-size: 12px;
-    color: #777777;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    display: block;
-    box-sizing: border-box;
+  padding-bottom: 0px;
+  font-size: 12px;
+  color: #777777;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  display: block;
+  box-sizing: border-box;
 }
 
 .ult-style-1 hr,
 .ult-style-2 hr,
 .ult-style-3 hr {
-    margin-left: auto;
-    margin-right: auto;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .ult-style-1 .ult-team-divider,
 .ult-style-2 .ult-team-divider,
 .ult-style-3 .ult-team-divider {
-    padding-top: 2px;
-    margin-top: 15px;
-    margin-bottom: 0px;
-    box-sizing: border-box;
+  padding-top: 2px;
+  margin-top: 15px;
+  margin-bottom: 0px;
+  box-sizing: border-box;
 }
 
 .ult-style-1 .ult-team-member-description,
 .ult-style-2 .ult-team-member-description {
-    margin: 20px 0 10px 0;
-    box-sizing: border-box;
-    color: #777777;
+  margin: 20px 0 10px 0;
+  box-sizing: border-box;
+  color: #777777;
 }
 
 .ult-style-1 .ult-team-member-description p,
 .ult-style-2 .ult-team-member-description p,
 .ult-style-3 .ult-team-member-description p {
-    margin-bottom: 20px;
+  margin-bottom: 20px;
 }
 
 .ult-style-2 .ult-team-member-description p {
-    margin-bottom: 5px;
+  margin-bottom: 5px;
 }
-
 .ult-style-3 .ult-team-member-description {
-    position: absolute;
-    opacity: 0;
-    margin: 20px 0 10px 0;
-    box-sizing: border-box;
-    color: #303030;
-    width: 100%;
-    -webkit-transition: opacity .3s ease-in-out;
-    -moz-transition: opacity .3s ease-in-out;
-    -ms-transition: opacity .3s ease-in-out;
-    -o-transition: opacity .3s ease-in-out;
-    transition: opacity .3s ease-in-out;
+  position: absolute;
+  opacity: 0;
+  margin: 20px 0 10px 0;
+  box-sizing: border-box;
+  color: #303030;
+  width: 100%;
+  -webkit-transition: opacity .3s ease-in-out;
+  -moz-transition: opacity .3s ease-in-out;
+  -ms-transition: opacity .3s ease-in-out;
+  -o-transition: opacity .3s ease-in-out;
+  transition: opacity .3s ease-in-out;
 }
-
 .ult-style-3:hover .ult-team-member-description {
-    opacity: 1;
+  opacity: 1;
 }
-
 .ult-style-3 .ult-team-member-image img {
-    -webkit-transition: opacity .3s ease-in-out;
-    -moz-transition: opacity .3s ease-in-out;
-    -ms-transition: opacity .3s ease-in-out;
-    -o-transition: opacity .3s ease-in-out;
-    transition: opacity .3s ease-in-out;
-    border-radius: inherit;
+  -webkit-transition: opacity .3s ease-in-out;
+  -moz-transition: opacity .3s ease-in-out;
+  -ms-transition: opacity .3s ease-in-out;
+  -o-transition: opacity .3s ease-in-out;
+  transition: opacity .3s ease-in-out;
+  border-radius: inherit;
 }
-
 .ult-style-3:hover .ult-team-member-image img {
-    opacity: 0.1;
+  opacity: 0.1;
 }
 
 .ult-style-1 .ult-social-buttons a.ult-team.ult-social-icon,
@@ -218,180 +210,172 @@
     text-decoration: none;
 }
 
-.ult-team-member-wrap .ult-social-buttons a.ult-team {
-    color: #aaaaaa;
+.ult-team-member-wrap .ult-social-buttons a.ult-team{
+      color: #aaaaaa;
+}
+.ult-team-member-wrap .ult-social-buttons a.ult-team:hover{
+      color: #797979;
 }
 
-.ult-team-member-wrap .ult-social-buttons a.ult-team:hover {
-    color: #797979;
-}
-
-.ult-style-1 .ult-social-buttons a.ult-team.ult-social-icon:first-child,
+.ult-style-1 .ult-social-buttons a.ult-team.ult-social-icon:first-child, 
 .ult-style-2 .ult-social-buttons a.ult-team.ult-social-icon:first-child,
 .ult-style-3 .ult-social-buttons a.ult-team.ult-social-icon:first-child {
-    margin-left: 0px !important;
+    margin-left:0px !important;
 }
-
-.ult-style-1 .ult-social-buttons a.ult-team.ult-social-icon:last-child,
+.ult-style-1 .ult-social-buttons a.ult-team.ult-social-icon:last-child, 
 .ult-style-2 .ult-social-buttons a.ult-team.ult-social-icon:last-child,
 .ult-style-3 .ult-social-buttons a.ult-team.ult-social-icon:last-child {
-    margin-right: 0px !important;
+    margin-right:0px !important;
 }
 
 .ult-style-1 .ult-team-member-image img.ult-team-grayscale,
 .ult-style-3 .ult-team-member-image img.ult-team-grayscale {
-    -moz-filter: grayscale(100%);
-    -ms-filter: grayscale(100%);
-    -o-filter: grayscale(100%);
-    filter: grayscale(100%);
-    filter: gray;
-    -webkit-filter: grayscale(1);
-    -webkit-transition: all .3s;
-    -moz-transition: all .3s;
-    -ms-transition: all .3s;
-    -o-transition: all .3s;
-    transition: all .3s;
-    -webkit-backface-visibility: hidden;
-    -moz-backface-visibility: hidden;
-    -ms-backface-visibility: hidden;
-    -o-backface-visibility: hidden;
-    backface-visibility: hidden;
-    ms-backface-visibility: hidden;
+  -moz-filter: grayscale(100%);
+  -ms-filter: grayscale(100%);
+  -o-filter: grayscale(100%);
+  filter: grayscale(100%);
+  filter: gray;
+  -webkit-filter: grayscale(1);
+  -webkit-transition: all .3s;
+  -moz-transition: all .3s;
+  -ms-transition: all .3s;
+  -o-transition: all .3s;
+  transition: all .3s;
+  -webkit-backface-visibility: hidden;
+  -moz-backface-visibility: hidden;
+  -ms-backface-visibility: hidden;
+  -o-backface-visibility: hidden;
+  backface-visibility: hidden;
+  ms-backface-visibility: hidden;
 }
-
 .ult-style-3 .ult-team-member-image {
-    overflow: hidden;
-    -webkit-transform: translateZ(0);
-    -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
-    box-sizing: border-box;
+  overflow: hidden;
+  -webkit-transform: translateZ(0);
+  -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
+  box-sizing: border-box;
 }
-
 .ult-style-1:hover .ult-team-member-image img.ult-team-grayscale,
 .ult-style-3:hover .ult-team-member-image img.ult-team-grayscale {
-    -moz-filter: grayscale(0);
-    -ms-filter: grayscale(0);
-    -o-filter: grayscale(0);
-    filter: normal;
-    filter: grayscale(0);
-    -webkit-filter: grayscale(0);
+  -moz-filter: grayscale(0);
+  -ms-filter: grayscale(0);
+  -o-filter: grayscale(0);
+  filter: normal;
+  filter: grayscale(0);
+  -webkit-filter: grayscale(0);
 }
-
 /* iMedica Team Members style-1 Closed*/
 
 .ult-style-2 {
-    position: relative;
-    overflow: hidden;
-    -webkit-transform: translateZ(0);
-    -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
-    box-sizing: border-box;
+  position: relative;
+  overflow: hidden;
+  -webkit-transform: translateZ(0);
+  -webkit-mask-image: -webkit-radial-gradient(circle, white 100%, black 100%);
+  box-sizing: border-box;
 }
 
 .ult-style-2 .ult-team-member-image {
-    border-radius: inherit;
-    box-sizing: border-box;
+  border-radius: inherit;
+  box-sizing: border-box;
 }
 
-.ult-style-2 .ult-team-member-image img {
-    opacity: 0.65;
-    border-radius: inherit;
+.ult-style-2 .ult-team-member-image img{
+  opacity: 0.65;
+  border-radius: inherit;
 }
 
-.ult-style-2:hover .ult-team-member-image img {
-    opacity: 1;
-    -webkit-transition: all 500ms ease;
-    -moz-transition: all 500ms ease;
-    -ms-transition: all 500ms ease;
-    -o-transition: all 500ms ease;
-    transition: all 500ms ease;
-    transition: all 500ms ease;
+.ult-style-2:hover .ult-team-member-image img{
+  opacity: 1;
+  -webkit-transition: all 500ms ease;
+  -moz-transition: all 500ms ease;
+  -ms-transition: all 500ms ease;
+  -o-transition: all 500ms ease;
+  transition: all 500ms ease;
+  transition: all 500ms ease;
 }
 
 .ult-style-2 .ult-team-member-bio-wrap {
-    padding: 0px;
+  padding: 0px;
 }
 
-.ult-style-2 .ult-team-member-bio-wrap .ult-team-member-name-wrap {
-    position: absolute;
-    width: 100%;
-    top: 50%;
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-    transform: translateY(-50%);
+.ult-style-2 .ult-team-member-bio-wrap .ult-team-member-name-wrap{
+  position: absolute;
+  width: 100%;
+  top: 50%;
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
+  transform: translateY(-50%);
 
-    -webkit-transition: all .3s ease;
-    -moz-transition: all .3s ease;
-    -ms-transition: all .3s ease;
-    -o-transition: all .3s ease;
-    transition: all .3s ease;
-    text-align: center;
-    border-radius: inherit;
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+  text-align: center;
+  border-radius: inherit;
 }
-
 .ult-style-2 .ult-team-member-bio-wrap .ult-team_description_slide {
-    position: absolute;
-    width: 100%;
-    -webkit-transition: all .3s ease;
-    -moz-transition: all .3s ease;
-    -ms-transition: all .3s ease;
-    -o-transition: all .3s ease;
-    transition: all .3s ease;
-    top: 100%;
-    border-radius: inherit;
-    box-sizing: border-box;
+  position: absolute;
+  width: 100%;
+  -webkit-transition: all .3s ease;
+  -moz-transition: all .3s ease;
+  -ms-transition: all .3s ease;
+  -o-transition: all .3s ease;
+  transition: all .3s ease;
+  top: 100%;
+  border-radius: inherit;
+  box-sizing: border-box;
 }
 
-.ult-style-2:hover .ult-team-member-bio-wrap .ult-team-member-name-wrap {
-    top: -100%;
+.ult-style-2:hover .ult-team-member-bio-wrap .ult-team-member-name-wrap{
+  top: -100%;
+}
+.ult-style-2:hover .ult-team-member-bio-wrap .ult-team_description_slide{
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
 }
 
-.ult-style-2:hover .ult-team-member-bio-wrap .ult-team_description_slide {
-    top: 50%;
-    transform: translateY(-50%);
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
+.ult-style-2:hover .ult-team-member-bio-wrap .ult-team_description_slide.ult-desc-set-top{
+  top: 0px;
+  transform: none;
+  -webkit-transform: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  -o-transform: none;
 }
 
-.ult-style-2:hover .ult-team-member-bio-wrap .ult-team_description_slide.ult-desc-set-top {
-    top: 0px;
-    transform: none;
-    -webkit-transform: none;
-    -moz-transform: none;
-    -ms-transform: none;
-    -o-transform: none;
+.ult-style-3:hover .ult-team-member-image .ult-team-member-description{
+  top: 50%;
+  transform: translateY(-50%);
+  -webkit-transform: translateY(-50%);
+  -moz-transform: translateY(-50%);
+  -ms-transform: translateY(-50%);
+  -o-transform: translateY(-50%);
 }
 
-.ult-style-3:hover .ult-team-member-image .ult-team-member-description {
-    top: 50%;
-    transform: translateY(-50%);
-    -webkit-transform: translateY(-50%);
-    -moz-transform: translateY(-50%);
-    -ms-transform: translateY(-50%);
-    -o-transform: translateY(-50%);
-}
-
-.ult-style-3:hover .ult-team-member-image .ult-team-member-description.ult-desc-set-top {
-    top: 0px;
-    transform: none;
-    -webkit-transform: none;
-    -moz-transform: none;
-    -ms-transform: none;
-    -o-transform: none;
+.ult-style-3:hover .ult-team-member-image  .ult-team-member-description.ult-desc-set-top{
+  top: 0px;
+  transform: none;
+  -webkit-transform: none;
+  -moz-transform: none;
+  -ms-transform: none;
+  -o-transform: none;
 }
 
 .ult-team-member-wrap,
-.wpb_column > .wpb_wrapper .ult-team-member-wrap {
-    margin-bottom: 35px;
+.wpb_column>.wpb_wrapper .ult-team-member-wrap {
+   margin-bottom: 35px;
 }
 
 .ult-team-member-wrap .ult-team-member-image a,
 .ult-team-member-wrap a {
     border-radius: inherit;
 }
-
 .ult-style-2 .ult-team-member-description {
     margin: 10px 0 10px;
 }

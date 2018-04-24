@@ -11,12 +11,12 @@
  * in order to let the user hide the notification.
  *
  * @package   Remote Dashboard Notifications
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
+ * @link      https://getawesomesupport.com
  * @link      http://wordpress.org/plugins/remote-dashboard-notifications/
  * @link 	  https://github.com/ThemeAvenue/Remote-Dashboard-Notifications
- * @copyright 2016 ThemeAvenue
+ * @copyright 2016-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -330,7 +330,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 
 			global $current_user;
 
-			$dismissed = array_filter( (array) get_user_meta( $current_user->ID, '_rn_dismissed', true ) );
+			$dismissed = array_filter( (array) get_user_option( '_rn_dismissed', $current_user->ID ) );
 
 			if ( is_array( $dismissed ) && in_array( $slug, $dismissed ) ) {
 				return true;
@@ -497,7 +497,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 		 */
 		protected function create_admin_notice( $contents, $class, $dismiss ) { ?>
 			<div class="<?php echo $class; ?>">
-				<a href="<?php echo $dismiss; ?>" id="rn-dismiss" class="rn-dismiss-btn" title="<?php _e( 'Dismiss notification', 'remote-notifications' ); ?>">&times;</a>
+				<a href="<?php echo $dismiss; ?>" id="rn-dismiss" class="rn-dismiss-btn" title="<?php _e( 'Dismiss notification', 'awesome-support' ); ?>">&times;</a>
 				<p><?php echo html_entity_decode( $contents ); ?></p>
 			</div>
 		<?php }
@@ -527,7 +527,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			}
 
 			/* Get dismissed list */
-			$dismissed = array_filter( (array) get_user_meta( $current_user->ID, '_rn_dismissed', true ) );
+			$dismissed = array_filter( (array) get_user_option( '_rn_dismissed', $current_user->ID ) );
 
 			/* Add the current notice to the list if needed */
 			if ( is_array( $dismissed ) && ! in_array( $_GET['notification'], $dismissed ) ) {
@@ -535,7 +535,7 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			}
 
 			/* Update option */
-			update_user_meta( $current_user->ID, '_rn_dismissed', $dismissed );
+			update_user_option( $current_user->ID, '_rn_dismissed', $dismissed );
 
 			/* Get redirect URL */
 			$args = array();
@@ -713,19 +713,19 @@ if ( ! class_exists( 'Remote_Dashboard_Notifications_Client' ) ) {
 			}
 
 			if ( 200 !== (int) wp_remote_retrieve_response_code( $response ) ) {
-				return new WP_Error( 'invalid_response', sprintf( __( 'The server response was invalid (code %s)', 'remote-notifications' ), wp_remote_retrieve_response_code( $response ) ) );
+				return new WP_Error( 'invalid_response', sprintf( __( 'The server response was invalid (code %s)', 'awesome-support' ), wp_remote_retrieve_response_code( $response ) ) );
 			}
 
 			$body = wp_remote_retrieve_body( $response );
 
 			if ( empty( $body ) ) {
-				return new WP_Error( 'empty_response', __( 'The server response is empty', 'remote-notifications' ) );
+				return new WP_Error( 'empty_response', __( 'The server response is empty', 'awesome-support' ) );
 			}
 
 			$body = json_decode( $body );
 
 			if ( is_null( $body ) ) {
-				return new WP_Error( 'json_decode_error', __( 'Cannot decode the response content', 'remote-notifications' ) );
+				return new WP_Error( 'json_decode_error', __( 'Cannot decode the response content', 'awesome-support' ) );
 			}
 
 			set_transient( 'rn_last_notification_' . $notification['notice_id'], $body, $notification['cache_lifetime'] * 60 * 60 );

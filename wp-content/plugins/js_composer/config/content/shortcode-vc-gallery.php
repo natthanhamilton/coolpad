@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 return array(
 	'name' => __( 'Image Gallery', 'js_composer' ),
 	'base' => 'vc_gallery',
@@ -136,6 +140,7 @@ return array(
 			),
 			'value' => vc_target_param_list(),
 		),
+		vc_map_add_css_animation(),
 		array(
 			'type' => 'textfield',
 			'heading' => __( 'Extra class name', 'js_composer' ),

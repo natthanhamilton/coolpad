@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 return array(
 	'name' => __( 'Google Maps', 'js_composer' ),
 	'base' => 'vc_gmaps',
@@ -27,6 +31,7 @@ return array(
 			'admin_label' => true,
 			'description' => __( 'Enter map height (in pixels or leave empty for responsive map).', 'js_composer' ),
 		),
+		vc_map_add_css_animation(),
 		array(
 			'type' => 'textfield',
 			'heading' => __( 'Extra class name', 'js_composer' ),

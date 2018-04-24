@@ -1,6 +1,5 @@
-/* Tooltipster v3.2.6 */
-;
-(function (e, t, n) {
+/* Tooltipster v3.2.6 */ ;
+(function(e, t, n) {
     function s(t, n) {
         this.bodyOverflowX;
         this.callbacks = {
@@ -27,7 +26,7 @@
 
     function o(t, n) {
         var r = true;
-        e.each(t, function (e, i) {
+        e.each(t, function(e, i) {
             if (typeof n[e] === "undefined" || t[e] !== n[e]) {
                 r = false;
                 return false
@@ -55,7 +54,6 @@
         }
         return false
     }
-
     var r = "ulttooltipster",
         i = {
             /*ultContentSize: "auto",             /* ultimate */
@@ -74,23 +72,20 @@
             ultCustomTooltipStyle: false,
             ultContentStyle: null,
             ultBaseStyle: null,
-
+            
             //ultContainerWidth: null,
             /*ultBaseWidth: null,
-             ultPadding: null,*/
+            ultPadding: null,*/
             //ultBaseBGColor: "#FF5F5F",
             //ultBaseBorderColor: "#D34646",
             //ultBaseColor: "#333333",
             maxWidth: null,
-            functionInit: function (e, t) {
-            },
-            functionBefore: function (e, t) {
+            functionInit: function(e, t) {},
+            functionBefore: function(e, t) {
                 t()
             },
-            functionReady: function (e, t) {
-            },
-            functionAfter: function (e) {
-            },
+            functionReady: function(e, t) {},
+            functionAfter: function(e) {},
             icon: "(?)",
             iconCloning: true,
             iconDesktop: false,
@@ -113,10 +108,10 @@
             ult_adv_id: 0,
             ultimate_target: 0,
             responsive_json_new: 0,
-
+            
         };
     s.prototype = {
-        _init: function () {
+        _init: function() {
             var t = this;
             if (n.querySelector) {
                 if (t.options.content !== null) {
@@ -142,23 +137,23 @@
                     t.$elProxy = t.$el
                 }
                 if (t.options.trigger == "hover") {
-                    t.$elProxy.on("mouseenter." + t.namespace, function () {
+                    t.$elProxy.on("mouseenter." + t.namespace, function() {
                         if (!f() || t.options.touchDevices) {
                             t.mouseIsOverProxy = true;
                             t._show()
                         }
-                    }).on("mouseleave." + t.namespace, function () {
+                    }).on("mouseleave." + t.namespace, function() {
                         if (!f() || t.options.touchDevices) {
                             t.mouseIsOverProxy = false
                         }
                     });
                     if (u && t.options.touchDevices) {
-                        t.$elProxy.on("touchstart." + t.namespace, function () {
+                        t.$elProxy.on("touchstart." + t.namespace, function() {
                             t._showNow()
                         })
                     }
                 } else if (t.options.trigger == "click") {
-                    t.$elProxy.on("click." + t.namespace, function () {
+                    t.$elProxy.on("click." + t.namespace, function() {
                         if (!f() || t.options.touchDevices) {
                             t._show()
                         }
@@ -167,119 +162,95 @@
             }
             // t._responsive();
         },
-        _responsive: function () {
+        _responsive: function(){
 
-            /**
-             *  init variables
-             */
-            var large_screen = '',
-                desktop = '',
-                tablet = '',
-                tablet_portrait = '',
-                mobile_landscape = '',
-                mobile = '';
+                /**
+                 *  init variables
+                 */
+                 var    large_screen        = '',
+                        desktop             = '',
+                        tablet              = '',
+                        tablet_portrait     = '',
+                        mobile_landscape    = '',
+                        mobile              = '';
 
-            /**
-             *  generate responsive @media css
-             *------------------------------------------------------------*/
-            jQuery(".ult-responsive").each(function (index, element) {
+                /**
+                 *  generate responsive @media css
+                 *------------------------------------------------------------*/
+                jQuery(".ult-responsive").each(function(index, element) {
 
-                var t = jQuery(element),
-                    n = t.attr('data-responsive-json-new'),
-                    target = t.data('ultimate-target'),
-                    temp_large_screen = '',
-                    temp_desktop = '',
-                    temp_tablet = '',
-                    temp_tablet_portrait = '',
-                    temp_mobile_landscape = '',
-                    temp_mobile = '';
+                    var t                       = jQuery(element),
+                        n                       = t.attr('data-responsive-json-new'),
+                        target                  = t.data('ultimate-target'),
+                        temp_large_screen       = '',
+                        temp_desktop            = '',
+                        temp_tablet             = '',
+                        temp_tablet_portrait    = '',
+                        temp_mobile_landscape   = '',
+                        temp_mobile             = '';
 
 
-                //  jUST FOR TESTING
-                //  CHECK FOR TOOLTIP ONLY
-                if (jQuery(element).hasClass('ult-tooltipster-content')) {
-                    // console.log('n : ' + JSON.stringify(n) );
-                    // console.log('target : ' + target );
-                }
+                    //  jUST FOR TESTING
+                    //  CHECK FOR TOOLTIP ONLY
+                    if( jQuery(element).hasClass('ult-tooltipster-content') ) {
+                        // console.log('n : ' + JSON.stringify(n) );
+                        // console.log('target : ' + target );
+                    }
 
-                if (typeof n != "undefined" || n != null) {
-                    jQuery.each(jQuery.parseJSON(n), function (i, v) {
-                        // set css property
-                        var css_prop = i;
-                        if (typeof v != "undefined" && v != null) {
-                            var vals = v.split(";");
-                            jQuery.each(vals, function (i, vl) {
-                                if (typeof vl != "undefined" || vl != null) {
-                                    var splitval = vl.split(":");
-                                    switch (splitval[0]) {
-                                        case 'large_screen':
-                                            temp_large_screen += css_prop + ":" + splitval[1] + ";";
-                                            break;
-                                        case 'desktop':
-                                            temp_desktop += css_prop + ":" + splitval[1] + ";";
-                                            break;
-                                        case 'tablet':
-                                            temp_tablet += css_prop + ":" + splitval[1] + ";";
-                                            break;
-                                        case 'tablet_portrait':
-                                            temp_tablet_portrait += css_prop + ":" + splitval[1] + ";";
-                                            break;
-                                        case 'mobile_landscape':
-                                            temp_mobile_landscape += css_prop + ":" + splitval[1] + ";";
-                                            break;
-                                        case 'mobile':
-                                            temp_mobile += css_prop + ":" + splitval[1] + ";";
-                                            break;
+                    if (typeof n != "undefined" || n != null) {
+                        jQuery.each(jQuery.parseJSON(n), function (i, v) {
+                            // set css property
+                            var css_prop = i;
+                            if (typeof v != "undefined" && v != null) {
+                                var vals = v.split(";");
+                                jQuery.each(vals, function(i, vl) {
+                                    if (typeof vl != "undefined" || vl != null) {
+                                        var splitval = vl.split(":");
+                                        switch(splitval[0]) {
+                                            case 'large_screen':    temp_large_screen       += css_prop+":"+splitval[1]+";"; break;
+                                            case 'desktop':         temp_desktop            += css_prop+":"+splitval[1]+";"; break;
+                                            case 'tablet':          temp_tablet             += css_prop+":"+splitval[1]+";"; break;
+                                            case 'tablet_portrait': temp_tablet_portrait    += css_prop+":"+splitval[1]+";"; break;
+                                            case 'mobile_landscape':temp_mobile_landscape   += css_prop+":"+splitval[1]+";"; break;
+                                            case 'mobile':          temp_mobile             += css_prop+":"+splitval[1]+";"; break;
+                                        }
                                     }
-                                }
-                            });
-                        }
-                    });
-                }
+                                });                 
+                            }
+                        });
+                    }
 
-                /*
-                 *      REMOVE Comments for TESTING
-                 *-------------------------------------------*/
-                //if(temp_mobile!='') {             mobile              += '\n\t'+ target+ " { \t\t"+temp_mobile+" \t}"; }
-                //if(temp_mobile_landscape!='') { mobile_landscape  += '\n\t'+ target+ " { \t\t"+temp_mobile_landscape+" \t}"; }
-                //if(temp_tablet_portrait!='') { tablet_portrait        += '\n\t'+ target+ " { \t\t"+temp_tablet_portrait+" \t}"; }
-                //if(temp_tablet!='') {             tablet              += '\n\t'+ target+ " { \t\t"+temp_tablet+" \t}"; }
-                //if(temp_desktop!='') {            desktop             += '\n\t'+ target+ " { \t\t"+temp_desktop+" \t}"; }
-                //if(temp_large_screen!='') {   large_screen        += '\n\t'+ target+ " { \t\t"+temp_large_screen+" \t}"; }
+                    /*  
+                     *      REMOVE Comments for TESTING
+                     *-------------------------------------------*/
+                    //if(temp_mobile!='') {             mobile              += '\n\t'+ target+ " { \t\t"+temp_mobile+" \t}"; }
+                    //if(temp_mobile_landscape!='') { mobile_landscape  += '\n\t'+ target+ " { \t\t"+temp_mobile_landscape+" \t}"; }
+                    //if(temp_tablet_portrait!='') { tablet_portrait        += '\n\t'+ target+ " { \t\t"+temp_tablet_portrait+" \t}"; }
+                    //if(temp_tablet!='') {             tablet              += '\n\t'+ target+ " { \t\t"+temp_tablet+" \t}"; }
+                    //if(temp_desktop!='') {            desktop             += '\n\t'+ target+ " { \t\t"+temp_desktop+" \t}"; }
+                    //if(temp_large_screen!='') {   large_screen        += '\n\t'+ target+ " { \t\t"+temp_large_screen+" \t}"; }
 
-                if (temp_mobile != '') {
-                    mobile += target + '{' + temp_mobile + '}';
-                }
-                if (temp_mobile_landscape != '') {
-                    mobile_landscape += target + '{' + temp_mobile_landscape + '}';
-                }
-                if (temp_tablet_portrait != '') {
-                    tablet_portrait += target + '{' + temp_tablet_portrait + '}';
-                }
-                if (temp_tablet != '') {
-                    tablet += target + '{' + temp_tablet + '}';
-                }
-                if (temp_desktop != '') {
-                    desktop += target + '{' + temp_desktop + '}';
-                }
-                if (temp_large_screen != '') {
-                    large_screen += target + '{' + temp_large_screen + '}';
-                }
-            });
+                    if(temp_mobile!='') {           mobile              += target+ '{'+temp_mobile+'}'; }
+                    if(temp_mobile_landscape!='') { mobile_landscape    += target+ '{'+temp_mobile_landscape+'}'; }
+                    if(temp_tablet_portrait!='') { tablet_portrait      += target+ '{'+temp_tablet_portrait+'}'; }
+                    if(temp_tablet!='') {           tablet              += target+ '{'+temp_tablet+'}'; }
+                    if(temp_desktop!='') {          desktop             += target+ '{'+temp_desktop+'}'; }
+                    if(temp_large_screen!='') {     large_screen        += target+ '{'+temp_large_screen+'}'; }
+                });
 
             /*  
              *      REMOVE Comments for TESTING
              *-------------------------------------------*/
-            var UltimateMedia = '<style>\n/** Ultimate: Tooltipster Responsive **/ ';
-            UltimateMedia += desktop;
-            UltimateMedia += "\n@media (min-width: 1824px) { " + large_screen + "\n}";
-            UltimateMedia += "\n@media (max-width: 1199px) { " + tablet + "\n}";
-            UltimateMedia += "\n@media (max-width: 991px)  { " + tablet_portrait + "\n}";
-            UltimateMedia += "\n@media (max-width: 767px)  { " + mobile_landscape + "\n}";
-            UltimateMedia += "\n@media (max-width: 479px)  { " + mobile + "\n}";
-            UltimateMedia += '\n/** Ultimate: Tooltipster Responsive - **/</style>';
-            jQuery('head').append(UltimateMedia);
-            //console.log(UltimateMedia);
+            var UltimateMedia      = '<style>\n/** Ultimate: Tooltipster Responsive **/ ';
+             UltimateMedia   += desktop;
+             UltimateMedia   += "\n@media (min-width: 1824px) { "+ large_screen      +"\n}";
+             UltimateMedia   += "\n@media (max-width: 1199px) { "+ tablet            +"\n}";
+             UltimateMedia   += "\n@media (max-width: 991px)  { "+ tablet_portrait   +"\n}";
+             UltimateMedia   += "\n@media (max-width: 767px)  { "+ mobile_landscape  +"\n}";
+             UltimateMedia   += "\n@media (max-width: 479px)  { "+ mobile            +"\n}";
+             UltimateMedia   += '\n/** Ultimate: Tooltipster Responsive - **/</style>';    
+             jQuery('head').append(UltimateMedia);
+             //console.log(UltimateMedia);
 
             // var UltimateMedia    = '<style>/** Ultimate: Tooltipster Responsive **/ ';
             //     UltimateMedia   += desktop;
@@ -292,11 +263,11 @@
             //     jQuery('head').append(UltimateMedia);
             //     //console.log(UltimateMedia);
         },
-        _show: function () {
+        _show: function() {
             var e = this;
             if (e.Status != "shown" && e.Status != "appearing") {
                 if (e.options.delay) {
-                    e.timerShow = setTimeout(function () {
+                    e.timerShow = setTimeout(function() {
                         if (e.options.trigger == "click" || e.options.trigger == "hover" && e.mouseIsOverProxy) {
                             e._showNow()
                             e._responsive()
@@ -306,9 +277,9 @@
             }
             e._responsive()
         },
-        _showNow: function (n) {
+        _showNow: function(n) {
             var r = this;
-            r.options.functionBefore.call(r.$el, r.$el, function () {
+            r.options.functionBefore.call(r.$el, r.$el, function() {
                 if (r.enabled && r.Content !== null) {
                     if (n) r.callbacks.show.push(n);
                     r.callbacks.hide = [];
@@ -317,10 +288,10 @@
                     clearTimeout(r.timerHide);
                     r.timerHide = null;
                     if (r.options.onlyOne) {
-                        e(".ult-tooltipstered").not(r.$el).each(function (t, n) {
+                        e(".ult-tooltipstered").not(r.$el).each(function(t, n) {
                             var r = e(n),
                                 i = r.data("ult-tooltipster-ns");
-                            e.each(i, function (e, t) {
+                            e.each(i, function(e, t) {
                                 var n = r.data(t),
                                     i = n.status(),
                                     s = n.option("autoClose");
@@ -330,9 +301,9 @@
                             })
                         })
                     }
-                    var i = function () {
+                    var i = function() {
                         r.Status = "shown";
-                        e.each(r.callbacks.show, function (e, t) {
+                        e.each(r.callbacks.show, function(e, t) {
                             t.call(r.$el)
                         });
                         r.callbacks.show = []
@@ -353,12 +324,12 @@
                         }
                     } else {
                         r.Status = "appearing";
-                        var s = r.options.speed;
-
+                        var s    = r.options.speed;
+                        
                         var contentStyle = BaseStyle = '';
-                        if (r.options.ultCustomTooltipStyle) {
+                        if(r.options.ultCustomTooltipStyle) {
                             contentStyle = r.options.ultContentStyle ? r.options.ultContentStyle : "";
-                            BaseStyle = r.options.ultBaseStyle ? r.options.ultBaseStyle : "";
+                            BaseStyle    = r.options.ultBaseStyle ? r.options.ultBaseStyle : "";
                         }
 
                         /*var ultSize = "width: "+ r.options.ultContentSize + ";";  /* ultimate */
@@ -371,9 +342,9 @@
                             f = r.options.minWidth ? "min-width:" + Math.round(r.options.minWidth) + "px;" : "",
                             c = r.options.maxWidth ? "max-width:" + Math.round(r.options.maxWidth) + "px;" : "",
                             h = r.options.interactive ? "pointer-events: auto;" : "";
-                        BaseStyle = BaseStyle + ' ' + f + ' ' + c + ' ' + h + ' ' + a;
+                        BaseStyle    = BaseStyle + ' ' +f+ ' ' +c+' ' +h+' ' +a;
 
-                        r.$tooltip = e('<div id="' + r.options.ult_adv_id + '" class="ult-tooltipster-base ' + r.options.theme + '" style="' + BaseStyle + '"><div class="ult-tooltipster-content ult-responsive" data-ultimate-target="' + r.options.ultimate_target + '" data-responsive-json-new = \'' + r.options.responsive_json_new + '\' style="' + contentStyle + '"></div></div>');
+                        r.$tooltip = e('<div id="'+r.options.ult_adv_id+'" class="ult-tooltipster-base ' + r.options.theme + '" style="'+BaseStyle+'"><div class="ult-tooltipster-content ult-responsive" data-ultimate-target="'+r.options.ultimate_target+'" data-responsive-json-new = \''+r.options.responsive_json_new+'\' style="'+contentStyle+'"></div></div>');
                         /*r.$tooltip = e('<div class="ult-tooltipster-base ' + r.options.theme + '" style="' + ultCW + " " + f + " " + c + " " + h + " " + a + '"><div class="ult-tooltipster-content" style="'+ultSize+'"></div></div>');*/
                         if (l()) r.$tooltip.addClass(o);
                         r._content_insert();
@@ -388,47 +359,47 @@
                             r.$tooltip.css("display", "none").fadeIn(r.options.speed, i)
                         }
                         r._interval_set();
-                        e(t).on("scroll." + r.namespace + " resize." + r.namespace, function () {
+                        e(t).on("scroll." + r.namespace + " resize." + r.namespace, function() {
                             r.reposition()
                         });
                         if (r.options.autoClose) {
                             e("body").off("." + r.namespace);
                             if (r.options.trigger == "hover") {
                                 if (u) {
-                                    setTimeout(function () {
-                                        e("body").on("touchstart." + r.namespace, function () {
+                                    setTimeout(function() {
+                                        e("body").on("touchstart." + r.namespace, function() {
                                             r.hide()
                                         })
                                     }, 0)
                                 }
                                 if (r.options.interactive) {
                                     if (u) {
-                                        r.$tooltip.on("touchstart." + r.namespace, function (e) {
+                                        r.$tooltip.on("touchstart." + r.namespace, function(e) {
                                             e.stopPropagation()
                                         })
                                     }
                                     var p = null;
-                                    r.$elProxy.add(r.$tooltip).on("mouseleave." + r.namespace + "-autoClose", function () {
+                                    r.$elProxy.add(r.$tooltip).on("mouseleave." + r.namespace + "-autoClose", function() {
                                         clearTimeout(p);
-                                        p = setTimeout(function () {
+                                        p = setTimeout(function() {
                                             r.hide()
                                         }, r.options.interactiveTolerance)
-                                    }).on("mouseenter." + r.namespace + "-autoClose", function () {
+                                    }).on("mouseenter." + r.namespace + "-autoClose", function() {
                                         clearTimeout(p)
                                     })
                                 } else {
-                                    r.$elProxy.on("mouseleave." + r.namespace + "-autoClose", function () {
+                                    r.$elProxy.on("mouseleave." + r.namespace + "-autoClose", function() {
                                         r.hide()
                                     })
                                 }
                             } else if (r.options.trigger == "click") {
-                                setTimeout(function () {
-                                    e("body").on("click." + r.namespace + " touchstart." + r.namespace, function () {
+                                setTimeout(function() {
+                                    e("body").on("click." + r.namespace + " touchstart." + r.namespace, function() {
                                         r.hide()
                                     })
                                 }, 0);
                                 if (r.options.interactive) {
-                                    r.$tooltip.on("click." + r.namespace + " touchstart." + r.namespace, function (e) {
+                                    r.$tooltip.on("click." + r.namespace + " touchstart." + r.namespace, function(e) {
                                         e.stopPropagation()
                                     })
                                 }
@@ -436,7 +407,7 @@
                         }
                     }
                     if (r.options.timer > 0) {
-                        r.timerHide = setTimeout(function () {
+                        r.timerHide = setTimeout(function() {
                             r.timerHide = null;
                             r.hide()
                         }, r.options.timer + s)
@@ -444,9 +415,9 @@
                 }
             })
         },
-        _interval_set: function () {
+        _interval_set: function() {
             var t = this;
-            t.checkInterval = setInterval(function () {
+            t.checkInterval = setInterval(function() {
                 if (e("body").find(t.$el).length === 0 || e("body").find(t.$elProxy).length === 0 || t.Status == "hidden" || e("body").find(t.$tooltip).length === 0) {
                     if (t.Status == "shown" || t.Status == "appearing") t.hide();
                     t._interval_cancel()
@@ -468,17 +439,17 @@
                 }
             }, 200)
         },
-        _interval_cancel: function () {
+        _interval_cancel: function() {
             clearInterval(this.checkInterval);
             this.checkInterval = null
         },
-        _content_set: function (e) {
+        _content_set: function(e) {
             if (typeof e === "object" && e !== null && this.options.contentCloning) {
                 e = e.clone(true)
             }
             this.Content = e
         },
-        _content_insert: function () {
+        _content_insert: function() {
             var e = this,
                 t = this.$tooltip.find(".ult-tooltipster-content");
             if (typeof e.Content === "string" && !e.options.contentAsHTML) {
@@ -487,7 +458,7 @@
                 t.empty().append(e.Content)
             }
         },
-        _update: function (e) {
+        _update: function(e) {
             var t = this;
             t._content_set(e);
             if (t.Content !== null) {
@@ -504,10 +475,10 @@
                                 "-ms-transition": "all " + t.options.speed + "ms, width 0ms, height 0ms, left 0ms, top 0ms",
                                 transition: "all " + t.options.speed + "ms, width 0ms, height 0ms, left 0ms, top 0ms"
                             }).addClass("ult-tooltipster-content-changing");
-                            setTimeout(function () {
+                            setTimeout(function() {
                                 if (t.Status != "hidden") {
                                     t.$tooltip.removeClass("ult-tooltipster-content-changing");
-                                    setTimeout(function () {
+                                    setTimeout(function() {
                                         if (t.Status !== "hidden") {
                                             t.$tooltip.css({
                                                 "-webkit-transition": t.options.speed + "ms",
@@ -521,7 +492,7 @@
                                 }
                             }, t.options.speed)
                         } else {
-                            t.$tooltip.fadeTo(t.options.speed, .5, function () {
+                            t.$tooltip.fadeTo(t.options.speed, .5, function() {
                                 if (t.Status != "hidden") {
                                     t.$tooltip.fadeTo(t.options.speed, 1)
                                 }
@@ -533,7 +504,7 @@
                 t.hide()
             }
         },
-        _repositionInfo: function (e) {
+        _repositionInfo: function(e) {
             return {
                 dimension: {
                     height: e.outerHeight(false),
@@ -546,7 +517,7 @@
                 }
             }
         },
-        hide: function (n) {
+        hide: function(n) {
             var r = this;
             if (n) r.callbacks.hide.push(n);
             r.callbacks.show = [];
@@ -554,15 +525,15 @@
             r.timerShow = null;
             clearTimeout(r.timerHide);
             r.timerHide = null;
-            var i = function () {
-                e.each(r.callbacks.hide, function (e, t) {
+            var i = function() {
+                e.each(r.callbacks.hide, function(e, t) {
                     t.call(r.$el)
                 });
                 r.callbacks.hide = []
             };
             if (r.Status == "shown" || r.Status == "appearing") {
                 r.Status = "disappearing";
-                var s = function () {
+                var s = function() {
                     r.Status = "hidden";
                     if (typeof r.Content == "object" && r.Content !== null) {
                         r.Content.detach()
@@ -588,14 +559,14 @@
             }
             return r
         },
-        show: function (e) {
+        show: function(e) {
             this._showNow(e);
             return this
         },
-        update: function (e) {
+        update: function(e) {
             return this.content(e)
         },
-        content: function (e) {
+        content: function(e) {
             if (typeof e === "undefined") {
                 return this.Content
             } else {
@@ -603,7 +574,7 @@
                 return this
             }
         },
-        reposition: function () {
+        reposition: function() {
             var n = this;
             if (e("body").find(n.$tooltip).length !== 0) {
                 n.$tooltip.css("width", "");
@@ -711,7 +682,6 @@
                         M = s.offset.top - a - _ - 12
                     }
                 }
-
                 if (P == "top") {
                     var j = s.offset.left + o - (s.offset.left + s.dimension.width);
                     A = s.offset.left + D - j / 2;
@@ -721,9 +691,9 @@
                      *  Calculate tooltip border width:
                      *------------------------------------------------*/
                     /*var     blw = parseInt(n.$tooltip.css("border-left-width"), 10),
-                     brw = parseInt(n.$tooltip.css("border-right-width"), 10);
-                     var remb = blw + brw;
-                     A = A - remb ;*/
+                            brw = parseInt(n.$tooltip.css("border-right-width"), 10);
+                    var remb = blw + brw;
+                    A = A - remb ;*/
                     //alert(o);
                     //25 + 25 + 375 = 425;
 
@@ -751,9 +721,9 @@
                      *  Calculate tooltip border width: for [BOTTOM]
                      *------------------------------------------------*/
                     /*var     blw = parseInt(n.$tooltip.css("border-left-width"), 10),
-                     brw = parseInt(n.$tooltip.css("border-right-width"), 10);
-                     var remb = (blw + brw) / 2;
-                     A = A - remb ;*/
+                            brw = parseInt(n.$tooltip.css("border-right-width"), 10);
+                    var remb = (blw + brw) / 2;
+                    A = A - remb ;*/
 
                     H();
                     B("top", "bottom")
@@ -780,9 +750,9 @@
                      *  Calculate tooltip border width: for [BOTTOM]
                      *------------------------------------------------*/
                     /*var     btw = parseInt(n.$tooltip.css("border-top-width"), 10),
-                     bbw = parseInt(n.$tooltip.css("border-bottom-width"), 10);
-                     var ptb = (btw + bbw) / 2;
-                     M = M - ptb ;*/
+                            bbw = parseInt(n.$tooltip.css("border-bottom-width"), 10);
+                    var ptb = (btw + bbw) / 2;
+                    M = M - ptb ;*/
                     //alert(M);
 
                     if (A < 0 && O + o > i) {
@@ -804,13 +774,13 @@
                     var F = s.offset.top + a - (s.offset.top + s.dimension.height);
                     M = s.offset.top - F / 2 - _;
 
-                    /*
+                     /* 
                      *  Calculate tooltip border width: for [BOTTOM]
                      *------------------------------------------------*/
-                    /* var     btw = parseInt(n.$tooltip.css("border-top-width"), 10),
-                     bbw = parseInt(n.$tooltip.css("border-bottom-width"), 10);
-                     var ptb = (btw + bbw) / 2;
-                     M = M + ptb ;*/
+                   /* var     btw = parseInt(n.$tooltip.css("border-top-width"), 10),
+                            bbw = parseInt(n.$tooltip.css("border-bottom-width"), 10);
+                    var ptb = (btw + bbw) / 2;
+                    M = M + ptb ;*/
 
 
                     if (A + o > i && O < 0) {
@@ -889,16 +859,16 @@
             }
             return n
         },
-        enable: function () {
+        enable: function() {
             this.enabled = true;
             return this
         },
-        disable: function () {
+        disable: function() {
             this.hide();
             this.enabled = false;
             return this
         },
-        destroy: function () {
+        destroy: function() {
             var t = this;
             t.hide();
             if (t.$el[0] !== t.$elProxy[0]) t.$elProxy.remove();
@@ -908,31 +878,31 @@
                 var r = typeof t.Content === "string" ? t.Content : e("<div></div>").append(t.Content).html();
                 t.$el.removeClass("ult-tooltipstered").attr("title", r).removeData(t.namespace).removeData("ult-tooltipster-ns").off("." + t.namespace)
             } else {
-                n = e.grep(n, function (e, n) {
+                n = e.grep(n, function(e, n) {
                     return e !== t.namespace
                 });
                 t.$el.data("ult-tooltipster-ns", n)
             }
             return t
         },
-        elementIcon: function () {
+        elementIcon: function() {
             return this.$el[0] !== this.$elProxy[0] ? this.$elProxy[0] : undefined
         },
-        elementTooltip: function () {
+        elementTooltip: function() {
             return this.$tooltip ? this.$tooltip[0] : undefined
         },
-        option: function (e, t) {
+        option: function(e, t) {
             if (typeof t == "undefined") return this.options[e];
             else {
                 this.options[e] = t;
                 return this
             }
         },
-        status: function () {
+        status: function() {
             return this.Status
         }
     };
-    e.fn[r] = function () {
+    e.fn[r] = function() {
         var t = arguments;
         if (this.length === 0) {
             if (typeof t[0] === "string") {
@@ -953,7 +923,7 @@
         } else {
             if (typeof t[0] === "string") {
                 var r = "#*$~&";
-                this.each(function () {
+                this.each(function() {
                     var n = e(this).data("ult-tooltipster-ns"),
                         i = n ? e(this).data(n[0]) : null;
                     if (i) {
@@ -977,7 +947,7 @@
                     a = u && t[0].multiple || !u && i.multiple,
                     f = t[0] && typeof t[0].debug !== "undefined",
                     l = f && t[0].debug || !f && i.debug;
-                this.each(function () {
+                this.each(function() {
                     var n = false,
                         r = e(this).data("ult-tooltipster-ns"),
                         i = null;
@@ -1004,7 +974,7 @@
     };
     var u = !!("ontouchstart" in t);
     var a = false;
-    e("body").one("mousemove", function () {
+    e("body").one("mousemove", function() {
         a = true
     })
 })(jQuery, window, document);

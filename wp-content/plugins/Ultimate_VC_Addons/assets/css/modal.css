@@ -1,7 +1,6 @@
 .ult-hide {
     display: none !important
 }
-
 button.overlay-show,
 button.overlay-show-cornershape,
 button.overlay-show-genie,
@@ -14,7 +13,6 @@ span.overlay-show,
 div.ult-overlay-close {
     cursor: pointer
 }
-
 .btn-modal {
     display: block;
     margin: 2px;
@@ -23,60 +21,50 @@ div.ult-overlay-close {
     line-height: 1.5;
     border-radius: 3px
 }
-
 .btn-modal-lg {
     padding: 10px 16px;
     font-size: 18px;
     line-height: 1.33;
     border-radius: 6px
 }
-
 .btn-modal-sm {
     padding: 5px 10px;
     font-size: 12px;
     line-height: 1.5;
     border-radius: 3px
 }
-
 .btn-modal-md {
     padding: 6px 12px;
     font-size: 14px;
     line-height: 1.5;
     border-radius: 3px
 }
-
 .btn-modal-block {
     display: block;
     width: 100%;
     padding-right: 0;
     padding-left: 0
 }
-
 .btn-modal:active {
     box-shadow: none;
     outline: 0
 }
-
 button.ult-align-center {
     margin: 0 auto;
     display: block
 }
-
 button.ult-align-left {
     float: left
 }
-
 button.ult-align-right {
     float: right
 }
-
 img.ult-modal-img {
     box-shadow: none;
     border: 0;
     max-width: 100%;
     display: block
 }
-
 img.ult-modal-inside-img {
     width: 48px;
     vertical-align: middle;
@@ -84,34 +72,27 @@ img.ult-modal-inside-img {
     box-shadow: none;
     border: 0
 }
-
 img.ult-align-center {
     margin: 0 auto
 }
-
 img.ult-align-left {
     float: left
 }
-
 img.ult-align-right {
     float: right
 }
-
 span.ult-align-left {
     text-align: left
 }
-
 span.ult-align-center {
     text-align: center;
     display: table;
     margin: 0 auto
 }
-
 span.ult-align-right {
     display: block;
     text-align: right
 }
-
 .ult-overlay {
     position: fixed;
     width: 100%;
@@ -125,13 +106,11 @@ span.ult-align-right {
     z-index: 16777271;
     visibility: hidden
 }
-
 .ult_modal-auto-top.ult-open {
     display: block;
     overflow: auto;
     overflow-y: scroll
 }
-
 .ult-overlay-close {
     width: 80px;
     height: 80px;
@@ -146,12 +125,10 @@ span.ult-align-right {
     outline: 0;
     z-index: 9999
 }
-
 .ult-overlay .ult-overlay-close:active {
     box-shadow: none !important;
     outline: 0 !important
 }
-
 .ult_modal {
     width: 400px;
     max-width: 100%;
@@ -172,7 +149,6 @@ span.ult-align-right {
     -ms-perspective: 1200px;
     perspective: 1200px
 }
-
 .ult_modal-auto-top .ult_modal {
     margin: 35px auto;
     top: 0;
@@ -182,7 +158,6 @@ span.ult-align-right {
     -ms-transform: translate(0);
     transform: translate(0)
 }
-
 .ult_modal-content {
     -webkit-border-radius: 8px;
     -moz-border-radius: 8px;
@@ -196,20 +171,17 @@ span.ult-align-right {
     box-shadow: 0 0 7px #404040;
     overflow: hidden
 }
-
 .ult_modal-header {
     border-bottom: 1px solid #e5e5e5;
     font-size: 16px;
     background: #fff
 }
-
-.ult_modal-header > .modal-icon {
+.ult_modal-header>.modal-icon {
     font-size: 2em;
     display: table-cell;
     vertical-align: middle;
     padding: 0 0 0 20px
 }
-
 h3.ult_modal-title {
     color: inherit;
     display: table-cell;
@@ -219,7 +191,6 @@ h3.ult_modal-title {
     font-size: 1em;
     line-height: 1.5em
 }
-
 .ult_modal-body {
     padding: 15px 20px;
     background: #fff;
@@ -227,15 +198,12 @@ h3.ult_modal-title {
     overflow: hidden;
     line-height: 1.5em
 }
-
 .ult_modal-body p {
     margin-bottom: 1em
 }
-
 .ult_modal-body img {
     max-width: 100%
 }
-
 .ult-overlay iframe,
 .ult-overlay object {
     opacity: 0;
@@ -243,7 +211,6 @@ h3.ult_modal-title {
     z-index: -99999;
     max-width: 100%
 }
-
 .ult-overlay.ult-open iframe,
 .ult-overlay.ult-open object {
     opacity: 1;
@@ -251,25 +218,20 @@ h3.ult_modal-title {
     z-index: 9999;
     z-index: 16777271
 }
-
 .ult_modal.ult-small {
     width: 35%
 }
-
 .ult_modal.ult-medium {
     width: 60%
 }
-
 .ult_modal.ult-container {
     width: 96%
 }
-
 .ult_modal.ult-block {
     width: auto;
     max-width: 90%;
     display: table
 }
-
 .overlay-fade {
     opacity: 0;
     visibility: hidden;
@@ -279,7 +241,6 @@ h3.ult_modal-title {
     -ms-transition: opacity .5s, visibility .5s;
     transition: opacity .5s, visibility .5s
 }
-
 .overlay-fade.ult-open {
     opacity: 1;
     visibility: visible;
@@ -289,7 +250,6 @@ h3.ult_modal-title {
     -ms-transition: opacity .5s;
     transition: opacity .5s
 }
-
 .overlay-fade .ult_modal-content {
     opacity: .4;
     -webkit-transform: translateY(0);
@@ -303,11 +263,9 @@ h3.ult_modal-title {
     -ms-transition: -ms-transform .5s, opacity .5s;
     transition: transform .5s, opacity .5s
 }
-
 .overlay-fade.ult-open .ult_modal-content {
     opacity: 1
 }
-
 .overlay-fade.ult-close .ult_modal-content {
     -webkit-transform: translateY(25%);
     -moz-transform: translateY(25%);
@@ -315,7 +273,6 @@ h3.ult_modal-title {
     -ms-transform: translateY(25%);
     transform: translateY(25%)
 }
-
 .overlay-corner {
     opacity: 0;
     visibility: hidden;
@@ -330,7 +287,6 @@ h3.ult_modal-title {
     -ms-transition: opacity .5s, -ms-transform .5s, visibility .5s;
     transition: opacity .5s, transform .5s, visibility .5s
 }
-
 .overlay-corner.ult-open {
     opacity: 1;
     visibility: visible;
@@ -345,7 +301,6 @@ h3.ult_modal-title {
     -ms-transition: opacity .5s, -ms-transform .5s;
     transition: opacity .5s, transform .5s
 }
-
 .overlay-cornerbottomright,
 .overlay-cornerbottomleft,
 .overlay-cornertopleft,
@@ -358,7 +313,6 @@ h3.ult_modal-title {
     -ms-transition: opacity .5s, -ms-transform .5s, visibility .5s;
     transition: opacity .5s, transform .5s, visibility .5s
 }
-
 .overlay-cornerbottomright.ult-open,
 .overlay-cornerbottomleft.ult-open,
 .overlay-cornertopleft.ult-open,
@@ -376,7 +330,6 @@ h3.ult_modal-title {
     -ms-transition: opacity .5s, -ms-transform .5s;
     transition: opacity .5s, transform .5s
 }
-
 .overlay-cornerbottomright {
     -webkit-transform: translateY(200px) translateX(200px);
     -moz-transform: translateY(200px) translateX(200px);
@@ -384,7 +337,6 @@ h3.ult_modal-title {
     -ms-transform: translateY(200px) translateX(200px);
     transform: translateY(200px) translateX(200px)
 }
-
 .overlay-cornerbottomleft {
     -webkit-transform: translateY(200px) translateX(-200px);
     -moz-transform: translateY(200px) translateX(-200px);
@@ -392,7 +344,6 @@ h3.ult_modal-title {
     -ms-transform: translateY(200px) translateX(-200px);
     transform: translateY(200px) translateX(-200px)
 }
-
 .overlay-cornertopleft {
     -webkit-transform: translateY(-200px) translateX(-200px);
     -moz-transform: translateY(-200px) translateX(-200px);
@@ -400,7 +351,6 @@ h3.ult_modal-title {
     -ms-transform: translateY(-200px) translateX(-200px);
     transform: translateY(-200px) translateX(-200px)
 }
-
 .overlay-cornertopright {
     -webkit-transform: translateY(-200px) translateX(200px);
     -moz-transform: translateY(-200px) translateX(200px);
@@ -408,7 +358,6 @@ h3.ult_modal-title {
     -ms-transform: translateY(-200px) translateX(200px);
     transform: translateY(-200px) translateX(200px)
 }
-
 .overlay-slidedown,
 .overlay-slideup,
 .overlay-slideleft,
@@ -420,7 +369,6 @@ h3.ult_modal-title {
     -ms-transition: -ms-transform .4s ease-in-out, visibility .4s;
     transition: transform .4s ease-in-out, visibility .4s
 }
-
 .overlay-slidedown.ult-open,
 .overlay-slideup.ult-open,
 .overlay-slideleft.ult-open,
@@ -432,7 +380,6 @@ h3.ult_modal-title {
     -ms-transition: -ms-transform .4s ease-in-out;
     transition: transform .4s ease-in-out
 }
-
 .overlay-slidedown {
     -webkit-transform: translateY(-100%);
     -moz-transform: translateY(-100%);
@@ -440,7 +387,6 @@ h3.ult_modal-title {
     -ms-transform: translateY(-100%);
     transform: translateY(-100%)
 }
-
 .overlay-slidedown.ult-open {
     -webkit-transform: translateY(0);
     -moz-transform: translateY(0);
@@ -448,7 +394,6 @@ h3.ult_modal-title {
     -ms-transform: translateY(0);
     transform: translateY(0)
 }
-
 .overlay-slideup {
     -webkit-transform: translateY(100%);
     -moz-transform: translateY(100%);
@@ -456,7 +401,6 @@ h3.ult_modal-title {
     -ms-transform: translateY(100%);
     transform: translateY(100%)
 }
-
 .overlay-slideup.ult-open {
     -webkit-transform: translateY(0);
     -moz-transform: translateY(0);
@@ -464,7 +408,6 @@ h3.ult_modal-title {
     -ms-transform: translateY(0);
     transform: translateY(0)
 }
-
 .overlay-slideleft {
     -webkit-transform: translateX(100%);
     -moz-transform: translateX(100%);
@@ -472,7 +415,6 @@ h3.ult_modal-title {
     -ms-transform: translateX(100%);
     transform: translateX(100%)
 }
-
 .overlay-slideleft.ult-open {
     -webkit-transform: translateX(0);
     -moz-transform: translateX(0);
@@ -480,7 +422,6 @@ h3.ult_modal-title {
     -ms-transform: translateX(0);
     transform: translateX(0)
 }
-
 .overlay-slideright {
     -webkit-transform: translateX(-100%);
     -moz-transform: translateX(-100%);
@@ -488,7 +429,6 @@ h3.ult_modal-title {
     -ms-transform: translateX(-100%);
     transform: translateX(-100%)
 }
-
 .overlay-slideright.ult-open {
     -webkit-transform: translateX(0);
     -moz-transform: translateX(0);
@@ -496,7 +436,6 @@ h3.ult_modal-title {
     -ms-transform: translateX(0);
     transform: translateX(0)
 }
-
 .overlay-zoomin,
 .overlay-zoomout {
     visibility: hidden;
@@ -507,7 +446,6 @@ h3.ult_modal-title {
     -ms-transition: -ms-transform .2s, opacity .2s, visibility .2s;
     transition: transform .2s, opacity .2s, visibility .2s
 }
-
 .overlay-zoomin.ult-open,
 .overlay-zoomout.ult-open {
     visibility: visible;
@@ -523,7 +461,6 @@ h3.ult_modal-title {
     -ms-transition: -ms-transform .4s, opacity .4s;
     transition: transform .4s, opacity .4s
 }
-
 .overlay-zoomin {
     -webkit-transform: scale(1.5);
     -moz-transform: scale(1.5);
@@ -531,7 +468,6 @@ h3.ult_modal-title {
     -ms-transform: scale(1.5);
     transform: scale(1.5)
 }
-
 .overlay-zoomout {
     -webkit-transform: scale(0.5);
     -moz-transform: scale(0.5);
@@ -539,7 +475,6 @@ h3.ult_modal-title {
     -ms-transform: scale(0.5);
     transform: scale(0.5)
 }
-
 .overlay-doorhorizontal {
     visibility: hidden;
     width: 0;
@@ -555,7 +490,6 @@ h3.ult_modal-title {
     -ms-transition: width .5s .3s, visibility .8s;
     transition: width .5s .3s, visibility .8s
 }
-
 .overlay-doorhorizontal.ult-open {
     visibility: visible;
     width: 100%;
@@ -565,7 +499,6 @@ h3.ult_modal-title {
     -ms-transition: width .5s;
     transition: width .5s
 }
-
 .overlay-doorhorizontal .ult_modal-content,
 .overlay-doorhorizontal .ult-overlay-close {
     opacity: 0;
@@ -575,7 +508,6 @@ h3.ult_modal-title {
     -ms-transition: opacity .5s;
     transition: opacity .5s
 }
-
 .overlay-doorhorizontal.ult-open .ult_modal-content,
 .overlay-doorhorizontal.ult-open .ult-overlay-close {
     opacity: 1;
@@ -585,7 +517,6 @@ h3.ult_modal-title {
     -ms-transition-delay: .5s;
     transition-delay: .5s
 }
-
 .overlay-doorhorizontal.ult-close .ult_modal-content,
 .overlay-doorhorizontal.ult-close .ult-overlay-close {
     -webkit-transition-delay: 0;
@@ -594,7 +525,6 @@ h3.ult_modal-title {
     -ms-transition-delay: 0;
     transition-delay: 0
 }
-
 .overlay-doorvertical {
     visibility: hidden;
     width: 100%;
@@ -611,7 +541,6 @@ h3.ult_modal-title {
     -ms-transition: height .5s .3s, visibility .8s;
     transition: height .5s .3s, visibility .8s
 }
-
 .overlay-doorvertical.ult-open {
     visibility: visible;
     height: 100%;
@@ -621,7 +550,6 @@ h3.ult_modal-title {
     -ms-transition: height .5s;
     transition: height .5s
 }
-
 .overlay-doorvertical .ult_modal-content,
 .overlay-doorvertical .ult-overlay-close {
     opacity: 0;
@@ -631,7 +559,6 @@ h3.ult_modal-title {
     -ms-transition: opacity .3s .5s;
     transition: opacity .3s .5s
 }
-
 .overlay-doorvertical.ult-open .ult_modal-content,
 .overlay-doorvertical.ult-open .ult-overlay-close {
     opacity: 1;
@@ -641,7 +568,6 @@ h3.ult_modal-title {
     -ms-transition-delay: .5s;
     transition-delay: .5s
 }
-
 .overlay-doorvertical.ult-close .ult_modal-content,
 .overlay-doorvertical.ult-close .ult-overlay-close {
     -webkit-transition-delay: 0;
@@ -650,7 +576,6 @@ h3.ult_modal-title {
     -ms-transition-delay: 0;
     transition-delay: 0
 }
-
 .overlay-cornershape {
     background: transparent;
     visibility: hidden;
@@ -660,7 +585,6 @@ h3.ult_modal-title {
     -ms-transition: visibility .5s;
     transition: visibility .5s
 }
-
 .overlay-cornershape.ult-open {
     visibility: visible;
     -webkit-transition: none;
@@ -669,7 +593,6 @@ h3.ult_modal-title {
     -ms-transition: none;
     transition: none
 }
-
 .overlay-cornershape svg {
     position: fixed;
     top: 0;
@@ -677,11 +600,9 @@ h3.ult_modal-title {
     width: 100%;
     height: 100%
 }
-
 .overlay-cornershape .overlay-path {
     fill: rgba(28, 28, 28, 0.9)
 }
-
 .overlay-cornershape .ult_modal-content,
 .overlay-cornershape .ult-overlay-close {
     opacity: 0;
@@ -691,7 +612,6 @@ h3.ult_modal-title {
     -ms-transition: opacity .4s;
     transition: opacity .4s
 }
-
 .overlay-cornershape.ult-open .ult_modal-content,
 .overlay-cornershape.ult-open .ult-overlay-close {
     opacity: 1;
@@ -701,7 +621,6 @@ h3.ult_modal-title {
     -ms-transition-delay: .4s;
     transition-delay: .4s
 }
-
 .overlay-cornershape.ult-close .ult_modal-content,
 .overlay-cornershape.ult-close .ult-overlay-close {
     -webkit-transition-delay: 0;
@@ -710,7 +629,6 @@ h3.ult_modal-title {
     -ms-transition-delay: 0;
     transition-delay: 0
 }
-
 .overlay-boxes {
     background: transparent;
     visibility: hidden;
@@ -720,7 +638,6 @@ h3.ult_modal-title {
     -ms-transition: visibility .8s;
     transition: visibility .8s
 }
-
 .overlay-boxes.ult-open {
     visibility: visible;
     -webkit-transition: none;
@@ -729,18 +646,15 @@ h3.ult_modal-title {
     -ms-transition: none;
     transition: none
 }
-
 .overlay-boxes svg {
     position: absolute;
     top: 0;
     left: 0
 }
-
 .overlay-boxes svg path {
     fill: rgba(28, 28, 28, 1);
     display: none
 }
-
 .overlay-boxes .ult_modal-content,
 .overlay-boxes .ult-overlay-close {
     opacity: 0;
@@ -750,7 +664,6 @@ h3.ult_modal-title {
     -ms-transition: opacity .5s .8s;
     transition: opacity .5s .8s
 }
-
 .overlay-boxes.ult-open .ult_modal-content,
 .overlay-boxes.ult-open .ult-overlay-close {
     opacity: 1;
@@ -760,7 +673,6 @@ h3.ult_modal-title {
     -ms-transition-delay: .8s;
     transition-delay: .8s
 }
-
 .overlay-boxes.ult-close .ult_modal-content,
 .overlay-boxes.ult-close .ult-overlay-close {
     -webkit-transition-delay: 0;
@@ -769,7 +681,6 @@ h3.ult_modal-title {
     -ms-transition-delay: 0;
     transition-delay: 0
 }
-
 .overlay-boxes {
     background: transparent;
     visibility: hidden;
@@ -779,7 +690,6 @@ h3.ult_modal-title {
     -ms-transition: visibility .8s;
     transition: visibility .8s
 }
-
 .overlay-boxes.ult-open {
     visibility: visible;
     -webkit-transition: none;
@@ -788,18 +698,15 @@ h3.ult_modal-title {
     -ms-transition: none;
     transition: none
 }
-
 .overlay-boxes svg {
     position: absolute;
     top: 0;
     left: 0
 }
-
 .overlay-boxes svg path {
     fill: rgba(28, 28, 28, 1);
     display: none
 }
-
 .overlay-boxes .ult-overlay-close {
     opacity: 0;
     -webkit-transition: opacity .5s .8s;
@@ -808,7 +715,6 @@ h3.ult_modal-title {
     -ms-transition: opacity .5s .8s;
     transition: opacity .5s .8s
 }
-
 .overlay-boxes.ult-open .ult-overlay-close {
     opacity: 1;
     -webkit-transition-delay: .8s;
@@ -817,7 +723,6 @@ h3.ult_modal-title {
     -ms-transition-delay: .8s;
     transition-delay: .8s
 }
-
 .overlay-boxes.ult-close .ult-overlay-close {
     -webkit-transition-delay: 0;
     -moz-transition-delay: 0;
@@ -825,7 +730,6 @@ h3.ult_modal-title {
     -ms-transition-delay: 0;
     transition-delay: 0
 }
-
 .overlay-simplegenie {
     visibility: hidden;
     -webkit-transform: translateY(60%) scale(0);
@@ -839,7 +743,6 @@ h3.ult_modal-title {
     -ms-transition: -ms-transform .4s, visibility .4s;
     transition: transform .4s, visibility .4s
 }
-
 .overlay-simplegenie.ult-open {
     visibility: visible;
     -webkit-transform: translateY(0) scale(1);
@@ -853,7 +756,6 @@ h3.ult_modal-title {
     -ms-transition: -ms-transform .4s;
     transition: transform .4s
 }
-
 .overlay-genie {
     background: transparent;
     visibility: hidden;
@@ -864,7 +766,6 @@ h3.ult_modal-title {
     -ms-transition: opacity .3s .2s, visibility .6s;
     transition: opacity .3s .2s, visibility .6s
 }
-
 .overlay-genie.ult-open {
     visibility: visible;
     opacity: 1;
@@ -874,17 +775,14 @@ h3.ult_modal-title {
     -ms-transition: opacity .3s;
     transition: opacity .3s
 }
-
 .overlay-genie svg {
     position: fixed;
     top: 0;
     left: 0
 }
-
 .overlay-genie .overlay-path {
     fill: rgba(28, 28, 28, 0.9)
 }
-
 .overlay-genie .ult_modal-content {
     opacity: 0;
     -webkit-transform: scale(0.8) translateY(-48%);
@@ -898,7 +796,6 @@ h3.ult_modal-title {
     -ms-transition: opacity .3s .3s, -ms-transform .3s .3s;
     transition: opacity .3s .3s, transform .3s .3s
 }
-
 .overlay-genie .ult-overlay-close {
     opacity: 0;
     -webkit-transition: opacity .3s;
@@ -907,7 +804,6 @@ h3.ult_modal-title {
     -ms-transition: opacity .3s;
     transition: opacity .3s
 }
-
 .overlay-genie.ult-open .ult_modal-content,
 .overlay-genie.ult-open .ult-overlay-close {
     opacity: 1;
@@ -917,7 +813,6 @@ h3.ult_modal-title {
     -ms-transition-delay: .3s;
     transition-delay: .3s
 }
-
 .overlay-genie.ult-open .ult_modal-content {
     -webkit-transform: scale(1) translateY(0);
     -moz-transform: scale(1) translateY(0);
@@ -925,7 +820,6 @@ h3.ult_modal-title {
     -ms-transform: scale(1) translateY(0);
     transform: scale(1) translateY(0)
 }
-
 .overlay-genie.ult-close .ult_modal-content,
 .overlay-genie.ult-close .ult-overlay-close {
     -webkit-transition-delay: 0;
@@ -934,28 +828,22 @@ h3.ult_modal-title {
     -ms-transition-delay: 0;
     transition-delay: 0
 }
-
-.ult_modal div.ult_modal-body > iframe {
+.ult_modal div.ult_modal-body>iframe {
     display: none
 }
-
-.ult-open > .ult_modal div.ult_modal-body > iframe {
+.ult-open>.ult_modal div.ult_modal-body>iframe {
     display: block
 }
-
 div.ult_modal-body .fluid-width-video-wrapper {
     padding: 0 !important;
 }
-
-@media (max-width: 767px) {
+@media(max-width:767px) {
     .ult_modal.ult-small, .ult_modal.ult-medium, .ult_modal.ult-container {
         width: 80%
     }
-
     .ult_modal.ult-block {
         max-width: 80%
     }
-
     .ult-overlay-close {
         width: 24px;
         height: 24px;

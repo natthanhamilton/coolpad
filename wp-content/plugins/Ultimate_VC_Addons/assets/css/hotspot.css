@@ -3,7 +3,6 @@
     box-sizing: border-box;
     -webkit-box-sizing: border-box
 }
-
 .ult_hotspot_container img {
     border: none;
     box-shadow: none;
@@ -11,11 +10,9 @@
     width: 100%;
     max-width: 100%
 }
-
 .ultimate-hotspot-base {
     max-width: 100%
 }
-
 .ult_hotspot_container {
     position: relative;
     clear: both;
@@ -26,16 +23,13 @@
     padding: 0;
     line-height: 0
 }
-
 .ult_hotspot_container .utl-hotspot-items {
     overflow: hidden
 }
-
 .ult_hotspot_container .utl-hotspot-items .ult-hotspot-item {
     position: absolute;
     text-align: center
 }
-
 .ult_hotspot_container .utl-hotspot-items .ult-hotspot-item a {
     text-decoration: none;
     border: none;
@@ -44,7 +38,6 @@
     text-align: center;
     line-height: 0
 }
-
 .ult_hotspot_container .utl-hotspot-items .ult-hotspot-item a:hover {
     -webkit-transform: scale(1.2, 1.2);
     -moz-transform: scale(1.2, 1.2);
@@ -57,11 +50,9 @@
     -o-animation: none;
     animation: none
 }
-
 .ult_hotspot_container .utl-hotspot-items .ult-hotspot-item a:focus {
     outline: 0
 }
-
 .ult_hotspot_container .utl-hotspot-items .ult-hotspot-item a span {
     color: inherit;
     font-size: 16px;
@@ -74,11 +65,9 @@
     transform: translate(-50%, -50%);
     -webkit-transform: translate(-50%, -50%)
 }
-
 .ult_hotspot_container .utl-hotspot-items .ult-hotspot-item.ult-glow .aio-icon i:before {
     z-index: 50
 }
-
 .ult_hotspot_container .utl-hotspot-items .ult-hotspot-item .ult-glow {
     background: #fff;
     position: absolute;
@@ -94,7 +83,6 @@
     -o-animation: Hotspot_Glow 2s ease-out infinite;
     animation: Hotspot_Glow 2s ease-out infinite
 }
-
 @-webkit-keyframes Hotspot_Glow {
     0% {
         -webkit-transform: scale(0.1);
@@ -108,7 +96,6 @@
         opacity: 0
     }
 }
-
 @keyframes Hotspot_Glow {
     0% {
         transform: scale(0.1);
@@ -122,7 +109,6 @@
         opacity: 0
     }
 }
-
 .ult_hotspot_container .utl-hotspot-items .ult-hotspot-item.ult-pulse {
     border: none;
     -webkit-animation: Hotspot_Pulse 2s ease-out infinite;
@@ -131,7 +117,6 @@
     -o-animation: Hotspot_Pulse 2s ease-out infinite;
     animation: Hotspot_Pulse 2s ease-out infinite
 }
-
 @-webkit-keyframes Hotspot_Pulse {
     0%, 100% {
         -webkit-transform: scale(1);
@@ -142,7 +127,6 @@
         text-shadow: 0 0 10px #4F4F4F
     }
 }
-
 @keyframes Hotspot_Pulse {
     0%, 100% {
         transform: scale(1);
@@ -153,7 +137,6 @@
         text-shadow: 0 0 10px #4F4F4F
     }
 }
-
 .hotspot-tooltip-content {
-    display: none !important
+    display: none!important
 }

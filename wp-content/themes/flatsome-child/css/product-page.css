@@ -77,27 +77,6 @@ Vertically center everything
 Multi line truncate
 
 */
-.multi-line-truncate:before {
-  /* points in the end */
-  content: '...';
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of block */
-  right: 0;
-  bottom: 0;
-}
-.multi-line-truncate:after {
-  /* points in the end */
-  content: '...';
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of text */
-  right: 0;
-  /* set width and height */
-  width: 1em;
-  height: 1em;
-  margin-top: 0.2em;
-}
 /*
 
 Hover transition
@@ -183,4 +162,10 @@ retailer a:hover {
 }
 .single_ad_to_cart_button img {
   height: 25px;
+}
+.cart .quantity label {
+  display: none;
+}
+.cart .quantity input {
+  outline: 0;
 }

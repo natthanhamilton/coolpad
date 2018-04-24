@@ -1,13 +1,38 @@
 <?php
 if ( ! defined( 'ABSPATH' ) ) exit; // Exit if accessed directly
 
+/**
+ * Handles the management of Job Listing meta fields.
+ *
+ * @package wp-job-manager
+ * @since 1.0.0
+ */
 class WP_Job_Manager_Writepanels {
 
 	/**
-	 * __construct function.
+	 * The single instance of the class.
 	 *
-	 * @access public
-	 * @return void
+	 * @var self
+	 * @since  1.26.0
+	 */
+	private static $_instance = null;
+
+	/**
+	 * Allows for accessing single instance of class. Class should only be constructed once per call.
+	 *
+	 * @since  1.26.0
+	 * @static
+	 * @return self Main instance.
+	 */
+	public static function instance() {
+		if ( is_null( self::$_instance ) ) {
+			self::$_instance = new self();
+		}
+		return self::$_instance;
+	}
+
+	/**
+	 * Constructor.
 	 */
 	public function __construct() {
 		add_action( 'add_meta_boxes', array( $this, 'add_meta_boxes' ) );
@@ -16,10 +41,9 @@ class WP_Job_Manager_Writepanels {
 	}
 
 	/**
-	 * job_listing_fields function.
+	 * Returns configuration for custom fields on Job Listing posts.
 	 *
-	 * @access public
-	 * @return void
+	 * @return array
 	 */
 	public function job_listing_fields() {
 		global $post;
@@ -80,13 +104,14 @@ class WP_Job_Manager_Writepanels {
 				'description' => __( 'Featured listings will be sticky during searches, and can be styled differently.', 'wp-job-manager' ),
 				'priority'    => 10
 			);
+			$job_expires = get_post_meta( $post->ID, '_job_expires', true );
 			$fields['_job_expires'] = array(
 				'label'       => __( 'Listing Expiry Date', 'wp-job-manager' ),
 				'priority'    => 11,
 				'classes'     => array( 'job-manager-datepicker' ),
 				/* translators: date format placeholder, see https://secure.php.net/date */
-				'placeholder' => _x( 'yyyy-mm-dd', 'Date format placeholder.', 'wp-job-manager' ),
-				'value'       => metadata_exists( 'post', $post->ID, '_job_expires' ) ? get_post_meta( $post->ID, '_job_expires', true ) : calculate_job_expiry( $post->ID ),
+				'placeholder' => ! empty( $job_expires ) ? _x( 'yyyy-mm-dd', 'Date format placeholder.', 'wp-job-manager' ) : calculate_job_expiry( $post->ID ),
+				'value'       => ! empty( $job_expires ) ? date( 'Y-m-d', strtotime( $job_expires ) ) : '',
 			);
 		}
 		if ( $current_user->has_cap( 'edit_others_job_listings' ) ) {
@@ -97,7 +122,16 @@ class WP_Job_Manager_Writepanels {
 			);
 		}
 
-		$fields = apply_filters( 'job_manager_job_listing_data_fields', $fields );
+		/**
+		 * Filters job listing data fields for WP Admin post editor.
+		 *
+		 * @since 1.0.0
+		 * @since 1.27.0 $post_id was added
+		 *
+		 * @param array $fields
+		 * @param int   $post_id
+		 */
+		$fields = apply_filters( 'job_manager_job_listing_data_fields', $fields, $post->ID );
 
 		uasort( $fields, array( $this, 'sort_by_priority' ) );
 
@@ -105,7 +139,11 @@ class WP_Job_Manager_Writepanels {
 	}
 
 	/**
-	 * Sort array by priority value
+	 * Sorts array of custom fields by priority value.
+	 *
+	 * @param array $a
+	 * @param array $b
+	 * @return int
 	 */
 	protected function sort_by_priority( $a, $b ) {
 	    if ( ! isset( $a['priority'] ) || ! isset( $b['priority'] ) || $a['priority'] === $b['priority'] ) {
@@ -115,35 +153,40 @@ class WP_Job_Manager_Writepanels {
 	}
 
 	/**
-	 * add_meta_boxes function.
-	 *
-	 * @access public
-	 * @return void
+	 * Handles the hooks to add custom field meta boxes.
 	 */
 	public function add_meta_boxes() {
 		global $wp_post_types;
 
 		add_meta_box( 'job_listing_data', sprintf( __( '%s Data', 'wp-job-manager' ), $wp_post_types['job_listing']->labels->singular_name ), array( $this, 'job_listing_data' ), 'job_listing', 'normal', 'high' );
-		if ( false == job_manager_multi_job_type() ) {
+		if ( ! get_option( 'job_manager_enable_types' ) || wp_count_terms( 'job_listing_type' ) == 0 ) {
 			remove_meta_box( 'job_listing_typediv', 'job_listing', 'side');
-			add_meta_box( 'job_listing_type', __( 'Job Listings', 'wp-job-manager' ), array( $this, 'job_listing_metabox' ),'job_listing' ,'side','core');
+		} elseif ( false == job_manager_multi_job_type() ) {
+			remove_meta_box( 'job_listing_typediv', 'job_listing', 'side');
+			$job_listing_type = get_taxonomy( 'job_listing_type' );
+			add_meta_box( 'job_listing_type', $job_listing_type->labels->menu_name, array( $this, 'job_listing_metabox' ),'job_listing' ,'side','core');
 		}
 	}
 
-	function job_listing_metabox( $post ) {
-		//Set up the taxonomy object and get terms
+	/**
+	 * Displays job listing metabox.
+	 *
+	 * @param int|WP_Post $post
+	 */
+	public function job_listing_metabox( $post ) {
+		// Set up the taxonomy object and get terms
 		$taxonomy = 'job_listing_type';
-		$tax = get_taxonomy( $taxonomy );//This is the taxonomy object
+		$tax = get_taxonomy( $taxonomy );// This is the taxonomy object
 
-		//The name of the form
+		// The name of the form
 		$name = 'tax_input[' . $taxonomy . ']';
 
-		//Get all the terms for this taxonomy
+		// Get all the terms for this taxonomy
 		$terms = get_terms( $taxonomy, array( 'hide_empty' => 0 ) );
 		$postterms = get_the_terms( $post->ID, $taxonomy );
 		$current = ( $postterms ? array_pop( $postterms ) : false );
 		$current = ( $current ? $current->term_id : 0 );
-		//Get current and popular terms
+		// Get current and popular terms
 		$popular = get_terms( $taxonomy, array( 'orderby' => 'count', 'order' => 'DESC', 'number' => 10, 'hierarchical' => false ) );
 		$postterms = get_the_terms( $post->ID,$taxonomy );
 		$current = ($postterms ? array_pop($postterms) : false);
@@ -155,7 +198,7 @@ class WP_Job_Manager_Writepanels {
 			<!-- Display tabs-->
 			<ul id="<?php echo $taxonomy; ?>-tabs" class="category-tabs">
 				<li class="tabs"><a href="#<?php echo $taxonomy; ?>-all" tabindex="3"><?php echo $tax->labels->all_items; ?></a></li>
-				<li class="hide-if-no-js"><a href="#<?php echo $taxonomy; ?>-pop" tabindex="3"><?php _e( 'Most Used' ); ?></a></li>
+				<li class="hide-if-no-js"><a href="#<?php echo $taxonomy; ?>-pop" tabindex="3"><?php _e( 'Most Used', 'wp-job-manager' ); ?></a></li>
 			</ul>
 
 			<!-- Display taxonomy terms -->
@@ -187,10 +230,10 @@ class WP_Job_Manager_Writepanels {
 	}
 
 	/**
-	 * input_file function.
+	 * Displays label and file input field.
 	 *
-	 * @param mixed $key
-	 * @param mixed $field
+	 * @param string $key
+	 * @param array  $field
 	 */
 	public static function input_file( $key, $field ) {
 		global $thepostid;
@@ -226,10 +269,10 @@ class WP_Job_Manager_Writepanels {
 	}
 
 	/**
-	 * input_text function.
+	 * Displays label and text input field.
 	 *
-	 * @param mixed $key
-	 * @param mixed $field
+	 * @param string $key
+	 * @param array  $field
 	 */
 	public static function input_text( $key, $field ) {
 		global $thepostid;
@@ -250,16 +293,69 @@ class WP_Job_Manager_Writepanels {
 		?>
 		<p class="form-field">
 			<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $field['label'] ) ; ?>: <?php if ( ! empty( $field['description'] ) ) : ?><span class="tips" data-tip="<?php echo esc_attr( $field['description'] ); ?>">[?]</span><?php endif; ?></label>
-			<input type="text" name="<?php echo esc_attr( $name ); ?>" class="<?php echo esc_attr( $classes ); ?>" id="<?php echo esc_attr( $key ); ?>" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" value="<?php echo esc_attr( $field['value'] ); ?>" />
+			<input type="text" autocomplete="off" name="<?php echo esc_attr( $name ); ?>" class="<?php echo esc_attr( $classes ); ?>" id="<?php echo esc_attr( $key ); ?>" placeholder="<?php echo esc_attr( $field['placeholder'] ); ?>" value="<?php echo esc_attr( $field['value'] ); ?>" />
 		</p>
 		<?php
 	}
 
 	/**
-	 * input_text function.
+	 * Just displays information.
 	 *
-	 * @param mixed $key
-	 * @param mixed $field
+	 * @since 1.27.0
+	 *
+	 * @param string $key
+	 * @param array  $field
+	 */
+	public static function input_info( $key, $field ) {
+		self::input_hidden( $key, $field );
+	}
+
+	/**
+	 * Displays information and/or hidden input.
+	 *
+	 * @since 1.27.0
+	 *
+	 * @param string $key
+	 * @param array  $field
+	 */
+	public static function input_hidden( $key, $field ) {
+		global $thepostid;
+
+		if ( 'hidden' === $field['type'] && ! isset( $field['value'] ) ) {
+			$field['value'] = get_post_meta( $thepostid, $key, true );
+		}
+		if ( ! empty( $field['name'] ) ) {
+			$name = $field['name'];
+		} else {
+			$name = $key;
+		}
+		if ( ! empty( $field['classes'] ) ) {
+			$classes = implode( ' ', is_array( $field['classes'] ) ? $field['classes'] : array( $field['classes'] ) );
+		} else {
+			$classes = '';
+		}
+		$hidden_input = '';
+		if ( 'hidden' === $field['type'] ) {
+			$hidden_input = '<input type="hidden" name="' . esc_attr( $name ) . '" class="' . esc_attr( $classes ) . '" id="' . esc_attr( $key ) . '" value="' . esc_attr( $field['value'] ) . '" />';
+			if ( empty( $field['label'] ) ) {
+				echo $hidden_input;
+				return;
+			}
+		}
+		?>
+		<p class="form-field">
+			<label for="<?php echo esc_attr( $key ); ?>"><?php echo esc_html( $field['label'] ) ; ?>: <?php if ( ! empty( $field['description'] ) ) : ?><span class="tips" data-tip="<?php echo esc_attr( $field['description'] ); ?>">[?]</span><?php endif; ?></label>
+			<?php if ( ! empty( $field['information'] ) ) : ?><span class="information"><?php echo wp_kses( $field['information'], array( 'a' => array( 'href' => array() ) ) ); ?></span><?php endif; ?>
+			<?php echo $hidden_input; ?>
+		</p>
+		<?php
+	}
+
+	/**
+	 * Displays label and textarea input field.
+	 *
+	 * @param string $key
+	 * @param array  $field
 	 */
 	public static function input_textarea( $key, $field ) {
 		global $thepostid;
@@ -281,10 +377,10 @@ class WP_Job_Manager_Writepanels {
 	}
 
 	/**
-	 * input_select function.
+	 * Displays label and select input field.
 	 *
-	 * @param mixed $key
-	 * @param mixed $field
+	 * @param string $key
+	 * @param array  $field
 	 */
 	public static function input_select( $key, $field ) {
 		global $thepostid;
@@ -310,10 +406,10 @@ class WP_Job_Manager_Writepanels {
 	}
 
 	/**
-	 * input_select function.
+	 * Displays label and multi-select input field.
 	 *
-	 * @param mixed $key
-	 * @param mixed $field
+	 * @param string $key
+	 * @param array  $field
 	 */
 	public static function input_multiselect( $key, $field ) {
 		global $thepostid;
@@ -339,10 +435,10 @@ class WP_Job_Manager_Writepanels {
 	}
 
 	/**
-	 * input_checkbox function.
+	 * Displays label and checkbox input field.
 	 *
-	 * @param mixed $key
-	 * @param mixed $field
+	 * @param string $key
+	 * @param array  $field
 	 */
 	public static function input_checkbox( $key, $field ) {
 		global $thepostid;
@@ -365,10 +461,10 @@ class WP_Job_Manager_Writepanels {
 	}
 
 	/**
-	 * Box to choose who posted the job
+	 * Displays label and author select field.
 	 *
-	 * @param mixed $key
-	 * @param mixed $field
+	 * @param string $key
+	 * @param array  $field
 	 */
 	public static function input_author( $key, $field ) {
 		global $thepostid, $post;
@@ -404,10 +500,10 @@ class WP_Job_Manager_Writepanels {
 	}
 
 	/**
-	 * input_radio function.
+	 * Displays label and radio input field.
 	 *
-	 * @param mixed $key
-	 * @param mixed $field
+	 * @param string $key
+	 * @param array  $field
 	 */
 	public static function input_radio( $key, $field ) {
 		global $thepostid;
@@ -432,11 +528,9 @@ class WP_Job_Manager_Writepanels {
 	}
 
 	/**
-	 * job_listing_data function.
+	 * Displays metadata fields for Job Listings.
 	 *
-	 * @access public
-	 * @param mixed $post
-	 * @return void
+	 * @param int|WP_Post $post
 	 */
 	public function job_listing_data( $post ) {
 		global $post, $thepostid;
@@ -465,12 +559,10 @@ class WP_Job_Manager_Writepanels {
 	}
 
 	/**
-	 * save_post function.
+	 * Handles `save_post` action.
 	 *
-	 * @access public
-	 * @param mixed $post_id
-	 * @param mixed $post
-	 * @return void
+	 * @param int     $post_id
+	 * @param WP_Post $post
 	 */
 	public function save_post( $post_id, $post ) {
 		if ( empty( $post_id ) || empty( $post ) || empty( $_POST ) ) return;
@@ -485,12 +577,10 @@ class WP_Job_Manager_Writepanels {
 	}
 
 	/**
-	 * save_job_listing_data function.
+	 * Handles the actual saving of job listing data fields.
 	 *
-	 * @access public
-	 * @param mixed $post_id
-	 * @param mixed $post
-	 * @return void
+	 * @param int     $post_id
+	 * @param WP_Post $post (Unused)
 	 */
 	public function save_job_listing_data( $post_id, $post ) {
 		global $wpdb;
@@ -501,12 +591,20 @@ class WP_Job_Manager_Writepanels {
 
 		// Save fields
 		foreach ( $this->job_listing_fields() as $key => $field ) {
+			if ( isset( $field['type'] ) && 'info' === $field['type'] ) {
+				continue;
+			}
+
 			// Expirey date
 			if ( '_job_expires' === $key ) {
-				if ( ! empty( $_POST[ $key ] ) ) {
-					update_post_meta( $post_id, $key, date( 'Y-m-d', strtotime( sanitize_text_field( $_POST[ $key ] ) ) ) );
+				if ( empty( $_POST[ $key ] ) ) {
+					if ( get_option( 'job_manager_submission_duration' ) ) {
+						update_post_meta( $post_id, $key, calculate_job_expiry( $post_id ) );
+					} else {
+						delete_post_meta( $post_id, $key );
+					}
 				} else {
-					update_post_meta( $post_id, $key, '' );
+					update_post_meta( $post_id, $key, date( 'Y-m-d', strtotime( sanitize_text_field( $_POST[ $key ] ) ) ) );
 				}
 			}
 
@@ -524,7 +622,7 @@ class WP_Job_Manager_Writepanels {
 			}
 
 			elseif ( '_application' === $key ) {
-				update_post_meta( $post_id, $key, sanitize_text_field( urldecode( $_POST[ $key ] ) ) );
+				update_post_meta( $post_id, $key, sanitize_text_field( is_email( $_POST[ $key ] ) ? $_POST[ $key ] : urldecode( $_POST[ $key ] ) ) );
 			}
 
 			// Everything else
@@ -554,7 +652,37 @@ class WP_Job_Manager_Writepanels {
 				}
 			}
 		}
+
+		/* Set Post Status To Expired If Already Expired */
+		$expiry_date = get_post_meta( $post_id, '_job_expires', true );
+		$today_date  = date( 'Y-m-d', current_time( 'timestamp' ) );
+		$is_job_listing_expired = $expiry_date && $today_date > $expiry_date;
+		if( $is_job_listing_expired ) {
+			remove_action( 'job_manager_save_job_listing', array( $this, 'save_job_listing_data' ), 20, 2 );
+			if ( $this->is_job_listing_being_reactivated() ) {
+				update_post_meta( $post_id, '_job_expires', calculate_job_expiry( $post_id ) );
+			} else {
+				$job_data = array(
+					'ID'          => $post_id,
+					'post_status' => 'expired',
+				);
+				wp_update_post( $job_data );
+			}
+			add_action( 'job_manager_save_job_listing', array( $this, 'save_job_listing_data' ), 20, 2 );
+		}
+	}
+
+	/**
+	 * Checks if the job listing is being reactivated from an expired state.
+	 *
+	 * @return bool True if being reactivated.
+	 */
+	protected function is_job_listing_being_reactivated() {
+		return isset( $_POST['post_status'] )
+			   && isset( $_POST['original_post_status'] )
+			   && 'expired' === $_POST['original_post_status']
+			   && 'publish' === $_POST['post_status'];
 	}
 }
 
-new WP_Job_Manager_Writepanels();
+WP_Job_Manager_Writepanels::instance();

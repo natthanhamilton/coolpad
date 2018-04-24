@@ -1,13 +1,19 @@
-<?php get_header(); ?>
+<?php
+$output = "";
+if (have_posts()) {
+    while (have_posts()) {
+        if (get_post_type() == 'blog') echo '<!-- Checking for blog type -->';
+        $id = the_ID();
+        $content = the_content();
+        $post = the_post();
+        $classes = post_class('page');
+        $output .= "{$post}<div id='post-{$id}' {$classes}>{$content}</div>";
+    }
+}
 
-<div id="content">
-	<?php if (have_posts()) {
-		while (have_posts()) : the_post(); ?>
-			<div id="post-<?php the_ID(); ?>" <?php post_class('page'); ?>>
-				<?php the_content(); ?>
-			</div>
-		<?php endwhile;
-	} ?>
-</div>
+// Output
 
-<?php get_footer(); ?>
+get_header();
+echo "<div id='content'>{$output}</div>";
+get_footer();
+?>

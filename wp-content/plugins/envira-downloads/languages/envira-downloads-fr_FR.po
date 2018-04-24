@@ -1,0 +1,231 @@
+# Copyright (C) 2017 Envira Gallery - Downloads Addon
+# This file is distributed under the same license as the Envira Gallery - Downloads Addon package.
+msgid ""
+msgstr ""
+"Project-Id-Version: Envira Gallery - Downloads Addon 1.1.1\n"
+"Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/envira-downloads\n"
+"POT-Creation-Date: 2017-07-26 23:00+0200\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"PO-Revision-Date: 2017-07-27 11:27+0200\n"
+"Language-Team: \n"
+"X-Generator: Poedit 2.0.3\n"
+"Last-Translator: \n"
+"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Language: fr_FR\n"
+
+#: includes/admin/metaboxes.php:86
+msgid "Downloads"
+msgstr "Téléchargements"
+
+#: includes/admin/metaboxes.php:125
+msgid "Downloads Gallery Settings"
+msgstr "Paramètres de téléchargements de la galerie"
+
+#: includes/admin/metaboxes.php:127
+msgid ""
+"The settings below adjust the image download options on your Gallery output."
+msgstr ""
+"Les paramètres ci-dessous permettent de régler les options de téléchargement "
+"d'image depuis la galerie."
+
+#: includes/admin/metaboxes.php:129
+msgid "Need some help?"
+msgstr "Besoin d’aide ?"
+
+#: includes/admin/metaboxes.php:131
+msgid "Read the Documentation"
+msgstr "Lire la documentation"
+
+#: includes/admin/metaboxes.php:135
+msgid "Watch a Video"
+msgstr "Regarder une vidéo"
+
+#: includes/admin/metaboxes.php:144 includes/admin/metaboxes.php:269
+msgid "Display Download Button?"
+msgstr "Afficher le bouton de téléchargement ?"
+
+#: includes/admin/metaboxes.php:148
+msgid ""
+"Enables or disables displaying a download button on each image in the "
+"gallery view."
+msgstr ""
+"Active ou désactive l'affichage d'un bouton de téléchargement sur chaque "
+"image dans la vue de la galerie."
+
+#: includes/admin/metaboxes.php:153
+msgid "Image Size To Download"
+msgstr "Taille de l'image à télécharger"
+
+#: includes/admin/metaboxes.php:161
+msgid ""
+"Define what image size and dimensions that you want users to download. Note: "
+"Instagram galleries will always attempt to pull the oringial image size."
+msgstr ""
+"Définissez la taille et les dimensions de l'image que les utilisateurs "
+"peuvent télécharger. Remarque : Les galeries d'Instagram essayent toujours "
+"de récupérer la taille de l'image originale."
+
+#: includes/admin/metaboxes.php:166
+msgid "Display Download All Button?"
+msgstr "Affichage du bouton \"Tout télécharger\" ?"
+
+#: includes/admin/metaboxes.php:170
+msgid "If enabled, displays a Download All option."
+msgstr "Si cette option est activée, affiche l'option \"Tout télécharger\"."
+
+#: includes/admin/metaboxes.php:176
+msgid "Custom name the zip file?"
+msgstr "Nom de fichier personnalisé du fichier zip ?"
+
+#: includes/admin/metaboxes.php:180
+msgid ""
+"If you do not provide a custom name, the default is \"envira-gallery.zip\"."
+msgstr ""
+"Si vous n'indiquez pas de nom de fichier personnalisé, la valeur par défaut "
+"sera \"envira-gallery.zip\"."
+
+#: includes/admin/metaboxes.php:186
+msgid "Download All Button Position"
+msgstr "Position du bouton \"Tout télécharger\""
+
+#: includes/admin/metaboxes.php:194
+msgid "Where to display the download all button in relation to the Gallery."
+msgstr "Où afficher le bouton \"Tout télécharger\" relatif à la galerie."
+
+#: includes/admin/metaboxes.php:199
+msgid "Download All Button Label"
+msgstr "Intitulé du bouton \"Tout télécharger\""
+
+#: includes/admin/metaboxes.php:203
+msgid "The label to display on the Download All button."
+msgstr "L'intitulé à afficher sur le bouton \"Tout télécharger\""
+
+#: includes/admin/metaboxes.php:208 includes/admin/metaboxes.php:278
+msgid "Download Button Position"
+msgstr "Position du bouton de téléchargement"
+
+#: includes/admin/metaboxes.php:216 includes/admin/metaboxes.php:286
+msgid "Where to display the download button over the image."
+msgstr "Où afficher le bouton de téléchargement sur l'image."
+
+#: includes/admin/metaboxes.php:221 includes/admin/metaboxes.php:291
+msgid "Force Download?"
+msgstr "Forcer le téléchargement ?"
+
+#: includes/admin/metaboxes.php:225 includes/admin/metaboxes.php:295
+msgid ""
+"If enabled, prompts a file download in the browser instead of display the "
+"image in a new browser window/tab."
+msgstr ""
+"Si activé, demande un téléchargement de fichier dans le navigateur au lieu "
+"d'afficher l'image dans une nouvelle fenêtre /onglet du navigateur."
+
+#: includes/admin/metaboxes.php:233
+msgid "Download Password"
+msgstr "Mot de passe pour le téléchargement"
+
+#: includes/admin/metaboxes.php:237
+msgid ""
+"If defined, requires the visitor to enter this password when they attempt to "
+"download an image."
+msgstr ""
+"Si défini, le visiteur doit saisir ce mot de passe avant de pouvoir "
+"télécharger une image."
+
+#: includes/admin/metaboxes.php:242
+msgid "Invalid Password Message"
+msgstr "Message de mot de passe invalide"
+
+#: includes/admin/metaboxes.php:246
+msgid "The message to display if the visitor enters an incorrect password."
+msgstr "Le message à afficher si le visiteur saisit un mot de passe incorrect."
+
+#: includes/admin/metaboxes.php:260
+msgid "Downloads Lightbox Settings"
+msgstr "Paramètres de téléchargement à partir de la Lightbox"
+
+#: includes/admin/metaboxes.php:262
+msgid ""
+"The settings below adjust the image download options on your Lightbox output."
+msgstr ""
+"Les paramètres ci-dessous permettent de régler les options de téléchargement "
+"d'image sur la Lightbox."
+
+#: includes/admin/metaboxes.php:273
+msgid ""
+"Enables or disables displaying the download button on each image in the "
+"Lightbox view."
+msgstr ""
+"Active ou désactive l'affichage du bouton de téléchargement sur chaque image "
+"dans la Lightbox."
+
+#: includes/global/common.php:65
+msgid "Download All Images"
+msgstr "Télécharger toutes les images"
+
+#: includes/global/common.php:72
+msgid "The password entered was invalid. Please try again."
+msgstr "Le mot de passe que vous avez saisi est invalide. Veuillez réessayer."
+
+#: includes/global/common.php:94
+msgid "Top Left"
+msgstr "En haut à gauche"
+
+#: includes/global/common.php:95
+msgid "Top Right"
+msgstr "En haut à droite"
+
+#: includes/global/common.php:96
+msgid "Bottom Left"
+msgstr "En bas à gauche"
+
+#: includes/global/common.php:97
+msgid "Bottom Right"
+msgstr "En bas à droite"
+
+#: includes/global/common.php:114
+msgid "Above Gallery"
+msgstr "Au-dessus de la galerie"
+
+#: includes/global/common.php:115
+msgid "Below Gallery"
+msgstr "En-dessous de la galerie"
+
+#: includes/global/common.php:138
+msgid "Default"
+msgstr "Par défaut"
+
+#: includes/global/common.php:173
+msgid "Original Size"
+msgstr "Taille originale"
+
+#: includes/global/shortcode.php:134 includes/global/shortcode.php:308
+msgid "Please enter the password to download this image."
+msgstr "Veuillez saisir le mot de passe pour télécharger cette image."
+
+#: includes/global/shortcode.php:435 includes/global/shortcode.php:457
+msgid "Click here to download this image"
+msgstr "Cliquez ici pour télécharger cette image"
+
+#: includes/global/shortcode.php:435 includes/global/shortcode.php:457
+msgid "Download"
+msgstr "Journal des téléchargements"
+
+#. Plugin Name of the plugin/theme
+msgid "Envira Gallery - Downloads Addon"
+msgstr "Envira Gallery - Téléchargements Addon"
+
+#. Plugin URI of the plugin/theme
+#. Author URI of the plugin/theme
+msgid "http://enviragallery.com"
+msgstr "http://enviragallery.com"
+
+#. Description of the plugin/theme
+msgid "Display Download Icons on Gallery Images"
+msgstr "Afficher les icônes de téléchargement sur les images de la galerie"
+
+#. Author of the plugin/theme
+msgid "Envira Gallery Team"
+msgstr "Équipe de Envira Gallery"

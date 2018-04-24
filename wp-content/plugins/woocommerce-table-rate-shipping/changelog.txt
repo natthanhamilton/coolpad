@@ -1,0 +1,160 @@
+﻿3.6.6 - 2016-03-22
+	- Fixed: Further issues with WPML and shipping classes
+	- Fixed: Filter 'be_table_shipping_ordered_rates' results not being applied
+	- Fixed: Fatal error caused my compatiblity issues with some plugins
+
+3.6.5 - 2016-02-08
+	- Fixed: Shipping class IDs not being translated with WPML
+	- Fixed: Issue with setting the order shipping options appear
+	- Fixed: calculate_subtotal function including virtual products
+	- Enhanced: Support for bundle products subtotal
+	- Enhanced: Updated Spanish translation courtesy of jgonzalezd
+
+3.6.4 - 2015-07-15
+	- Enhanced: Support for Brazil postal codes
+	- Enhanced: Speed of postal code comparisons in zones
+	- Fixed: Coupon setting changed with WooCommerce 2.3
+	- Fixed: Added WPML price filter to Free Shipping Override subtotal setting
+
+3.6.3 - 2015-06-08
+	- Fixed: Issues with translating shipping titles with WPML
+	- Fixed: Excluded shipping classes not returning a shipping rate under Per Class condition
+	- Enhanced: Updated plugin updater
+
+3.6.2 - 2015-05-12
+	- Fixed: Bug with handling fees applying to correct shipping rates
+	- Fixed: Subtotal after coupons not removing tax on coupon
+
+3.6.1 - 2015-04-26
+	- Fixed: Bug preventing users from registering any Bolder Elements plugins
+
+3.6 - 2015-04-24
+	- Added: Text-domain support and 11 language translations
+	- Added: Ability to calculate subtotal after coupon discounts
+	- Added: Auto-upgrader support and BE Plugin Management (beta)
+	- Added: New 'Based On' condition allow to compare product attributes (beta)
+	- Enhanced: Handling Fees only apply to rates of the same zone
+	- Enhanced: Changed Status images in shipping zones list
+	- Fixed: Compatibility issue with WP 4.2 List Tables in settings
+	- Fixed: Default column preceeded other WooCommerce default settings
+	- Fixed: Shipping rate returned when a non-qualifying item under Per Class method was in cart
+	- Fixed: Price not multiplied for Per Item and Weight based setups
+	- Fixed: Sections (settings) not collapsing after WC 2.3
+	- Fixed: Various PHP Strict warnings and notices
+
+3.5.3 - 2014-12-27
+	- Added compatibility to save settings in WC 2.2
+
+3.5.2 - 2014-12-04
+	- Fixed bug for Per Class condition rates multiplying by number of items in the cart
+
+3.5.1 - 2014-12-03
+	- Added fix for WPML compatibility
+
+3.5 - 2014-08-23
+	- Added better support for WPML currency switcher
+	- Cleaned up a few php notices
+
+3.4 - 2014-08-05
+	- Added: New 'Single Class Only' option to charge class with the highest cost
+	- Added: Option to round up weight to next highest whole number
+	- Added: Option to skip handling fees when the shipping cost is Free
+	- Added: Option to not tax this method despite shipping tax being enabled
+	- Added: Option to hide this method when the ‘Free Shipping’ method is active
+	- Modified: Removed currency formatting from Table Rates to give greater flexibility
+	- Modified: Removed formatting in Handling Fees and now allow negative values
+	- Fixed ‘Default’ column to work with WC 2.1+
+	- Fixed: Cleaned up messages in Zone settings to improve efficiency
+	- Fixed: Table Rates did not reorder after changing zone order
+
+3.3.8 - 2014-03-29
+	- Various fixes for WooCommerce 2.1 compatibility
+
+3.3.7 - 2014-02-20
+	- Various fixes for WooCommerce 2.1 compatibility
+
+3.3.6 - 2014-02-16
+	- Various fixes for WooCommerce 2.1 compatibility
+
+3.3.5 - 2014-02-13
+	- Various fixes for WooCommerce 2.1 compatibility
+
+3.3.4 - 2013-12-18
+	- Fixed sorting bug that caused shipping priorities and zone order to not always take effect
+	- Modified calculations under Per Item clause when rates are based on weight
+
+3.3.3 - 2013-12-05
+	- Fixed bug that caused the custom ordering and default selections to no longer work.
+
+3.3.2 - 2013-11-13
+	- Fixed bug that removed spaces from international postal codes
+
+3.3.1 - 2013-11-02
+	- Fixed bug when saving handling rates and class priorities
+	- Fixed incorrect ordering of table rates
+
+3.3 - 2013-11-02
+	- New cost option: per weight unit
+	- Added new exclusion boxes for zones
+	- Added ability to return the rate for only one class for the 'Per Class' method
+	- Added shipping rate identifiers so that rates will depend on this text instead of the titles
+	- Added check to ensure that all items are accounted for in the Per Item and Per Class methods in order for the shipping cost to be applicable
+	- Fixed bug so that denied rates will work better
+	- Fixed numerous bugs in the Per Item method including denied rates, price and item count calculations, and displaying shipping for unqualified items
+	- Removed 'Available Countries' option from settings (now controlled solely by zones)
+	- Changed how zone data is stored (no more additional tables)
+	- Fixed support for renaming plugin folder title
+	- Various other small bugs and typos
+
+3.2 - 2013-09-02
+	- Added ability to customize the order which rates appear on the cart/checkout pages
+	- Overhauled the postal code function. Spaces are now properly supported and ranges have been added back for numerical codes only.
+	- Further localization support: corrected a bug for sites using languages that require special HTML characters
+	- Added support for volumetric shipping
+	- New Cost Option: DENY - removes a previously declared shipping cost from the customer's options
+	- New Based On Option: Dimensions - compares a products overall area (L x W x H)
+	- Corrected an issue where shipping was charged for virtual products
+	- Added collapsible sections to better organized the growing number of available options this plugin has
+	- Various minor bug fixes
+
+3.1 - 2013-06-24
+	- Added a new cost method: multiplier
+	- Added ability to set free shipping option based on subtotal price
+	- Added new column for an extra bundle cost option
+	- Added ability to select default shipping option shown when multiple exist
+	- Corrected problem with Per Item calculations
+	- Fixed a couple minor localization issues
+	- Cleaned up code to remove notices and minor errors from appearing in debug mode
+	- Updated Documentation
+
+3.0 - 2013-05-17
+	- FEATURE: Zone support
+	- FEATURE: Calculate shipping on prices after tax (optional)
+	- Added a percent calculation to the fees table
+	- Added button to rates table to duplicate rows
+	- Added an upgrade notifier to inform you of future updates available
+	- Minor improvements for localization
+	- Updated Documentation
+
+2.1 - 2013-03-02
+	- FEATURE: Added support for multiple rates under the per-item condition. Before only one was allowed.
+	- FEATURE: Added support for zip code ranges. (i.e. 12012,12020-12099,12101)
+	- FEATURE: Added a new table for base rates so rate can changed based on country/state/province
+	- BUG FIX: Free Shipping rates ($0) were not added and thus no shipping could be selected
+	- BUG FIX: Additional minor backend bug fixes and grammatical corrections
+
+2.0 - 2013-02-20
+	- FEATURE: New per-class method groups together items in the same shipping class, then compares it to the table rules. This new feature will make bundle rate shipping possible
+	- FEATURE: Added support for shipping classes under the per-order method
+	- FEATURE: New fields for including/excluding countries from using this shipping method so it narrows down the countries that the wild card '*' symbol stands for
+	- BUG FIX: Title still appeared even when no shipping rates were applicable
+	- BUG FIX: Price not working for per-item and item-count setups
+	- BUG FIX: Reworked the order for setups with identical table row data
+
+1.1 - 2013-01-16
+	- New Feature: Set shipping price as a fixed rate or percentage of the subtotal.
+	- Bug Fixes with Per-Item calculations
+	- Bug Fix for shipping class comparisons
+
+1.0 - 2013-01-14
+	- First Release

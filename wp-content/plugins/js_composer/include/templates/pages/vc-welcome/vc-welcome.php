@@ -8,10 +8,10 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div>
 			<img class="vc-featured-img" src="<?php echo vc_asset_url( 'vc/vc-welcome/screenshot.png' ); ?>"/>
 
-			<h3><?php _e( 'Default Templates for Posts', 'js_composer' ); ?></h3>
+			<h3><?php _e( 'Visual Composer Template Library', 'js_composer' ); ?></h3>
 
-			<p><?php _e( 'Visual Composer 4.12 introduces new template options to speed up your WordPress website content management. Now you are able to set up templates for your pages, posts and custom post types by default.', 'js_composer' ); ?></p>
-			<p><?php _e( 'Meaning, every time you create new post there will be default layout available - so you should just change the information and Publish it. Working with authors, but afraid they can break your layout? Not any more! With default template setup and existing Role Manager you will be able to set up amazing mechanism for your WordPress website.', 'js_composer' ); ?></p>
+			<p><?php _e( 'Access library for different layout templates available for free download and updated regularly. Download the templates you like and use them to build your website within seconds.', 'js_composer' ); ?></p>
+			<p><?php _e( 'Each template of Template Library is a carefully crafted layout created by pro designers. You can modify every template if you wish or use it as-is. Template Library is aiming to become your number one resource to receive fresh layouts and ideas.', 'js_composer' ); ?></p>
 		</div>
 	</div>
 
@@ -19,24 +19,23 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<div class="vc_col-xs-4">
 			<img class="vc-img-center"
 			     src="<?php echo vc_asset_url( 'vc/vc-welcome/01.png' ); ?>"/>
-			<h4><?php _e( 'Disable Row', 'js_composer' ); ?></h4>
+			<h4><?php _e( 'Section Element', 'js_composer' ); ?></h4>
 
-			<p><?php _e( 'Need to hide some part of your content, but don\'t want to delete it? Disable any Visual Composer row with all the content - one click only.
-', 'js_composer' ); ?></p>
+			<p><?php _e( 'Combine rows into logic groups by using section element and apply design options to the whole section at once.', 'js_composer' ); ?></p>
 		</div>
 		<div class="vc_col-xs-4">
 			<img class="vc-img-center"
 			     src="<?php echo vc_asset_url( 'vc/vc-welcome/02.png' ); ?>"/>
-			<h4><?php _e( 'Polylang and qTranslate X', 'js_composer' ); ?></h4>
+			<h4><?php _e( 'Editor UI Update', 'js_composer' ); ?></h4>
 
-			<p><?php _e( 'Visual Composer is ensured to be fully compatible with Polylang and also popular version of qTranslate X so you can create multi-language websites.', 'js_composer' ); ?></p>
+			<p><?php _e( 'A new icon type controls offer you the best experience when working on retina devices.', 'js_composer' ); ?></p>
 		</div>
 		<div class="vc_col-xs-4">
 			<img class="vc-img-center"
 			     src="<?php echo vc_asset_url( 'vc/vc-welcome/03.png' ); ?>"/>
-			<h4><?php _e( 'Nofollow and Actions', 'js_composer' ); ?></h4>
+			<h4><?php _e( 'Row and Section Templates', 'js_composer' ); ?></h4>
 
-			<p><?php _e( 'Enhanced link selection allows you to set nofollow attributes for your links with one click. Moreover, button element now has onclick event for better tracking options.', 'js_composer' ); ?></p>
+			<p><?php _e( 'Save row or section as a template directly from your page, post or custom post type layout.', 'js_composer' ); ?></p>
 		</div>
 	</div>
 

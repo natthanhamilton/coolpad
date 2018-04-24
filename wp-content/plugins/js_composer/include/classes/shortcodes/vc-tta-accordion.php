@@ -5,7 +5,12 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 class WPBakeryShortCode_VC_Tta_Accordion extends WPBakeryShortCodesContainer {
 	protected $controls_css_settings = 'out-tc vc_controls-content-widget';
-	protected $controls_list = array( 'add', 'edit', 'clone', 'delete' );
+	protected $controls_list = array(
+		'add',
+		'edit',
+		'clone',
+		'delete',
+	);
 	protected $template_vars = array();
 
 	public $layout = 'accordion';
@@ -136,13 +141,9 @@ class WPBakeryShortCode_VC_Tta_Accordion extends WPBakeryShortCodesContainer {
 
 		$autoplay = isset( $this->atts['autoplay'] ) ? trim( $this->atts['autoplay'] ) : false;
 		if ( $autoplay && 'none' !== $autoplay && intval( $autoplay ) > 0 ) {
-			$attributes[] = 'data-vc-tta-autoplay="' . esc_attr(
-				json_encode(
-					array(
+			$attributes[] = 'data-vc-tta-autoplay="' . esc_attr( json_encode( array(
 							'delay' => intval( $autoplay ) * 1000,
-						)
-				)
-			) . '"';
+						) ) ) . '"';
 		}
 
 		return implode( ' ', $attributes );
@@ -213,20 +214,12 @@ class WPBakeryShortCode_VC_Tta_Accordion extends WPBakeryShortCodesContainer {
 		if ( isset( $atts['c_icon'] ) && strlen( $atts['c_icon'] ) > 0 ) {
 			$isPageEditable = vc_is_page_editable();
 			if ( ! $isPageEditable ) {
-				$panelsContent = str_replace( '{{{ control-icon }}}',
-					'<i class="vc_tta-controls-icon vc_tta-controls-icon-' . $atts['c_icon'] . '"></i>',
-					$panelsContent
-				);
+				$panelsContent = str_replace( '{{{ control-icon }}}', '<i class="vc_tta-controls-icon vc_tta-controls-icon-' . $atts['c_icon'] . '"></i>', $panelsContent );
 			} else {
-				$panelsContent = str_replace( '{{{ control-icon }}}',
-					'<i class="vc_tta-controls-icon" data-vc-tta-controls-icon="' . $atts['c_icon'] . '"></i>',
-					$panelsContent
-				);
+				$panelsContent = str_replace( '{{{ control-icon }}}', '<i class="vc_tta-controls-icon" data-vc-tta-controls-icon="' . $atts['c_icon'] . '"></i>', $panelsContent );
 			}
 		} else {
-			$panelsContent = str_replace( '{{{ control-icon }}}',
-				'',
-			$panelsContent );
+			$panelsContent = str_replace( '{{{ control-icon }}}', '', $panelsContent );
 		}
 
 		return $panelsContent;
@@ -387,9 +380,10 @@ class WPBakeryShortCode_VC_Tta_Accordion extends WPBakeryShortCodesContainer {
 
 		return implode( '', $html );
 	}
+
 	public function enqueueTtaStyles() {
 		wp_register_style( 'vc_tta_style', vc_asset_url( 'css/js_composer_tta.min.css' ), false, WPB_VC_VERSION );
-		wp_enqueue_style('vc_tta_style');
+		wp_enqueue_style( 'vc_tta_style' );
 	}
 
 	public function enqueueTtaScript() {
@@ -412,6 +406,7 @@ class WPBakeryShortCode_VC_Tta_Accordion extends WPBakeryShortCodesContainer {
 	protected function outputTitle( $title ) {
 		return '';
 	}
+
 	/**
 	 * Check is allowed to add another element inside current element.
 	 *

@@ -1,0 +1,637 @@
+@import '../../variables';
+@import '../../components/grid';
+
+@textShadow: 0 2px 4px rgba(0, 0, 0, 0.7);
+
+.inline-block {
+  display: inline-block;
+}
+
+.float-right {
+  float: right;
+  @media only screen and (max-width: @break-sm) {
+    float: initial;
+  }
+}
+
+.margin-auto {
+  margin: auto;
+}
+
+.dyno-icons {
+  @media only screen and (max-width: @break-sm) {
+    text-align: center;
+  }
+}
+
+.hide-website {
+  @media only screen and (min-width: @break-sm) {
+    display: none;
+  }
+}
+
+.hide-mobile {
+  @media only screen and (max-width: @break-sm) {
+    display: none;
+  }
+}
+
+.hide-website-large {
+  @media only screen and (min-width: @break-md) {
+    display: none;
+  }
+}
+
+.hide-mobile-large {
+  @media only screen and (max-width: @break-md) {
+    display: none;
+  }
+}
+
+.dyno-cover-piece {
+  z-index: 1;
+  @media only screen and (max-width: @break-md) {
+    width: 100% !important;
+  }
+}
+
+.dyno-fast {
+  > .wpb_column {
+    @media only screen and (min-width: @break-sm) {
+      position: relative;
+      left: 30px;
+    }
+  }
+}
+
+.dyno-cover {
+  .background;
+  height: 660px;
+  width: 100%;
+  position: relative;
+  background-color: #bcecfc;
+  @media only screen and (max-width: @break-sm) {
+    height: initial;
+  }
+  p {
+    font-weight: bold;
+    padding: 20px 0 !important;
+    font-size: 42px !important;
+    color: #ffffff !important;
+  }
+  .dyno-cover-piece {
+    @media only screen and (max-width: @break-sm) {
+      padding: 400px 0 50px 0;
+    }
+  }
+  .dyno-cover-img {
+    position: absolute;
+    z-index: 0;
+    .vc_column-inner {
+      height: 660px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      @media only screen and (max-width: @break-lg) {
+        background-size: cover;
+        background-position: 50% 50%;
+      }
+    }
+  }
+}
+
+.dyno-section {
+  .background;
+  height: 750px;
+  width: 100%;
+  padding: 50px 20px;
+  >.wpb_column >.vc_column-inner {
+    height: 100%;
+    >.wpb_wrapper {
+      height: 100%;
+    }
+  }
+
+  @media only screen and (max-width: @break-sm) {
+    background-position: 55% 50%;
+    height: initial !important;
+    padding: 50px 10px;
+  }
+  .top {
+    @media only screen and (min-width: @break-sm) {
+      position: absolute;
+      width: 100%;
+      top: 0;
+    }
+  }
+  h4, p {
+    color: #fff;
+    @media only screen and (max-width: @break-sm) {
+      text-align: center !important;
+    }
+  }
+  h4 {
+    font-size: 42px;
+    @media only screen and (min-width: @break-sm) and (max-width: @break-md) {
+      font-size: 36px;
+    }
+    @media only screen and (max-width: @break-sm) {
+      font-size: 28px;
+    }
+  }
+  p {
+    @media only screen and (min-width: @break-sm) {
+      font-size: 18px;
+      max-width: 500px;
+    }
+  }
+  img {
+    max-height: 500px;
+    width: initial;
+    padding-right: 15px;
+    @media only screen and (max-width: @break-sm) {
+      max-height: 250px;
+    }
+  }
+  .img {
+    @media only screen and (max-width: @break-sm) {
+      text-align: center;
+    }
+  }
+  .icons {
+    margin: auto;
+    padding-top: 50px;
+    @media only screen and (min-width: @break-md) {
+      width: 350px;
+    }
+    @media only screen and (max-width: @break-md) {
+      .vertical-center;
+      .wrapper {
+        display: table-caption;
+      }
+    }
+    .icon {
+      padding-bottom: 10px;
+      @media only screen and (max-width: @break-md) {
+        width: 100%;
+      }
+    }
+    .img {
+      display: inline-block;
+      position: absolute;
+      padding-top: 2px;
+      img {
+        max-height: 30px;
+        padding-top: 3px;
+      }
+    }
+    .text {
+      display: inline-block;
+      width: 160px;
+      padding-left: 37px;
+      color: @color-snow;
+      font-size: 12px;
+    }
+  }
+  .mobility-custom {
+    float: right;
+    @media only screen and (min-width: @break-sm) {
+      padding-right: 40px;
+    }
+  }
+}
+
+.dyno-alarm {
+  @media only screen and (max-width: @break-sm) {
+    padding: 0 !important;
+  }
+  @media only screen and (min-width: @break-sm) and (max-width: @break-lg) {
+    height: 450px
+  }
+  h4 {
+    @media only screen and (min-width: @break-sm) {
+      position: absolute;
+      top: 0;
+      width: 100%;
+    }
+    @media only screen and (max-width: @break-sm) {
+      padding: 10px 0 220px 0 !important;
+    }
+  }
+}
+
+.dyno-features {
+  padding: 50px 0 0 0;
+  @media only screen and (max-width: @break-md){
+    height: initial;
+  }
+    >.wpb_column >.vc_column-inner {
+    height: 100%;
+    >.wpb_wrapper {
+      height: 100%;
+    }
+  }
+
+  .section-title {
+    margin-bottom: 20px !important;
+  }
+  .phone {
+    @media only screen and (min-width: @break-md) {
+      .vertical-center;
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+    }
+    img {
+      //max-height: initial;
+      padding: 0;
+      margin: 20px 0;
+        max-height: 550px;
+      @media only screen and (max-width: @break-lg) {
+        max-height: 450px;
+        bottom: 20px;
+        right: 26px;
+      }
+    }
+  }
+  .dyno-features-content {
+    padding: 0 20px;
+    @media only screen and (max-width: @break-md) {
+      padding: 0 10px;
+    }
+    @media only screen and (min-width: @break-md) {
+      .vertical;
+    }
+    @media only screen and (min-width: @break-md) and (max-width: @break-lg) {
+      p {
+        font-size: 16px;
+      }
+    }
+    .left {
+      .vc_column-inner {
+        position: relative;
+        @media only screen and (min-width: @break-lg) {
+          left: 40%;
+          max-width: 300px;
+        }
+        @media only screen and (min-width: @break-md) {
+          left: 10%;
+        }
+      }
+    }
+    .right {
+      .connect, .fun {
+        position: relative;
+      }
+      @media only screen and (min-width: @break-lg) {
+        .connect {
+          right: 35%;
+        }
+
+        .fun {
+          right: 10%;
+          top: 50px;
+        }
+      }
+      @media only screen and (min-width: @break-md) and (max-width: @break-lg) {
+        .connect {
+          right: 15%;
+        }
+      }
+    }
+    @media only screen and (max-width: @break-md){
+      .left, .right {
+        width: 100%;
+        h4, p {
+          text-align: center !important;
+          max-width: initial;
+        }
+      }
+    }
+  }
+  .dyno-features-bottom {
+    @media only screen and (min-width: @break-md) {
+      bottom: 0;
+      position: absolute;
+      z-index: 1;
+    }
+    .flexbox;
+    .left {
+      .flexbox-div(1);
+      img {
+        padding: 0;
+      }
+      @media only screen and (max-width: @break-md) {
+        .flexbox-div(2);
+      }
+    }
+    .right {
+      .flexbox-div(2);
+      @media only screen and (max-width: @break-md) {
+        .flexbox-div(1);
+        margin: auto;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        img {
+          display: inline-block;
+          padding: 0;
+        }
+      }
+    }
+  }
+}
+
+.dyno-location {
+  padding-bottom: 0;
+  height: 800px;
+
+  @media only screen and (max-width: @break-md){
+    height: initial;
+    .vc_col-sm-7 {
+      width: 100%;
+      h4, p {
+        text-align: center !important;
+        max-width: initial;
+      }
+    }
+  }
+  .web {
+    position: absolute;
+    bottom: 0;
+    img {
+      max-height: 750px;
+    }
+    @media only screen and (max-width: @break-md) {
+      display: none;
+    }
+  }
+  .mobile {
+    padding-top: 20px;
+    img {
+      max-height: 300px;
+    }
+    @media only screen and (min-width: @break-md) {
+      display: none;
+    }
+  }
+  .list {
+    text-align: center;
+    list-style: none;
+    padding: 0;
+    @media only screen and (min-width: @break-md) {
+      position: absolute;
+      bottom: 0;
+      margin-bottom: 40px;
+    }
+    li {
+      color: #fff;
+      display: inline-block;
+      padding: 10px 0;
+      @media only screen and (max-width: @break-md) {
+        display: block;
+        &:not(first-child) {
+          padding-left: 20px;
+        }
+      }
+      @media only screen and (min-width: @break-md) {
+        &:not(first-child) {
+          padding-left: 20px;
+        }
+      }
+      img {
+        display: inline-block;
+      }
+    }
+  }
+  .content {
+    @media only screen and (min-width: @break-md) {
+      padding-top: 40px;
+    }
+  }
+}
+
+.dyno-design {
+  padding-bottom: 0;
+  @media only screen and (max-width: @break-md){
+    height: initial;
+      h4, p {
+        text-align: center !important;
+        max-width: initial;
+      }
+  }
+
+  .website-img {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    img {
+      max-height: initial;
+    }
+  }
+  .title {
+    @media only screen and (min-width: @break-md) {
+      left: 14%;
+      .content {
+        position: relative;
+        left: 20px;
+      }
+    }
+    p {
+      display: inline-block;
+    }
+  }
+  @media only screen and (min-width: @break-md) {
+    .comfortable,
+    .long,
+    .sos{
+      position: absolute;
+      max-width: 220px;
+    }
+    p {
+      font-size: 24px;
+      text-align: center;
+    }
+    .comfortable {
+      right: 0;
+      top: 0;
+    }
+    .long {
+      right: 33%;
+      bottom: 13%;
+    }
+    .sos {
+      left: 2%;
+      top: 24%;
+    }
+  }
+  @media only screen and (max-width: @break-md) {
+    .website-img {
+      display: none;
+    }
+
+    .mobile-img img {
+      position: relative;
+      bottom: -1px;
+      margin-top: 30px;
+    }
+  }
+  @media only screen and (min-width: @break-md) {
+    .mobile-img {
+      display: none;
+    }
+  }
+  .resistant {
+    @media only screen and (max-width: @break-md) {
+      text-align: center;
+    }
+    img {
+      display: inline-block;
+      float: left;
+      height: 65px;
+    }
+    .resistant-content {
+      padding: 0 !important;
+      text-align: left !important;
+      @media only screen and (max-width: @break-md) {
+        bottom: 30px;
+        position: relative;
+      }
+      @media only screen and (min-width: @break-md) {
+        top: 5px;
+        position: absolute;
+      }
+    }
+  }
+}
+
+.dyno-voice {
+  .image img {
+    padding-top: 50px;
+  }
+  @media only screen and (max-width: @break-sm) {
+    padding-bottom: 0 !important;
+    img {
+      position: relative;
+      bottom: -1px;
+    }
+  }
+  @media only screen and (min-width: @break-sm) {
+    padding-left: 50px;
+    h4 {
+      padding-bottom: 30px !important;
+    }
+
+    .image {
+      text-align: left;
+      img {
+        padding-left: 50px;
+      }
+    }
+  }
+}
+
+.dyno-steps {
+  position: relative;
+  padding: 0 !important;
+  height: 850px;
+  .content {
+    padding: 40px;
+  }
+  @media only screen and (max-width: @break-sm) {
+    height: 500px !important;
+    .vc_col-sm-6 {
+      height: 100%;
+    }
+
+    .content {
+      padding: 40px 20px 20px 20px !important;
+    }
+  }
+  img {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    @media only screen and (min-width: @break-sm) {
+      max-height: 650px;
+    }
+  }
+}
+
+.dyno-friends {
+  text-align: center;
+  @media only screen and (max-width: @break-md) {
+    height: initial;
+  }
+    @media only screen and (min-width: @break-lg) {
+    .content {
+      padding-left: 200px;
+      text-align: left;
+    }
+  }
+  p {
+    font-weight: 300;
+    line-height: 1.5;
+  }
+  img {
+    padding-top: 60px !important;
+  }
+}
+
+.dyno-instructions {
+  @media only screen and (max-width: @break-md) {
+    .vc_col-sm-3, .vc_col-sm-9 {
+      float: left;
+      width: 100%;
+    }
+
+    p {
+      text-align: center;
+    }
+  }
+  .content {
+  @media only screen and (min-width: @break-sm) {
+      max-width: 300px;
+      margin: auto !important;
+    }
+  }
+  h4 {
+    padding-bottom: 20px !important;
+    @media only screen and (max-width: @break-md) {
+      padding-top: 40px !important;
+    }
+  }
+  .instruction-img img {
+    @media only screen and (min-width: @break-md) {
+      padding-top: 30px !important;
+      max-height: 300px;
+    }
+  }
+}
+
+.stay-powered-section {
+  padding: 0 !important;
+}
+
+.stay-powered-overlay {
+  background-color: rgba(0, 0, 0, 0.2);
+  padding: 50px 20px;
+  @media only screen and (max-width: @break-sm) {
+    padding: 100px 10px;
+  }
+}
+
+.full-height-pieces {
+  > .wpb_column {
+    height: 100%;
+    > .vc_column-inner {
+      height: 100%;
+      > .wpb_wrapper {
+        height: 100%;
+        > .vc_inner {
+          height: 100%;
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,36 @@
+Version 3.3.2 - June 4, 2016
+
+	Tweak for WooCommerce 2.5 and newer: Ensure shipper form does not appear when the shipping method is disabled 
+
+Version 3.3.1 - March 11, 2016
+
+	Updated to support WooCommerce 2.5 and newer due to changes in the shipper options at checkout
+	
+Version 3.3 - December 23, 2015
+
+	Added new feature to optionally insert shipper, account, and note into order emails
+
+Version 3.2.4 - November 6, 2015
+
+	Added new setting to optionally enable a shipping note field on the checkout page. 
+
+Version 3.2.3 - August 24, 2015
+
+	Added new action call to support WooCommerce 2.4.x
+
+Version 3.2.2 - March 16, 2015
+
+	Updated to use Select2 on the checkout page for WooCommerce 2.3.x compatibility
+
+Version 3.2.1 - August 19, 2014
+
+	Updated so the shipper selection form appears when no other shipping methods are enabled other than this one
+
+Version 3.2 - February 18, 2014
+
+	Initial public release
+
+Version 1.x 
+
+	Inhouse development and private use
+	

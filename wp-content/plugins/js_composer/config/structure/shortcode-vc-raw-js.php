@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 return array(
 	'name' => __( 'Raw JS', 'js_composer' ),
 	'base' => 'vc_raw_js',

@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 return array(
 	'name' => __( 'Text Block', 'js_composer' ),
 	'icon' => 'icon-wpb-layer-shape-text',

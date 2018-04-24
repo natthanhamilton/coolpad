@@ -7,27 +7,30 @@
  * @ignore
  */
 class MC4WP_Tools {
+
 	/**
-	 * @param        $datetime
+	 * @param $datetime
 	 * @param string $format
 	 *
 	 * @return bool|string
 	 */
-	public static function mysql_datetime_to_local_datetime($datetime, $format = '') {
-		if ($format === '') {
-			$format = get_option('date_format') . ' ' . get_option('time_format');
-		}
-		// add or subtract GMT offset to given mysql time
-		$local_datetime = strtotime($datetime) + (get_option('gmt_offset') * HOUR_IN_SECONDS);
+	public static function mysql_datetime_to_local_datetime( $datetime, $format = '' ) {
 
-		return date($format, $local_datetime);
+		if( $format === '' ) {
+			$format = get_option( 'date_format' ) . ' ' . get_option( 'time_format' );
+		}
+
+		// add or subtract GMT offset to given mysql time
+		$local_datetime = strtotime( $datetime ) + ( get_option( 'gmt_offset') * HOUR_IN_SECONDS );
+
+		return date( $format, $local_datetime );
 	}
 
 	/**
 	 * @return array
 	 */
 	public static function get_countries() {
-		return [
+		return array(
 			'AF' => 'Afghanistan',
 			'AX' => 'Aland Islands',
 			'AL' => 'Albania',
@@ -278,6 +281,7 @@ class MC4WP_Tools {
 			'YE' => 'Yemen',
 			'ZM' => 'Zambia',
 			'ZW' => 'Zimbabwe',
-		];
+		);
 	}
+
 }

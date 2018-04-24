@@ -1,0 +1,25 @@
+@import '../../../Coolpad/assets/less/variables';
+@import '../../../Coolpad/assets/less/components/grid';
+
+#product-navigation {
+    .vc_column-inner {
+      padding: 0;
+    }
+            a {
+              .make-xs-column(3);
+              padding: 25px 0;
+              font-size: 24px;
+              color: #4a4a4a;
+              text-align: center;
+              border: solid 1px #979797;
+              @media only screen and (max-width: 640px) {
+                .make-xs-column(12);
+              }
+            }
+
+  a:hover, a:active, a.active {
+    background: @color-daybreak-blue;
+    color: #fff;
+    border-color: @color-daybreak-blue;
+  }
+}

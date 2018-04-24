@@ -24,7 +24,7 @@ function news_CPT()
             'not_found' => __('Not Found'),
             'not_found_in_trash' => __('Not found in Trash')
         ],
-        'supports' => ['title', 'thumbnail'], // Features this CPT supports in Post Editor
+        'supports' => ['title', 'thumbnail', 'excerpt'], // Features this CPT supports in Post Editor
         'hierarchical' => false,
         'public' => true,
         'show_ui' => true,
@@ -44,11 +44,12 @@ add_action('init', 'news_CPT', 0);
 add_shortcode('news', 'news_shortcode');
 function news_shortcode()
 {
-    $string = '';
+    $string = '<div class="grid">';
+    $string .= '<div class="grid-sizer"></div>';
     $args = [
         'post_type' => 'news',
         'post_status' => 'publish',
-        'posts_per_page' => '6',
+        'posts_per_page' => '8',
         'orderby', 'date',
         'order', 'DESC'
     ];
@@ -57,14 +58,18 @@ function news_shortcode()
         if (has_post_thumbnail($post->ID)) {
             $image = wp_get_attachment_image_src(get_post_thumbnail_id($post->ID), 'single-post-thumbnail');
         } else $image = get_post_meta($post->ID, "_news_img");
-        $string .= '<div class="col-sm-4">';
-        $string .= '<a href=' . htmlspecialchars(get_post_meta($post->ID, "_news_url", true)) . '>';
-        $string .= "<div class='tile-title' style='background-image: url(" . $image[0] . ")'>";
-        $string .= $post->post_title;
+
+        $string .= '<div class="grid-item">';
+        $string .= '<a class="tile" href="' . htmlspecialchars(get_post_meta($post->ID, "_news_url", true)) . '">';
+        $string .= "<img class='img-responsive' src='".$image[0]."'>";
+        $string .= '<div>';
+        $string .= "<h5 class='text-overflow'>".$post->post_title."</h5>";
+        $string .= "<p class='small'>".$post->post_excerpt."</p>";
         $string .= '</div>';
         $string .= '</a>';
         $string .= '</div>';
     }
+    $string .= '</div>';
 
     return $string;
 }

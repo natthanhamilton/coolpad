@@ -1,6 +1,16 @@
 <?php
 
 require_once(get_theme_root() . '/assets/global-functions.php');
+
+add_filter( 'gadwp_backenditem_uri', 'gadwp_uri_correction', 10, 1 );
+add_filter( 'gadwp_frontenditem_uri', 'gadwp_uri_correction', 10, 1 );
+
+function gadwp_uri_correction( $uri ){
+    return 'coolpad.us' . $uri;
+}
+
+
+
 // enables wigitized sidebars
 if (function_exists('register_sidebar')) // post thumbnail support
 {

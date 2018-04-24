@@ -30,10 +30,10 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 			&$this,
 			'loadTemplate',
 		), 10, 2 );
-/*		add_action( 'vc_ui-template-preview', array(
-			&$this,
-			'replaceTemplatesPanelEditorJsAction',
-		) );*/
+		/*		add_action( 'vc_ui-template-preview', array(
+					&$this,
+					'replaceTemplatesPanelEditorJsAction',
+				) );*/
 	}
 
 	public function addScripts() {
@@ -73,23 +73,23 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 	 */
 	public static function createPostType() {
 		register_post_type( self::$post_type, array(
-				'labels' => self::getPostTypesLabels(),
-				'public' => false,
-				'has_archive' => false,
-				'show_in_nav_menus' => false,
-				'exclude_from_search' => true,
-				'publicly_queryable' => false,
-				'show_ui' => true,
-				'show_in_menu' => false,
-				'query_var' => true,
-				'capability_type' => 'post',
-				'hierarchical' => false,
-				'menu_position' => null,
-				'supports' => array(
-					'title',
-					'editor',
-				),
-			) );
+			'labels' => self::getPostTypesLabels(),
+			'public' => false,
+			'has_archive' => false,
+			'show_in_nav_menus' => false,
+			'exclude_from_search' => true,
+			'publicly_queryable' => false,
+			'show_ui' => true,
+			'show_in_menu' => false,
+			'query_var' => true,
+			'capability_type' => 'post',
+			'hierarchical' => false,
+			'menu_position' => null,
+			'supports' => array(
+				'title',
+				'editor',
+			),
+		) );
 	}
 
 	public static function getPostTypesLabels() {
@@ -108,6 +108,7 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 	/**
 	 * Rewrites validation for correct post_type of th post.
 	 *
+	 * @param string $type
 	 * @return bool
 	 */
 	public function isValidPostType( $type = '' ) {
@@ -133,9 +134,9 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 	 */
 	public function addMetaBox() {
 		add_meta_box( 'wpb_visual_composer', __( 'Grid Builder', 'js_composer' ), array(
-				&$this,
-				'renderEditor',
-			), $this->postType(), 'normal', 'high' );
+			&$this,
+			'renderEditor',
+		), $this->postType(), 'normal', 'high' );
 	}
 
 	/**
@@ -186,6 +187,8 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 			&$this,
 			'accessCheckShortcodeAll',
 		), 10, 2 );
+
+		return;
 	}
 
 	public function accessCheckShortcodeEdit( $null, $shortcode ) {
@@ -240,9 +243,10 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 		return ob_get_clean();
 
 	}
+
 	public function loadTemplate( $template_id, $template_type ) {
 		if ( 'grid_templates' === $template_type ) {
-			return $this->loadPredefinedTemplate($template_id, $template_type);
+			return $this->loadPredefinedTemplate( $template_id, $template_type );
 		} else if ( 'grid_templates_custom' === $template_type ) {
 			return $this->templatesEditor()->loadCustomTemplate( $template_id );
 		}
@@ -255,14 +259,7 @@ class Vc_Grid_Item_Editor extends Vc_Backend_Editor {
 	}
 
 	public function renderTemplatePreview() {
-		vc_user_access()
-			->checkAdminNonce()
-			->validateDie()
-			->wpAny( 'edit_posts', 'edit_pages' )
-			->validateDie()
-			->part( 'grid_builder' )
-			->can()
-			->validateDie();
+		vc_user_access()->checkAdminNonce()->validateDie()->wpAny( 'edit_posts', 'edit_pages' )->validateDie()->part( 'grid_builder' )->can()->validateDie();
 
 		add_action( 'vc_templates_render_backend_template_preview', array(
 			&$this,

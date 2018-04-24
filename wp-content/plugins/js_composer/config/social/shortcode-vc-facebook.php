@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 return array(
 	'name' => __( 'Facebook Like', 'js_composer' ),
 	'base' => 'vc_facebook',
@@ -18,6 +22,7 @@ return array(
 			),
 			'description' => __( 'Select button type.', 'js_composer' ),
 		),
+		vc_map_add_css_animation(),
 		array(
 			'type' => 'css_editor',
 			'heading' => __( 'CSS box', 'js_composer' ),

@@ -158,7 +158,7 @@ function wpas_is_plugin_page( $slug = '' ) {
 	if( ! is_array( $ticket_list ) ) { $ticket_list = (array) $ticket_list; }
 	if( ! is_array( $ticket_submit ) ) { $ticket_submit = (array) $ticket_submit; }
 
-	$plugin_post_types     = apply_filters( 'wpas_plugin_post_types',     array( 'ticket' ) );
+	$plugin_post_types     = apply_filters( 'wpas_plugin_post_types',     array( 'ticket', 'canned-response', 'documentation', 'wpas_unassigned_mail', 'wpas_mailbox_config', 'wpas_inbox_rules', 'faq', 'wpas_gadget', 'ruleset', 'trackedtimes'  ) );
 	$plugin_admin_pages    = apply_filters( 'wpas_plugin_admin_pages',    array( 'wpas-status', 'wpas-addons', 'wpas-settings', 'wpas-optin' ) );
 	$plugin_frontend_pages = apply_filters( 'wpas_plugin_frontend_pages', array_merge( $ticket_list, $ticket_submit ) );
 
@@ -195,7 +195,7 @@ function wpas_is_plugin_page( $slug = '' ) {
 
 		if ( empty( $post ) ) {
 			$protocol = stripos( $_SERVER['SERVER_PROTOCOL'], 'https' ) === true ? 'https://' : 'http://';
-			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . $_SERVER['REQUEST_URI'] );
+			$post_id  = url_to_postid( $protocol . $_SERVER['SERVER_NAME'] . ':' . $_SERVER['SERVER_PORT'] . $_SERVER['REQUEST_URI'] );
 			$post     = get_post( $post_id );
 		}
 
@@ -521,7 +521,8 @@ function wpas_dropdown( $args, $options ) {
 		'please_select' => false,
 		'select2'       => false,
 		'disabled'      => false,
-		'data_attr'     => array()
+		'data_attr'     => array(),
+		'multiple'	=> false,
 	);
 
 	$args = wp_parse_args( $args, $defaults );
@@ -543,11 +544,13 @@ function wpas_dropdown( $args, $options ) {
 		$data_attributes = implode( ' ', $data_attributes );
 
 	}
+	
+	$id = $args['id'];
 
 	/* Start the buffer */
 	ob_start(); ?>
 
-	<select name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if ( ! empty( $data_attributes ) ): echo $data_attributes; endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
+	<select<?php if ( true === $args['multiple'] ) echo ' multiple' ?> name="<?php echo $args['name']; ?>" <?php if ( !empty( $class ) ) echo 'class="' . implode( ' ' , $class ) . '"'; ?> <?php if ( !empty( $id ) ) echo "id='$id'"; ?> <?php if ( ! empty( $data_attributes ) ): echo $data_attributes; endif ?> <?php if( true === $args['disabled'] ) { echo 'disabled'; } ?>>
 		<?php
 		if ( $args['please_select'] ) {
 			echo '<option value="">' . __( 'Please select', 'awesome-support' ) . '</option>';
@@ -593,11 +596,79 @@ function wpas_tickets_dropdown( $args = array(), $status = '' ) {
 	$options = '';
 
 	foreach ( $tickets as $ticket ) {
-		$options .= "<option value='$ticket->ID'>$ticket->post_title</option>";
+		$options .= "<option value='$ticket->ID' " . selected( $args['selected'], $ticket->ID ) . ">$ticket->post_title</option>";
 	}
 
 	echo wpas_dropdown( wp_parse_args( $args, $defaults ), $options );
 
+}
+
+/**
+ * Generate html markup for drop-downs that pull data from taxonomies
+ *
+ * Example use: echo show_dropdown( 'department', "html_inboxrules_rule_new_dept", "wpas-multi-inbox-config-item wpas-multi-inbox-config-item-select", $new_dept );
+ *
+ * @since 4.0.3
+ *
+ * @param string    $taxonomy       The taxonomy to be used as the dropdown passed as a string parameter
+ * @param string    $field_id       The html id name to be used in the generated markup - passed as a string
+ * @param string    $class          The HTML class string to wrap around the dropdown - passed as a string
+ * @param string    $selected       Returns the item that was selected by the user.  If this has an initial value the selected value in the dropdown will be set to that item.
+ * @param bool      $showcount      A flag to control whether or not to show the taxonomy count in parens next to each item in the dropdown.
+ *
+ * @return string
+ */
+function wpas_show_taxonomy_terms_dropdown( $taxonomy, $field_id, $class, $selected, $showcount = false ) {
+	$categories = get_categories( array( 'taxonomy' => $taxonomy, 'hide_empty' => false ) );
+
+	$select = "<select name='$field_id' id='$field_id' class='$class'>";
+	$select .= "<option value='-1'>Select</option>";
+
+	foreach( $categories as $category ) {
+		$is_selected = (int)$selected === $category->term_id ? ' selected ' : '';
+		
+		$countstr='';
+		if ( true === $showcount ) {
+			$countstr = " (" . $category->count . ") ";
+		}
+		
+		$select .= "<option value='" . $category->term_id . "' " . $is_selected . "' >" . $category->name . $countstr . "</option>";
+	}
+	$select .= "</select>";
+
+	return $select;
+}
+
+
+/**
+ * Generate html markup for a standard html agent dropdown
+ *
+ * @since 4.0.3
+ *
+ * @param string    $field_id       The html id name to be used in the generated markup - passed as a string
+ * @param string    $class          The HTML class string to wrap around the dropdown - passed as a string
+ * @param string	$new_assignee	Returns the item that was selected by the user.  If this has an initial value the selected value in the dropdown will be set to that item.
+ *
+ * Note: We should move this to CORE AS later!
+ */
+function wpas_show_assignee_dropdown_simple( $field_id, $class, $new_assignee = "" ) {
+
+	$args = array(
+		'name' => $field_id,
+		'id' => $field_id,
+		'class' => $class,
+		'exclude' => array(),
+		'selected' => empty($new_assignee) ? false : $new_assignee,		
+		'cap' => 'edit_ticket',
+		'cap_exclude' => '',
+		'agent_fallback' => false,
+		'please_select' => 'Select',
+		'select2' => false,
+		'disabled' => false,
+		'data_attr' => array()
+	);
+
+	echo wpas_users_dropdown( $args );
 }
 
 add_filter( 'locale','wpas_change_locale', 10, 1 );
@@ -1084,3 +1155,84 @@ function wpas_array_to_data_attributes( $array, $user_funct = false ) {
 function wpas_get_the_time_timestamp() {
 	return get_the_time( 'U' );
 }
+
+/**
+ * Check if multi agent is enabled
+ * @return boolean
+ */
+function wpas_is_multi_agent_active() {
+	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	
+	if ( isset( $options['multiple_agents_per_ticket'] ) && true === boolval( $options['multiple_agents_per_ticket'] ) ) {
+		return true;
+	}
+	
+	return false;
+}
+
+/**
+ * Check if support priority is active
+ * @return boolean
+ */
+function wpas_is_support_priority_active() {
+	$options = maybe_unserialize( get_option( 'wpas_options', array() ) );
+	
+	if ( isset( $options['support_priority'] ) && true === boolval( $options['support_priority'] ) ) {
+		return true;
+	}
+	
+	return false;
+}
+
+/**
+ * Create a pseduo GUID
+ *
+ * @return string
+ */
+ function wpas_create_pseudo_guid(){
+	 return sprintf('%04X%04X-%04X-%04X-%04X-%04X%04X%04X', mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(16384, 20479), mt_rand(32768, 49151), mt_rand(0, 65535), mt_rand(0, 65535), mt_rand(0, 65535));
+ }
+ 
+
+/**
+ * Create a random MD5 based hash.
+ *
+ * @return string
+ */ 
+ function wpas_random_hash() {
+	
+	$time  = time();
+	$the_hash = md5( $time . (string) random_int(0, getrandmax()) );
+	
+	return $the_hash;
+	
+}
+
+/**
+ * Wrapper for FILTER_INPUT using the INPUT_SERVER parameter.
+ * Includes a work-around for a known issue.
+ * See: https://github.com/xwp/stream/issues/254
+ * 
+ * @since 4.3.3
+ *
+ * @return string
+ */ 
+ function wpas_filter_input_server( $input_var = 'REQUEST_URI' ) {
+	 
+	 $filtered_input = filter_input( INPUT_SERVER, $input_var, FILTER_SANITIZE_STRING );
+	 
+	 if ( empty( $filtered_input ) ) {
+		 
+		if ( filter_has_var(INPUT_SERVER, $input_var )) {
+				$filtered_input = filter_input( INPUT_SERVER, $input_var, FILTER_SANITIZE_STRING );
+			} else {
+				if (isset($_SERVER["REQUEST_URI"]))
+					$filtered_input = filter_var( $_SERVER[$input_var], FILTER_SANITIZE_STRING );
+				else
+					$filtered_input = null;
+			}		 
+	 }
+	 
+	 return $filtered_input ;
+	 
+ }

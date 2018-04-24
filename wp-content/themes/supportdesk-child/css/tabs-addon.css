@@ -90,15 +90,30 @@
   border: none;
   padding: 0;
 }
-.nav-tabs {
+.tabs-left .nav-tabs {
   border: none !important;
 }
-.nav-tabs li a {
+.tabs-left .nav-tabs li a {
   border: none !important;
   margin: 0 !important;
   border-radius: 0 !important;
+  color: #fff !important;
+  font-weight: 500;
+  background: #3b3fb6 !important;
+  padding-left: 40px !important;
 }
-.nav-tabs .active a {
-  border-left: 4px solid #3b3fb6 !important;
-  background: #fff !important;
+.tabs-left .nav-tabs li a:hover,
+.tabs-left .nav-tabs li a:active,
+.tabs-left .nav-tabs li a:focus,
+.tabs-left .nav-tabs li a:visited {
+  background: rgba(59, 63, 182, 0.7) !important;
+}
+.tabs-left .nav-tabs .active a {
+  background: rgba(59, 63, 182, 0.7) !important;
+}
+.tabs-left .nav-tabs .active a:hover,
+.tabs-left .nav-tabs .active a:active,
+.tabs-left .nav-tabs .active a:focus,
+.tabs-left .nav-tabs .active a:visited {
+  background: rgba(59, 63, 182, 0.7) !important;
 }

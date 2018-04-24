@@ -1,5 +1,5 @@
 /*! fixto - v0.4.0 - 2015-06-08
- * http://github.com/bbarakaci/fixto/*/
+* http://github.com/bbarakaci/fixto/*/
 
 
 var fixto = (function ($, window, document) {
@@ -7,23 +7,23 @@ var fixto = (function ($, window, document) {
     // Start Computed Style. Please do not modify this module here. Modify it from its own repo. See address below.
 
     /*! Computed Style - v0.1.0 - 2012-07-19
-     * https://github.com/bbarakaci/computed-style
-     * Copyright (c) 2012 Burak Barakaci; Licensed MIT */
-    var computedStyle = (function () {
+    * https://github.com/bbarakaci/computed-style
+    * Copyright (c) 2012 Burak Barakaci; Licensed MIT */
+    var computedStyle = (function() {
         var computedStyle = {
-            getAll: function (element) {
+            getAll : function(element){
                 return document.defaultView.getComputedStyle(element);
             },
-            get: function (element, name) {
+            get : function(element, name){
                 return this.getAll(element)[name];
             },
-            toFloat: function (value) {
+            toFloat : function(value){
                 return parseFloat(value, 10) || 0;
             },
-            getFloat: function (element, name) {
+            getFloat : function(element,name){
                 return this.toFloat(this.get(element, name));
             },
-            _getAllCurrentStyle: function (element) {
+            _getAllCurrentStyle : function(element) {
                 return element.currentStyle;
             }
         };
@@ -38,12 +38,12 @@ var fixto = (function ($, window, document) {
 
     // End Computed Style. Modify whatever you want to.
 
-    var mimicNode = (function () {
+    var mimicNode = (function(){
         /*
-         Class Mimic Node
-         Dependency : Computed Style
-         Tries to mimick a dom node taking his styles, dimensions. May go to his repo if gets mature.
-         */
+        Class Mimic Node
+        Dependency : Computed Style
+        Tries to mimick a dom node taking his styles, dimensions. May go to his repo if gets mature.
+        */
 
         function MimicNode(element) {
             this.element = element;
@@ -54,34 +54,34 @@ var fixto = (function ($, window, document) {
         }
 
         MimicNode.prototype = {
-            replace: function () {
+            replace : function(){
                 var rst = this.replacer.style;
                 var styles = computedStyle.getAll(this.element);
 
-                // rst.width = computedStyle.width(this.element) + 'px';
-                // rst.height = this.element.offsetHeight + 'px';
+                 // rst.width = computedStyle.width(this.element) + 'px';
+                 // rst.height = this.element.offsetHeight + 'px';
 
-                // Setting offsetWidth
-                rst.width = this._width();
-                rst.height = this._height();
+                 // Setting offsetWidth
+                 rst.width = this._width();
+                 rst.height = this._height();
 
-                // Adopt margins
-                rst.marginTop = styles.marginTop;
-                rst.marginBottom = styles.marginBottom;
-                rst.marginLeft = styles.marginLeft;
-                rst.marginRight = styles.marginRight;
+                 // Adopt margins
+                 rst.marginTop = styles.marginTop;
+                 rst.marginBottom = styles.marginBottom;
+                 rst.marginLeft = styles.marginLeft;
+                 rst.marginRight = styles.marginRight;
 
-                // Adopt positioning
-                rst.cssFloat = styles.cssFloat;
-                rst.styleFloat = styles.styleFloat; //ie8;
-                rst.position = styles.position;
-                rst.top = styles.top;
-                rst.right = styles.right;
-                rst.bottom = styles.bottom;
-                rst.left = styles.left;
-                // rst.borderStyle = styles.borderStyle;
+                 // Adopt positioning
+                 rst.cssFloat = styles.cssFloat;
+                 rst.styleFloat = styles.styleFloat; //ie8;
+                 rst.position = styles.position;
+                 rst.top = styles.top;
+                 rst.right = styles.right;
+                 rst.bottom = styles.bottom;
+                 rst.left = styles.left;
+                 // rst.borderStyle = styles.borderStyle;
 
-                rst.display = styles.display;
+                 rst.display = styles.display;
 
             },
 
@@ -89,19 +89,19 @@ var fixto = (function ($, window, document) {
                 this.replacer.style.display = 'none';
             },
 
-            _width: function () {
+            _width : function(){
                 return this.element.getBoundingClientRect().width + 'px';
             },
 
-            _widthOffset: function () {
+            _widthOffset : function(){
                 return this.element.offsetWidth + 'px';
             },
 
-            _height: function () {
+            _height : function(){
                 return this.element.getBoundingClientRect().height + 'px';
             },
 
-            _heightOffset: function () {
+            _heightOffset : function(){
                 return this.element.offsetHeight + 'px';
             },
 
@@ -111,21 +111,21 @@ var fixto = (function ($, window, document) {
                 // set properties to null to break references
                 for (var prop in this) {
                     if (this.hasOwnProperty(prop)) {
-                        this[prop] = null;
+                      this[prop] = null;
                     }
                 }
             }
         };
 
         var bcr = document.documentElement.getBoundingClientRect();
-        if (!bcr.width) {
+        if(!bcr.width){
             MimicNode.prototype._width = MimicNode.prototype._widthOffset;
             MimicNode.prototype._height = MimicNode.prototype._heightOffset;
         }
 
         return {
-            MimicNode: MimicNode,
-            computedStyle: computedStyle
+            MimicNode:MimicNode,
+            computedStyle:computedStyle
         };
     }());
 
@@ -140,27 +140,27 @@ var fixto = (function ($, window, document) {
     Prefix.prototype = {
 
         _vendors: {
-            webkit: {cssPrefix: '-webkit-', jsPrefix: 'Webkit'},
-            moz: {cssPrefix: '-moz-', jsPrefix: 'Moz'},
-            ms: {cssPrefix: '-ms-', jsPrefix: 'ms'},
-            opera: {cssPrefix: '-o-', jsPrefix: 'O'}
+          webkit: { cssPrefix: '-webkit-', jsPrefix: 'Webkit'},
+          moz: { cssPrefix: '-moz-', jsPrefix: 'Moz'},
+          ms: { cssPrefix: '-ms-', jsPrefix: 'ms'},
+          opera: { cssPrefix: '-o-', jsPrefix: 'O'}
         },
 
-        _prefixJsProperty: function (vendor, prop) {
+        _prefixJsProperty: function(vendor, prop) {
             return vendor.jsPrefix + prop[0].toUpperCase() + prop.substr(1);
         },
 
-        _prefixValue: function (vendor, value) {
+        _prefixValue: function(vendor, value) {
             return vendor.cssPrefix + value;
         },
 
-        _valueSupported: function (prop, value, dummy) {
+        _valueSupported: function(prop, value, dummy) {
             // IE8 will throw Illegal Argument when you attempt to set a not supported value.
             try {
                 dummy.style[prop] = value;
                 return dummy.style[prop] === value;
             }
-            catch (er) {
+            catch(er) {
                 return false;
             }
         },
@@ -170,7 +170,7 @@ var fixto = (function ($, window, document) {
          * @param {string} prop Property name
          * @returns {boolean}
          */
-        propertySupported: function (prop) {
+        propertySupported: function(prop) {
             // Supported property will return either inine style value or an empty string.
             // Undefined means property is not supported.
             return document.documentElement.style[prop] !== undefined;
@@ -181,22 +181,22 @@ var fixto = (function ($, window, document) {
          * @param {string} prop Property name
          * @returns {string|null}
          */
-        getJsProperty: function (prop) {
+        getJsProperty: function(prop) {
             // Try native property name first.
-            if (this.propertySupported(prop)) {
+            if(this.propertySupported(prop)) {
                 return prop;
             }
 
             // Prefix it if we know the vendor already
-            if (this._vendor) {
+            if(this._vendor) {
                 return this._prefixJsProperty(this._vendor, prop);
             }
 
             // We don't know the vendor, try all the possibilities
             var prefixed;
-            for (var vendor in this._vendors) {
+            for(var vendor in this._vendors) {
                 prefixed = this._prefixJsProperty(this._vendors[vendor], prop);
-                if (this.propertySupported(prefixed)) {
+                if(this.propertySupported(prefixed)) {
                     // Vendor detected. Cache it.
                     this._vendor = this._vendors[vendor];
                     return prefixed;
@@ -213,7 +213,7 @@ var fixto = (function ($, window, document) {
          * @param {string} value Value name
          * @returns {string|null}
          */
-        getCssValue: function (prop, value) {
+        getCssValue: function(prop, value) {
             // Create dummy element to test value
             var dummy = document.createElement('div');
 
@@ -221,24 +221,24 @@ var fixto = (function ($, window, document) {
             var jsProperty = this.getJsProperty(prop);
 
             // Try unprefixed value
-            if (this._valueSupported(jsProperty, value, dummy)) {
+            if(this._valueSupported(jsProperty, value, dummy)) {
                 return value;
             }
 
             var prefixedValue;
 
             // If we know the vendor already try prefixed value
-            if (this._vendor) {
+            if(this._vendor) {
                 prefixedValue = this._prefixValue(this._vendor, value);
-                if (this._valueSupported(jsProperty, prefixedValue, dummy)) {
+                if(this._valueSupported(jsProperty, prefixedValue, dummy)) {
                     return prefixedValue;
                 }
             }
 
             // Try all vendors
-            for (var vendor in this._vendors) {
+            for(var vendor in this._vendors) {
                 prefixedValue = this._prefixValue(this._vendors[vendor], value);
-                if (this._valueSupported(jsProperty, prefixedValue, dummy)) {
+                if(this._valueSupported(jsProperty, prefixedValue, dummy)) {
                     // Vendor detected. Cache it.
                     this._vendor = this._vendors[vendor];
                     return prefixedValue;
@@ -275,7 +275,7 @@ var fixto = (function ($, window, document) {
         document.body.appendChild(parent);
         var rect = child.getBoundingClientRect();
         // If offset top is greater than 0 meand transformed element created a positioning context.
-        if (rect.top > 0) {
+        if(rect.top > 0) {
             support = true;
         }
         // Remove dummy content
@@ -293,7 +293,7 @@ var fixto = (function ($, window, document) {
     var ie = navigator.appName === 'Microsoft Internet Explorer';
     var ieversion;
 
-    if (ie) {
+    if(ie){
         ieversion = parseFloat(navigator.appVersion.split("MSIE")[1]);
     }
 
@@ -312,14 +312,14 @@ var fixto = (function ($, window, document) {
         // Returns the total outerHeight of the elements passed to mind option. Will return 0 if none.
         _mindtop: function () {
             var top = 0;
-            if (this._$mind) {
+            if(this._$mind) {
                 var el;
                 var rect;
                 var height;
-                for (var i = 0, l = this._$mind.length; i < l; i++) {
+                for(var i=0, l=this._$mind.length; i<l; i++) {
                     el = this._$mind[i];
                     rect = el.getBoundingClientRect();
-                    if (rect.height) {
+                    if(rect.height) {
                         top += rect.height;
                     }
                     else {
@@ -341,7 +341,7 @@ var fixto = (function ($, window, document) {
         start: function () {
 
             // Start only if it is not running not to attach event listeners multiple times.
-            if (!this._running) {
+            if(!this._running) {
                 this._start();
                 this._running = true;
             }
@@ -359,41 +359,41 @@ var fixto = (function ($, window, document) {
             // set properties to null to break references
             for (var prop in this) {
                 if (this.hasOwnProperty(prop)) {
-                    this[prop] = null;
+                  this[prop] = null;
                 }
             }
         },
 
-        _setOptions: function (options) {
+        _setOptions: function(options) {
             $.extend(this.options, options);
-            if (this.options.mind) {
+            if(this.options.mind) {
                 this._$mind = $(this.options.mind);
             }
-            if (this.options.zIndex) {
+            if(this.options.zIndex) {
                 this.child.style.zIndex = this.options.zIndex;
             }
         },
 
-        setOptions: function (options) {
+        setOptions: function(options) {
             this._setOptions(options);
             this.refresh();
         },
 
         // Methods could be implemented by subclasses
 
-        _stop: function () {
+        _stop: function() {
 
         },
 
-        _start: function () {
+        _start: function() {
 
         },
 
-        _destroy: function () {
+        _destroy: function() {
 
         },
 
-        refresh: function () {
+        refresh: function() {
 
         }
     };
@@ -420,14 +420,14 @@ var fixto = (function ($, window, document) {
     $.extend(FixToContainer.prototype, {
 
         // Returns an anonymous function that will call the given function in the given context
-        _bind: function (fn, context) {
+        _bind : function (fn, context) {
             return function () {
                 return fn.call(context);
             };
         },
 
         // at ie8 maybe only in vm window resize event fires everytime an element is resized.
-        _toresize: ieversion === 8 ? document.documentElement : window,
+        _toresize : ieversion===8 ? document.documentElement : window,
 
         _onscroll: function _onscroll() {
             this._scrollTop = document.documentElement.scrollTop || document.body.scrollTop;
@@ -466,16 +466,16 @@ var fixto = (function ($, window, document) {
             var childStyles = computedStyle.getAll(this.child);
             var context = null;
 
-            if (fixedPositioningContext) {
+            if(fixedPositioningContext) {
                 // Get positioning context.
                 context = this._getContext();
                 console.log(context);
-                if (context) {
+                if(context) {
                     // There is a positioning context. Top should be according to the context.
                     console.log(context.getBoundingClientRect());
                     if (context.getBoundingClientRect().top > 0) {
                         top = top - context.getBoundingClientRect().top;
-                    } else {
+                    }else{
                         top = Math.abs(context.getBoundingClientRect().top);
                     }
                     console.log("Context top" + top);
@@ -484,7 +484,7 @@ var fixto = (function ($, window, document) {
 
             diff = (this._parentBottom - this._scrollTop) - (this.child.offsetHeight + computedStyle.toFloat(childStyles.marginBottom) + mindTop + this.options.top);
 
-            if (diff > 0) {
+            if(diff>0) {
                 diff = 0;
             }
 
@@ -508,22 +508,22 @@ var fixto = (function ($, window, document) {
 
         // Get positioning context of the element.
         // We know that the closest parent that a transform rule applied will create a positioning context.
-        _getContext: function () {
+        _getContext: function() {
             var parent;
             var element = this.child;
             var context = null;
             var styles;
 
             // Climb up the treee until reaching the context
-            while (!context) {
+            while(!context) {
                 parent = element.parentNode;
-                if (parent === document.documentElement) {
+                if(parent === document.documentElement) {
                     return null;
                 }
 
                 styles = computedStyle.getAll(parent);
                 // Element has a transform rule
-                if (styles[transformJsProperty] !== 'none') {
+                if(styles[transformJsProperty] !== 'none') {
                     context = parent;
                     break;
                 }
@@ -541,16 +541,16 @@ var fixto = (function ($, window, document) {
 
             this._saveStyles();
 
-            if (document.documentElement.currentStyle) {
+            if(document.documentElement.currentStyle){
                 // Function for ie<9. When hasLayout is not triggered in ie7, he will report currentStyle as auto, clientWidth as 0. Thus using offsetWidth.
                 // Opera also falls here
                 width = (child.offsetWidth) - (computedStyle.toFloat(childStyles.paddingLeft) + computedStyle.toFloat(childStyles.paddingRight) + computedStyle.toFloat(childStyles.borderLeftWidth) + computedStyle.toFloat(childStyles.borderRightWidth)) + 'px';
             }
 
             // Ie still fixes the container according to the viewport.
-            if (fixedPositioningContext) {
+            if(fixedPositioningContext) {
                 var context = this._getContext();
-                if (context) {
+                if(context) {
                     // There is a positioning context. Left should be according to the context.
                     left = child.getBoundingClientRect().left - context.getBoundingClientRect().left;
                 }
@@ -563,7 +563,7 @@ var fixto = (function ($, window, document) {
 
             childStyle.position = 'fixed';
             childStyle.top = this._mindtop() + this.options.top - computedStyle.toFloat(childStyles.marginTop) + 'px';
-            console.log('childStyle.top: ' + childStyle.top);
+            console.log('childStyle.top: ' + childStyle.top );
             this._$child.addClass(this.options.className);
             this.fixed = true;
         },
@@ -579,7 +579,7 @@ var fixto = (function ($, window, document) {
             this.fixed = false;
         },
 
-        _saveStyles: function () {
+        _saveStyles: function(){
             var childStyle = this.child.style;
             this._childOriginalPosition = childStyle.position;
             this._childOriginalTop = childStyle.top;
@@ -596,7 +596,7 @@ var fixto = (function ($, window, document) {
             this._viewportHeight = window.innerHeight || document.documentElement.clientHeight;
         },
 
-        _stop: function () {
+        _stop: function() {
             // Unfix the container immediately.
             this._unfix();
             // remove event listeners
@@ -604,7 +604,7 @@ var fixto = (function ($, window, document) {
             $(this._toresize).unbind('resize', this._proxied_onresize);
         },
 
-        _start: function () {
+        _start: function() {
             // Trigger onscroll to have the effect immediately.
             this._onscroll();
 
@@ -613,12 +613,12 @@ var fixto = (function ($, window, document) {
             $(this._toresize).bind('resize', this._proxied_onresize);
         },
 
-        _destroy: function () {
+        _destroy: function() {
             // Destroy mimic node instance
             this._replacer.destroy();
         },
 
-        refresh: function () {
+        refresh: function() {
             this._saveViewportHeight();
             this._unfix();
             this._onscroll();
@@ -633,7 +633,7 @@ var fixto = (function ($, window, document) {
     NativeSticky.prototype = new FixTo();
 
     $.extend(NativeSticky.prototype, {
-        _start: function () {
+        _start: function() {
 
             var childStyles = computedStyle.getAll(this.child);
 
@@ -644,29 +644,30 @@ var fixto = (function ($, window, document) {
             this.refresh();
         },
 
-        _stop: function () {
+        _stop: function() {
             this.child.style.position = this._childOriginalPosition;
             this.child.style.top = this._childOriginalTop;
         },
 
-        refresh: function () {
+        refresh: function() {
             this.child.style.top = this._mindtop() + this.options.top + 'px';
         }
     });
 
 
+
     var fixTo = function fixTo(childElement, parentElement, options) {
-        if ((nativeStickyValue && !options) || (nativeStickyValue && options && options.useNativeSticky !== false)) {
+        if((nativeStickyValue && !options) || (nativeStickyValue && options && options.useNativeSticky !== false)) {
             // Position sticky supported and user did not disabled the usage of it.
             return new NativeSticky(childElement, parentElement, options);
         }
-        else if (fixedPositionValue) {
-            // Position fixed supported
+        else if(fixedPositionValue) {
+             // Position fixed supported
 
-            if (fixedPositioningContext === undefined) {
+             if(fixedPositioningContext===undefined) {
                 // We don't know yet if browser creates fixed positioning contexts. Check it.
                 fixedPositioningContext = checkFixedPositioningContextSupport();
-            }
+             }
 
             return new FixToContainer(childElement, parentElement, options);
         }
@@ -676,11 +677,11 @@ var fixto = (function ($, window, document) {
     };
 
     /*
-     No support for ie lt 8
-     */
+    No support for ie lt 8
+    */
 
-    if (ieversion < 8) {
-        fixTo = function () {
+    if(ieversion<8){
+        fixTo = function(){
             return 'not supported';
         };
     }
@@ -688,38 +689,38 @@ var fixto = (function ($, window, document) {
     // Let it be a jQuery Plugin
     $.fn.fixTo = function (targetSelector, options) {
 
-        var $targets = $(targetSelector);
+         var $targets = $(targetSelector);
 
-        var i = 0;
-        return this.each(function () {
+         var i = 0;
+         return this.each(function () {
 
-            // Check the data of the element.
-            var instance = $(this).data('fixto-instance');
+             // Check the data of the element.
+             var instance = $(this).data('fixto-instance');
 
-            // If the element is not bound to an instance, create the instance and save it to elements data.
-            if (!instance) {
-                $(this).data('fixto-instance', fixTo(this, $targets[i], options));
-            }
-            else {
-                // If we already have the instance here, expect that targetSelector parameter will be a string
-                // equal to a public methods name. Run the method on the instance without checking if
-                // it exists or it is a public method or not. Cause nasty errors when necessary.
-                var method = targetSelector;
-                instance[method].call(instance, options);
-            }
-            i++;
-        });
+             // If the element is not bound to an instance, create the instance and save it to elements data.
+             if(!instance) {
+                 $(this).data('fixto-instance', fixTo(this, $targets[i], options));
+             }
+             else {
+                 // If we already have the instance here, expect that targetSelector parameter will be a string
+                 // equal to a public methods name. Run the method on the instance without checking if
+                 // it exists or it is a public method or not. Cause nasty errors when necessary.
+                 var method = targetSelector;
+                 instance[method].call(instance, options);
+             }
+             i++;
+          });
     };
 
     /*
-     Expose
-     */
+        Expose
+    */
 
     return {
         FixToContainer: FixToContainer,
         fixTo: fixTo,
-        computedStyle: computedStyle,
-        mimicNode: mimicNode
+        computedStyle:computedStyle,
+        mimicNode:mimicNode
     };
 
 

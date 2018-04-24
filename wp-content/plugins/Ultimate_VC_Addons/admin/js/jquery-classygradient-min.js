@@ -8,8 +8,8 @@
  *
  */
 
-(function ($) {
-    $.ClassyGradient = function (element, options) {
+(function($) {
+    $.ClassyGradient = function(element, options) {
         var defaults = {
             gradient: '0% #02CDE8, 100% #000000',
             width: 300,
@@ -17,28 +17,28 @@
             point: 8,
             orientation: 'vertical',
             target: null,
-            onChange: function () {
+            onChange: function() {
 
             },
-            onInit: function () {
+            onInit: function() {
 
             }
         };
         var $element = $(element), _container, _canvas, $pointsContainer, $pointsInfos, $pointsInfosContent, $pointColor, $pointPosition, $btnPointDelete, _context, _selPoint;
         var points = new Array();
         this.settings = {};
-        this.__constructor = function () {
+        this.__constructor = function() {
             this.settings = $.extend({}, defaults, options);
             this.update();
             this.settings.onInit();
             return this;
         };
-        this.update = function () {
+        this.update = function() {
             this._setupPoints();
             this._setup();
             this._render();
         };
-        this.getCSS = function () {
+        this.getCSS = function() {
             var out = '', svgX = '0%', svgY = '100%', webkitDir = 'left bottom', defDir = 'top';
             if (this.settings.orientation === 'horizontal') {
                 svgX = '100%';
@@ -47,12 +47,12 @@
                 defDir = 'left';
             }
 
-            defDir = this.settings.orientation; // hack by amit
+			defDir = this.settings.orientation; // hack by amit
 
             var svg = '<svg xmlns="http://www.w3.org/2000/svg">' + '<defs>' + '<linearGradient id="gradient" x1="0%" y1="0%" x2="' + svgX + '" y2="' + svgY + '">';
             var webkitCss = '-webkit-gradient(linear, left top, ' + webkitDir;
             var defCss = '';
-            $.each(points, function (i, el) {
+            $.each(points, function(i, el) {
                 webkitCss += ', color-stop(' + el[0] + ', ' + el[1] + ')';
                 defCss += ',' + el[1] + ' ' + el[0] + '';
                 svg += '<stop offset="' + el[0] + '" style="stop-color:' + el[1] + ';" />';
@@ -70,22 +70,22 @@
             out += 'background: ' + 'linear-gradient(' + defDir + ',' + defCss + ');';
             return out;
         };
-        this.getArray = function () {
+        this.getArray = function() {
             return points;
         };
-        this.getString = function () {
+        this.getString = function() {
             var out = '';
-            $.each(points, function (i, el) {
+            $.each(points, function(i, el) {
                 out += el[0] + ' ' + el[1] + ',';
             });
             out = out.substr(0, out.length - 1);
             return out;
         };
-        this.setOrientation = function (orientation) {
+        this.setOrientation = function(orientation) {
             this.settings.orientation = orientation;
             this._renderToTarget();
         };
-        this._setupPoints = function () {
+        this._setupPoints = function() {
             points = new Array();
             if ($.isArray(this.settings.gradient)) {
                 points = this.settings.gradient;
@@ -94,7 +94,7 @@
                 points = this._getGradientFromString(this.settings.gradient);
             }
         };
-        this._setup = function () {
+        this._setup = function() {
             var self = this;
             $element.empty();
             _container = $('<div class="ClassyGradient"></div>');
@@ -109,9 +109,9 @@
             _container.append($pointsInfos);
             $pointsInfosContent = $('<div class="content"></div>');
             $pointsInfos.append($pointsInfosContent);
-            $element.hover(function () {
+            $element.hover(function() {
                 $element.addClass('hover');
-            }, function () {
+            }, function() {
                 $element.removeClass('hover');
             });
             $pointColor = $('<div class="point-color"><div style="background-color: #00ff00"></div></div>');
@@ -121,30 +121,30 @@
             $element.append(_container);
             $pointColor.ColorPicker({
                 color: '#00ff00',
-                onSubmit: function (hsb, hex, rgb) {
+                onSubmit: function(hsb, hex, rgb) {
                     $element.find('.point-color div').css('backgroundColor', '#' + hex);
                     _selPoint.css('backgroundColor', '#' + hex);
                     self._renderCanvas();
                     self._renderToTarget();
                 },
-                onChange: function (hsb, hex, rgb) {
+                onChange: function(hsb, hex, rgb) {
                     $element.find('.point-color div').css('backgroundColor', '#' + hex);
                     _selPoint.css('backgroundColor', '#' + hex);
                     self._renderCanvas();
                     self._renderToTarget();
                 }
             });
-            $(document).bind('click', function () {
+            $(document).bind('click', function() {
                 if (!$element.is('.hover')) {
                     $pointsInfos.hide('fast');
                 }
             });
             _canvas.unbind('click');
-            _canvas.bind('click', function (e) {
+            _canvas.bind('click', function(e) {
                 var offset = _canvas.offset(), clickPosition = e.pageX - offset.left;
                 clickPosition = Math.round((clickPosition * 100) / self.settings.width);
                 var defaultColor = '#000000', minDist = 999999999999;
-                $.each(points, function (i, el) {
+                $.each(points, function(i, el) {
                     if ((parseInt(el[0]) < clickPosition) && (clickPosition - parseInt(el[0]) < minDist)) {
                         minDist = clickPosition - parseInt(el[0]);
                         defaultColor = el[1];
@@ -157,37 +157,37 @@
                 points.push([clickPosition + '%', defaultColor]);
                 points.sort(self._sortByPosition);
                 self._render();
-                $.each(points, function (i, el) {
+                $.each(points, function(i, el) {
                     if (el[0] == clickPosition + '%') {
                         self._selectPoint($pointsContainer.find('.point:eq(' + i + ')'));
                     }
                 });
             });
         };
-        this._render = function () {
+        this._render = function() {
             this._initGradientPoints();
             this._renderCanvas();
             this._renderToTarget();
         };
-        this._initGradientPoints = function () {
+        this._initGradientPoints = function() {
             var self = this;
             $pointsContainer.empty();
-            $.each(points, function (i, el) {
+            $.each(points, function(i, el) {
                 $pointsContainer.append('<div class="point" style="background-color: ' + el[1] + '; left:' + (parseInt(el[0]) * self.settings.width) / 100 + 'px;"></div>');
             });
-            $pointsContainer.find('.point').css('width', this.settings.point + 'px').css('height', this.settings.point + 'px').mouseup(function () {
+            $pointsContainer.find('.point').css('width', this.settings.point + 'px').css('height', this.settings.point + 'px').mouseup(function() {
                 self._selectPoint(this);
             }).draggable({
                 axis: 'x',
                 containment: 'parent',
-                drag: function () {
+                drag: function() {
                     self._selectPoint(this);
                     self._renderCanvas();
                     self._renderToTarget();
                 }
             });
         };
-        this._selectPoint = function (el) {
+        this._selectPoint = function(el) {
             var self = this;
             _selPoint = $(el);
             var color = $(el).css('backgroundColor'), position = parseInt($(el).css('left'));
@@ -197,7 +197,7 @@
             $pointColor.ColorPickerSetColor(this._rgbToHex(color.split(',')));
             $pointColor.find('div').css('backgroundColor', this._rgbToHex(color.split(',')));
             $pointPosition.html('Position: ' + position + '%');
-            $btnPointDelete.unbind('click').bind('click', function () {
+            $btnPointDelete.unbind('click').bind('click', function() {
                 if (points.length > 1) {
                     points.splice(_selPoint.index(), 1);
                     self._render();
@@ -207,10 +207,10 @@
             });
             $element.find('.info').css('marginLeft', parseInt($(el).css('left')) - 30 + 'px').show('fast');
         };
-        this._renderCanvas = function () {
+        this._renderCanvas = function() {
             var self = this;
             points = new Array();
-            $element.find('.point').each(function (i, el) {
+            $element.find('.point').each(function(i, el) {
                 var position = Math.round((parseInt($(el).css('left')) / self.settings.width) * 100);
                 var color = $(el).css('backgroundColor').substr(4, $(el).css('backgroundColor').length - 5);
                 color = self._rgbToHex(color.split(','));
@@ -220,7 +220,7 @@
             this._renderToCanvas();
             this.settings.onChange(this.getString(), this.getCSS(), this.getArray());
         };
-        this._renderToElement = function (target, gradient) {
+        this._renderToElement = function(target, gradient) {
             var svgX = '0%', svgY = '100%', webkitDir = 'left bottom', defDir = 'top';
             if ((target === _canvas) || (this.settings.orientation === 'horizontal')) {
                 svgX = '100%';
@@ -228,13 +228,13 @@
                 webkitDir = 'right top';
                 defDir = 'left';
             }
-
-            defDir = this.settings.orientation; // hack by amit
-
-            var svg = '<svg xmlns="http://www.w3.org/2000/svg">' + '<defs>' + '<linearGradient id="gradient" x1="0%" y1="0%" x2="' + svgX + '" y2="' + svgY + '">';
+			
+			defDir = this.settings.orientation; // hack by amit
+            
+			var svg = '<svg xmlns="http://www.w3.org/2000/svg">' + '<defs>' + '<linearGradient id="gradient" x1="0%" y1="0%" x2="' + svgX + '" y2="' + svgY + '">';
             var webkitCss = '-webkit-gradient(linear, left top, ' + webkitDir;
             var defCss = '';
-            $.each(gradient, function (i, el) {
+            $.each(gradient, function(i, el) {
                 webkitCss += ', color-stop(' + el[0] + ', ' + el[1] + ')';
                 defCss += ',' + el[1] + ' ' + el[0] + '';
                 svg += '<stop offset="' + el[0] + '" style="stop-color:' + el[1] + ';" />';
@@ -259,14 +259,14 @@
             target.css('background', '-ms-linear-gradient(' + defDir + ',' + defCss + ')');
             target.css('background', 'linear-gradient(' + defDir + ',' + defCss + ')');
         };
-        this._renderToTarget = function () {
+        this._renderToTarget = function() {
             if (this.settings.target !== null) {
                 this._renderToElement($(this.settings.target), points);
             }
         };
-        this._renderToCanvas = function () {
+        this._renderToCanvas = function() {
             var gradient = _context.createLinearGradient(0, 0, this.settings.width, 0);
-            $.each(points, function (i, el) {
+            $.each(points, function(i, el) {
                 gradient.addColorStop(parseInt(el[0]) / 100, el[1]);
             });
             _context.clearRect(0, 0, this.settings.width, this.settings.height);
@@ -274,9 +274,9 @@
             _context.fillRect(0, 0, this.settings.width, this.settings.height);
             this.settings.onChange(this.getString(), this.getCSS(), this.getArray());
         };
-        this._getGradientFromString = function (gradient) {
+        this._getGradientFromString = function(gradient) {
             var arr = new Array(), _t = gradient.split(',');
-            $.each(_t, function (i, el) {
+            $.each(_t, function(i, el) {
                 var position;
                 if ((el.substr(el.indexOf('%') - 3, el.indexOf('%')) == '100') || (el.substr(el.indexOf('%') - 3, el.indexOf('%')) == '100%')) {
                     position = '100%';
@@ -294,9 +294,8 @@
             });
             return arr;
         };
-        this._rgbToHex = function (rgb) {
+        this._rgbToHex = function(rgb) {
             var R = rgb[0], G = rgb[1], B = rgb[2];
-
             function toHex(n) {
                 n = parseInt(n, 10);
                 if (isNaN(n))
@@ -304,10 +303,9 @@
                 n = Math.max(0, Math.min(n, 255));
                 return "0123456789ABCDEF".charAt((n - n % 16) / 16) + "0123456789ABCDEF".charAt(n % 16);
             }
-
             return '#' + toHex(R) + toHex(G) + toHex(B);
         };
-        this._sortByPosition = function (data_A, data_B) {
+        this._sortByPosition = function(data_A, data_B) {
             if (parseInt(data_A[0]) < parseInt(data_B[0])) {
                 return -1;
             }
@@ -316,7 +314,7 @@
             }
             return 0;
         };
-        this._base64 = function (input) {
+        this._base64 = function(input) {
             var keyStr = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=", output = "", chr1, chr2, chr3, enc1, enc2, enc3, enc4, i = 0;
             while (i < input.length) {
                 chr1 = input.charCodeAt(i++);
@@ -338,8 +336,8 @@
         };
         return this.__constructor();
     };
-    $.fn.ClassyGradient = function (options) {
-        return this.each(function () {
+    $.fn.ClassyGradient = function(options) {
+        return this.each(function() {
             if ($(this).data('ClassyGradient') === undefined) {
                 var plugin = new $.ClassyGradient(this, options);
                 $(this).data('ClassyGradient', plugin);

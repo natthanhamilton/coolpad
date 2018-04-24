@@ -1,0 +1,39 @@
+@import '../../../Coolpad/assets/less/variables';
+
+#product-header {
+  opacity: 0.9;
+  background-position: 50% 50%;
+  background-size: cover;
+  background-repeat: no-repeat;
+  p {
+    color: #3b3fb6;
+    padding-bottom: 40px;
+
+    // Responsive elements
+    font-size: 72px;
+    @media only screen and (max-width: @break-sm) {
+      font-size: 36px;
+      text-align: center;
+    }
+    @media only screen and (min-width: @break-md) {
+      padding-left: 140px;
+    }
+  }
+  .vc_column-inner {
+    height: 367px;
+    padding: 0;
+  }
+  .vc_column_container {
+    .wpb_wrapper {
+      position: absolute;
+      bottom: 0;
+      width: 100%;
+      .vc_btn3-container {
+        margin-bottom: 0;
+      }
+      .wpb_content_element {
+        margin-bottom: 0;
+      }
+      }
+  }
+}

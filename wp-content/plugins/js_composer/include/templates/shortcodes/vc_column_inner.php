@@ -29,8 +29,11 @@ $css_classes = array(
 	$width,
 );
 
-if (vc_shortcode_custom_css_has_property( $css, array('border', 'background') )) {
-	$css_classes[]='vc_col-has-fill';
+if ( vc_shortcode_custom_css_has_property( $css, array(
+	'border',
+	'background',
+) ) ) {
+	$css_classes[] = 'vc_col-has-fill';
 }
 
 $wrapper_attributes = array();

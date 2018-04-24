@@ -406,27 +406,6 @@ Vertically center everything
 Multi line truncate
 
 */
-.multi-line-truncate:before {
-  /* points in the end */
-  content: '...';
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of block */
-  right: 0;
-  bottom: 0;
-}
-.multi-line-truncate:after {
-  /* points in the end */
-  content: '...';
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of text */
-  right: 0;
-  /* set width and height */
-  width: 1em;
-  height: 1em;
-  margin-top: 0.2em;
-}
 /*
 
 Hover transition
@@ -603,95 +582,42 @@ Text formats
   }
 }
 #home-cover {
-  /* Internet Explorer 10 */
-  /* Firefox */
-  /* Safari, Opera, and Chrome */
-  /* W3C */
-  /* Internet Explorer 10 */
-  display: -ms-flexbox !important;
-  -ms-flex-align: center !important;
-  /* Firefox */
-  display: -moz-box !important;
-  -moz-box-align: center !important;
-  /* Safari, Opera, and Chrome */
-  display: -webkit-box !important;
-  -webkit-box-align: center !important;
-  /* W3C */
-  display: box !important;
-  box-align: center !important;
+  background-size: cover;
+  background-position: 50% 50%;
+  height: calc(100vh - 50px);
+  width: 100%;
 }
-#home-cover .details {
-  padding: 50px 0;
-}
-@media only screen and (max-width: 768px) {
-  #home-cover .details {
-    padding: 30px 0;
-  }
-}
-@media only screen and (max-width: 768px) {
-  #home-cover .half {
-    text-align: center;
-    width: 100%;
+@media only screen and (max-width: 480px) {
+  #home-cover {
+    height: initial !important;
+    padding-top: 100px;
+    padding-bottom: 60px;
   }
 }
 #home-cover p {
-  font-weight: 300;
-  color: #aaaaaa;
+  font-size: 26px !important;
+  color: #ffffff !important;
+  padding: 50px 0 !important;
+  width: 350px !important;
+  margin: auto !important;
+  text-align: center !important;
 }
-#home-cover .logo img,
-#home-cover .website-phone img,
-#home-cover .mobile-phone img {
-  width: auto;
+#home-cover .logo p {
+  padding: 0 !important;
 }
 #home-cover .logo img {
   max-height: 200px;
-}
-@media only screen and (max-width: 768px) {
-  #home-cover .logo img {
-    max-height: 100px;
-  }
-}
-#home-cover #buy {
-  /* Internet Explorer 10 */
-  /* Firefox */
-  /* Safari, Opera, and Chrome */
-  /* W3C */
-  /* Internet Explorer 10 */
-  display: -ms-flexbox !important;
-  -ms-flex-pack: center !important;
-  -ms-flex-align: center !important;
-  /* Firefox */
-  display: -moz-box !important;
-  -moz-box-pack: center !important;
-  -moz-box-align: center !important;
-  /* Safari, Opera, and Chrome */
-  display: -webkit-box !important;
-  -webkit-box-pack: center !important;
-  -webkit-box-align: center !important;
-  /* W3C */
-  display: box !important;
-  box-pack: center !important;
-  box-align: center !important;
-}
-@media only screen and (min-width: 480px) {
-  #home-cover #buy a {
-    margin-top: 40px;
-  }
-}
-#home-cover .website-phone img {
-  max-height: 600px;
-}
-#home-cover .mobile-phone img {
-  display: none !important;
-  padding-top: 30px;
+  width: initial;
 }
 @media only screen and (max-width: 480px) {
-  #home-cover .website-phone img {
-    display: none !important;
+  #home-cover .logo img {
+    max-height: 130px;
   }
-  #home-cover .mobile-phone img {
-    display: block !important;
-  }
+}
+#home-cover.dyno p {
+  font-size: 40px !important;
+  padding: 35px !important;
+  width: initial !important;
 }
 @media only screen and (max-width: 768px) {
   #home-tiles .vc_col-sm-4 {
@@ -883,319 +809,3 @@ Text formats
     margin: auto;
   }
 }
-/*
-
-OLD
-
-#home-cover {
-  #slider {
-    .left,
-    .right {
-      background: transparent;
-    }
-    .icon-prev,
-    .icon-next {
-      font-size: 150px;
-      top: 35%;
-    }
-    .item {
-      background-position: 50% 50%;
-      background-size: cover;
-      max-height: 600px;
-      min-height: 425px;
-      .wrapper {
-        .vertical-center;
-        width: 100%;
-        height: 100%;
-        background-position: 50% 50%;
-        background-size: cover;
-        .content {
-          .title {
-            .text-title;
-            .block;
-            .center;
-            text-shadow: 0 2px 40px #000000;
-          }
-          .description {
-            .text-description;
-            .block;
-            .center;
-            margin: 20px 0;
-            text-shadow: 0 2px 40px #000000;
-          }
-          .buy {
-            .center;
-            .block;
-            a {
-
-              font-size: 28px;
-            }
-          }
-        }
-      }
-    }
-  }
-}
-
-#home-new {
-  @media only screen and (min-width: @break-md) {
-    height: 600px;
-    .vertical-center;
-  }
-  @media only screen and (max-width: @break-md) {
-    .vc_column_container {
-      width: 100% !important;
-    }
-
-    .image {
-      margin-top: 70px;
-    }
-
-    .buy {
-      margin-bottom: 116px;
-    }
-
-    .image {
-      .wpb_single_image {
-        @media only screen and (min-width: @break-xl) {
-          text-align: right;
-        }
-      }
-    }
-  }
-  .title {
-    .block;
-
-    font-size: 48px;
-    font-weight: 300;
-    line-height: 1.25;
-    color: @color-charcoal-grey;
-
-    text-align: center;
-    @media only screen and (min-width: @break-xl) {
-      text-align: left;
-    }
-  }
-  .description {
-    .block;
-    margin: 24px 0;
-
-    font-size: 24px;
-    font-weight: 300;
-    line-height: 1.5;
-    color: @color-charcoal-grey;
-
-    text-align: center;
-    @media only screen and (min-width: @break-xl) {
-      text-align: left;
-    }
-  }
-  .buy {
-    .block;
-
-    text-align: center;
-    @media only screen and (min-width: @break-xl) {
-      text-align: left;
-    }
-    a {
-
-      font-size: 28px;
-      font-weight: normal;
-      color: @color-charcoal-grey !important;
-    }
-  }
-}
-
-#home-highlight {
-  .section-padding;
-  background-position: 50% 50%;
-  background-size: cover;
-  .wrapper {
-    @media only screen and (min-width: @break-sm) {
-      height: @height-lg;
-      .vertical;
-    }
-    @media only screen and (max-width: @break-sm) {
-      .flexbox;
-    }
-    .left-div {
-      height: 100%;
-      @media only screen and (min-width: @break-sm) {
-        .vertical-center;
-      }
-      @media only screen and (min-width: @break-sm) and (max-width: @break-md) {
-        width: 50%;
-        padding: 60px 0 90px 0;
-      }
-      @media only screen and (max-width: @break-sm) {
-        padding-bottom: 44px;
-        .flexbox-div(2);
-      }
-      .image {
-        .center;
-        @media only screen  and (min-width: @break-sm) {
-          .right;
-        }
-      }
-      .title {
-
-        font-size: 48px;
-        font-weight: normal;
-        line-height: 1.25;
-        margin-top: 40px;
-        .center;
-        @media only screen  and (max-width: @break-md) {
-          font-size: 36px;
-        }
-        @media only screen  and (min-width: @break-sm) {
-          .right;
-        }
-      }
-      .description {
-        font-size: 24px;
-        font-weight: 300;
-        line-height: 1.5;
-        margin: 20px 0 36px 0;
-        .center;
-        @media only screen  and (min-width: @break-sm) {
-          .right;
-        }
-      }
-      .buy {
-        .center;
-        @media only screen  and (min-width: @break-sm) {
-          .right;
-        }
-        a {
-          color: @color-charcoal-grey !important;
-        }
-      }
-    }
-    .center-div {
-      @media only screen and (min-width: @break-sm) and (max-width: @break-md) {
-        width: 50%;
-        padding: 60px 0 90px 0;
-      }
-      @media only screen  and (max-width: @break-sm) {
-        padding: 30px 0 16px 0;
-        .flexbox-div(1);
-      }
-      .vertical-center;
-      height: 100%;
-      padding: 0 20px;
-      img {
-        max-height: 500px !important;
-      }
-    }
-    .right-div {
-      @media only screen and (max-width: @break-md) {
-        display: none;
-      }
-      .vertical-center;
-      height: 100%;
-      .content {
-        width: 300px;
-        background: rgba(255, 255, 255, 0.5);
-        padding: 35px;
-        .title {
-          font-size: 24px;
-          font-weight: 300;
-          line-height: 1.4;
-        }
-        .description {
-          font-size: 17.2px;
-          font-weight: normal;
-          line-height: 2.1;
-        }
-        .image {
-          text-align: right;
-        }
-      }
-    }
-  }
-}
-
-#home-phones {
-  width: 100%;
-  .vc_col-sm-3 {
-    @media only screen and (min-width: @break-sm) and (max-width: @break-md) {
-      width: 50% !important;
-      float: left;
-    }
-  }
-  .wrapper {
-    height: 100%;
-    .title p {
-
-      .center;
-      font-size: 48px;
-      line-height: 1.5;
-      padding: 40px 0;
-    }
-    .item {
-      margin-top: 20px;
-      margin-bottom: 20px;
-      height: 455px !important;
-      .name p {
-
-        .center;
-        font-size: 36px;
-        font-weight: 500;
-        line-height: 0.67;
-        padding: 33px 0 33px 0;
-      }
-      img {
-        width: 150px;
-        height: 300px;
-      }
-      .buy {
-        .center;
-        a {
-          font-size: 24px;
-          font-weight: 300;
-          color: @color-charcoal-grey !important;
-        }
-      }
-    }
-  }
-}
-
-#home-accessories {
-  .section-padding;
-  display: none;
-
-  .section-height;
-  background-position: 50% 50%;
-  background-size: cover;
-  .wrapper {
-    .vertical-center(center, end);
-    .section-height;
-    width: 100%;
-    .content {
-      width: 660px;
-      .title {
-        .center;
-
-        font-size: 64px;
-        line-height: 1.13;
-      }
-      .description {
-        .center;
-        font-size: 24px;
-        line-height: 1.5;
-      }
-      .buy {
-        .center;
-        a {
-
-          font-size: 28px;
-          color: @color-charcoal-grey !important;
-        }
-      }
-      .image {
-        .vertical-center;
-      }
-    }
-  }
-}
- */

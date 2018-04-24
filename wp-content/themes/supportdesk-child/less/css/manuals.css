@@ -406,27 +406,6 @@ Vertically center everything
 Multi line truncate
 
 */
-.multi-line-truncate:before {
-  /* points in the end */
-  content: '...';
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of block */
-  right: 0;
-  bottom: 0;
-}
-.multi-line-truncate:after {
-  /* points in the end */
-  content: '...';
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of text */
-  right: 0;
-  /* set width and height */
-  width: 1em;
-  height: 1em;
-  margin-top: 0.2em;
-}
 /*
 
 Hover transition
@@ -751,9 +730,8 @@ Text formats
   }
 }
 #product-manuals .item .download {
-  height: 100%;
+  height: 55px;
   position: relative;
-  top: 10px;
   /* Internet Explorer 10 */
   /* Firefox */
   /* Safari, Opera, and Chrome */

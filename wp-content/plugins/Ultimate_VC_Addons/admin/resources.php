@@ -2,22 +2,20 @@
 	<div class="wrap-container">
 		<div class="heading-section">
 			<div class="bsf-pr-header bsf-left-header" style="margin-bottom: 55px;">
-				<h2><?php echo __('Resources!', 'bsf'); ?></h2>
-				<div
-					class="bsf-pr-decription"><?php _e('Resources used to improve your site with Google Fonts, Font Icons etc.',
-				                                       'bsf'); ?></div>
-			</div>
+				<h2><?php echo __('Resources!','bsf'); ?></h2>
+		    	<div class="bsf-pr-decription"><?php  _e('Resources used to improve your site with Google Fonts, Font Icons etc.','bsf'); ?></div>
+		    </div>
 
-			<div class="right-logo-section">
+		    <div class="right-logo-section">
 				<div class="bsf-company-logo">
 				</div><!--company-logo-->
 			</div><!--right-logo-section-->
-		</div>    <!--heading section-->
+		</div>	<!--heading section-->
 
 		<div class="inside bsf-wrap">
 			<div class="container">
-				<?php if (
-					(isset($connects) && ($connects === TRUE || $connects == 'true')) ||
+				<?php if(
+					(isset($connects) && ($connects === true || $connects == 'true')) ||
 					(!isset($connects))
 				) : ?>
 					<div class="col-sm-3 col-lg-3">
@@ -32,13 +30,12 @@
 					</div><!--col-sm-3-->
 				<?php endif; ?>
 
-				<?php if (
-					(isset($icon_manager) && ($icon_manager === TRUE || $icon_manager == 'true')) ||
+				<?php if(
+					(isset($icon_manager) && ($icon_manager === true || $icon_manager == 'true')) ||
 					(!isset($icon_manager))
 				) : ?>
 					<div class="col-sm-3 col-lg-3">
-						<a class="resource-block-link"
-						   href="<?php echo admin_url('admin.php?page=bsf-font-icon-manager') ?>">
+						<a class="resource-block-link" href="<?php echo admin_url('admin.php?page=bsf-font-icon-manager') ?>">
 							<div class="resource-block-icon">
 								<span class="dashicons dashicons-awards"></span>
 							</div>
@@ -49,13 +46,12 @@
 					</div><!--col-sm-3-->
 				<?php endif; ?>
 
-				<?php if (
-					(isset($google_fonts) && ($google_fonts === TRUE || $google_fonts == 'true')) ||
+				<?php if(
+					(isset($google_fonts) && ($google_fonts === true || $google_fonts == 'true')) ||
 					(!isset($google_fonts))
 				) : ?>
 					<div class="col-sm-3 col-lg-3">
-						<a class="resource-block-link"
-						   href="<?php echo admin_url('admin.php?page=bsf-google-font-manager') ?>">
+						<a class="resource-block-link" href="<?php echo admin_url('admin.php?page=bsf-google-font-manager') ?>">
 							<div class="resource-block-icon">
 								<span class="dashicons dashicons-edit"></span>
 							</div>

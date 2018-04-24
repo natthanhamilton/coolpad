@@ -162,7 +162,7 @@ jQuery(document).ready(function ($) {
 
     $(".st_faq .entry-content").hide();
     $(".st_faq .entry-title").click(function () {
-        $(this).toggleClass("active").next().slideToggle("slow");
+        $(this).toggleClass("active").next().slideToggle(300,"linear");
         return false; //Prevent the browser jump to the link anchor
     });
 

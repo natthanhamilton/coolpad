@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 if ( 'vc_edit_form' === vc_post_param( 'action' ) && vc_verify_admin_nonce() ) {
 	$link_category = array( __( 'All Links', 'js_composer' ) => '' );
 	$link_cats = get_terms( 'link_category' );

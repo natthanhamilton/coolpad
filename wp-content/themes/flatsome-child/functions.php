@@ -1,6 +1,16 @@
 <?php
 require_once(get_theme_root() . '/assets/global-functions.php');
 
+
+add_filter( 'gadwp_backenditem_uri', 'gadwp_uri_correction', 10, 1 );
+add_filter( 'gadwp_frontenditem_uri', 'gadwp_uri_correction', 10, 1 );
+
+function gadwp_uri_correction( $uri ){
+    return 'store.coolpad.us' . $uri;
+}
+
+
+
 add_action('wp_enqueue_scripts', 'my_theme_enqueue_styles');
 function my_theme_enqueue_styles()
 {

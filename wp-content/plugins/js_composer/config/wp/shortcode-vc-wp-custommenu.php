@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 $custom_menus = array();
 if ( 'vc_edit_form' === vc_post_param( 'action' ) && vc_verify_admin_nonce() ) {
 	$menus = get_terms( 'nav_menu', array( 'hide_empty' => false ) );

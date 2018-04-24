@@ -7,52 +7,39 @@
  * @access private
  */
 class MC4WP_Integration_Manager {
+
 	/**
 	 * @var MC4WP_Integration_Fixture[]
 	 */
-	protected $integrations = [];
+	protected $integrations = array();
+
 	/**
 	 * @var array
 	 */
-	protected $options = [];
+	protected $options = array();
+
 	/**
 	 * @var MC4WP_Integration_Tags
 	 */
 	protected $tags;
 
 	/**
-	 * Constructor
-	 */
+	* Constructor
+	*/
 	public function __construct() {
 		$this->options = $this->get_options();
-		$this->tags    = new MC4WP_Integration_Tags();
-	}
-
-	/**
-	 * @return array
-	 */
-	public function get_options() {
-		$options = (array)get_option('mc4wp_integrations', []);
-
-		/**
-		 * Filters global integration options
-		 *
-		 * This array holds ALL integration settings
-		 *
-		 * @since 3.0
-		 *
-		 * @param array $options
-		 */
-		return (array)apply_filters('mc4wp_integration_options', $options);
+		$this->tags = new MC4WP_Integration_Tags();
 	}
 
 	/**
 	 * Add hooks
 	 */
 	public function add_hooks() {
-		add_action('after_setup_theme', [$this, 'initialize']);
+		add_action( 'after_setup_theme', array( $this, 'initialize' ) );
+
 		$this->tags->add_hooks();
 	}
+
 
 	/**
 	 * Add hooks
@@ -60,29 +47,10 @@ class MC4WP_Integration_Manager {
 	public function initialize() {
 		/*** @var MC4WP_Integration_Fixture $integration */
 		$enabled_integrations = $this->get_enabled_integrations();
-		foreach ($enabled_integrations as $integration) {
+
+		foreach( $enabled_integrations as $integration ) {
 			$integration->load()->initialize();
 		}
-	}
-
-	/**
-	 * Get the integrations which are enabled
-	 *
-	 * - Some integrations are always enabled because they need manual work
-	 * - Other integrations can be enabled in the settings page
-	 * - Only returns installed integrations
-	 *
-	 * @return array
-	 */
-	public function get_enabled_integrations() {
-		// get all enabled integrations
-		$enabled_integrations = array_filter($this->integrations, [$this, 'is_enabled']);
-		// remove duplicate values, for whatever reason..
-		$enabled_integrations = array_unique($enabled_integrations);
-		// filter out integrations which are not installed
-		$installed_enabled_integrations = array_filter($enabled_integrations, [$this, 'is_installed']);
-
-		return $installed_enabled_integrations;
 	}
 
 	/**
@@ -95,17 +63,18 @@ class MC4WP_Integration_Manager {
 		return $this->integrations;
 	}
 
+
 	/**
 	 * Get an integration instance
 	 *
 	 * @param string $slug
-	 *
 	 * @return MC4WP_Integration
 	 * @throws Exception
 	 */
-	public function get($slug) {
-		if (!isset($this->integrations[ $slug ])) {
-			throw new Exception(sprintf("No integration with slug %s has been registered.", $slug));
+	public function get( $slug ) {
+
+		if( ! isset( $this->integrations[ $slug ] ) ) {
+			throw new Exception( sprintf( "No integration with slug %s has been registered.", $slug ) );
 		}
 
 		return $this->integrations[ $slug ]->load();
@@ -116,22 +85,11 @@ class MC4WP_Integration_Manager {
 	 *
 	 * @param string $slug
 	 * @param string $class
-	 * @param bool   $enabled
+	 * @param bool $enabled
 	 */
-	public function register_integration($slug, $class, $enabled = FALSE) {
-		$raw_options                 = $this->get_integration_options($slug);
-		$this->integrations[ $slug ] = new MC4WP_Integration_Fixture($slug, $class, $enabled, $raw_options);
-	}
-
-	/**
-	 * Get the raw options for an integration
-	 *
-	 * @param $slug
-	 *
-	 * @return array
-	 */
-	public function get_integration_options($slug) {
-		return isset($this->options[ $slug ]) ? $this->options[ $slug ] : [];
+	public function register_integration( $slug, $class, $enabled = false ) {
+		$raw_options = $this->get_integration_options( $slug );
+		$this->integrations[ $slug ] = new MC4WP_Integration_Fixture( $slug, $class, $enabled, $raw_options );
 	}
 
 	/**
@@ -139,32 +97,81 @@ class MC4WP_Integration_Manager {
 	 *
 	 * @param string $slug
 	 */
-	public function deregister_integration($slug) {
-		if (isset($this->integrations[ $slug ])) {
-			unset($this->integrations[ $slug ]);
+	public function deregister_integration( $slug ) {
+		if( isset( $this->integrations[ $slug ] ) ) {
+			unset( $this->integrations[ $slug ] );
 		}
 	}
 
 	/**
 	 * Checks whether a certain integration is enabled (in the settings)
 	 *
-	 * This is decoupled from the integration class itself as checking an array is way "cheaper" than instantiating an
-	 * object
+	 * This is decoupled from the integration class itself as checking an array is way "cheaper" than instantiating an object
 	 *
 	 * @param MC4WP_Integration_Fixture $integration
 	 *
 	 * @return bool
 	 */
-	public function is_enabled(MC4WP_Integration_Fixture $integration) {
+	public function is_enabled( MC4WP_Integration_Fixture $integration ) {
 		return $integration->enabled;
 	}
 
 	/**
 	 * @param MC4WP_Integration $integration
-	 *
 	 * @return bool
 	 */
-	public function is_installed($integration) {
+	public function is_installed( $integration ) {
 		return $integration->is_installed();
 	}
+
+	/**
+	 * Get the integrations which are enabled
+	 *
+	 * - Some integrations are always enabled because they need manual work
+	 * - Other integrations can be enabled in the settings page
+	 * - Only returns installed integrations
+	 *
+	 * @return array
+	 */
+	public function get_enabled_integrations() {
+
+		// get all enabled integrations
+		$enabled_integrations = array_filter( $this->integrations, array( $this, 'is_enabled' ) );
+
+		// remove duplicate values, for whatever reason..
+		$enabled_integrations = array_unique( $enabled_integrations );
+
+		// filter out integrations which are not installed
+		$installed_enabled_integrations = array_filter( $enabled_integrations, array( $this, 'is_installed' ) );
+
+		return $installed_enabled_integrations;
+	}
+
+	/**
+	 * @return array
+	 */
+	public function get_options() {
+		$options = (array) get_option( 'mc4wp_integrations', array() );
+
+		/**
+		 * Filters global integration options
+		 *
+		 * This array holds ALL integration settings
+		 *
+		 * @since 3.0
+		 * @param array $options
+		 */
+		return (array) apply_filters( 'mc4wp_integration_options', $options );
+	}
+
+	/**
+	 * Get the raw options for an integration
+	 *
+	 * @param $slug
+	 * @return array
+	 */
+	public function get_integration_options( $slug ) {
+		return isset( $this->options[ $slug ] ) ? $this->options[ $slug ] : array();
+	}
+
 }

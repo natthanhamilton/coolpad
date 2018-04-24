@@ -1,25 +1,5 @@
 [
     {
-        "name": "ericmann/wp-session-manager",
-        "version": "dev-master",
-        "version_normalized": "9999999-dev",
-        "source": {
-            "type": "git",
-            "url": "https://github.com/ericmann/wp-session-manager.git",
-            "reference": "c446c85909206345d875297d8691396e0ba624a3"
-        },
-        "dist": {
-            "type": "zip",
-            "url": "https://api.github.com/repos/ericmann/wp-session-manager/zipball/c446c85909206345d875297d8691396e0ba624a3",
-            "reference": "c446c85909206345d875297d8691396e0ba624a3",
-            "shasum": ""
-        },
-        "time": "2015-05-25 00:38:47",
-        "type": "wordpress-plugin",
-        "installation-source": "source",
-        "notification-url": "https://packagist.org/downloads/"
-    },
-    {
         "name": "gambitph/titan-framework",
         "version": "1.9.2",
         "version_normalized": "1.9.2.0",
@@ -34,7 +14,7 @@
             "reference": "793bee37350acf4ff10ebf1068aa6d16cdc44da1",
             "shasum": ""
         },
-        "time": "2015-10-06 16:21:47",
+        "time": "2015-10-06T16:21:47+00:00",
         "type": "library",
         "installation-source": "dist",
         "autoload": {
@@ -62,6 +42,42 @@
             "options",
             "titan",
             "wordpress"
+        ]
+    },
+    {
+        "name": "ericmann/wp-session-manager",
+        "version": "1.2.2",
+        "version_normalized": "1.2.2.0",
+        "source": {
+            "type": "git",
+            "url": "https://github.com/ericmann/wp-session-manager.git",
+            "reference": "8a4aacd25e4a89429e93a85df70a068052853cae"
+        },
+        "dist": {
+            "type": "zip",
+            "url": "https://api.github.com/repos/ericmann/wp-session-manager/zipball/8a4aacd25e4a89429e93a85df70a068052853cae",
+            "reference": "8a4aacd25e4a89429e93a85df70a068052853cae",
+            "shasum": ""
+        },
+        "time": "2017-04-26T13:27:37+00:00",
+        "type": "wordpress-plugin",
+        "installation-source": "dist",
+        "notification-url": "https://packagist.org/downloads/",
+        "license": [
+            "GPLv2.0+"
+        ],
+        "authors": [
+            {
+                "name": "Eric Mann",
+                "email": "eric@eamann.com",
+                "homepage": "https://eamann.com",
+                "role": "Developer"
+            }
+        ],
+        "description": "Prototype session management for WordPress.",
+        "homepage": "https://github.com/ericmann/wp-session-manager",
+        "keywords": [
+            "session"
         ]
     }
 ]

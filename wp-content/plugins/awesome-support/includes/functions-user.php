@@ -189,7 +189,12 @@ function wpas_insert_user( $data = array(), $notify = true ) {
 		}
 
 		// Let's create the user username and make sure it's unique
-		$username   = sanitize_user( strtolower( $user['first_name'] ) . strtolower( $user['last_name'] ) );
+		if ( isset( $data['user_login'] ) ) {
+			$username = $data['user_login'];
+		} else {
+			$username   = sanitize_user( strtolower( $user['first_name'] ) . strtolower( $user['last_name'] ) );
+		}
+		
 		$user_check = get_user_by( 'login', $username );
 
 		if ( is_a( $user_check, 'WP_User' ) ) {
@@ -338,8 +343,13 @@ function wpas_try_login( $data ) {
 			exit;
 
 		} elseif ( $login instanceof WP_User ) {
+
+			// Filter to allow redirection of successful login
+			$redirect_to = apply_filters( 'wpas_try_login_redirect', $redirect_to, $redirect_to, $login );
+
 			wp_safe_redirect( $redirect_to );
 			exit;
+
 		} else {
 			wpas_add_error( 'login_failed', __( 'We were unable to log you in for an unknown reason.', 'awesome-support' ) );
 			wp_safe_redirect( $redirect_to );
@@ -370,12 +380,18 @@ function wpas_can_view_ticket( $post_id ) {
 	 * Get the post data.
 	 */
 	$post      = get_post( $post_id );
-	$author_id = intval( $post->post_author );
+	$author_id = null;
 
-	if ( is_user_logged_in() ) {
-		if ( get_current_user_id() === $author_id && current_user_can( 'view_ticket' ) || current_user_can( 'edit_ticket' ) ) {
-			$can = true;
+	if (!empty($post)) {
+
+		$author_id = intval( $post->post_author );
+
+		if ( is_user_logged_in() ) {
+			if ( get_current_user_id() === $author_id && current_user_can( 'view_ticket' ) || current_user_can( 'edit_ticket' ) ) {
+				$can = true;
+			}
 		}
+
 	}
 
 	return apply_filters( 'wpas_can_view_ticket', $can, $post_id, $author_id );
@@ -408,26 +424,31 @@ function wpas_can_reply_ticket( $admins_allowed = false, $post_id = null ) {
 		global $current_user;
 
 		if ( ! current_user_can( 'reply_ticket' ) ) {
-			return false;
+			// return false;
+			return apply_filters( 'wpas_can_also_reply_ticket', false, $post_id, $author_id, 1 );
 		}
 
 		$user_id = $current_user->data->ID;
 
 		/* If the current user is the author then yes */
 		if ( $user_id == $author_id ) {
-			return true;
+			// return true;
+			return apply_filters( 'wpas_can_also_reply_ticket', true, $post_id, $author_id, 2 );
 		} else {
 
 			if ( current_user_can( 'edit_ticket' ) && true === $admins_allowed ) {
-				return true;
+				// return true;
+				return apply_filters( 'wpas_can_also_reply_ticket', true, $post_id, $author_id, 3 );
 			} else {
-				return false;
+				// return false;
+				return apply_filters( 'wpas_can_also_reply_ticket', false, $post_id, $author_id, 4 );
 			}
 
 		}
 
 	} else {
-		return false;
+		// return false;
+		return apply_filters( 'wpas_can_also_reply_ticket', false, $post_id, $author_id, 5 );
 	}
 
 }
@@ -761,7 +782,7 @@ function wpas_users_dropdown( $args = array() ) {
 	foreach ( $all_users->members as $user ) {
 
 		/* This user was already added, skip it */
-		if ( ! empty( $args['selected'] ) && $user->user_id === intval( $args['selected'] ) ) {
+		if ( ! empty( $args['selected'] ) && intval( $user->user_id ) === intval( $args['selected'] ) ) {
 			continue;
 		}
 
@@ -950,7 +971,7 @@ function wpas_mailgun_check( $data = '' ) {
 
 }
 
-add_action( 'wp_ajax_wpas_get_users', 'wpas_get_users_ajax' );
+add_action( 'wp_ajax_wpas_get_users', 'wpas_get_users_ajax',11,0 );
 /**
  * Get AS users using Ajax
  *
@@ -970,6 +991,7 @@ function wpas_get_users_ajax( $args = array() ) {
 	);
 
 	if ( empty( $args ) ) {
+		$args = array();
 		foreach ( $defaults as $key => $value ) {
 			if ( isset( $_POST[ $key ] ) ) {
 				$args[ $key ] = $_POST[ $key ];
@@ -1045,4 +1067,38 @@ function wpas_has_smart_tickets_order( $user_id = 0 ) {
 
 	return apply_filters( 'wpas_has_smart_tickets_order', $value, $user_id );
 
+}
+
+/**
+ * return list of agents in a ticket
+ * @param int $ticket_id
+ * @param array $exclude
+ * @return array
+ */
+function wpas_get_ticket_agents( $ticket_id = '' , $exclude = array() ) {
+	
+	$agent_ids = $agents = array();
+	
+	$primary_agent_id    = intval( get_post_meta( $ticket_id, '_wpas_assignee', true ) );
+	if( $primary_agent_id && !in_array( $primary_agent_id, $exclude ) ) {
+		$agent_ids[] = $primary_agent_id;
+	}
+	
+	if( wpas_is_multi_agent_active() ) {
+		$secondary_agent_id  = intval( get_post_meta( $ticket_id, '_wpas_secondary_assignee', true ) );
+		$tertiary_agent_id   = intval( get_post_meta( $ticket_id, '_wpas_tertiary_assignee', true ) );
+		if( $secondary_agent_id && !in_array( $secondary_agent_id, $exclude ) && !in_array( $secondary_agent_id, $agent_ids ) ) {
+			$agent_ids[] = $secondary_agent_id;
+		}
+
+		if( $tertiary_agent_id && !in_array( $tertiary_agent_id, $exclude )  && !in_array( $tertiary_agent_id, $agent_ids ) ) {
+			$agent_ids[] = $tertiary_agent_id;
+		}
+	}
+	
+	foreach ($agent_ids as $id) {
+		$agents[] = get_user_by('id', $id);
+	}
+	
+	return $agents;
 }

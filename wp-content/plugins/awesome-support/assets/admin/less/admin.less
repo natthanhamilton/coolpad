@@ -1,4 +1,4 @@
-@charset 'UTF-8';
+@charset "UTF-8";
 
 .wpas-cf {
 	&:before,
@@ -186,25 +186,25 @@ Ticket Replies
 		margin: 0 0 10px 0;
 		padding: 0;
 	}
-	ul { 
-		list-style-type: disc; 
-		list-style-position: inside; 
+	ul {
+		list-style-type: disc;
+		list-style-position: inside;
 	}
-	ol { 
-		list-style-type: decimal; 
-		list-style-position: inside; 
+	ol {
+		list-style-type: decimal;
+		list-style-position: inside;
 	}
 	ul ul,
-	ol ul { 
-		list-style-type: circle; 
-		list-style-position: inside; 
-		margin-left: 15px; 
+	ol ul {
+		list-style-type: circle;
+		list-style-position: inside;
+		margin-left: 15px;
 	}
 	ol ol,
-	td ul ol { 
-		list-style-type: lower-latin; 
-		list-style-position: inside; 
-		margin-left: 15px; 
+	td ul ol {
+		list-style-type: lower-latin;
+		list-style-position: inside;
+		margin-left: 15px;
 	}
 }
 .wpas-ticket-controls,
@@ -326,6 +326,15 @@ Ticket Replies
 }
 .wp-core-ui {
 	.wpas-reply-actions {
+
+		fieldset {
+			margin: 1.25em 0 1.25em 0;
+		}
+
+		fieldset label {
+			margin-right: 1.25em;
+		}
+
 		.button,
 		.button-primary,
 		.button-secondary {
@@ -411,7 +420,10 @@ Metaboxes - Custom Fields
 	.wpas-form-group + .wpas-form-group {
 		margin-top: 1em;
 	}
-	.wpas-form-control, select, input, textarea {
+	input:read-only, input:disabled {
+		cursor: not-allowed;
+	}
+	.wpas-form-control, select, input:not([type='radio']), textarea {
 		width: 100%;
 	}
 	label {
@@ -419,6 +431,7 @@ Metaboxes - Custom Fields
 		margin-bottom: .25em;
 	}
 }
+
 
 /*
 ==========================================================================
@@ -472,7 +485,7 @@ Metaboxes - Ticket Details
 		&:after {
 			font-size: 100%;
 		}
-	}	
+	}
 }
 
 #wpas-mb-details {
@@ -546,4 +559,215 @@ div.about-wrap {
 		margin-bottom: .25em;
 		border: 1px solid #ddd;
 	}
+}
+
+
+/*
+==========================================================================
+Admin Tabs
+==========================================================================
+*/
+
+.wpas_admin_tabs {
+        
+        background: #fff;
+        font-size: 14px;
+        margin: 0;
+        line-height: 1.4;
+        background: #f1f1f1;
+        
+        .wpas_admin_tabs_names_wrapper {
+            position: relative;
+            background : #FFF;
+            ul, ul li {
+                margin-bottom: 0; 
+            }
+            
+            ul .clear {
+                clear: both;
+                margin: 0;
+                float: none;
+                width: 0;
+            }
+            
+            .wpas_tab_name {
+                float : left;
+                padding: 10px;
+                cursor: pointer;
+                background: #f7f7f7;
+                margin-right: 6px;
+                border: #efefef solid 1px;
+                color : #777;
+
+                &.active {
+                    background: #e5e5e5;
+                    border: 1px solid #dadada;
+                    border-bottom: none;                    
+                    position: relative;
+                    color : #191919;
+                    &::after {
+                        content: " ";
+                        width: 100%;
+                        height: 1px;
+                        position: absolute;
+                        left: 0;
+                        bottom: -1px;
+                        z-index: 1;
+                        background: #e5e5e5;
+                    }
+                }
+            }
+            
+            .moreTab {
+                    display: none;
+                    float: right;
+                    padding: 10px;
+                    
+                    &:hover ul {
+                        display : block;
+                    }
+
+                    ul {
+                        display: none;
+                        position: absolute;
+                        right: 0;
+                        z-index: 100;
+                        background: #FFF;
+                        border: #dedede solid 1px;
+                        padding-bottom: 1px;
+
+                        li {
+                            float: none;
+                            margin: 0;
+                            
+                            &.active {
+                                background: #e5e5e5;
+                                border: 0;
+                            }
+                            
+                            &:hover {
+                                background: #eaeaea;
+                            }
+                        }
+                    }
+            }
+            
+        }
+        
+        .wpas_admin_tab_content {
+            display : none;
+            padding: 20px 10px;
+            background: #e5e5e5;
+            margin-bottom: 20px;
+            border: #dadada solid 1px;
+        }
+        
+        
+}
+
+/*
+==========================================================================
+Ticket Listing Page Tabs
+==========================================================================
+*/
+.post-type-ticket #posts-filter {
+        .tablenav.top {
+                height: auto;
+                
+                
+                .alignleft.actions {
+                        float : none;
+                }
+                
+                .actions.bulkactions, .search-box, #post-query-submit, #filter-by-date {
+                        display : none;
+                }
+                
+                .filter_btn_container {
+                        float: left;
+                        #post-query-submit {
+                                display: inline-block;
+                        }
+                }
+
+                #search_tab_content_placeholder .search-box {
+                        display: block !important;
+                        float : none;
+                }
+
+                .filter_by_date_container #filter-by-date {
+                        display: inline-block;
+                }
+        }
+        
+}	
+
+
+@media screen and (max-width: 782px) {
+        
+        
+        /*
+        ==========================================================================
+        Fix ticket listing table for smaller screens
+        ==========================================================================
+        */
+        .post-type-ticket {
+        
+                .wp-list-table {
+                        
+                        tr:not(.inline-edit-row):not(.no-items) td:not(.check-column) {
+                                
+                                &.column-status {
+                                        display: table-cell !important;
+                                }
+                                
+                        }
+                        
+                        tr td.column-status:not(.column-primary)::before {
+                                display: none;
+                        }
+                        
+                        td.column-title {
+                                max-width: 100%;
+                        }
+                }
+                
+        }
+}
+
+
+@media screen and (max-width: 420px) {
+        
+        /*
+        ==========================================================================
+        Fix ticket listing table for smaller screens
+        ==========================================================================
+        */
+        .post-type-ticket {
+        
+                .wp-list-table {
+                        
+                        thead .column-status, tfoot .column-status {
+                                display: none;
+                        }
+                        
+                        #the-list {
+                                .column-status, .column-title {
+                                        display: block !important;
+                                }
+                        }
+                }
+                
+        }
+}
+
+/*
+==========================================================================
+WordPress overrides
+==========================================================================
+*/
+
+/* Make the pagination arrows in the wp-admin ticket list screen full-height - fix for bootstrap 4 themes otherwise locking it at 16px for some reason...*/
+.tablenav-pages-navspan {
+	height: auto;
 }

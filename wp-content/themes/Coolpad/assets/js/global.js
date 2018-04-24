@@ -116,6 +116,20 @@ $(document).ready(function () {
     $('#slider').carousel();
     $('[data-toggle="tooltip"]').tooltip();
     $("#in-page-nav").affix({ offset: 1 });
-    $('#fullpage').fullpage({ scrollBar: true });
+    //$('#fullpage').fullpage({ scrollBar: true });
+
+    var $grid = $('.grid').masonry({
+        itemSelector: '.grid-item',
+        columnWidth: '.grid-sizer',
+        percentPosition: true,
+        gutter: 30
+    });
+    setTimeout(function(){
+        $grid.masonry('layout');
+    },1000);
+
+    $('.text-overflow').each(function(index, element) {
+        $clamp(element, { clamp: 2 });
+    });
 });
 

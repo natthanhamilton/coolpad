@@ -21,13 +21,14 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var $speed
  * @var $partial_view
  * @var $css
+ * @var $css_animation
  * Shortcode class
  * @var $this WPBakeryShortCode_VC_images_carousel
  */
 $title = $onclick = $custom_links = $custom_links_target =
 $img_size = $images = $el_class = $mode = $slides_per_view =
 $wrap = $autoplay = $hide_pagination_control =
-$hide_prev_next_buttons = $speed = $partial_view = $css = '';
+$hide_prev_next_buttons = $speed = $partial_view = $css = $css_animation = '';
 
 $output = '';
 $atts = vc_map_get_attributes( $this->getShortcode(), $atts );
@@ -62,7 +63,7 @@ $images = explode( ',', $images );
 $i = - 1;
 
 $class_to_filter = 'wpb_images_carousel wpb_content_element vc_clearfix';
-$class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class );
+$class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class ) . $this->getCSSAnimation( $css_animation );
 $css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $class_to_filter, $this->settings['base'], $atts );
 
 $carousel_id = 'vc_images-carousel-' . WPBakeryShortCode_VC_images_carousel::getCarouselIndex();

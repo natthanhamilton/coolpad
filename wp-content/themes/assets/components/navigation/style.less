@@ -74,9 +74,15 @@
     }
     a {
       background-color: transparent !important;
+      img {
+        max-height: 20px;
+      }
     }
   }
   ul.navbar-left {
+    @media screen and (max-width: 768px) {
+      width: initial !important;
+    }
     li {
       a {
         white-space: normal;
@@ -93,6 +99,13 @@
     }
     .btn {
       margin-top: 10px;
+    }
+  }
+  ul.navbar-right {
+    @media screen and (min-width: 768px) {
+      position: absolute;
+      right: 0;
+      width: initial;
     }
   }
   .dropdown-menu {

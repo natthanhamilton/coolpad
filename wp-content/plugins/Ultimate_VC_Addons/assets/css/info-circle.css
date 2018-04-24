@@ -3,30 +3,23 @@
     width: 100%;
     height: 100%
 }
-
 .info-circle-icons {
     cursor: pointer
 }
-
 .info-circle-icons {
     text-align: center
 }
-
 .info-wrapper {
-    padding-top: 1px;
-/ / collapsing margin behavior - http: / / goo . gl / qe7Qkn
+	padding-top: 1px; // collapsing margin behavior - http://goo.gl/qe7Qkn
 }
-
 .info-circle-wrapper {
     width: 100%
 }
-
 .info-circle-wrapper .smile_icon_list.left li .icon_description {
     margin-left: 1.2em;
     border-radius: 5px;
     padding: 10px 10px 10px 15px
 }
-
 .info-c-full-br img,
 .info-c-semi-br img {
     box-shadow: none;
@@ -39,7 +32,6 @@
     transform: translateY(-50%);
     vertical-align: top;
 }
-
 .info-c-full-br,
 .info-c-semi-br {
     max-width: 80%;
@@ -48,7 +40,6 @@
     margin: auto;
     border: 1px solid rgba(0, 0, 0, 0)
 }
-
 .info-c-full-br .info-c-full {
     text-align: center;
     width: 60%;
@@ -61,34 +52,28 @@
     -moz-box-sizing: border-box;
     box-sizing: border-box
 }
-
 .info-circle-def {
     display: table;
     width: 100%;
     height: 100%
 }
-
 .info-circle-sub-def {
     display: table-cell;
     vertical-align: middle
 }
-
 .info-c-full i {
     line-height: 1.5em;
     width: 1.5em;
     height: 1.5em
 }
-
 .info-c-full h3 {
     margin: 0;
     text-align: center;
     color: inherit
 }
-
 .info-c-full {
     padding: 20px
 }
-
 .info-circle-text {
     text-align: center;
     -moz-box-sizing: content-box;
@@ -98,11 +83,9 @@
     width: 90%;
     margin: 0 auto
 }
-
 .info-c-full-br .icon-circle-list .info-details {
     display: none
 }
-
 .info-c-full-br .icon-circle-list .info-circle-icons {
     height: 2em;
     width: 2em;
@@ -114,70 +97,58 @@
     -webkit-box-sizing: content-box !important;
     box-sizing: content-box !important;
 }
-
 .info-c-full-br .icon-circle-list {
     position: absolute;
     top: 50%;
     left: 50%
 }
-
 .info-c-semi-br.br-dash-out {
     border-style: dashed;
     border-width: 2px;
     position: relative
 }
-
 .info-c-semi {
     border: 2px solid green;
     margin: 50px;
     text-align: center;
     line-height: 200px
 }
-
 .info-c-semi-br .icon-circle-list .info-circle-icons img {
     width: 64px;
     max-width: 100%
 }
-
 .info-c-semi-br .icon-circle-list .info-circle-icons span {
     display: none
 }
-
 .info-c-semi-br .icon-circle-list .info-circle-icons {
     list-style: none;
     position: absolute;
     margin: -32px
 }
-
 .info-c-semi-br .icon-circle-list {
     position: absolute;
     top: 200px;
     left: 200px
 }
-
 .info-circle-responsive .smile_icon_list_wrap {
     display: none
 }
-
 .info-circle-wrapper .icon-circle-list {
     background-color: transparent !important
 }
-
-.icon-circle-list .info-circle-link {
-    position: relative;
-    width: 100%;
-    height: 100%;
-}
-
-.icon-circle-list a.info-circle-href {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    left: 0;
+.icon-circle-list .info-circle-link{
+    position:relative;
+    width:100%;
+    height:100%;
+ }
+ .icon-circle-list a.info-circle-href{
+    position:absolute;
+    width:100%;
+    height:100%;
+    left:0;
     border-bottom: none;
-    z-index: 99999;
-}
-
+    z-index:99999;
+ }
 .info-circle-buzz-out {
     -webkit-animation-name: circle_buzz_out;
     animation-name: circle_buzz_out;
@@ -188,7 +159,6 @@
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite
 }
-
 @-webkit-keyframes circle_buzz_out {
     10% {
         -webkit-transform: translateX(3px) rotate(2deg);
@@ -231,7 +201,6 @@
         transform: translateX(-1px) rotate(0)
     }
 }
-
 @keyframes circle_buzz_out {
     10% {
         -webkit-transform: translateX(3px) rotate(2deg);
@@ -284,7 +253,6 @@
         transform: translateX(-1px) rotate(0)
     }
 }
-
 .info-circle-pulse {
     -webkit-animation-name: circle_pulse;
     animation-name: circle_pulse;
@@ -295,7 +263,6 @@
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite
 }
-
 @-webkit-keyframes circle_pulse {
     25% {
         -webkit-transform: scale(1.1);
@@ -306,7 +273,6 @@
         transform: scale(0.9)
     }
 }
-
 @keyframes circle_pulse {
     25% {
         -webkit-transform: scale(1.1);
@@ -319,7 +285,6 @@
         transform: scale(0.9)
     }
 }
-
 .info-circle-push {
     -webkit-animation-name: circle_push;
     animation-name: circle_push;
@@ -330,7 +295,6 @@
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite
 }
-
 @-webkit-keyframes circle_push {
     50% {
         -webkit-transform: scale(0.8);
@@ -341,7 +305,6 @@
         transform: scale(1)
     }
 }
-
 @keyframes circle_push {
     50% {
         -webkit-transform: scale(0.8);
@@ -354,7 +317,6 @@
         transform: scale(1)
     }
 }
-
 .info-circle-pop {
     -webkit-animation-name: circle_pop;
     animation-name: circle_pop;
@@ -365,7 +327,6 @@
     -webkit-animation-iteration-count: infinite;
     animation-iteration-count: infinite
 }
-
 @-webkit-keyframes circle_pop {
     50% {
         -webkit-transform: scale(1.2);
@@ -376,7 +337,6 @@
         transform: scale(1)
     }
 }
-
 @keyframes circle_pop {
     50% {
         -webkit-transform: scale(1.2);
@@ -389,17 +349,14 @@
         transform: scale(1)
     }
 }
-
 .smile_icon_list.ic-resp-img li.icon_list_item {
     min-height: .5em !important
 }
-
 .smile_icon_list.ic-resp-img li .icon_list_icon {
     width: 2em;
     height: 2em;
     line-height: 2em
 }
-
 .smile_icon_list.ic-resp-img li .icon_list_icon img {
     box-shadow: none;
     max-width: 100%;
@@ -411,11 +368,9 @@
     transform: translateY(-50%);
     vertical-align: top;
 }
-
 .info-circle-wrapper .smile_icon_list.left.ic-resp-img li .icon_description {
     margin-left: 0.85em !important
 }
-
 .info-circle-icons * {
     line-height: inherit;
 }

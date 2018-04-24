@@ -1,10 +1,10 @@
 <?php
 /**
  * @package   Awesome Support/Admin/Reply
- * @author    ThemeAvenue <web@themeavenue.net>
+ * @author    AwesomeSupport <contact@getawesomesupport.com>
  * @license   GPL-2.0+
- * @link      http://themeavenue.net
- * @copyright 2014 ThemeAvenue
+ * @link      https://getawesomesupport.com
+ * @copyright 2014-2017 AwesomeSupport
  */
 
 // If this file is called directly, abort.
@@ -43,7 +43,7 @@ if ( ! defined( 'WPINC' ) ) {
 			<strong class="wpas-profilename"><?php echo $user_name; ?></strong> <span class="wpas-profilerole">(<?php echo wpas_get_user_nice_role( $user_data->roles[0] ); ?>)</span>
 		</div>
 		<div class="wpas-reply-time">
-			<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>"><span class="wpas-human-date"><?php echo date( get_option( 'date_format' ), strtotime( $row->post_date ) ); ?> | </span><?php printf( __( '%s ago', 'awesome-support' ), $date ); ?></time>
+			<time class="wpas-timestamp" datetime="<?php echo get_the_date( 'Y-m-d\TH:i:s' ) . wpas_get_offset_html5(); ?>"><span class="wpas-human-date"><?php echo date( get_option( 'date_format' ), strtotime( $row->post_date ) ); ?> <?php printf( __( '(%s - %s since ticket was opened.)', 'awesome-support' ), $date_full, $days_since_open ); ?>  | </span><?php printf( __( '%s ago', 'awesome-support' ), $date ); ?></time>
 		</div>
 	</div>
 

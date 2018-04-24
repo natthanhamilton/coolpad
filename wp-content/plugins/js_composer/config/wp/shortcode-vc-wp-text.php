@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 return array(
 	'name' => 'WP ' . __( 'Text' ),
 	'base' => 'vc_wp_text',

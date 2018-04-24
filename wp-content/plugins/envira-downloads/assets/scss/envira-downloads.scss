@@ -1,0 +1,188 @@
+/**
+* Invalid Password Message
+*/
+#envira-downloads-invalid-password {
+	clear: both;
+	float: left;
+	width: 100%;
+	margin: 0 0 20px 0;
+	padding: 10px;
+	background: #ffe6e6;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+/**
+* Download Button
+*/
+
+.envira-gallery-position-overlay {
+	position: absolute;
+}
+
+.envira-download-button {
+	display: none; /* JS will show icons on hover */
+	text-align: left;
+	z-index: 9; /* to get this above justified galleries */
+
+	/**
+	* Top Left
+	*/
+
+	.envira-gallery-top-left & {
+		margin: 5px 0 0 5px;
+	}
+
+	/**
+	* Top Right
+	*/
+
+	.envira-gallery-top-right & {
+		margin: 5px 5px 0 0;
+	}
+
+	/**
+	* Bottom Left
+	*/
+
+	.envira-gallery-bottom-left & {
+		margin: 0 0 5px 5px;
+	}
+
+	/**
+	* Bottom Right
+	*/
+
+	.envira-gallery-bottom-right & {
+		margin: 0 5px 5px 0;
+	}
+	
+	/**
+	* Button
+	*/
+	a {
+		float: left; 
+		width: 22px;
+		height: 22px; 
+		line-height: 22px;
+		color: #fff;
+		border: none;
+		border-radius: 50%;
+		-webkit-border-radius: 50%;
+		-moz-border-radius: 50%;
+		text-indent: -9999px;
+		background: url(../images/download.svg) center no-repeat #fff;
+		background-size: 14px 14px;
+	}
+}
+
+/**
+* Lightbox
+*/
+.envirabox-inner {
+	/**
+	* Download Button
+	*/
+	.envira-download-button {
+		display: inline-block;
+		z-index: 988041; /* Beat the prev/next controls */
+
+		/**
+		* Button
+		*/
+		a {
+			width: 44px;
+			height: 44px; 
+			line-height: 44px;
+			background-size: 24px 24px;
+		}
+	}
+
+	& .envira-gallery-top-left .envira-download-button {
+		margin: 10px 0 0 10px;
+	}
+
+	/**
+	* Top Right
+	*/
+
+	& .envira-gallery-top-right .envira-download-button {
+		margin: 10px 10px 0 0;
+	}
+
+	/**
+	* Bottom Left
+	*/
+
+	& .envira-gallery-bottom-left .envira-download-button {
+		margin: 0 0 10px 10px;
+	}
+
+	/**
+	* Bottom Right
+	*/
+
+	& .envira-gallery-bottom-right .envira-download-button {
+		margin: 0 10px 10px 0;
+	}
+}
+
+
+/**
+* Mobile Landscape Portrait (devices and browsers)
+*/
+@media only screen and (max-width: 680px) {
+	/**
+	* Lightbox
+	*/
+	.envirabox-inner {
+		/**
+		* Download Button
+		*/
+		.envira-download-button {
+			/**
+			* Top Left
+			*/
+
+			
+			/**
+			* Button
+			*/
+			a {
+				width: 22px;
+				height: 22px; 
+				line-height: 22px;
+				background-size: 14px 14px;
+			}
+		}
+
+		& .envira-gallery-top-left .envira-download-button {
+			margin: 5px 0 0 5px;
+		}
+
+		/**
+		* Top Right
+		*/
+
+		& .envira-gallery-top-right .envira-download-button {
+			margin: 5px 5px 0 0;
+		}
+
+		/**
+		* Bottom Left
+		*/
+
+		& .envira-gallery-bottom-left .envira-download-button {
+			margin: 0 0 5px 5px;
+		}
+
+		/**
+		* Bottom Right
+		*/
+
+		& .envira-gallery-bottom-right .envira-download-button {
+			margin: 0 5px 5px 0;
+		}
+	}	
+}

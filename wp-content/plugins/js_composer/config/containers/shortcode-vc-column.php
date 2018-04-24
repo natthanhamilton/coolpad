@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 /**
  * @var $tag - shortcode tag;
  */
@@ -9,6 +13,7 @@ return array(
 	'content_element' => false,
 	'description' => __( 'Place content elements inside the column', 'js_composer' ),
 	'params' => array(
+		vc_map_add_css_animation( false ),
 		array(
 			'type' => 'textfield',
 			'heading' => __( 'Extra class name', 'js_composer' ),

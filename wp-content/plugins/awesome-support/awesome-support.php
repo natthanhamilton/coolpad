@@ -4,13 +4,13 @@
  * @author    Awesome Support Team <contact@getawesomesupport.com>
  * @license   GPL-2.0+
  * @link       https://getawesomesupport.com
- * @copyright 2014 ThemeAvenue
+ * @copyright 2014-2017 AwesomeSupport
  *
  * @wordpress-plugin
  * Plugin Name:       Awesome Support
  * Plugin URI:        https://getawesomesupport.com
  * Description:       Awesome Support is a great ticketing system that will help you improve your customer satisfaction by providing a unique customer support experience.
- * Version:           3.3.3
+ * Version:           4.3.4
  * Author:            Awesome Support Team
  * Author URI:         https://getawesomesupport.com
  * Text Domain:       awesome-support
@@ -22,6 +22,20 @@
 // If this file is called directly, abort.
 if ( ! defined( 'WPINC' ) ) {
 	die;
+}
+
+// Check to see if we're even allowed to load Awesome Support
+$load_allowed = apply_filters( 'wpas_allow_loading', true ) ;
+if ( ! $load_allowed ) {
+	die;
+}
+
+// Check to see if we're allowed to load Awesome Support.
+// With this filter we allow other scripts to run by returning instead of 
+// dieing.
+$soft_load_allowed = apply_filters( 'wpas_allow_soft_loading', true ) ;
+if ( ! $soft_load_allowed ) {
+	return;
 }
 
 if ( ! class_exists( 'Awesome_Support' ) ):
@@ -67,7 +81,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @since 3.3
 		 * @var string
 		 */
-		public $php_version_required = '5.2';
+		public $php_version_required = '5.6';
 
 		/**
 		 * Holds the WPAS_Custom_Fields instance
@@ -146,7 +160,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 			// Make sure we have a version of PHP that's not too old
 			if ( ! self::$instance->is_php_version_enough() ) {
-				self::$instance->add_error( sprintf( __( 'Awesome Support requires PHP version %s or above. Read more information about <a %s>how you can update</a>.', 'awesome-support' ), self::$instance->wordpress_version_required, 'a href="http://www.wpupdatephp.com/update/" target="_blank"' ) );
+				self::$instance->add_error( sprintf( __( 'Awesome Support requires PHP version %s or above. Read more information about <a %s>how you can update</a>.', 'awesome-support' ), self::$instance->php_version_required, 'a href="http://www.wpupdatephp.com/update/" target="_blank"' ) );
 			}
 
 			// Check that the vendor directory is present
@@ -238,7 +252,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 		 * @return void
 		 */
 		private function setup_constants() {
-			define( 'WPAS_VERSION',           '3.3.3' );
+			define( 'WPAS_VERSION',           '4.3.4' );
 			define( 'WPAS_DB_VERSION',        '1' );
 			define( 'WPAS_URL',               trailingslashit( plugin_dir_url( __FILE__ ) ) );
 			define( 'WPAS_PATH',              trailingslashit( plugin_dir_path( __FILE__ ) ) );
@@ -419,6 +433,10 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			require( WPAS_PATH . 'includes/class-member-agent.php' );
 			require( WPAS_PATH . 'includes/class-member-user.php' );
 			require( WPAS_PATH . 'includes/class-wpas-session.php' );
+			require( WPAS_PATH . 'includes/functions-reply.php' );
+			require( WPAS_PATH . 'includes/functions-channels.php' );
+			require( WPAS_PATH . 'includes/functions-priority.php' );
+			require( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );			
 			require( WPAS_PATH . 'includes/install.php' );
 
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
@@ -428,6 +446,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				// Compatibility functions
 				require( 'includes/compatibility/sensei.php' );
 				require( 'includes/compatibility/acf-pro.php' );
+				require( 'includes/compatibility/wpml.php' );
 
 			}
 
@@ -443,6 +462,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 
 			require( WPAS_PATH . 'includes/admin/functions-notices.php' );
 			require( WPAS_PATH . 'includes/admin/functions-ajax.php' );
+			require( WPAS_PATH . 'includes/admin/functions-log-viewer.php' );
 
 			// We don't need all this during Ajax processing
 			if ( ! defined( 'DOING_AJAX' ) || ! DOING_AJAX ) {
@@ -466,12 +486,14 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 				}
 
 				/* Load settings files */
-				require( WPAS_PATH . 'includes/admin/settings/functions-settings.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-general.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-style.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-notifications.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-advanced.php' );
 				require( WPAS_PATH . 'includes/admin/settings/settings-licenses.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-products-management.php' );
+				require( WPAS_PATH . 'includes/admin/settings/settings-basic-time-tracking.php' );
+
 
 			}
 
@@ -504,7 +526,7 @@ if ( ! class_exists( 'Awesome_Support' ) ):
 			 * (products support is disabled by default). In this case we don't ask again.
 			 */
 			if ( 'pending' === get_option( 'wpas_support_products' ) ) {
-				if ( ! isset( $_GET['page'] ) || isset( $_GET['page'] ) && 'wpas-about' !== $_GET['page'] ) {
+			    if ( 'wpas-about' !== filter_input( INPUT_GET, 'page', FILTER_SANITIZE_STRING ) ) {
 					add_action( 'admin_notices', 'wpas_ask_support_products' );
 				}
 

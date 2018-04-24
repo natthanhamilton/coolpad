@@ -37,10 +37,8 @@
         removeTitle: true,
         selector: false,
         trigger: 'hover,focus',
-        onHidden: function () {
-        },
-        onShown: function () {
-        },
+        onHidden: function() {},
+        onShown: function() {},
 
     };
 
@@ -60,48 +58,40 @@
             this._bindEvents();
         },
 
-        show: function () {
+        show: function() {
             var _this = this,
                 delay = typeof this.options.delay === 'object' ? parseInt(this.options.delay.show) : parseInt(this.options.delay);
 
             clearTimeout(this.timeout);
             this.timeout = delay === 0 ?
                 this._setState('visible') :
-                setTimeout(function () {
-                    _this._setState('visible');
-                }, delay);
+                setTimeout(function() { _this._setState('visible'); }, delay);
         },
 
-        hide: function () {
+        hide: function() {
             var _this = this
-            delay = typeof this.options.delay === 'object' ? parseInt(this.options.delay.hide) : parseInt(this.options.delay);
+                delay = typeof this.options.delay === 'object' ? parseInt(this.options.delay.hide) : parseInt(this.options.delay);
 
             clearTimeout(this.timeout);
             this.timeout = delay === 0 ?
                 this._setState('hidden') :
-                setTimeout(function () {
-                    _this._setState('hidden');
-                }, delay);
+                setTimeout(function() { _this._setState('hidden'); }, delay);
         },
 
-        toggle: function () {
+        toggle: function() {
             this.state === 'visible' ? this.hide() : this.show();
         },
 
-        addClass: function (klass) {
-            console.log("in");
-            if (typeof klass === 'string') {
-                this.$el.addClass(klass);
-            }
+        addClass: function(klass) {
+        	console.log("in");
+            if (typeof klass === 'string') { this.$el.addClass(klass); }
         },
 
-        removeClass: function (klass) {
-            if (typeof klass === 'string') {
-                this.$el.removeClass(klass);
-            }
+        removeClass: function(klass) {
+            if (typeof klass === 'string') { this.$el.removeClass(klass); }
         },
 
-        _setState: function (state) {
+        _setState: function(state) {
             this.state = state;
             switch (state) {
                 case 'visible':
@@ -119,14 +109,14 @@
             }
         },
 
-        _checkContent: function () {
+        _checkContent: function() {
             if (this.options.selector) {
                 this.tipContent = $(this.options.selector).html();
                 this.$el.html(this.tipContent);
             }
         },
 
-        _createTip: function () {
+        _createTip: function() {
             if (this.options.html) {
                 this.tipContent = this.options.content;
             } else if (this.options.selector) {
@@ -142,7 +132,7 @@
 
             this.$el = $('<div />', {
                 'class': this.options.className,
-                html: '<span class="cp_tooltip_text">' + this.tipContent + '</span>'
+                html: '<span class="cp_tooltip_text">'+this.tipContent+'</span>'
             }).css({
                 'z-index': '9999999999',
                 'left': '-9999px',
@@ -154,12 +144,10 @@
             var coords = this.getPosition();
             this.$el.detach().css(coords);
 
-            if (this.options.hasArrow) {
-                this._addArrowClass();
-            }
+            if (this.options.hasArrow) { this._addArrowClass(); }
         },
 
-        _addArrowClass: function () {
+        _addArrowClass: function() {
             switch (this.options.position) {
                 case 'left':
                     this.$el.addClass('arrow-right');
@@ -175,7 +163,7 @@
             }
         },
 
-        _bindEvents: function () {
+        _bindEvents: function() {
             switch (this.options.trigger) {
                 case 'click':
                     this.$anchor.click($.proxy(this.toggle, this));
@@ -210,49 +198,39 @@
                     break;
                 default:
                     coords.top = coords.top - this.$el.outerHeight() - this.options.offset;
-                    var left = coords.left + (this.$anchor.outerWidth() / 2) - (this.$el.outerWidth() / 2);
-                    if (left < 0)
-                        left = 0;
+					var left = coords.left + (this.$anchor.outerWidth() / 2) - (this.$el.outerWidth() / 2);
+					if( left < 0 )
+						left = 0;
                     coords.left = left;
             }
             //console.log(coords);
             return coords;
         },
 
-        _setPosition: function () {
+        _setPosition: function() {
             this.$el.css(this.getPosition());
         }
     };
 
     $.fn[pluginName] = function (options, args) {
-        //console.log($.data(this, "plugin_" + pluginName));
+    	//console.log($.data(this, "plugin_" + pluginName));
         if (typeof options === 'string') {
-            //console.log(options);
+        	//console.log(options);
             switch (options) {
                 case 'show':
-                    this.each(function () {
-                        $.data(this, "plugin_" + pluginName)['show']();
-                    });
+                    this.each(function() { $.data(this, "plugin_" + pluginName)['show'](); });
                     break;
                 case 'hide':
-                    this.each(function () {
-                        $.data(this, "plugin_" + pluginName)['hide']();
-                    });
+                    this.each(function() { $.data(this, "plugin_" + pluginName)['hide'](); });
                     break;
                 case 'toggle':
-                    this.each(function () {
-                        $.data(this, "plugin_" + pluginName)['toggle']();
-                    });
+                    this.each(function() { $.data(this, "plugin_" + pluginName)['toggle'](); });
                     break;
                 case 'addClass':
-                    this.each(function () {
-                        $.data(this, "plugin_" + pluginName)['addClass'](args);
-                    });
+                    this.each(function() { $.data(this, "plugin_" + pluginName)['addClass'](args); });
                     break;
                 case 'removeClass':
-                    this.each(function () {
-                        $.data(this, "plugin_" + pluginName)['removeClass'](args);
-                    });
+                    this.each(function() { $.data(this, "plugin_" + pluginName)['removeClass'](args); });
                     break;
             }
         }
@@ -264,9 +242,9 @@
     };
 })(jQuery, window, document);
 
-(function ($) {
-    $(document).ready(function () {
-        $('.bsf-has-tip, .has-tip').each(function (i, tip) {
+(function($){
+    $(document).ready(function(){
+        $('.bsf-has-tip, .has-tip').each(function(i,tip){
             $tip = $(tip);
             var attribute = (typeof $tip.attr('data-attribute') != 'undefined') ? $tip.attr('data-attribute') : 'title';
             var offset = (typeof $tip.attr('data-offset') != 'undefined') ? $tip.attr('data-offset') : 10;

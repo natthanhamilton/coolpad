@@ -18,6 +18,12 @@
  *
  * @author Julien Liabeuf <julien@liabeuf.fr>
  * @link   http://julienliabeuf.com
+ *
+ *!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * This file now overrides the official version that is in github.  Needed
+ * to do this for a fix since the github repo is no longer actively maintained.
+ * arrg.
+ *!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
  */
 
 if ( ! defined( 'ABSPATH' ) ) { exit; // Exit if accessed directly
@@ -120,12 +126,12 @@ if ( class_exists( 'TitanFrameworkOption' ) ) {
 				/* Get the license activation status */
 				$status = get_transient( "tf_edd_license_status_$key" );
 
-				/* If no transient is found or it is expired to check the license again. */
-				if ( false == $status ) {
+				/* If no transient is found or it is expired or not valid then we have to check the license again. */
+				if ( false == $status || 'valid' <> $status ) {
 					$status = $this->check( $license );
 				}
 
-				switch ( $status ) {
+				switch ( $status ) {					
 
 					case 'valid':
 						?><p class="description"><?php esc_html_e( 'Your license is valid and active.', TF_I18NDOMAIN ); ?></p><?php
@@ -136,6 +142,7 @@ if ( class_exists( 'TitanFrameworkOption' ) ) {
 					break;
 
 					case 'inactive':
+					case 'site_inactive':
 
 						global $pagenow;
 
@@ -153,7 +160,15 @@ if ( class_exists( 'TitanFrameworkOption' ) ) {
 
 					case 'no_response':
 						?><p class="description"><?php esc_html_e( 'The remote server did not return a valid response. You can retry by hitting the &laquo;Save&raquo; button again.', TF_I18NDOMAIN ); ?></p><?php
-					break;
+						break;
+						
+					case 'expired':
+						?><p class="description"><?php esc_html_e( 'Your license is expired.', TF_I18NDOMAIN ) ; ?></p><?php
+						break ;
+						
+					default:
+						?><p class="description"><?php esc_html_e( 'Unexpected response from server: ', TF_I18NDOMAIN ) . $status ; ?></p><?php
+						break;						
 
 				}
 			} else {

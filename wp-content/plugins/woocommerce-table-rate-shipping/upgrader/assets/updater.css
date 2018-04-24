@@ -1,0 +1,21 @@
+
+/*@import url(http://fonts.googleapis.com/css?family=Raleway:300,400);*/
+@import url(//fonts.googleapis.com/css?family=Open+Sans:400,300);
+.dashboard_page_be-manage-plugins #wpbody-content { font-family: 'Open Sans', sans-serif; font-weight: 400; padding: 30px 2%; width: 96%; }
+	.dashboard_page_be-manage-plugins #wpbody-content .header_description { font-size: 20px; margin-bottom: 60px; color: #777; }
+	.dashboard_page_be-manage-plugins #wpbody-content h1 { font-size: 48px; font-weight: 400; }
+	.dashboard_page_be-manage-plugins #wpbody-content h2 { font-size: 24px; font-weight: 700; border-bottom: 1px solid #ccc; padding-bottom: 15px; color: #444; }
+	.dashboard_page_be-manage-plugins #wpbody-content h4 a { text-decoration: none; }
+
+.be-compare-popup { position:fixed; top:0;  left:0; width:100%; height:100%; background:url(overlay.png) repeat; text-align:center; z-index: 8000; }
+	.be-compare-popup .be-popup-container { display: inline-block; margin-top: 125px; z-index: 9000; box-shadow:0 0 25px #111; -webkit-box-shadow:0 0 25px #111; -moz-box-shadow:0 0 25px #111; min-width:350px; max-width:575px; background: #fff; text-align: center; padding: 30px; max-height: 600px; overflow-y: auto; }
+	.be-compare-popup .add_form label { font-size: 1.2em; font-weight: bold; }
+	.be-compare-popup .add_form span { font-style: italic; color: #aeaeae; }
+	.be-compare-popup .add_form input[type="text"] { width: 100%; }
+	.be-compare-popup .add_form select { width: 85%; }
+
+	.be-compare-popup .labeled-form { text-align: left; }
+		.be-compare-popup .labeled-form label { font-size: 1em; font-weight: bold; display: block; width: 100%; }
+		.be-compare-popup .labeled-form select, .be-compare-popup .labeled-form textarea { width: 100%; }
+		.be-compare-popup .labeled-form .subcategory_title { font-size: 1.1em; padding: 3px 5px !important; border: 0 !important; background: #dcdcdc; margin-top: 20px !important; width: 100% !important; }
+		.be-compare-popup .section label { width: auto !important; display: inline; }

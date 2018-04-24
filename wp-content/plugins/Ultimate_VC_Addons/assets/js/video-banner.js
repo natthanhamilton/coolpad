@@ -1,12 +1,12 @@
-(function (a) {
-    a(document).ready(function () {
+(function(a) {
+    a(document).ready(function() {
         var b = "";
-        a(".ult-video-banner").each(function (g, e) {
+        a(".ult-video-banner").each(function(g, e) {
             var k = a(e).attr("id");
             var h = a(e).data("current-time");
             var j = a(e).data("placeholder");
             var d = 0;
-            a(e).find("video").get(0).addEventListener("canplay", function () {
+            a(e).find("video").get(0).addEventListener("canplay", function() {
                 if (d >= 1) {
                     return false
                 }
@@ -26,15 +26,15 @@
         if (b != "") {
             a("head").append("<style>" + b + "</style>")
         }
-        a(document).on("mouseover", ".ult-video-banner", function () {
+        a(document).on("mouseover", ".ult-video-banner", function() {
             a(this).addClass("ult-vb-touch-start");
             a(this).find("video").get(0).play()
         });
-        a(document).on("mouseout", ".ult-video-banner", function () {
+        a(document).on("mouseout", ".ult-video-banner", function() {
             a(this).removeClass("ult-vb-touch-start");
             a(this).find("video").get(0).pause()
         });
-        a(document).on("touchstart", ".ult-video-banner", function () {
+        a(document).on("touchstart", ".ult-video-banner", function() {
             if (a(this).hasClass("ult-vb-touch-start")) {
                 a(this).removeClass("ult-vb-touch-start");
                 a(this).find("video").get(0).pause();

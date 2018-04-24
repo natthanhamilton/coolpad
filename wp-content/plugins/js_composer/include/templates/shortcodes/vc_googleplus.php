@@ -10,10 +10,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var $annotation
  * @var $widget_width
  * @var $css
+ * @var $css_animation
  * Shortcode class
  * @var $this WPBakeryShortCode_VC_GooglePlus
  */
-$type = $annotation = $widget_width = $css = '';
+$type = $annotation = $widget_width = $css = $css_animation = '';
 $atts = vc_map_get_attributes( $this->getShortcode(), $atts );
 extract( $atts );
 
@@ -31,7 +32,7 @@ if ( 'inline' === $annotation && strlen( $widget_width ) > 0 ) {
 	$params .= ' width="' . (int) $widget_width . '"';
 }
 
-$class_to_filter = 'wpb_googleplus wpb_content_element wpb_googleplus_type_' . $type . ' vc_googleplus-annotation-' . $annotation;
+$class_to_filter = 'wpb_googleplus wpb_content_element wpb_googleplus_type_' . $type . ' vc_googleplus-annotation-' . $annotation . $this->getCSSAnimation( $css_animation );
 $class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' );
 $css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $class_to_filter, $this->settings['base'], $atts );
 

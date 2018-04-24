@@ -19,11 +19,12 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var $el_class
  * @var $interval
  * @var $css
+ * @var $css_animation
  * Shortcode class
  * @var $this WPBakeryShortCode_VC_gallery
  */
 $thumbnail = '';
-$title = $source = $type = $onclick = $custom_links = $custom_links_target = $img_size = $external_img_size = $images = $custom_srcs = $el_class = $interval = $css = '';
+$title = $source = $type = $onclick = $custom_links = $custom_links_target = $img_size = $external_img_size = $images = $custom_srcs = $el_class = $interval = $css = $css_animation = '';
 $large_img_src = '';
 
 $attributes = vc_map_get_attributes( $this->getShortcode(), $atts );
@@ -151,7 +152,7 @@ foreach ( $images as $i => $image ) {
 }
 
 $class_to_filter = 'wpb_gallery wpb_content_element vc_clearfix';
-$class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class );
+$class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class ) . $this->getCSSAnimation( $css_animation );
 $css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $class_to_filter, $this->settings['base'], $atts );
 
 $output = '';

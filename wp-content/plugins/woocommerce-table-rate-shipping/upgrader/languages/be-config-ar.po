@@ -1,0 +1,137 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Bolder Elements Plugin Upgrader\n"
+"POT-Creation-Date: 2015-04-14 14:37-0500\n"
+"PO-Revision-Date: 2015-04-14 14:46-0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.5\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: upgrader\n"
+
+#: upgrader/class-be-config.php:45
+msgid "Bolder Elements Dashboard"
+msgstr "أكثر جرأة عناصر لوحة التحكم الرئيسية"
+
+#: upgrader/class-be-config.php:46
+msgid "Manage plugins and support status by registering your purchase codes here"
+msgstr "إدارة الإضافات ودعم الوضع من خلال تسجيل رموز الشراء هنا"
+
+#: upgrader/class-be-config.php:122
+msgid "You have not registered any plugins yet"
+msgstr "أنت لم تسجل أي الإضافات بعد"
+
+#: upgrader/class-be-config.php:195
+msgid "Last Updated"
+msgstr "آخر تحديث"
+
+#: upgrader/class-be-config.php:196
+#, php-format
+msgid "%s ago"
+msgstr "%s قبل"
+
+#: upgrader/class-be-config.php:231 upgrader/class-be-config.php:262
+#: upgrader/class-be-config.php:265 upgrader/class-be-config.php:293
+#: upgrader/class-be-config.php:296
+msgid "Sorry, but there was a problem connecting to the API"
+msgstr "آسف، ولكن كان هناك مشكلة في الاتصال إلى API"
+
+#: upgrader/class-be-config.php:258 upgrader/class-be-config.php:289
+msgid "Username and/or API Key invalid"
+msgstr "اسم المستخدم و / أو API غير صالحة مفتاح"
+
+#: upgrader/class-be-config.php:331 upgrader/class-be-config.php:333
+#: upgrader/class-be-config.php:337 upgrader/class-be-config.php:360
+#: upgrader/class-be-config.php:397
+msgid "Error"
+msgstr "خطأ"
+
+#: upgrader/class-be-config.php:331
+msgid "The username provided does not match the name on the license"
+msgstr "اسم المستخدم المقدمة لا يطابق الاسم على ترخيص"
+
+#: upgrader/class-be-config.php:333
+msgid "The purchase code provided is not for the selected plugin"
+msgstr "رمز شراء المقدمة ليست لاختيار البرنامج المساعد"
+
+#: upgrader/class-be-config.php:337
+msgid "An error occured when processing the information provided"
+msgstr "حدث خطأ عند معالجة المعلومات المقدمة"
+
+#: upgrader/class-be-config.php:360
+msgid "Settings for this plugin could not be found"
+msgstr "إعدادات هذا البرنامج المساعد تعذر العثور"
+
+#: upgrader/class-be-config.php:385
+msgid "Activate Your License"
+msgstr "تنشيط الترخيص"
+
+#: upgrader/class-be-config.php:386
+msgid "Enter the following information to unlock additional features"
+msgstr "أدخل المعلومات التالية لفتح ميزات إضافية"
+
+#: upgrader/class-be-config.php:387
+msgid "Envato Marketplace Username"
+msgstr "انفاتو السوق اسم المستخدم"
+
+#: upgrader/class-be-config.php:388
+msgid "API Key"
+msgstr "API مفتاح"
+
+#: upgrader/class-be-config.php:389
+msgid "Purchase Code"
+msgstr "كود شراء"
+
+#: upgrader/class-be-config.php:390
+msgid "Are you sure you want to remove the settings for this plugin"
+msgstr "هل أنت متأكد أنك تريد إزالة إعدادات هذا البرنامج المساعد"
+
+#: upgrader/class-be-config.php:391
+msgid "This action cannot be undone"
+msgstr "لا يمكن التراجع عن هذا العمل"
+
+#: upgrader/class-be-config.php:392
+msgid "Success"
+msgstr "نجاح"
+
+#: upgrader/class-be-config.php:393
+msgid "Close"
+msgstr "قريب"
+
+#: upgrader/class-be-config.php:394
+msgid "Register"
+msgstr "تسجيل"
+
+#: upgrader/class-be-config.php:395
+msgid "Remove"
+msgstr "نزع"
+
+#: upgrader/class-be-config.php:396
+msgid "Cancel"
+msgstr "إلغاء"
+
+#: upgrader/class-be-config.php:397
+msgid "There are empty required fields in your form."
+msgstr "هناك حقول فارغة المطلوبة في النموذج الخاص بك."
+
+#: upgrader/class-be-updater.php:282
+msgid "Downloading package from Envato Marketplace"
+msgstr "تحميل الحزمة من انفاتو السوق"
+
+#: upgrader/class-be-updater.php:288
+msgid "Could not connect to Envato API"
+msgstr "تعذر الاتصال انفاتو API"
+
+#: upgrader/class-be-updater.php:307
+msgid "Missing login credentials"
+msgstr "في عداد المفقودين اعتماد تسجيل الدخول"
+
+#: upgrader/class-be-updater.php:307
+msgid "Register Plugin"
+msgstr "تسجيل البرنامج المساعد"

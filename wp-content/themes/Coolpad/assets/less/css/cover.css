@@ -406,27 +406,6 @@ Vertically center everything
 Multi line truncate
 
 */
-.multi-line-truncate:before {
-  /* points in the end */
-  content: '...';
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of block */
-  right: 0;
-  bottom: 0;
-}
-.multi-line-truncate:after {
-  /* points in the end */
-  content: '...';
-  /* absolute position */
-  position: absolute;
-  /* set position to right bottom corner of text */
-  right: 0;
-  /* set width and height */
-  width: 1em;
-  height: 1em;
-  margin-top: 0.2em;
-}
 /*
 
 Hover transition
@@ -749,4 +728,17 @@ Text formats
   -moz-transition: all ease 0.5s;
   -o-transition: all ease 0.5s;
   transition: all ease 0.5s;
+}
+.blog-page .vc_column-inner {
+  height: 700px;
+}
+.blog-page .wpb_wrapper {
+  position: relative;
+  bottom: 0;
+  width: initial;
+  background-image: none !important;
+}
+.blog-page img {
+  padding-top: 50px;
+  max-width: 400px;
 }

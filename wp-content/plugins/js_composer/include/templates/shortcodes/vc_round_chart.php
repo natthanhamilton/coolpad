@@ -17,10 +17,11 @@ if ( ! defined( 'ABSPATH' ) ) {
  * @var $stroke_width
  * @var $values
  * @var $css
+ * @var $css_animation
  * Shortcode class
  * @var $this WPBakeryShortCode_Vc_Round_Chart
  */
-$el_class = $title = $type = $style = $legend = $animation = $tooltips = $stroke_color = $stroke_width = $values = $css = $custom_stroke_color = '';
+$el_class = $title = $type = $style = $legend = $animation = $tooltips = $stroke_color = $stroke_width = $values = $css = $css_animation = $custom_stroke_color = '';
 $atts = vc_map_get_attributes( $this->getShortcode(), $atts );
 extract( $atts );
 
@@ -94,7 +95,7 @@ foreach ( $base_colors['active'] as $name => $color ) {
 wp_enqueue_script( 'vc_round_chart' );
 
 $class_to_filter = 'vc_chart vc_round-chart wpb_content_element';
-$class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class );
+$class_to_filter .= vc_shortcode_custom_css_class( $css, ' ' ) . $this->getExtraClass( $el_class ) . $this->getCSSAnimation( $css_animation );
 $css_class = apply_filters( VC_SHORTCODE_CUSTOM_CSS_FILTER_TAG, $class_to_filter, $this->settings['base'], $atts );
 
 $options = array();

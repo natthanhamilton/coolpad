@@ -1,0 +1,137 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: Bolder Elements Plugin Upgrader\n"
+"POT-Creation-Date: 2015-04-14 14:37-0500\n"
+"PO-Revision-Date: 2015-04-14 14:46-0500\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 1.7.5\n"
+"X-Poedit-Basepath: .\n"
+"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"X-Poedit-KeywordsList: __;_e\n"
+"X-Poedit-SearchPath-0: upgrader\n"
+
+#: upgrader/class-be-config.php:45
+msgid "Bolder Elements Dashboard"
+msgstr "大胆な要素ダッシュボード"
+
+#: upgrader/class-be-config.php:46
+msgid "Manage plugins and support status by registering your purchase codes here"
+msgstr "ここにご購入コードを登録することにより、プラグインやサポート状況を管理する"
+
+#: upgrader/class-be-config.php:122
+msgid "You have not registered any plugins yet"
+msgstr "あなたは、どのプラグインを登録していない"
+
+#: upgrader/class-be-config.php:195
+msgid "Last Updated"
+msgstr "最終更新"
+
+#: upgrader/class-be-config.php:196
+#, php-format
+msgid "%s ago"
+msgstr "%s前に"
+
+#: upgrader/class-be-config.php:231 upgrader/class-be-config.php:262
+#: upgrader/class-be-config.php:265 upgrader/class-be-config.php:293
+#: upgrader/class-be-config.php:296
+msgid "Sorry, but there was a problem connecting to the API"
+msgstr "申し訳ありませんが、APIへの接続に問題があった"
+
+#: upgrader/class-be-config.php:258 upgrader/class-be-config.php:289
+msgid "Username and/or API Key invalid"
+msgstr "ユーザー名および/またはAPIキー無効"
+
+#: upgrader/class-be-config.php:331 upgrader/class-be-config.php:333
+#: upgrader/class-be-config.php:337 upgrader/class-be-config.php:360
+#: upgrader/class-be-config.php:397
+msgid "Error"
+msgstr "エラー"
+
+#: upgrader/class-be-config.php:331
+msgid "The username provided does not match the name on the license"
+msgstr "指定されたユーザ名は、ライセンス上の名前と一致しない"
+
+#: upgrader/class-be-config.php:333
+msgid "The purchase code provided is not for the selected plugin"
+msgstr "提供購入コードが選択され、プラグインのためではありません"
+
+#: upgrader/class-be-config.php:337
+msgid "An error occured when processing the information provided"
+msgstr "提供された情報を処理するときにエラーが発生しました"
+
+#: upgrader/class-be-config.php:360
+msgid "Settings for this plugin could not be found"
+msgstr "このプラグインの設定が見つかりませんでした"
+
+#: upgrader/class-be-config.php:385
+msgid "Activate Your License"
+msgstr "ライセンスのアクティベーション"
+
+#: upgrader/class-be-config.php:386
+msgid "Enter the following information to unlock additional features"
+msgstr "追加機能のロックを解除するには、次の情報を入力します。"
+
+#: upgrader/class-be-config.php:387
+msgid "Envato Marketplace Username"
+msgstr "Envatoマーケットプレースのユーザー名"
+
+#: upgrader/class-be-config.php:388
+msgid "API Key"
+msgstr "APIキー"
+
+#: upgrader/class-be-config.php:389
+msgid "Purchase Code"
+msgstr "購入コード"
+
+#: upgrader/class-be-config.php:390
+msgid "Are you sure you want to remove the settings for this plugin"
+msgstr "あなたは、このプラグインの設定を削除してもよろしいですか"
+
+#: upgrader/class-be-config.php:391
+msgid "This action cannot be undone"
+msgstr "このアクションは元に戻すことはできません"
+
+#: upgrader/class-be-config.php:392
+msgid "Success"
+msgstr "成功"
+
+#: upgrader/class-be-config.php:393
+msgid "Close"
+msgstr "クローズ"
+
+#: upgrader/class-be-config.php:394
+msgid "Register"
+msgstr "登録"
+
+#: upgrader/class-be-config.php:395
+msgid "Remove"
+msgstr "削除する"
+
+#: upgrader/class-be-config.php:396
+msgid "Cancel"
+msgstr "キャンセル"
+
+#: upgrader/class-be-config.php:397
+msgid "There are empty required fields in your form."
+msgstr "フォームの空の必須フィールドがあります。"
+
+#: upgrader/class-be-updater.php:282
+msgid "Downloading package from Envato Marketplace"
+msgstr "Envatoマーケットプレースからパッケージをダウンロードする"
+
+#: upgrader/class-be-updater.php:288
+msgid "Could not connect to Envato API"
+msgstr "Envato APIに接続できませんでした"
+
+#: upgrader/class-be-updater.php:307
+msgid "Missing login credentials"
+msgstr "ログイン資格情報の欠落"
+
+#: upgrader/class-be-updater.php:307
+msgid "Register Plugin"
+msgstr "登録プラグイン"

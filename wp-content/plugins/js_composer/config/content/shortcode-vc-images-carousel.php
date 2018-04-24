@@ -1,4 +1,8 @@
 <?php
+if ( ! defined( 'ABSPATH' ) ) {
+	die( '-1' );
+}
+
 return array(
 	'name' => __( 'Image Carousel', 'js_composer' ),
 	'base' => 'vc_images_carousel',
@@ -117,6 +121,7 @@ return array(
 			'description' => __( 'Enable slider loop mode.', 'js_composer' ),
 			'value' => array( __( 'Yes', 'js_composer' ) => 'yes' ),
 		),
+		vc_map_add_css_animation(),
 		array(
 			'type' => 'textfield',
 			'heading' => __( 'Extra class name', 'js_composer' ),

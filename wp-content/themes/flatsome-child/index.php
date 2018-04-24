@@ -1,1 +1,2 @@
-<script type='text/javascript'> document.location = 'http://store.coolpad.us/product-category/phones'; </script>
+<?php
+// Silence is golden.
