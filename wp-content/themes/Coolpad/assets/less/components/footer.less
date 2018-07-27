@@ -1,9 +1,8 @@
 @import '../variables';
 @import 'buttons';
 
-
 #footer,
-#sub-footer{
+#sub-footer {
   /* SPACINGS */
   margin-bottom: 10px;
   .section-margin-top;
@@ -45,9 +44,8 @@
       .center;
     }
     .support {
-
       font-size: 20px;
-      color: #696969;
+      color: #4a4a4a;
       display: inline-block;
       float: left;
       @media only screen and (max-width: @break-xl) {
@@ -55,9 +53,8 @@
       }
     }
     .phone {
-
       font-size: 20px;
-      color: #3b3fb6;
+      color: #4a4a4a;
       display: inline-block;
       margin-left: 26px;
       @media only screen and (max-width: @break-xl) {
@@ -71,7 +68,7 @@
       margin-bottom: 0 !important;
       padding-right: 25px;
       font-size: 20px;
-      color: #696969;
+      color: #4a4a4a;
       @media only screen and (max-width: @break-xl) {
         display: none;
       }
@@ -164,7 +161,7 @@
             font-size: 16px;
             padding: 9px 0 9px 24px;
           }
-          input[type="email"] {
+          input[type='email'] {
             border: solid 1px #c3c3c3 !important;
             background: #fff;
             outline: 0;
@@ -172,10 +169,12 @@
             &::-webkit-input-placeholder {
               color: #b3adad;
             }
-            &:-moz-placeholder { /* Firefox 18- */
+            &:-moz-placeholder {
+              /* Firefox 18- */
               color: #b3adad;
             }
-            &::-moz-placeholder { /* Firefox 19+ */
+            &::-moz-placeholder {
+              /* Firefox 19+ */
               color: #b3adad;
             }
             &:-ms-input-placeholder {
@@ -185,7 +184,7 @@
               margin: 0 0 20px 0;
             }
           }
-          input[type="submit"] {
+          input[type='submit'] {
             cursor: pointer;
           }
         }
@@ -217,13 +216,13 @@
     padding-top: 14px;
     .bottom-link {
       a {
-
         font-size: 16px;
         color: #b3adad;
         text-decoration: none;
         float: left;
+        padding: 0 !important;
         &:not(:first-child) {
-          padding-left: 15px;
+          padding: 0 0 0 15px !important;
           border-left: 1px #c3c3c3 solid;
           margin-left: 15px;
         }
@@ -240,10 +239,10 @@
       }
     }
     .copyright p {
-
       font-size: 14px;
       color: #b3adad;
       margin: 0;
+      padding: 0 !important;
       @media only screen and (max-width: @break-md) {
         font-size: 8px;
         padding: 10px 0;

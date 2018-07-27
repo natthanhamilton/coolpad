@@ -531,7 +531,7 @@ Fix img-responsive issue
 #footer .top .support,
 #sub-footer .top .support {
   font-size: 20px;
-  color: #696969;
+  color: #4a4a4a;
   display: inline-block;
   float: left;
 }
@@ -544,7 +544,7 @@ Fix img-responsive issue
 #footer .top .phone,
 #sub-footer .top .phone {
   font-size: 20px;
-  color: #3b3fb6;
+  color: #4a4a4a;
   display: inline-block;
   margin-left: 26px;
 }
@@ -562,7 +562,7 @@ Fix img-responsive issue
   margin-bottom: 0 !important;
   padding-right: 25px;
   font-size: 20px;
-  color: #696969;
+  color: #4a4a4a;
 }
 @media only screen and (max-width: 1440px) {
   #footer .top .social-text,
@@ -734,39 +734,39 @@ Fix img-responsive issue
   font-size: 16px;
   padding: 9px 0 9px 24px;
 }
-#footer .middle .newsletter .mc4wp-form .form input[type="email"],
-#sub-footer .middle .newsletter .mc4wp-form .form input[type="email"] {
+#footer .middle .newsletter .mc4wp-form .form input[type='email'],
+#sub-footer .middle .newsletter .mc4wp-form .form input[type='email'] {
   border: solid 1px #c3c3c3 !important;
   background: #fff;
   outline: 0;
   margin: 0 22px 20px 0;
 }
-#footer .middle .newsletter .mc4wp-form .form input[type="email"]::-webkit-input-placeholder,
-#sub-footer .middle .newsletter .mc4wp-form .form input[type="email"]::-webkit-input-placeholder {
+#footer .middle .newsletter .mc4wp-form .form input[type='email']::-webkit-input-placeholder,
+#sub-footer .middle .newsletter .mc4wp-form .form input[type='email']::-webkit-input-placeholder {
   color: #b3adad;
 }
-#footer .middle .newsletter .mc4wp-form .form input[type="email"]:-moz-placeholder,
-#sub-footer .middle .newsletter .mc4wp-form .form input[type="email"]:-moz-placeholder {
+#footer .middle .newsletter .mc4wp-form .form input[type='email']:-moz-placeholder,
+#sub-footer .middle .newsletter .mc4wp-form .form input[type='email']:-moz-placeholder {
   /* Firefox 18- */
   color: #b3adad;
 }
-#footer .middle .newsletter .mc4wp-form .form input[type="email"]::-moz-placeholder,
-#sub-footer .middle .newsletter .mc4wp-form .form input[type="email"]::-moz-placeholder {
+#footer .middle .newsletter .mc4wp-form .form input[type='email']::-moz-placeholder,
+#sub-footer .middle .newsletter .mc4wp-form .form input[type='email']::-moz-placeholder {
   /* Firefox 19+ */
   color: #b3adad;
 }
-#footer .middle .newsletter .mc4wp-form .form input[type="email"]:-ms-input-placeholder,
-#sub-footer .middle .newsletter .mc4wp-form .form input[type="email"]:-ms-input-placeholder {
+#footer .middle .newsletter .mc4wp-form .form input[type='email']:-ms-input-placeholder,
+#sub-footer .middle .newsletter .mc4wp-form .form input[type='email']:-ms-input-placeholder {
   color: #b3adad;
 }
 @media only screen and (max-width: 768px) {
-  #footer .middle .newsletter .mc4wp-form .form input[type="email"],
-  #sub-footer .middle .newsletter .mc4wp-form .form input[type="email"] {
+  #footer .middle .newsletter .mc4wp-form .form input[type='email'],
+  #sub-footer .middle .newsletter .mc4wp-form .form input[type='email'] {
     margin: 0 0 20px 0;
   }
 }
-#footer .middle .newsletter .mc4wp-form .form input[type="submit"],
-#sub-footer .middle .newsletter .mc4wp-form .form input[type="submit"] {
+#footer .middle .newsletter .mc4wp-form .form input[type='submit'],
+#sub-footer .middle .newsletter .mc4wp-form .form input[type='submit'] {
   cursor: pointer;
 }
 #footer .bottom,
@@ -847,6 +847,7 @@ Fix img-responsive issue
   color: #b3adad;
   text-decoration: none;
   float: left;
+  padding: 0 !important;
   /* when more than 2 links, change to full width list
         @media only screen and (max-width: @break-md) {
           display: block;
@@ -857,7 +858,7 @@ Fix img-responsive issue
 }
 #footer .bottom .bottom-link a:not(:first-child),
 #sub-footer .bottom .bottom-link a:not(:first-child) {
-  padding-left: 15px;
+  padding: 0 0 0 15px !important;
   border-left: 1px #c3c3c3 solid;
   margin-left: 15px;
 }
@@ -872,6 +873,7 @@ Fix img-responsive issue
   font-size: 14px;
   color: #b3adad;
   margin: 0;
+  padding: 0 !important;
 }
 @media only screen and (max-width: 768px) {
   #footer .bottom .copyright p,
@@ -1724,6 +1726,14 @@ p,
   margin-top: 0 !important;
   margin-bottom: 0 !important;
 }
+p,
+.p {
+  font-weight: 300;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: 1.5;
+  letter-spacing: normal;
+}
 /*
 
 Vertically center everything
@@ -2051,6 +2061,31 @@ Section break point set ups
   }
 }
 @media only screen and (min-width: 1440px) {
+  .section-padding-bottom {
+    padding-bottom: 70px !important;
+  }
+}
+@media only screen and (max-width: 1440px) {
+  .section-padding-bottom {
+    padding-bottom: 70px !important;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  .section-padding-bottom {
+    padding-bottom: 50px !important;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .section-padding-bottom {
+    padding-bottom: 50px !important;
+  }
+}
+@media only screen and (max-width: 320px) {
+  .section-padding-bottom {
+    padding-bottom: 27px !important;
+  }
+}
+@media only screen and (min-width: 1440px) {
   .section-margin-top {
     padding-top: 80px !important;
   }
@@ -2072,6 +2107,31 @@ Section break point set ups
 }
 @media only screen and (max-width: 320px) {
   .section-margin-top {
+    padding-top: 27px !important;
+  }
+}
+@media only screen and (min-width: 1440px) {
+  .section-padding-top {
+    padding-top: 80px !important;
+  }
+}
+@media only screen and (max-width: 1440px) {
+  .section-padding-top {
+    padding-top: 70px !important;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  .section-padding-top {
+    padding-top: 50px !important;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .section-padding-top {
+    padding-top: 50px !important;
+  }
+}
+@media only screen and (max-width: 320px) {
+  .section-padding-top {
     padding-top: 27px !important;
   }
 }
@@ -2578,12 +2638,302 @@ breadcrumb {
     height: 250px;
   }
 }
+.about-cover {
+  background-size: cover;
+  background-position: 50% 50%;
+  height: 685px;
+  padding: 0;
+  margin: 0;
+}
+.about-header,
+.about-technology {
+  background-color: #f8f8f8;
+}
+.about-header .section-left .content p,
+.about-technology .section-left .content p {
+  line-height: 2.05;
+}
+@media only screen and (min-width: 1024px) {
+  .about-header .section-left,
+  .about-technology .section-left {
+    padding-right: 80px;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .about-header .section-left,
+  .about-technology .section-left {
+    padding-right: 40px;
+  }
+}
+.about-header .section-right .icon {
+  padding-right: 30px;
+}
+@media only screen and (min-width: 1024px) {
+  .about-header .section-right {
+    border-left: solid 1px #979797;
+  }
+}
+.about-technology .section-right .chart-image figure div img {
+  max-height: 500px;
+}
+.about-history .icon div span {
+  width: 1px;
+  height: 100%;
+  background-color: #ebebeb;
+}
+.about-history .icon div span:before {
+  content: '';
+}
+.about-history h5 {
+  text-align: center;
+}
+@media only screen and (max-width: 1024px) {
+  .about-history .icon {
+    display: none;
+  }
+  .about-history .vc_col-sm-2 {
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+  .about-history .vc_col-sm-2 .vc_col-sm-10 {
+    width: 100%;
+  }
+  .about-history .vc_col-sm-2 .vc_col-sm-10 p {
+    text-align: center;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  .about-header .vc_col-sm-1,
+  .about-history .vc_col-sm-1,
+  .about-technology .vc_col-sm-1 {
+    display: none;
+  }
+  .about-header .vc_col-sm-5,
+  .about-history .vc_col-sm-5,
+  .about-technology .vc_col-sm-5 {
+    width: 50%;
+  }
+}
+@media only screen and (max-width: 768px) {
+  .about-header .vc_col-sm-4,
+  .about-history .vc_col-sm-4,
+  .about-technology .vc_col-sm-4,
+  .about-header .vc_col-sm-5,
+  .about-history .vc_col-sm-5,
+  .about-technology .vc_col-sm-5,
+  .about-header .vc_col-sm-6,
+  .about-history .vc_col-sm-6,
+  .about-technology .vc_col-sm-6 {
+    width: 100%;
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+}
 .ult_modal-content {
   border-color: transparent !important;
   box-shadow: none !important;
 }
 .wpb_video_wrapper {
   padding-top: 0 !important;
+}
+#community-cover .title {
+  padding-top: 20px;
+}
+#community-cover .sponsor-text h5 {
+  font-weight: 300;
+  line-height: 2.25;
+}
+#community-cover .sponsor-image {
+  padding-bottom: 20px;
+}
+#community-quote .image figure div img {
+  width: auto;
+}
+@media only screen and (max-width: 1440px) {
+  #community-quote .image figure div img {
+    max-height: 600px;
+  }
+}
+@media only screen and (max-width: 1024px) {
+  #community-quote .image figure div img {
+    max-height: 500px;
+  }
+}
+@media only screen and (max-width: 768px) {
+  #community-quote .image figure div img {
+    max-height: 400px;
+    margin-top: 100px;
+  }
+}
+@media only screen and (max-width: 480px) {
+  #community-quote .image figure div img {
+    max-height: 300px;
+  }
+}
+#community-quote .quote figure div img {
+  position: absolute;
+  right: 0;
+  width: auto;
+}
+@media only screen and (min-width: 1400px) {
+  #community-quote .quote figure div img {
+    right: 5%;
+  }
+}
+@media only screen and (min-width: 1200px) and (max-width: 1400px) {
+  #community-quote .quote figure div img {
+    max-height: 300px;
+  }
+}
+@media only screen and (min-width: 800px) and (max-width: 1200px) {
+  #community-quote .quote figure div img {
+    max-height: 250px;
+  }
+}
+#community-sponsors {
+  height: 350px;
+  padding-top: 130px;
+  padding-left: 160px;
+}
+#community-sponsors .title,
+#community-sponsors .content {
+  max-width: 400px;
+  position: relative;
+  z-index: 4;
+}
+@media only screen and (max-width: 1200px) {
+  #community-sponsors .title,
+  #community-sponsors .content {
+    max-width: 300px;
+  }
+}
+#community-sponsors .image figure div img {
+  position: absolute;
+  top: -235px;
+  z-index: 3;
+  right: 0;
+  width: auto;
+  max-height: 500px;
+}
+@media only screen and (min-width: 1200px) {
+  #community-sponsors .image figure div img {
+    max-height: 600px;
+  }
+}
+#community-balboa .title {
+  padding-top: 85%;
+  padding-left: 20px;
+}
+@media only screen and (min-width: 1440px) {
+  #community-balboa .title {
+    padding-top: 380px;
+  }
+}
+#community-balboa .content {
+  padding-left: 20px;
+}
+#community-miami {
+  padding-top: 20px;
+}
+#community-miami .image {
+  height: 500px;
+}
+#community-miami .image figure div img {
+  top: -300px;
+  position: relative;
+  margin: auto;
+  z-index: 2;
+}
+@media only screen and (max-width: 1440px) {
+  #community-miami .image figure div img {
+    max-height: 700px;
+    width: auto;
+  }
+}
+#community-national {
+  height: 800px;
+}
+@media only screen and (max-width: 1200px) {
+  #community-national {
+    height: 450px;
+  }
+}
+#community-national .image figure div img {
+  position: absolute;
+  width: auto;
+  top: -300px;
+  padding-right: 250px;
+  z-index: 1;
+  max-height: 1000px;
+}
+#community-national .section {
+  max-width: 400px;
+  right: 40px;
+  position: absolute;
+  top: 250px;
+}
+@media only screen and (max-width: 1200px) {
+  #community-national .section {
+    top: 150px;
+    right: 0;
+  }
+}
+#community-sustainable .content-section {
+  max-width: 700px;
+  margin: auto !important;
+}
+#community-sustainable .content-section .image {
+  float: left;
+  padding-right: 20px;
+}
+@media only screen and (max-width: 1024px) {
+  #community-quote,
+  #community-sponsors,
+  #community-balboa,
+  #community-miami,
+  #community-national,
+  #community-sustainable,
+  #tiles {
+    display: none;
+  }
+}
+#community-mobile .image {
+  width: 100%;
+}
+#community-mobile .image figure {
+  width: 100%;
+}
+#community-mobile .image figure div {
+  width: 100%;
+}
+@media only screen and (min-width: 1024px) {
+  #community-mobile {
+    display: none;
+  }
+}
+.aboutus-leadership .desktop-right {
+  padding-left: 20px;
+}
+.aboutus-leadership .desktop-left {
+  padding-right: 20px;
+}
+@media only screen and (max-width: 768px) {
+  .aboutus-leadership .desktop-image {
+    display: none;
+  }
+  .aboutus-leadership .content {
+    padding-bottom: 20px;
+  }
+  .aboutus-leadership h5,
+  .aboutus-leadership p {
+    text-align: left !important;
+  }
+}
+@media only screen and (min-width: 768px) {
+  .aboutus-leadership .mobile-image {
+    display: none;
+  }
 }
 .highlights-list .vc_column-inner {
   padding-left: 7.5px !important;

@@ -158,7 +158,53 @@ Section break point set ups
   }
 }
 
+.section-padding-bottom {
+  // beyond lg
+  @media only screen and (min-width: @break-xl) {
+    padding-bottom: 70px !important;
+  }
+  // up to lg
+  @media only screen and (max-width: @break-xl) {
+    padding-bottom: 70px !important;
+  }
+  // up to md
+  @media only screen and (max-width: @break-lg) {
+    padding-bottom: 50px !important;
+  }
+  // up to sm
+  @media only screen and (max-width: @break-md) {
+    padding-bottom: 50px !important;
+  }
+  // up to xs
+  @media only screen and (max-width: @break-xs) {
+    padding-bottom: 27px !important;
+  }
+}
+
 .section-margin-top {
+  // beyond lg
+  @media only screen and (min-width: @break-xl) {
+    padding-top: 80px !important;
+  }
+  // up to lg
+  @media only screen and (max-width: @break-xl) {
+    padding-top: 70px !important;
+  }
+  // up to md
+  @media only screen and (max-width: @break-lg) {
+    padding-top: 50px !important;
+  }
+  // up to sm
+  @media only screen and (max-width: @break-md) {
+    padding-top: 50px !important;
+  }
+  // up to xs
+  @media only screen and (max-width: @break-xs) {
+    padding-top: 27px !important;
+  }
+}
+
+.section-padding-top {
   // beyond lg
   @media only screen and (min-width: @break-xl) {
     padding-top: 80px !important;
