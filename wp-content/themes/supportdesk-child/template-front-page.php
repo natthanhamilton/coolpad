@@ -12,7 +12,7 @@ $st_hp_sidebar_position = of_get_option('st_hp_sidebar');
 
 <?php if (of_get_option('st_hp_headline') || (of_get_option('st_hp_tagline')) || (of_get_option('st_hp_search') == 1)) { ?>
     <!-- #page-header -->
-    <div id="page-header" class="clearfix" style="height: 487px;">
+    <div id="page-header" class="clearfix" style="height: 300px;">
         <div class="ht-container">
             <div class="title"><?php echo of_get_option('st_hp_headline'); ?></div>
             <?php if (of_get_option('st_hp_search') == 1) { ?>
