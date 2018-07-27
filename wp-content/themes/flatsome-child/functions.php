@@ -111,3 +111,11 @@ function w4dev_woocommerce_new_customer_data($data)
 
     return $data;
 }
+function woo_remove_product_tabs( $tabs ) {
+
+    if (isset($tabs['additional_information'])) unset( $tabs['additional_information'] );;
+    if (isset($tabs['ux_custom_tab'])) $tabs['ux_custom_tab']['priority'] = 10;
+
+    return $tabs;
+}
+add_filter( 'woocommerce_product_tabs', 'woo_remove_product_tabs', 98 );
